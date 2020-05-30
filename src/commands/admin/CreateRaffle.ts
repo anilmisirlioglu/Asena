@@ -2,12 +2,12 @@ import { Client, Message, MessageEmbed } from 'discord.js'
 
 import { Command } from '../Command'
 import { Constants } from '../../Constants'
-import { DateTimeHelper } from '../../helpers/DateTimeHelper';
+import { DateTimeHelper } from '../../helpers/DateTimeHelper'
 import call from '../../utils/call'
 
 class CreateRaffle extends Command{
 
-    constructor() {
+    constructor(){
         super(
             'createraffle',
             ['çekilişoluştur', 'çekilişbaşlat', 'cekilisbaslat'],

@@ -2,7 +2,7 @@ import { Client, Message, MessageEmbed } from 'discord.js'
 
 import { Command } from '../Command'
 import { Constants } from '../../Constants'
-import { DateTimeHelper } from '../../helpers/DateTimeHelper';
+import { DateTimeHelper } from '../../helpers/DateTimeHelper'
 import call from '../../utils/call'
 
 export class Raffles extends Command{
@@ -17,7 +17,7 @@ export class Raffles extends Command{
         );
     }
 
-    public async run(client: Client, message: Message, args: string[]): Promise<boolean>{
+    async run(client: Client, message: Message, args: string[]): Promise<boolean>{
         const CONTINUES_RAFFLES = `
             query($server_id: String!){
                 getContinuesRaffles(server_id: $server_id){

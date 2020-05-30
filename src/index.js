@@ -9,12 +9,18 @@ const fs = require('fs')
 const { Constants } = require('Constants')
 const { Command } = require('./commands/Command')
 const { WebSocketConnector } = require('./network/WebSocketConnector')
+const { MessageHelper } = require('./helpers/MessageHelper');
+const { ChannelHelper } = require('./helpers/ChannelHelper');
 
 const webSocketConnector = new WebSocketConnector().getClient()
 const client = new Client()
 
 client.commands = new Collection()
 client.aliases = new Collection()
+client.helpers = {
+    message: new MessageHelper(client),
+    channel: new ChannelHelper(client)
+}
 
 client.categories = fs.readdirSync(`${__dirname}/commands/`);
 
