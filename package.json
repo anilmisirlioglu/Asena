@@ -1,0 +1,30 @@
+{
+  "name": "asena",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "author": {
+    "email": "misirlioglisamet@gmail.com",
+    "name": "Anıl Mısırlıoğlu"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start:dev": "nodemon --ext js, graphql src/connection.js",
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "typescript": "^3.8.3",
+    "apollo-server-express": "^2.11.0",
+    "ascii-table": "0.0.9",
+    "common-tags": "^1.8.0",
+    "cors": "^2.8.5",
+    "child_process": "^1.0.2",
+    "discord.js": "^12.2.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "graphql": "^14.6.0",
+    "graphql-import": "^1.0.0",
+    "graphql-tools": "^4.0.7",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.7"
+  }
+}
