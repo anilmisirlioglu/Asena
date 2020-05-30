@@ -4,6 +4,8 @@ const { ApolloServer } = require('apollo-server-express');
 const { importSchema } = require('graphql-import');
 const jwt = require('jsonwebtoken');
 
+const { RaffleHandler } = require('./handlers/RaffleHandler');
+
 const databaseConnection = require('./drivers/mongodb');
 
 const dotenv = require('dotenv');
@@ -70,5 +72,8 @@ module.exports = async () => {
     httpServer.listen(PORT, () => {
         console.log(`🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`);
         console.log(`🚀 Subscriptions ready at ws://localhost:${PORT}${server.subscriptionsPath}`);
-    })
+    });
+
+    // start raffle handler & check
+    (new RaffleHandler(Raffle, PubSub)).startJobSchedule()
 };

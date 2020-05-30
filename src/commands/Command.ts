@@ -1,3 +1,5 @@
+import { Client, Message } from 'discord.js'
+
 export abstract class Command{
 
     protected constructor(
@@ -5,8 +7,7 @@ export abstract class Command{
         private readonly aliases: string[],
         private readonly description: string,
         private readonly usage: string | null,
-        private readonly permission: string | undefined,
-        private readonly callback: Function
+        private readonly permission: string | undefined
     ){}
 
     public getName(): string{
@@ -29,9 +30,7 @@ export abstract class Command{
         return this.permission
     }
 
-    public run(): Function{
-        return this.callback
-    }
+    public async abstract run(client: Client, message: Message, args: string[]): Promise<boolean>
 }
 
 
