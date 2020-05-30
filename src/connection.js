@@ -18,7 +18,7 @@ const typeDefs = importSchema('src/graphql/schema.graphql');
 const Raffle = require('./models/Raffle')
 
 // PubSub
-const PubSub = require('./utils/pubsub')
+const pubsub = require('./utils/pubsub')
 
 module.exports = async () => {
     const app = express();
@@ -28,7 +28,7 @@ module.exports = async () => {
         typeDefs,
         context: ({ req }) => ({
             Raffle,
-            PubSub
+            pubsub
         }),
         introspection: true,
         playground: true
@@ -74,5 +74,5 @@ module.exports = async () => {
     });
 
     // start raffle handler & check
-    (new RaffleHandler(Raffle, PubSub)).startJobSchedule()
+    (new RaffleHandler(Raffle, pubsub)).startJobSchedule()
 };

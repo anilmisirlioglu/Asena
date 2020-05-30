@@ -97,7 +97,7 @@ new CommandHandler(client);
 
 client.on('ready', async() => {
     await client.user.setStatus('online');
-    await client.user.setActivity(`${Constants.CONFETTI_REACTION_EMOJI} Çekiliş | !ahelp`, {
+    await client.user.setActivity(`${Constants.CONFETTI_REACTION_EMOJI} Çekiliş | ${process.env.PREFIX}help`, {
         type: 'PLAYING'
     });
 

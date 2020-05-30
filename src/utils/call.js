@@ -7,7 +7,7 @@ const resolvers = require('./../graphql/resolvers');
 const Raffle = require('./../models/Raffle')
 
 // PubSub
-const PubSub = require('./pubsub')
+const pubsub = require('./PubSub')
 
 let schema;
 module.exports = async({ source, variableValues }) => {
@@ -26,7 +26,7 @@ module.exports = async({ source, variableValues }) => {
         schema,
         contextValue: {
             Raffle,
-            PubSub
+            pubsub
         }
     });
 }
