@@ -6,9 +6,11 @@ const { Client, Collection, MessageEmbed } = require('discord.js')
 const { config } = require('dotenv')
 const fs = require('fs')
 
-const client = new Client()
-
 const { Constants } = require('Constants')
+const { WebSocketConnector } = require('./network/WebSocketConnector')
+
+const webSocketConnector = new WebSocketConnector().getClient()
+const client = new Client()
 
 client.commands = new Collection()
 client.aliases = new Collection()
