@@ -4,9 +4,10 @@ import {
     GuildChannel,
     Snowflake
 } from 'discord.js'
-import { Helper } from './Helper';
+import { Helper, SuperClient } from './Helper'
 
-export class ChannelHelper<G extends Client> extends Helper<G>{
+
+export class ChannelHelper<G extends SuperClient> extends Helper<G>{
 
     public fetchChannel<T extends Snowflake>(guildId: T, channelId: T): GuildChannel | undefined{
         const guild: Guild = this.getClient().guilds.cache.get(guildId)

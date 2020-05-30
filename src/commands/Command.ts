@@ -1,4 +1,5 @@
-import { Client, Message } from 'discord.js'
+import { Client, Message, PermissionString } from 'discord.js'
+import { SuperClient } from '../helpers/Helper';
 
 export abstract class Command{
 
@@ -7,7 +8,7 @@ export abstract class Command{
         private readonly aliases: string[],
         private readonly description: string,
         private readonly usage: string | null,
-        private readonly permission: string | undefined
+        private readonly permission: PermissionString
     ){}
 
     public getName(): string{
@@ -30,7 +31,7 @@ export abstract class Command{
         return this.permission
     }
 
-    public async abstract run(client: Client, message: Message, args: string[]): Promise<boolean>
+    public async abstract run(client: SuperClient, message: Message, args: string[]): Promise<boolean>
 }
 
 

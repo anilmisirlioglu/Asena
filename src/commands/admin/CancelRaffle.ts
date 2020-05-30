@@ -1,10 +1,11 @@
-import { Client, Message, MessageEmbed } from 'discord.js'
+import { Message, MessageEmbed } from 'discord.js'
 
 import { Command } from '../Command'
 import { Constants } from '../../Constants'
 import call from '../../utils/call'
+import { SuperClient } from '../../helpers/Helper';
 
-class CancelRaffle extends Command{
+export class CancelRaffle extends Command{
 
     constructor(){
         super(
@@ -16,7 +17,7 @@ class CancelRaffle extends Command{
         );
     }
 
-    async run(client: Client, message: Message, args: string[]): Promise<boolean>{
+    async run(client: SuperClient, message: Message, args: string[]): Promise<boolean>{
         const message_id = args[0];
 
         if(!message_id || typeof message_id !== 'string') return false;

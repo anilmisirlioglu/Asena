@@ -1,11 +1,12 @@
-import { Client, Message, MessageEmbed } from 'discord.js'
+import { Message, MessageEmbed } from 'discord.js'
 
 import { Command } from '../Command'
 import { Constants } from '../../Constants'
 import { DateTimeHelper } from '../../helpers/DateTimeHelper'
 import call from '../../utils/call'
+import { SuperClient } from '../../helpers/Helper';
 
-class CreateRaffle extends Command{
+export class CreateRaffle extends Command{
 
     constructor(){
         super(
@@ -17,14 +18,14 @@ class CreateRaffle extends Command{
         );
     }
 
-    async run(client: Client, message: Message, args: string[]): Promise<boolean>{
+    async run(client: SuperClient, message: Message, args: string[]): Promise<boolean>{
         const numbersOfWinner: number = Number(args[0])
         const time: number = Number(args[1])
         const timeType: string = args[2] as string
         const prize: string[] = args.slice(3, args.length)
 
         if(isNaN(numbersOfWinner) || isNaN(time) || Constants.ALLOWED_TIME_TYPES.indexOf(timeType) === -1 || prize.length === 0){
-            return false;
+            return Promise.resolve(false);
         }
 
         if(numbersOfWinner > Constants.MAX_WINNER || numbersOfWinner === 0){
@@ -35,7 +36,7 @@ class CreateRaffle extends Command{
 
             await message.channel.send({ embed })
 
-            return true;
+            return Promise.resolve(true)
         }
 
         const stringToPrize: string = prize.join(' ')
@@ -47,7 +48,7 @@ class CreateRaffle extends Command{
 
             await message.channel.send({ embed })
 
-            return true;
+            return Promise.resolve(true)
         }
 
         let toSecond: number = 0;
@@ -79,7 +80,7 @@ class CreateRaffle extends Command{
 
             await message.channel.send({ embed })
 
-            return true;
+            return Promise.resolve(true)
         }
 
         const CREATE_RAFFLE = `
@@ -129,7 +130,7 @@ class CreateRaffle extends Command{
 
             await message.channel.send({ embed })
 
-            return true;
+            return Promise.resolve(true)
         }
 
         const $secondsToTime = DateTimeHelper.secondsToTime(toSecond)
@@ -210,7 +211,7 @@ class CreateRaffle extends Command{
             timeout: 0
         })
 
-        return true
+        return Promise.resolve(true)
     }
 
 }

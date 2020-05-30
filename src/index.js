@@ -1,7 +1,4 @@
-import {RaffleHandler} from "./handlers/RaffleHandler";
-import {RaffleHelper} from "./helpers/RaffleHelper";
-
-require('./connections')()
+require('./connection')()
 
 const call = require('./utils/call')
 
@@ -9,7 +6,7 @@ const { Client, Collection, MessageEmbed } = require('discord.js')
 const { config } = require('dotenv')
 const fs = require('fs')
 
-const { Constants } = require('Constants')
+const { Constants } = require('./Constants')
 
 const { Command } = require('./commands/Command')
 
@@ -20,6 +17,7 @@ const { WebSocketConnector } = require('./network/WebSocketConnector')
 
 const { MessageHelper } = require('./helpers/MessageHelper')
 const { ChannelHelper } = require('./helpers/ChannelHelper')
+const { RaffleHelper } = require('./helpers/RaffleHelper')
 
 const { CommandHandler } = require('./handlers/CommandHandler')
 
@@ -30,6 +28,7 @@ client.version = new Version(process.env.npm_package_version || '1.0.0', (proces
 client.logger = new Logger()
 client.commands = new Collection()
 client.aliases = new Collection()
+// noinspection JSCheckFunctionSignatures
 client.helpers = {
     message: new MessageHelper(client),
     channel: new ChannelHelper(client),
@@ -42,7 +41,8 @@ config({
     path: `${__dirname}/../.env`
 });
 
-new CommandHandler(client)
+// noinspection JSValidateTypes
+new CommandHandler(client);
 
 (() => {
     const ON_RAFFLE_FINISHED = `
@@ -93,15 +93,15 @@ new CommandHandler(client)
             }
         }
     })
-})
+})()
 
 client.on('ready', async() => {
     await client.user.setStatus('online');
-    await client.user.setActivity(`${Constants.CONFETTI_EMOJI} Çekiliş | !ahelp`, {
+    await client.user.setActivity(`${Constants.CONFETTI_REACTION_EMOJI} Çekiliş | !ahelp`, {
         type: 'PLAYING'
     });
 
-    client.logger.info(`Asena ${client.version.getFullVersion()} | Başlatılıyor...`)
+    client.logger.info(`Asena ${client.version.getFullVersion()} başlatılıyor...`)
     client.logger.info(`${client.user.username} aktif, toplam ${client.guilds.cache.size} sunucu ve ${client.users.cache.size} kullanıcıya hizmet veriliyor!`);
 });
 

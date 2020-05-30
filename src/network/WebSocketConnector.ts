@@ -7,7 +7,7 @@ export class WebSocketConnector{
 
     public constructor(){
         this.connection = new WebSocketLink({
-            uri: 'ws//localhost:4141/graphql',
+            uri: 'ws://localhost:4141/graphql',
             options: {
                 reconnect: true
             },

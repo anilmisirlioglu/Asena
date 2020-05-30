@@ -1,9 +1,10 @@
-import { Client, Message, MessageEmbed } from 'discord.js'
+import { Message, MessageEmbed } from 'discord.js'
 
 import { Command } from '../Command'
 import { Constants } from '../../Constants'
 import { DateTimeHelper } from '../../helpers/DateTimeHelper'
 import call from '../../utils/call'
+import { SuperClient } from '../../helpers/Helper';
 
 export class Raffles extends Command{
 
@@ -17,7 +18,7 @@ export class Raffles extends Command{
         );
     }
 
-    async run(client: Client, message: Message, args: string[]): Promise<boolean>{
+    async run(client: SuperClient, message: Message, args: string[]): Promise<boolean>{
         const CONTINUES_RAFFLES = `
             query($server_id: String!){
                 getContinuesRaffles(server_id: $server_id){

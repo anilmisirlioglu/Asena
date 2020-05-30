@@ -1,27 +1,29 @@
-import { Client } from 'discord.js';
+import { Client, GuildChannel, TextChannel } from 'discord.js';
 
 import { Constants } from '../Constants';
 import { ArrayRandom } from '../array/ArrayRandom';
-import { Helper } from "./Helper";
+import { Helper, SuperClient } from './Helper'
 
-export class RaffleHelper<C extends Client> extends Helper<C>{
+export class RaffleHelper<C extends SuperClient> extends Helper<C>{
 
     public async identifyWinners(raffle): Promise<string[]>{
         let winners = []
 
-        const channel = await this.getClient().helpers.channel.fetchChannel(raffle.server_id, raffle.channel_id)
-        const message = await channel.messages.fetch(raffle.message_id)
-        if(message){
-            const reaction = await message.reactions.cache.get(Constants.CONFETTI_REACTION_EMOJI)
-            const [_, users] = reaction.users.cache.partition(user => user.bot)
-            const userKeys = users.keyArray().filter(user_id => user_id !== raffle.constituent_id)
+        const channel: GuildChannel | undefined = await this.getClient().helpers.channel.fetchChannel(raffle.server_id, raffle.channel_id)
+        if(channel && channel instanceof TextChannel){
+            const message = await channel.messages.fetch(raffle.message_id)
+            if(message){
+                const reaction = await message.reactions.cache.get(Constants.CONFETTI_REACTION_EMOJI)
+                const [_, users] = reaction.users.cache.partition(user => user.bot)
+                const userKeys = users.keyArray().filter(user_id => user_id !== raffle.constituent_id)
 
-            if(userKeys.length > raffle.numbersOfWinner){
-                const arrayRandom = new ArrayRandom(userKeys)
-                arrayRandom.shuffle()
-                winners.push(...arrayRandom.random(raffle.numbersOfWinner))
-            }else{
-                winners.push(...userKeys)
+                if(userKeys.length > raffle.numbersOfWinner){
+                    const arrayRandom = new ArrayRandom(userKeys)
+                    arrayRandom.shuffle()
+                    winners.push(...arrayRandom.random(raffle.numbersOfWinner))
+                }else{
+                    winners.push(...userKeys)
+                }
             }
         }
 

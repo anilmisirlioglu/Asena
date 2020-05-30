@@ -64,7 +64,6 @@ module.exports = async () => {
     });
 
     const httpServer = http.createServer(app);
-    //server.installSubscriptionHandlers(httpServer);
 
     const PORT = parseInt(process.env.PORT, 10) || 4141;
     server.installSubscriptionHandlers(httpServer)
