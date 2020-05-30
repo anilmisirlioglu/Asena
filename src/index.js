@@ -8,13 +8,17 @@ const fs = require('fs')
 
 const { Constants } = require('Constants')
 const { Command } = require('./commands/Command')
+const { Version } = require('./utils/Version')
+const { Logger } = require('./utils/Logger')
 const { WebSocketConnector } = require('./network/WebSocketConnector')
-const { MessageHelper } = require('./helpers/MessageHelper');
-const { ChannelHelper } = require('./helpers/ChannelHelper');
+const { MessageHelper } = require('./helpers/MessageHelper')
+const { ChannelHelper } = require('./helpers/ChannelHelper')
 
 const webSocketConnector = new WebSocketConnector().getClient()
 const client = new Client()
 
+client.version = new Version(process.env.npm_package_version || '1.0.0', (process.argv[2] || null) === 'dev');
+client.logger = new Logger();
 client.commands = new Collection()
 client.aliases = new Collection()
 client.helpers = {
@@ -22,7 +26,7 @@ client.helpers = {
     channel: new ChannelHelper(client)
 }
 
-client.categories = fs.readdirSync(`${__dirname}/commands/`);
+client.categories = fs.readdirSync(`${__dirname}/commands/`)
 
 config({
     path: `${__dirname}/../.env`
