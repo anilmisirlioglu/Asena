@@ -33,3 +33,6 @@ client.on('ready', async() => {
 
     client.logger.info(`${client.user.username} aktif, toplam ${client.guilds.cache.size} sunucu ve ${client.users.cache.size} kullanıcıya hizmet veriliyor!`);
 });
+
+
+client.login(process.env.TOKEN || null).then();

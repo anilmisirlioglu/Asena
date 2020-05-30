@@ -4,6 +4,10 @@ const { importSchema } = require('graphql-import');
 const resolvers = require('./../graphql/resolvers');
 
 // Context
+const Raffle = require('./../models/Raffle')
+
+// PubSub
+const PubSub = require('./pubsub')
 
 let schema;
 module.exports = async({ source, variableValues }) => {
@@ -21,6 +25,8 @@ module.exports = async({ source, variableValues }) => {
         variableValues,
         schema,
         contextValue: {
+            Raffle,
+            PubSub
         }
     });
 }

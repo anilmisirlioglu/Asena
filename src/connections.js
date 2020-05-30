@@ -13,6 +13,10 @@ const resolvers = require('./graphql/resolvers/index');
 const typeDefs = importSchema('src/graphql/schema.graphql');
 
 // Models
+const Raffle = require('./models/Raffle')
+
+// PubSub
+const PubSub = require('./utils/pubsub')
 
 module.exports = async () => {
     const app = express();
@@ -21,6 +25,8 @@ module.exports = async () => {
         resolvers,
         typeDefs,
         context: ({ req }) => ({
+            Raffle,
+            PubSub
         }),
         introspection: true,
         playground: true
