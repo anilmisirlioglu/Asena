@@ -24,8 +24,10 @@ export class RaffleHandler{
             const finishAt = new Date(raffle.finishAt)
             const remaining = +finishAt - Date.now()
             if(remaining <= 60 * 1000){
+                await raffle.updateOne({ status: 'ALMOST_DONE' })
                 this.setRaffleInterval(remaining, raffle)
             }else if(Date.now() >= +finishAt){
+                await raffle.updateOne({ status: 'ALMOST_DONE' })
                 this.setRaffleInterval(1000, raffle)
             }
         }

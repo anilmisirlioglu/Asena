@@ -32,6 +32,7 @@ type Query{
 
 enum RaffleStatus{
     CONTINUES
+    ALMOST_DONE
     FINISHED
     CANCELED
 }
