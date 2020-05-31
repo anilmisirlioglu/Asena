@@ -130,9 +130,9 @@ client.on('message', async message => {
             command.run(client, message, args).then(result => {
                 if(!result){
                     const embed = new MessageEmbed()
-                        .setAuthor('Asena | Çekiliş')
+                        .setAuthor(client.user.username, client.user.avatarURL())
                         .setDescription(`Kullanımı: **${prefix}${command.name} ${command.usage}**`)
-                        .setColor('RANDOM');
+                        .setColor('GOLD');
 
                     message.channel.send({ embed });
                 }
