@@ -11,7 +11,7 @@ export class Raffles extends Command{
     public constructor(){
         super(
             'raffles',
-            ['çekilişler', 'aktifçekilişler', 'cekilisler', 'activeraffles'],
+            ['çekilişler', 'aktifçekilişler', 'cekilisler', 'activeraffles', 'list'],
             'Sunucudaki aktif  çekilişleri listeler',
             null,
             undefined

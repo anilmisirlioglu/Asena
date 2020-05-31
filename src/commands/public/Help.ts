@@ -22,7 +22,7 @@ export class Help extends Command{
                 return command.permission === 'ADMINISTRATOR' ? (
                     message.member.hasPermission('ADMINISTRATOR') ? `\`${command.name}\`` : null
                 ) : `\`${command.name}\``;
-            });
+            }).join(', ');
 
             const embed = new MessageEmbed()
                 .setAuthor('📍 Komut Yardımı', message.author.displayAvatarURL() || message.author.defaultAvatarURL)
