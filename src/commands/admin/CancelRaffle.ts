@@ -10,8 +10,8 @@ export class CancelRaffle extends Command{
 
     constructor(){
         super(
-            'cancelraffle',
-            ['çekilişiptalet', 'çekilişiiptalet', 'cekilisiptal', 'çekilişiptal'],
+            'cancel',
+            ['çekilişiptalet', 'çekilişiiptalet', 'cekilisiptal', 'çekilişiptal', 'cancelraffle'],
             'Var olan bir çekilişi bitirir.',
             '[çekiliş mesaj id]',
             'ADMINISTRATOR'

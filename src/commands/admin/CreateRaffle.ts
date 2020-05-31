@@ -10,8 +10,8 @@ export class CreateRaffle extends Command{
 
     constructor(){
         super(
-            'createraffle',
-            ['çekilişoluştur', 'çekilişbaşlat', 'cekilisbaslat'],
+            'create',
+            ['çekilişoluştur', 'çekilişbaşlat', 'cekilisbaslat', 'createraffle'],
             'Çekiliş oluşturur.',
             '[kazanan sayısı<1 | 20>] [süre] [süre tipi<m(dakika) | h(saat) | d(gün)>] [ödül]',
             'ADMINISTRATOR'

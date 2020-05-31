@@ -5,6 +5,7 @@ import { Command } from '../commands/Command'
 import { CancelRaffle } from '../commands/admin/CancelRaffle';
 import { CreateRaffle } from '../commands/admin/CreateRaffle';
 import { ReRollRaffle } from '../commands/admin/ReRollRaffle';
+import { EndRaffle } from '../commands/admin/EndRaffle';
 import { Raffles } from '../commands/public/Raffles';
 import { Help } from '../commands/public/Help';
 
@@ -15,6 +16,7 @@ export class CommandHandler{
         new CancelRaffle(),
         new CreateRaffle(),
         new ReRollRaffle(),
+        new EndRaffle(),
         new Raffles(),
         new Help()
     ]

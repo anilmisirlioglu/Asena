@@ -21,6 +21,7 @@ type Mutation{
     createRaffle(data: CreateRaffleInput!): CreateRaffleMutatitonReturnType!
     deleteRaffle(data: DeleteRaffleInput!): RaffleMutationReturnType!
     cancelRaffle(data: CancelRaffleInput!): CancelRaffleMutationReturnType!
+    finishEarlyRaffle(data: FinishEarlyRaffleInput): FinishEarylyMutationReturnType!
     setRaffleMessageID(data: SetRaffleMessageIDInput!): RaffleMutationReturnType!
 }
 
@@ -61,6 +62,10 @@ input CancelRaffleInput{
     message_id: String!
 }
 
+input FinishEarlyRaffleInput{
+    message_id: String!
+}
+
 type CreateRaffleMutatitonReturnType implements MutationReturnType{
     raffle: Raffle
     errorCode: Int!
@@ -71,6 +76,11 @@ type RaffleMutationReturnType implements MutationReturnType{
 }
 
 type CancelRaffleMutationReturnType implements MutationReturnType{
+    raffle: Raffle
+    errorCode: Int!
+}
+
+type FinishEarylyMutationReturnType implements MutationReturnType{
     raffle: Raffle
     errorCode: Int!
 }

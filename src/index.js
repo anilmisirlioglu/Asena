@@ -74,7 +74,7 @@ new CommandHandler(client);
                     const winners = await client.helpers.raffle.identifyWinners(raffle)
                     const _message = client.helpers.raffle.getMessageURL(raffle)
                     if(winners.length === 0){
-                        await channel.send(`Yeterli katılım olmadığından dolayı kazanan olmadı.\n**Çekiliş:** ${_message}`)
+                        await channel.send(`Yeterli katılım olmadığından dolayı çekilişin kazananı olmadı.\n**Çekiliş:** ${_message}`)
                     }else{
                         const winnersOfMentions = winners.map(winner => `<@${winner}>`)
                         const embed = new MessageEmbed()

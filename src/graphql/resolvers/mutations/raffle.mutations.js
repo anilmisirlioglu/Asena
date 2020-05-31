@@ -1,4 +1,5 @@
-const { ErrorCodes } = require('./../../../utils/ErrorCodes');
+const { ErrorCodes } = require('./../../../utils/ErrorCodes')
+const { Constants } = require('./../../../Constants')
 
 module.exports = {
     createRaffle: async(
@@ -70,6 +71,35 @@ module.exports = {
 
         await raffle.updateOne({
             status: 'CANCELED'
+        })
+
+        return {
+            raffle,
+            errorCode: ErrorCodes.SUCCESS
+        }
+    },
+    finishEarlyRaffle: async(parent, { data: { message_id } }, { Raffle, pubsub }) => {
+        const raffle = await Raffle.findOne({
+            message_id
+        })
+
+        if(!raffle){
+            return {
+                raffle: null,
+                errorCode: ErrorCodes.NOT_FOUND
+            }
+        }
+
+        if(raffle.status !== 'CONTINUES'){
+            return {
+                raffle: null,
+                errorCode: ErrorCodes.RAFFLE_FINISHED_ERROR
+            }
+        }
+
+        await raffle.updateOne({ status: 'FINISHED' })
+        await pubsub.publish(Constants.SUBSCRIPTIONS.ON_RAFFLE_FINISHED, {
+            onRaffleFinished: raffle
         })
 
         return {

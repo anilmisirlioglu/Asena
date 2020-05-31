@@ -25,8 +25,7 @@ export class MessageHelper<C extends SuperClient> extends Helper<C>{
 
     public getErrorEmbed(error: string): MessageEmbed{
         return new MessageEmbed()
-            .setAuthor(this.getClient().user.username)
-            .setThumbnail(this.getClient().user.avatarURL())
+            .setAuthor(this.getClient().user.username, this.getClient().user.avatarURL())
             .setDescription(error)
             .setColor('RED')
     }

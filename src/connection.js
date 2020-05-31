@@ -18,7 +18,7 @@ const typeDefs = importSchema('src/graphql/schema.graphql');
 const Raffle = require('./models/Raffle')
 
 // PubSub
-const pubsub = require('./utils/pubsub')
+const pubsub = require('./utils/PubSub')
 
 module.exports = async () => {
     const app = express();

@@ -1,7 +1,7 @@
 import { GuildChannel, MessageReaction, TextChannel } from 'discord.js';
 
-import { Constants } from '../Constants';
-import { ArrayRandom } from '../array/ArrayRandom';
+import { Constants } from '../Constants'
+import { ArrayRandom } from '../array/ArrayRandom'
 import { Helper, SuperClient } from './Helper'
 
 export class RaffleHelper<C extends SuperClient> extends Helper<C>{
