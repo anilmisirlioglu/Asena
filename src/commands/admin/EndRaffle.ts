@@ -68,6 +68,9 @@ export class EndRaffle extends Command{
         }
 
         await message.channel.send(`**${finishEarlyRaffle.raffle.prize}** çekilişi erken bitirildi. Sonuçlar <#${finishEarlyRaffle.raffle.channel_id}> kanalına gönderildi.`)
+        await message.delete({
+            timeout: 100
+        })
 
         return true
     }

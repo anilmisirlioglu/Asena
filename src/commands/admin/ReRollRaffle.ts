@@ -78,6 +78,10 @@ export class ReRollRaffle extends Command{
             await message.channel.send(`${Constants.CONFETTI_EMOJI} Tebrikler ${winners.map(winner => `<@${winner}>`).join(', ')}! **${raffle.prize}** kazandınız (Kazananlar tekrar çekildi)\n**Çekiliş:** ${_message}`)
         }
 
+        await message.delete({
+            timeout: 100
+        })
+
         return true
     }
 

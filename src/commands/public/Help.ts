@@ -54,15 +54,13 @@ export class Help extends Command{
                     .addField('Kullanımı: ', `${process.env.PREFIX}${searchCommand.getName()} ${searchCommand.getUsage() === null ? '' : searchCommand.getUsage()}`)
                     .setColor('GREEN');
 
-                await message.channel.send({embed});
+                await message.channel.send({ embed });
 
                 return true;
             }else{
-                const embed = new MessageEmbed()
-                    .addField('Hata', `**${command}** adında komut bulunamadı.`)
-                    .setColor('RED');
-
-                await message.channel.send({embed});
+                await message.channel.send({
+                    embed: client.helpers.message.getErrorEmbed(`**${command}** adında komut bulunamadı.`)
+                });
 
                 return true;
             }

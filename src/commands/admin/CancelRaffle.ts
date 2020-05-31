@@ -49,23 +49,17 @@ export class CancelRaffle extends Command{
 
         const cancelRaffle = result.data.cancelRaffle;
         if(cancelRaffle.errorCode === ErrorCodes.NOT_FOUND){
-            const embed = new MessageEmbed()
-                .setColor('RED')
-                .setAuthor(client.user.username)
-                .setDescription('Çekiliş bulunamadı.')
-
-            await message.channel.send({ embed })
+            await message.channel.send({
+                embed: client.helpers.message.getErrorEmbed('Çekiliş bulunamadı.')
+            })
 
             return true
         }
 
         if(cancelRaffle.errorCode === ErrorCodes.RAFFLE_FINISHED_ERROR){
-            const embed = new MessageEmbed()
-                .setColor('RED')
-                .setAuthor(client.user.username)
-                .setDescription('Bu çekiliş devam eden bir çekiliş değil. Bu komut sadece devam eden çekilişlerde kullanılabilir.')
-
-            await message.channel.send({ embed })
+            await message.channel.send({
+                embed: client.helpers.message.getErrorEmbed('Bu çekiliş devam eden bir çekiliş değil. Bu komut sadece devam eden çekilişlerde kullanılabilir.')
+            })
 
             return true
         }

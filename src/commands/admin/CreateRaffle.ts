@@ -29,24 +29,18 @@ export class CreateRaffle extends Command{
         }
 
         if(numbersOfWinner > Constants.MAX_WINNER || numbersOfWinner === 0){
-            const embed = new MessageEmbed()
-                .setColor('RED')
-                .setAuthor(client.user.username)
-                .setDescription('Çekilişi kazanan üye sayısı maksimum 25, minimum 1 kişi olabilir.')
-
-            await message.channel.send({ embed })
+            await message.channel.send({
+                embed: client.helpers.message.getErrorEmbed('Çekilişi kazanan üye sayısı maksimum 25, minimum 1 kişi olabilir.')
+            })
 
             return Promise.resolve(true)
         }
 
         const stringToPrize: string = prize.join(' ')
         if(stringToPrize.length > 255){
-            const embed = new MessageEmbed()
-                .setColor('RED')
-                .setAuthor(client.user.username)
-                .setDescription('Çekiliş başlığı maksimum 255 karakter uzunluğunda olmalıdır.')
-
-            await message.channel.send({ embed })
+            await message.channel.send({
+                embed: client.helpers.message.getErrorEmbed('Çekiliş başlığı maksimum 255 karakter uzunluğunda olmalıdır.')
+            })
 
             return Promise.resolve(true)
         }
@@ -73,12 +67,9 @@ export class CreateRaffle extends Command{
         }
 
         if(toSecond < Constants.MIN_TIME || toSecond > Constants.MAX_TIME){
-            const embed = new MessageEmbed()
-                .setColor('RED')
-                .setAuthor(client.user.username)
-                .setDescription('Çekiliş süresi en az 1 dakika, en fazla 60 gün olabilir.')
-
-            await message.channel.send({ embed })
+            await message.channel.send({
+                embed: client.helpers.message.getErrorEmbed('Çekiliş süresi en az 1 dakika, en fazla 60 gün olabilir.')
+            })
 
             return Promise.resolve(true)
         }
@@ -123,12 +114,9 @@ export class CreateRaffle extends Command{
 
         const createRaffle = result.data.createRaffle;
         if(createRaffle.errorCode === 0x225){
-            const embed = new MessageEmbed()
-                .setColor('RED')
-                .setAuthor(client.user.username)
-                .setDescription('Maksimum çekiliş oluşturma sınırına ulaşmışsınız. (Max: 5)')
-
-            await message.channel.send({ embed })
+            await message.channel.send({
+                embed: client.helpers.message.getErrorEmbed('Maksimum çekiliş oluşturma sınırına ulaşmışsınız. (Max: 5)')
+            })
 
             return Promise.resolve(true)
         }
