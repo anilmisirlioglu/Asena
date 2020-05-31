@@ -75,7 +75,7 @@ export class ReRollRaffle extends Command{
         if(winners.length === 0){
             await message.channel.send(`Yeterli katılım olmadığından dolayı çekiliş tekrar çekilemedi.\n**Çekiliş:** ${_message}`)
         }else{
-            await message.channel.send(`${Constants.CONFETTI_EMOJI} Kazananlar tekrar çekildi.\n${Constants.CONFETTI_EMOJI} Tebrikler ${winners.map(winner => `<@${winner}>`).join(', ')}! **${raffle.prize}** kazandınız\n**Çekiliş:** ${_message}`)
+            await message.channel.send(`${Constants.CONFETTI_EMOJI} Tebrikler ${winners.map(winner => `<@${winner}>`).join(', ')}! **${raffle.prize}** kazandınız (Kazananlar tekrar çekildi)\n**Çekiliş:** ${_message}`)
         }
 
         return true

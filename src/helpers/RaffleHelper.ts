@@ -1,4 +1,4 @@
-import { Client, GuildChannel, TextChannel } from 'discord.js';
+import { GuildChannel, MessageReaction, TextChannel } from 'discord.js';
 
 import { Constants } from '../Constants';
 import { ArrayRandom } from '../array/ArrayRandom';
@@ -13,8 +13,8 @@ export class RaffleHelper<C extends SuperClient> extends Helper<C>{
         if(channel && channel instanceof TextChannel){
             const message = await channel.messages.fetch(raffle.message_id)
             if(message){
-                const reaction = await message.reactions.cache.get(Constants.CONFETTI_REACTION_EMOJI)
-                const [_, users] = reaction.users.cache.partition(user => user.bot)
+                const reaction: MessageReaction | undefined = await message.reactions.cache.get(Constants.CONFETTI_REACTION_EMOJI)
+                const [_, users] = (await reaction.users.fetch()).partition(user => user.bot)
                 const userKeys = users.keyArray().filter(user_id => user_id !== raffle.constituent_id)
 
                 if(userKeys.length > raffle.numbersOfWinner){
