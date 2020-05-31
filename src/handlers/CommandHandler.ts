@@ -4,6 +4,7 @@ import { Command } from '../commands/Command'
 
 import { CancelRaffle } from '../commands/admin/CancelRaffle';
 import { CreateRaffle } from '../commands/admin/CreateRaffle';
+import { ReRollRaffle } from '../commands/admin/ReRollRaffle';
 import { Raffles } from '../commands/public/Raffles';
 import { Help } from '../commands/public/Help';
 
@@ -13,6 +14,7 @@ export class CommandHandler{
     private static readonly COMMANDS: Command[] = [
         new CancelRaffle(),
         new CreateRaffle(),
+        new ReRollRaffle(),
         new Raffles(),
         new Help()
     ]

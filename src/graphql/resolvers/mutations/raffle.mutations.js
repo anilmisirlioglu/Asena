@@ -61,10 +61,10 @@ module.exports = {
             }
         }
 
-        if(raffle.status === 'CANCELED'){
+        if(raffle.status !== 'CONTINUES'){
             return {
                 raffle: null,
-                errorCode: ErrorCodes.NOT_FOUND
+                errorCode: ErrorCodes.RAFFLE_FINISHED_ERROR
             }
         }
 

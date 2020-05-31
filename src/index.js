@@ -87,7 +87,7 @@ new CommandHandler(client);
                             .setColor('#36393F')
 
                         await channel.send(`Tebrikler ${winnersOfMentions.join(', ')}! **${raffle.prize}** kazandınız\n**Çekiliş:** ${_message}`)
-                        await channel.send('<:confetti:713087026051940512> **ÇEKİLİŞ BİTTİ** <:confetti:713087026051940512>', { embed })
+                        await channel.send(`${Constants.CONFETTI_EMOJI} **ÇEKİLİŞ BİTTİ** ${Constants.CONFETTI_EMOJI}`, { embed })
                     }
                 }
             }
@@ -97,7 +97,7 @@ new CommandHandler(client);
 
 client.on('ready', async() => {
     await client.user.setStatus('online');
-    await client.user.setActivity(`${Constants.CONFETTI_REACTION_EMOJI} Çekiliş | ${process.env.PREFIX}help`, {
+    await client.user.setActivity(`${Constants.CONFETTI_REACTION_EMOJI} ${client.guilds.cache.size} Sunucu | ${process.env.PREFIX}help`, {
         type: 'PLAYING'
     });
 

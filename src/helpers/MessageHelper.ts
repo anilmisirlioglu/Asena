@@ -3,6 +3,7 @@ import {
     Guild,
     GuildChannel,
     Message,
+    MessageEmbed,
     Snowflake,
     TextChannel
 } from 'discord.js'
@@ -20,6 +21,14 @@ export class MessageHelper<C extends SuperClient> extends Helper<C>{
         }
 
         return undefined
+    }
+
+    public getErrorEmbed(error: string): MessageEmbed{
+        return new MessageEmbed()
+            .setAuthor(this.getClient().user.username)
+            .setThumbnail(this.getClient().user.avatarURL())
+            .setDescription(error)
+            .setColor('RED')
     }
 
 }

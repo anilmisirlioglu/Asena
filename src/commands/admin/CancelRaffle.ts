@@ -4,6 +4,7 @@ import { Command } from '../Command'
 import { Constants } from '../../Constants'
 import call from '../../utils/call'
 import { SuperClient } from '../../helpers/Helper';
+import { ErrorCodes } from '../../utils/ErrorCodes';
 
 export class CancelRaffle extends Command{
 
@@ -44,18 +45,29 @@ export class CancelRaffle extends Command{
             variableValues: {
                 message_id: message_id
             }
-        });
+        })
 
         const cancelRaffle = result.data.cancelRaffle;
-        if(cancelRaffle.errorCode === 404){
+        if(cancelRaffle.errorCode === ErrorCodes.NOT_FOUND){
             const embed = new MessageEmbed()
                 .setColor('RED')
-                .setAuthor('Asena | Çekiliş')
+                .setAuthor(client.user.username)
                 .setDescription('Çekiliş bulunamadı.')
 
             await message.channel.send({ embed })
 
-            return true;
+            return true
+        }
+
+        if(cancelRaffle.errorCode === ErrorCodes.RAFFLE_FINISHED_ERROR){
+            const embed = new MessageEmbed()
+                .setColor('RED')
+                .setAuthor(client.user.username)
+                .setDescription('Bu çekiliş devam eden bir çekiliş değil. Bu komut sadece devam eden çekilişlerde kullanılabilir.')
+
+            await message.channel.send({ embed })
+
+            return true
         }
 
         const raffle = cancelRaffle.raffle

@@ -4,5 +4,8 @@ module.exports = {
             server_id,
             status: 'CONTINUES'
         })
+    },
+    searchRaffle: async(parent, { message_id }, { Raffle }) => {
+        return Raffle.findOne({message_id});
     }
 }

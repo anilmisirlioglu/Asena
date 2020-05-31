@@ -26,6 +26,7 @@ type Mutation{
 
 type Query{
     getContinuesRaffles(server_id: String!): [Raffle!]!
+    searchRaffle(message_id: String!): Raffle
 }
 
 enum RaffleStatus{
