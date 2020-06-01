@@ -146,7 +146,7 @@ export class CreateRaffle extends Command{
             .setFooter(`${numbersOfWinner} Kazanan | Bitiş`)
             .setTimestamp(new Date(finishAt))
 
-        message.channel.send('<:confetti:713087026051940512> **ÇEKİLİŞ BAŞLADI** <:confetti:713087026051940512>', {
+        message.channel.send(`${Constants.CONFETTI_EMOJI} **ÇEKİLİŞ BAŞLADI** ${Constants.CONFETTI_EMOJI}`, {
             embed: embedOfRaffle
         }).then(async $message => {
             if($message){

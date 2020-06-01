@@ -98,7 +98,7 @@ new GuildHandler(client);
 
 client.on('ready', async() => {
     await client.user.setStatus('online');
-    await client.user.setActivity(`${Constants.CONFETTI_REACTION_EMOJI} ${client.guilds.cache.size} Sunucu | ${process.env.PREFIX}help\n${Constants.CONFETTI_REACTION_EMOJI} https://asena.xyz`, {
+    await client.user.setActivity(`${Constants.CONFETTI_REACTION_EMOJI} ${client.guilds.cache.size} Sunucu | ${process.env.PREFIX}help\nhttps://asena.xyz`, {
         type: 'PLAYING'
     });
 

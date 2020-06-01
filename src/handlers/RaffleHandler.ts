@@ -17,7 +17,12 @@ export class RaffleHandler{
 
     private async checkRaffles(){
         const cursor = await this.Raffle
-            .find({ status: 'CONTINUES' })
+            .find({
+                $or: [
+                    { status: 'CONTINUES' },
+                    { status: 'ALMOST_DONE' }
+                ]
+            })
             .cursor()
 
         for(let raffle = await cursor.next(); raffle !== null; raffle = await cursor.next()){
@@ -25,7 +30,7 @@ export class RaffleHandler{
             const remaining = +finishAt - Date.now()
             if(remaining <= 60 * 1000){
                 await raffle.updateOne({ status: 'ALMOST_DONE' })
-                this.setRaffleInterval(remaining, raffle)
+                this.setRaffleInterval(remaining - 2000, raffle)
             }else if(Date.now() >= +finishAt){
                 await raffle.updateOne({ status: 'ALMOST_DONE' })
                 this.setRaffleInterval(1000, raffle)

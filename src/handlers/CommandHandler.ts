@@ -8,6 +8,7 @@ import { ReRollRaffle } from '../commands/admin/ReRollRaffle';
 import { EndRaffle } from '../commands/admin/EndRaffle';
 import { Raffles } from '../commands/public/Raffles';
 import { Help } from '../commands/public/Help';
+import { Vote } from '../commands/admin/Vote';
 
 export class CommandHandler{
 
@@ -18,6 +19,7 @@ export class CommandHandler{
         new ReRollRaffle(),
         new EndRaffle(),
         new Raffles(),
+        new Vote(),
         new Help()
     ]
 
