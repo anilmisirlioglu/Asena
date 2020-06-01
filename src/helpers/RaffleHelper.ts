@@ -1,4 +1,4 @@
-import { Channel, GuildChannel, Message, MessageEmbed, MessageReaction, TextChannel } from 'discord.js'
+import { GuildChannel, Message, MessageEmbed, MessageReaction, TextChannel } from 'discord.js'
 
 import { Constants } from '../Constants'
 import { ArrayRandom } from '../array/ArrayRandom'
@@ -45,27 +45,10 @@ export class RaffleHelper<C extends SuperClient> extends Helper<C>{
         finishAt: number,
         raffleId: string
     ){
-        const $secondsToTime = DateTimeHelper.secondsToTime(toSecond)
-        const timeString: string = (() => {
-            let arr = [];
-            if($secondsToTime.d !== 0){
-                arr.push(`${$secondsToTime.d} gün`)
-            }
-
-            if($secondsToTime.h !== 0){
-                arr.push(`${$secondsToTime.h} saat`)
-            }
-
-            if($secondsToTime.m !== 0){
-                arr.push(`${$secondsToTime.m} dakika`)
-            }
-
-            return arr.join(', ')
-        })()
-
+        const secondsToTime = DateTimeHelper.secondsToTime(toSecond)
         const embedOfRaffle = new MessageEmbed()
             .setAuthor(stringToPrize)
-            .setDescription(`Çekilişe katılmak için ${Constants.CONFETTI_REACTION_EMOJI} emojisine tıklayın!\nSüre: **${timeString}**\nOluşturan: <@${message.author.id}>`)
+            .setDescription(`Çekilişe katılmak için ${Constants.CONFETTI_REACTION_EMOJI} emojisine tıklayın!\nSüre: **${secondsToTime.toString()}**\nOluşturan: <@${message.author.id}>`)
             .setColor('#bd087d')
             .setFooter(`${numbersOfWinner} Kazanan | Bitiş`)
             .setTimestamp(new Date(finishAt))

@@ -1,8 +1,9 @@
 declare interface SecondsToTime{
-    readonly d: number,
-    readonly h: number,
-    readonly m: number,
+    readonly d: number
+    readonly h: number
+    readonly m: number
     readonly s: number
+    toString(): string
 }
 
 export class DateTimeHelper{
@@ -38,7 +39,23 @@ export class DateTimeHelper{
             d: days,
             h: hours,
             m: minutes,
-            s: seconds
+            s: seconds,
+            toString(): string{
+                let arr = [];
+                if(days !== 0){
+                    arr.push(`${days} gün`)
+                }
+
+                if(hours !== 0){
+                    arr.push(`${hours} saat`)
+                }
+
+                if(minutes !== 0){
+                    arr.push(`${minutes} dakika`)
+                }
+
+                return arr.join(', ')
+            }
         }
     }
 

@@ -1,7 +1,7 @@
 import { Command } from '../Command'
 import { SuperClient } from '../../helpers/Helper'
 import { DateTimeHelper } from '../../helpers/DateTimeHelper'
-import { GuildChannel, Message, TextChannel } from 'discord.js'
+import { Message, TextChannel } from 'discord.js'
 import { Constants } from '../../Constants'
 import { InteractiveSetup, SetupPhase } from '../../utils/InteractiveSetup'
 import { ErrorCodes } from '../../utils/ErrorCodes'
@@ -169,24 +169,8 @@ export class SetupRaffle extends Command{
                                 }
                             }
 
-                            const $secondsToTime = DateTimeHelper.secondsToTime(toSecond)
-                            const timeString: string = (() => {
-                                let arr = [];
-                                if($secondsToTime.d !== 0){
-                                    arr.push(`${$secondsToTime.d} gün`)
-                                }
-
-                                if($secondsToTime.h !== 0){
-                                    arr.push(`${$secondsToTime.h} saat`)
-                                }
-
-                                if($secondsToTime.m !== 0){
-                                    arr.push(`${$secondsToTime.m} dakika`)
-                                }
-
-                                return arr.join(', ')
-                            })()
-                            message.channel.send(`${Constants.CONFETTI_REACTION_EMOJI} Tebrikler! Çekiliş süresi **${timeString}** olarak belirlendi.`)
+                            const secondsToTime = DateTimeHelper.secondsToTime(toSecond)
+                            message.channel.send(`${Constants.CONFETTI_REACTION_EMOJI} Tebrikler! Çekiliş süresi **${secondsToTime.toString()}** olarak belirlendi.`)
                             return {
                                 result: true,
                                 value: toSecond
