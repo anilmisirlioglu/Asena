@@ -28,7 +28,7 @@ export class GuildHandler{
 
     private setActivityUpdateInterval(){
         setInterval(async () => {
-            await this.client.user.setActivity(`${Constants.CONFETTI_REACTION_EMOJI} ${this.counter} Sunucu | ${process.env.PREFIX}help`, {
+            await this.client.user.setActivity(`${Constants.CONFETTI_REACTION_EMOJI} ${this.counter} Sunucu | ${process.env.PREFIX}help\nhttps://asena.xyz`, {
                 type: 'PLAYING'
             });
         }, GuildHandler.UPDATE_INTERVAL)

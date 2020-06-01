@@ -1,4 +1,4 @@
-import { Message, MessageEmbed } from 'discord.js'
+import { Message, MessageEmbed, TextChannel } from 'discord.js'
 
 import { Command } from '../Command'
 import { Constants } from '../../Constants'
@@ -121,7 +121,17 @@ export class CreateRaffle extends Command{
             return Promise.resolve(true)
         }
 
-        const $secondsToTime = DateTimeHelper.secondsToTime(toSecond)
+        await client.helpers.raffle.sendRaffleStartMessage(
+            message,
+            message.channel as TextChannel,
+            toSecond,
+            stringToPrize,
+            numbersOfWinner,
+            finishAt,
+            createRaffle.raffle.id
+        )
+
+        /*const $secondsToTime = DateTimeHelper.secondsToTime(toSecond)
         const timeString: string = (() => {
             let arr = [];
             if($secondsToTime.d !== 0){
@@ -193,7 +203,7 @@ export class CreateRaffle extends Command{
                     }
                 })
             }
-        })
+        })*/
 
         await message.delete({
             timeout: 0

@@ -1,8 +1,10 @@
-import { GuildChannel, MessageReaction, TextChannel } from 'discord.js';
+import { Channel, GuildChannel, Message, MessageEmbed, MessageReaction, TextChannel } from 'discord.js'
 
 import { Constants } from '../Constants'
 import { ArrayRandom } from '../array/ArrayRandom'
 import { Helper, SuperClient } from './Helper'
+import { DateTimeHelper } from './DateTimeHelper'
+import call from '../utils/call'
 
 export class RaffleHelper<C extends SuperClient> extends Helper<C>{
 
@@ -32,6 +34,92 @@ export class RaffleHelper<C extends SuperClient> extends Helper<C>{
 
     public getMessageURL(raffle): string{
         return `https://discordapp.com/channels/${raffle.server_id}/${raffle.channel_id}/${raffle.message_id}`
+    }
+
+    public async sendRaffleStartMessage(
+        message: Message,
+        channel: TextChannel,
+        toSecond: number,
+        stringToPrize: string,
+        numbersOfWinner: number,
+        finishAt: number,
+        raffleId: string
+    ){
+        const $secondsToTime = DateTimeHelper.secondsToTime(toSecond)
+        const timeString: string = (() => {
+            let arr = [];
+            if($secondsToTime.d !== 0){
+                arr.push(`${$secondsToTime.d} gün`)
+            }
+
+            if($secondsToTime.h !== 0){
+                arr.push(`${$secondsToTime.h} saat`)
+            }
+
+            if($secondsToTime.m !== 0){
+                arr.push(`${$secondsToTime.m} dakika`)
+            }
+
+            return arr.join(', ')
+        })()
+
+        const embedOfRaffle = new MessageEmbed()
+            .setAuthor(stringToPrize)
+            .setDescription(`Çekilişe katılmak için ${Constants.CONFETTI_REACTION_EMOJI} emojisine tıklayın!\nSüre: **${timeString}**\nOluşturan: <@${message.author.id}>`)
+            .setColor('#bd087d')
+            .setFooter(`${numbersOfWinner} Kazanan | Bitiş`)
+            .setTimestamp(new Date(finishAt))
+
+        channel.send(`${Constants.CONFETTI_EMOJI} **ÇEKİLİŞ BAŞLADI** ${Constants.CONFETTI_EMOJI}`, {
+            embed: embedOfRaffle
+        }).then(async $message => {
+            if($message){
+                const SET_RAFFLE_MESSAGE_ID = `
+                    mutation(
+                        $raffle_id: ID!
+                        $message_id: String!
+                    ){
+                        setRaffleMessageID(data: {
+                            raffle_id: $raffle_id
+                            message_id: $message_id
+                        }){
+                            errorCode
+                        }
+                    }
+                `
+
+                await call({
+                    source: SET_RAFFLE_MESSAGE_ID,
+                    variableValues: {
+                        raffle_id: raffleId,
+                        message_id: $message.id
+                    }
+                })
+
+                await $message.react(Constants.CONFETTI_REACTION_EMOJI)
+            }else{
+                await this.deleteRaffle(raffleId)
+            }
+        })
+    }
+
+    public async deleteRaffle(raffle_id: string){
+        const DELETE_RAFFLE = `
+            mutation($raffle_id: ID!){
+                deleteRaffle(data: {
+                    raffle_id: $raffle_id
+                }){
+                    errorCode
+                }
+            }
+         `
+
+        await call({
+            source: DELETE_RAFFLE,
+            variableValues: {
+                raffle_id
+            }
+        })
     }
 
 }

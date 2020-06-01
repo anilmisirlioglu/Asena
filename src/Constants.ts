@@ -10,7 +10,7 @@ export abstract class Constants{
 
     public static MIN_TIME: number = 60
     public static MAX_TIME: number = 60 * 60 * 24 * 60
-    public static MAX_WINNER: number = 25
+    public static MAX_WINNER: number = 20
 
     public static ALLOWED_TIME_TYPES: string[] = ['m', 'h', 'd']
 
