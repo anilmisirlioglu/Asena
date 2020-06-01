@@ -20,6 +20,7 @@ const { ChannelHelper } = require('./helpers/ChannelHelper')
 const { RaffleHelper } = require('./helpers/RaffleHelper')
 
 const { CommandHandler } = require('./handlers/CommandHandler')
+const { GuildHandler } = require('./handlers/GuildHandler')
 
 const webSocketConnector = new WebSocketConnector().getClient()
 const client = new Client()
@@ -41,8 +42,8 @@ config({
     path: `${__dirname}/../.env`
 });
 
-// noinspection JSValidateTypes
-new CommandHandler(client);
+new CommandHandler(client)
+new GuildHandler(client);
 
 (() => {
     const ON_RAFFLE_FINISHED = `
@@ -97,7 +98,7 @@ new CommandHandler(client);
 
 client.on('ready', async() => {
     await client.user.setStatus('online');
-    await client.user.setActivity(`${Constants.CONFETTI_REACTION_EMOJI} ${client.guilds.cache.size} Sunucu | ${process.env.PREFIX}help`, {
+    await client.user.setActivity(`${Constants.CONFETTI_REACTION_EMOJI} ${client.guilds.cache.size} Sunucu | ${process.env.PREFIX}help\n${Constants.CONFETTI_REACTION_EMOJI} https://asena.xyz`, {
         type: 'PLAYING'
     });
 
