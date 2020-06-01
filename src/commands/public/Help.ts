@@ -28,6 +28,7 @@ export class Help extends Command{
                 .setAuthor('📍 Komut Yardımı', message.author.displayAvatarURL() || message.author.defaultAvatarURL)
                 .addField('Komutlar', text)
                 .addField(`🌟 Daha Detaylı Yardım?`, `${process.env.PREFIX}help [komut]`)
+                .addField(`🌐 Daha Fazla Bilgi?`, '**[Website](https://asena.xyz)**')
                 .setColor('RANDOM')
 
             await message.author.send({ embed });
