@@ -30,7 +30,7 @@ export class InteractiveSetup{
 
     private currentPhaseIndex: number = 0
     private isItOver: boolean = false
-    private cancelKeywords = ['iptal', 'cancel', 'exit']
+    private cancelKeywords: string[] = ['iptal', 'cancel', 'exit']
     private dataStore: DataStoreType = new Collection<number, any>()
 
     constructor(
