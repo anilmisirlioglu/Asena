@@ -29,6 +29,7 @@ client.version = new Version(process.env.npm_package_version || '1.0.0', (proces
 client.logger = new Logger()
 client.commands = new Collection()
 client.aliases = new Collection()
+client.setups = new Collection()
 // noinspection JSCheckFunctionSignatures
 client.helpers = {
     message: new MessageHelper(client),
@@ -117,6 +118,9 @@ client.on('message', async message => {
 
     if(!message.member) message.member = await message.guild.fetchMember(message);
 
+    const channel_id = client.setups.get(message.member.id)
+    if(channel_id && channel_id === message.channel.id) return;
+
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const cmd = args.shift().toLowerCase();
 
@@ -140,7 +144,7 @@ client.on('message', async message => {
             });
         }else{
             const embed = new MessageEmbed()
-                .setAuthor('Asena | Çekiliş')
+                .setAuthor(client.user.username, client.user.avatarURL())
                 .setDescription('Bu komutu kullanmak için **yetkiniz** yok.')
                 .setColor('RED');
 

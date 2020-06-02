@@ -58,7 +58,7 @@ export class SetupRaffle extends Command{
                         (message: Message) => {
                             const channels = message.mentions.channels
                             if(channels.size === 0){
-                                message.channel.send('**>>** Lütfen bir metin kanalı etiketleyin.')
+                                message.channel.send(':boom: Lütfen bir metin kanalı etiketleyin.')
                                 return {
                                     result: false,
                                     value: null
@@ -67,7 +67,7 @@ export class SetupRaffle extends Command{
 
                             const channel = channels.first()
                             if(!(channel instanceof TextChannel)){
-                                message.channel.send('**>>** Lütfen geçerli bir metin kanalı etiketleyin.')
+                                message.channel.send(':boom: Lütfen geçerli bir metin kanalı etiketleyin.')
                                 return {
                                     result: false,
                                     value: null
@@ -89,7 +89,7 @@ export class SetupRaffle extends Command{
                         (message: Message) => {
                             const toInt: number = Number(message.content.trim())
                             if(isNaN(toInt)){
-                                message.channel.send('**>>** Lütfen sayısal bir değer giriniz.')
+                                message.channel.send(':boom: Lütfen sayısal bir değer giriniz.')
                                 return {
                                     result: false,
                                     value: null
@@ -97,7 +97,7 @@ export class SetupRaffle extends Command{
                             }
 
                             if(toInt < 1 || toInt > 20){
-                                message.channel.send('**>>** Çekiliş kazanan sayısı 1 ila 20 arasında olmalıdır.')
+                                message.channel.send(':boom: Çekiliş kazanan sayısı 1 ila 20 arasında olmalıdır.')
                                 return {
                                     result: false,
                                     value: null
@@ -125,7 +125,7 @@ export class SetupRaffle extends Command{
                             const timeType = toArray.shift()
 
                             if(isNaN(time) || time <= 0){
-                                message.channel.send('**>>** Lütfen zaman değerinin sayısal ve pozitif bir değer olarak girip tekrar deneyin.')
+                                message.channel.send(':boom: Lütfen zaman değerinin sayısal ve pozitif bir değer olarak girip tekrar deneyin.')
                                 return {
                                     result: false,
                                     value: null
@@ -154,7 +154,7 @@ export class SetupRaffle extends Command{
                             }
 
                             if(toSecond === -1){
-                                message.channel.send('**>>** Lütfen geçerli bir süre biçimi girin. (m, h, d | Örnek: `1 m`, `3 h`)')
+                                message.channel.send(':boom: Lütfen geçerli bir süre biçimi girin. (m, h, d | Örnek: `1 m`, `3 h`)')
                                 return {
                                     result: false,
                                     value: null
@@ -162,7 +162,7 @@ export class SetupRaffle extends Command{
                             }
 
                             if(toSecond < Constants.MIN_TIME || toSecond > Constants.MAX_TIME){
-                                message.channel.send('**>>** Çekiliş süresi en az 1 dakika, en fazla 60 gün olabilir.')
+                                message.channel.send(':boom: Çekiliş süresi en az 1 dakika, en fazla 60 gün olabilir.')
                                 return {
                                     result: false,
                                     value: null
@@ -185,7 +185,7 @@ export class SetupRaffle extends Command{
                         (message: Message) => {
                             const prize = message.content
                             if(prize.length > 255){
-                                message.channel.send('**>>** Çekiliş başlığı maksimum 255 karakter uzunluğunda olmalıdır.')
+                                message.channel.send(':boom: Çekiliş başlığı maksimum 255 karakter uzunluğunda olmalıdır.')
                                 return {
                                     result: false,
                                     value: null
@@ -252,16 +252,16 @@ export class SetupRaffle extends Command{
                                         finishAt,
                                         raffleId
                                     )
-                                    await message.channel.send(`**>>** Çekiliş başarıyla oluşturuldu! Oluşturduğun çekiliş <#${store.get(0)}> kanalında yayınlandı...`)
+                                    await message.channel.send(`:star2: Çekiliş başarıyla oluşturuldu! Oluşturduğun çekiliş <#${store.get(0)}> kanalında yayınlandı...`)
                                 }else{
                                     await client.helpers.raffle.deleteRaffle(raffleId)
-                                    await message.channel.send(`**>>** Çekiliş oluşturulamadı. Girdiğiniz kanal sunucunuzda bulunamadı. Birden bire yok olmuş...`)
+                                    await message.channel.send(`:boom: Çekiliş oluşturulamadı. Girdiğiniz kanal sunucunuzda bulunamadı. Birden bire yok olmuş...`)
                                 }
                             }else{
-                                await message.channel.send('**>>** Çekiliş oluşturma sınırını aşıyorsunuz. (Max: 5)')
+                                await message.channel.send(':boom: Çekiliş oluşturma sınırını aşıyorsunuz. (Max: 5)')
                             }
                         }else{
-                            await message.channel.send('**>>** Belirlenemeyen bir sebepten dolayı çekiliş oluşturulamadı.')
+                            await message.channel.send(':boom: Belirlenemeyen bir sebepten dolayı çekiliş oluşturulamadı.')
                         }
                     })
 

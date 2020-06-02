@@ -18,6 +18,7 @@ interface IHelper{
     logger: Logger
     commands: Collection<any, any>
     aliases: Collection<any, any>
+    setups: Collection<string, string>
     helpers: CustomHelper
 }
 

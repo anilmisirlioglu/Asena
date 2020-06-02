@@ -44,13 +44,15 @@ export class InteractiveSetup{
         if(phases.length === 0){
             throw new InvalidArgumentException('Yetersiz aşama. En az 1 aşama olmalıdır')
         }else{
+            this.client.setups.set(user.id, channel.id)
+
             this.setPhaseListener()
             this.setTimeoutTimer()
         }
     }
 
     private setPhaseListener(message: boolean = true): void{
-        const phase = this.getCurrentPhase()
+        const phase = this.phases[this.currentPhaseIndex]
 
         if(message){
             setTimeout(async () => {
@@ -70,14 +72,18 @@ export class InteractiveSetup{
                                 this.currentPhaseIndex++
                                 this.setPhaseListener()
                             }else{
-                                this.onFinishCallback(this.dataStore)
+                                this.client.setups.delete(this.user.id)
                                 this.isItOver = true
+
+                                this.onFinishCallback(this.dataStore)
                             }
                         }else{
                             this.setPhaseListener(false)
                         }
                     }else{
-                        await this.channel.send('**>>** İnteraktif kurulum sihirbazı iptal edildi.')
+                        await this.channel.send(':boom: İnteraktif kurulum sihirbazı iptal edildi.')
+
+                        this.client.setups.delete(this.user.id)
                         this.isItOver = true
                     }
                 }
@@ -90,14 +96,12 @@ export class InteractiveSetup{
     private setTimeoutTimer(){
         setTimeout(async () => {
             if(!this.isItOver){
-                await this.channel.send('**>>** İnteraktif kurulum sihirbazı zaman aşımına uğradı ve kapandı.')
+                await this.channel.send(':boom: İnteraktif kurulum sihirbazı zaman aşımına uğradı ve kapandı.')
+
+                this.client.setups.delete(this.user.id)
                 this.isItOver = true
             }
         }, this.timeout * 1000)
-    }
-
-    private getCurrentPhase(): SetupPhase{
-        return this.phases[this.currentPhaseIndex]
     }
 
     private getLastPhaseIndex(): number{
