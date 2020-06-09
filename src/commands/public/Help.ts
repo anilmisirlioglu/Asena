@@ -20,9 +20,9 @@ export class Help extends Command{
         if(args[0] === undefined){
             const text = client.commands.map(command => {
                 return command.permission === 'ADMINISTRATOR' ? (
-                    message.member.hasPermission('ADMINISTRATOR') ? `\`${command.name}\`` : null
+                    message.member.hasPermission('ADMINISTRATOR') ? `\`${command.name}\`` : undefined
                 ) : `\`${command.name}\``;
-            }).join(', ');
+            }).filter(item => item !== undefined).join(', ');
 
             const embed = new MessageEmbed()
                 .setAuthor('📍 Komut Yardımı', message.author.displayAvatarURL() || message.author.defaultAvatarURL)
