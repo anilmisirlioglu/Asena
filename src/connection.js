@@ -15,10 +15,11 @@ const resolvers = require('./graphql/resolvers/index');
 const typeDefs = importSchema('src/graphql/schema.graphql');
 
 // Models
-const Raffle = require('./models/Raffle')
+const { Raffle } = require('./models/Raffle')
+console.log(Raffle)
 
 // PubSub
-const pubsub = require('./utils/PubSub')
+const { pubsub } = require('./utils/PubSub')
 
 module.exports = async () => {
     const app = express();

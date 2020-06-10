@@ -6,7 +6,6 @@ import {
 } from 'discord.js'
 import { Helper, SuperClient } from './Helper'
 
-
 export class ChannelHelper<G extends SuperClient> extends Helper<G>{
 
     public fetchChannel<T extends Snowflake>(guildId: T, channelId: T): GuildChannel | undefined{

@@ -153,4 +153,4 @@ client.on('message', async message => {
     }
 });
 
-client.login(process.env.TOKEN || null).then();
+client.login(process.env[client.version.isDev() ? "TOKEN_DEV" : "TOKEN"] || null).then();

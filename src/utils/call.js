@@ -4,10 +4,10 @@ const { importSchema } = require('graphql-import');
 const resolvers = require('./../graphql/resolvers');
 
 // Context
-const Raffle = require('./../models/Raffle')
+const { Raffle } = require('./../models/Raffle')
 
 // PubSub
-const pubsub = require('./PubSub')
+const { pubsub } = require('./PubSub')
 
 let schema;
 module.exports = async({ source, variableValues }) => {

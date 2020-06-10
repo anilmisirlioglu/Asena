@@ -1,13 +1,30 @@
-const { ErrorCodes } = require('./../../../utils/ErrorCodes')
-const { Constants } = require('./../../../Constants')
+import Raffle, { IRaffle } from '../../../models/Raffle'
+import pubsub from '../../../utils/PubSub'
+import { MutationType } from '../../../types/ResolverTypes'
+import { ErrorCodes } from '../../../utils/ErrorCodes'
+import { RaffleMutationReturnType } from '../../../types/raffle/MutationReturnTypes'
+import { Constants } from '../../../Constants';
+import MutationReturnType from '../../../types/ReturnTypes';
 
-module.exports = {
-    createRaffle: async(
-        parent,
-        { data: { prize, server_id, constituent_id, channel_id, numbersOfWinner, finishAt } },
-        { Raffle }
-    ) => {
-        const search = await Raffle.find({
+export const RaffleMutations: MutationType = {
+    createRaffle: async(parent, { data }): Promise<RaffleMutationReturnType> => {
+        const {
+            prize,
+            server_id,
+            constituent_id,
+            channel_id,
+            numbersOfWinner,
+            finishAt
+        }: {
+            prize: string
+            server_id: string
+            constituent_id: string
+            channel_id: string
+            numbersOfWinner: number
+            finishAt: Date
+        } = data;
+
+        const search: IRaffle[] = await Raffle.find({
             server_id,
             status: 'CONTINUES'
         })
@@ -34,7 +51,15 @@ module.exports = {
             errorCode: ErrorCodes.SUCCESS
         }
     },
-    setRaffleMessageID: async(parent, { data: { raffle_id, message_id } }, { Raffle }) => {
+    setRaffleMessageID: async(parent, { data }): Promise<MutationReturnType> => {
+        const {
+            raffle_id,
+            message_id
+        }: {
+            raffle_id: string
+            message_id: string
+        } = data
+
         await Raffle.findByIdAndUpdate(raffle_id, {
             message_id
         })
@@ -43,15 +68,17 @@ module.exports = {
             errorCode: ErrorCodes.SUCCESS
         }
     },
-    deleteRaffle: async(parent, { data: { raffle_id } }, { Raffle }) => {
+    deleteRaffle: async(parent, { data }): Promise<MutationReturnType> => {
+        const { raffle_id }: { raffle_id: string } = data
         await Raffle.findByIdAndDelete(raffle_id);
 
         return {
             errorCode: ErrorCodes.SUCCESS
         }
     },
-    cancelRaffle: async(parent, { data: { message_id } }, { Raffle }) => {
-        const raffle = await Raffle.findOne({
+    cancelRaffle: async(parent, { data }): Promise<RaffleMutationReturnType> => {
+        const { message_id }: { message_id: string } = data
+        const raffle: IRaffle | undefined = await Raffle.findOne({
             message_id
         })
 
@@ -78,8 +105,9 @@ module.exports = {
             errorCode: ErrorCodes.SUCCESS
         }
     },
-    finishEarlyRaffle: async(parent, { data: { message_id } }, { Raffle, pubsub }) => {
-        const raffle = await Raffle.findOne({
+    finishEarlyRaffle: async(parent, { data }): Promise<RaffleMutationReturnType> => {
+        const { message_id }: { message_id: string } = data
+        const raffle: IRaffle | undefined = await Raffle.findOne({
             message_id
         })
 
