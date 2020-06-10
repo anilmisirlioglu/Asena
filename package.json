@@ -27,6 +27,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.7",
     "node-cron": "^2.0.3",
+    "nodemon": "^2.0.4",
     "typescript": "^3.8.3",
     "ws": "^7.3.0"
   },
