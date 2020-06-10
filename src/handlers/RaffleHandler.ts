@@ -1,11 +1,13 @@
 import cron from 'node-cron';
 import { PubSub } from 'apollo-server-express';
 import { Constants } from '../Constants';
+import { Model } from 'mongoose';
+import { IRaffle } from '../models/Raffle';
 
 export class RaffleHandler{
 
     constructor(
-        private readonly Raffle,
+        private readonly Raffle: Model<IRaffle>,
         private readonly pubsub: PubSub
     ){}
 

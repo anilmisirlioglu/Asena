@@ -1,11 +1,11 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
-export interface Raffle extends Document{
+export interface IRaffle extends Document{
     prize: string
     server_id: string
     constituent_id: string
     channel_id: string
-    message_id: string
+    message_id?: string
     numbersOfWinner: number
     status: string
     finishAt: Date
@@ -48,4 +48,4 @@ const RaffleSchema: Schema = new Schema({
     timestamps: true
 });
 
-export default mongoose.model<Raffle>('Raffle', RaffleSchema)
+export default mongoose.model<IRaffle>('Raffle', RaffleSchema)

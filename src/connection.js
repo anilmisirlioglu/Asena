@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 
 const { RaffleHandler } = require('./handlers/RaffleHandler');
 
-const databaseConnection = require('./drivers/mongodb');
+const { MongoDB } = require('./drivers/MongoDB');
 
 const dotenv = require('dotenv');
 
@@ -38,7 +38,7 @@ module.exports = async () => {
         path: `${__dirname}/../.env`
     });
 
-    databaseConnection();
+    await (new MongoDB()).connect()
 
     app.use((req, res, next) => {
         const token = req.header['authorization'];
