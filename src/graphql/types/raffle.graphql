@@ -37,7 +37,7 @@ enum RaffleStatus{
     CANCELED
 }
 
-interface MutationReturnType {
+interface MutationReturnType{
     errorCode: Int!
 }
 
