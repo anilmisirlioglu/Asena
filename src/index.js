@@ -1,7 +1,5 @@
 require('./connection')()
 
-const call = require('./utils/call')
-
 const { Client, Collection, MessageEmbed } = require('discord.js')
 const { config } = require('dotenv')
 const fs = require('fs')
