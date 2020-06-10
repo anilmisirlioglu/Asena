@@ -10,13 +10,12 @@ const { MongoDB } = require('./drivers/MongoDB');
 
 const dotenv = require('dotenv');
 
-const resolvers = require('./graphql/resolvers/index');
+const { resolvers } = require('./graphql/resolvers/index');
 
 const typeDefs = importSchema('src/graphql/schema.graphql');
 
 // Models
 const { Raffle } = require('./models/Raffle')
-console.log(Raffle)
 
 // PubSub
 const { pubsub } = require('./utils/PubSub')
@@ -75,5 +74,5 @@ module.exports = async () => {
     });
 
     // start raffle handler & check
-    (new RaffleHandler(Raffle, pubsub)).startJobSchedule()
+    (new RaffleHandler()).startJobSchedule()
 };

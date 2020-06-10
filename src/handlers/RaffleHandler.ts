@@ -1,15 +1,9 @@
 import cron from 'node-cron';
-import { PubSub } from 'apollo-server-express';
 import { Constants } from '../Constants';
-import { Model } from 'mongoose';
-import { IRaffle } from '../models/Raffle';
+import Raffle from '../models/Raffle';
+import pubsub from '../utils/PubSub';
 
 export class RaffleHandler{
-
-    constructor(
-        private readonly Raffle: Model<IRaffle>,
-        private readonly pubsub: PubSub
-    ){}
 
     public startJobSchedule(): void{
         cron.schedule('* * * * *', () => {
@@ -18,7 +12,7 @@ export class RaffleHandler{
     }
 
     private async checkRaffles(){
-        const cursor = await this.Raffle
+        const cursor = await Raffle
             .find({
                 $or: [
                     { status: 'CONTINUES' },
@@ -43,7 +37,7 @@ export class RaffleHandler{
     private setRaffleInterval(timeout: number, raffle: any): void{
         setTimeout(async () => {
             await raffle.updateOne({ status: 'FINISHED' })
-            await this.pubsub.publish(Constants.SUBSCRIPTIONS.ON_RAFFLE_FINISHED, {
+            await pubsub.publish(Constants.SUBSCRIPTIONS.ON_RAFFLE_FINISHED, {
                 onRaffleFinished: raffle
             })
         }, timeout)

@@ -148,7 +148,7 @@ client.on('message', async message => {
                 .setDescription('Bu komutu kullanmak için **yetkiniz** yok.')
                 .setColor('RED');
 
-            message.channel.send({ embed });
+            await message.channel.send({embed});
         }
     }
 });
