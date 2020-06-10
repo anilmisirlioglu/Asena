@@ -12,7 +12,6 @@
     "start": "node src/index.js"
   },
   "dependencies": {
-    "@types/mongoose": "^5.7.22",
     "apollo-link-ws": "^1.0.20",
     "apollo-server-express": "^2.11.0",
     "ascii-table": "0.0.9",
@@ -30,5 +29,8 @@
     "node-cron": "^2.0.3",
     "typescript": "^3.8.3",
     "ws": "^7.3.0"
+  },
+  "devDependencies": {
+    "@types/mongoose": "^5.7.22"
   }
 }
