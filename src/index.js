@@ -1,4 +1,5 @@
-require('./connection')()
+const { connection } = require('./connection')
+connection().then()
 
 const { Client, Collection, MessageEmbed } = require('discord.js')
 const { config } = require('dotenv')

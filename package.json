@@ -32,6 +32,7 @@
     "ws": "^7.3.0"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^8.5.0",
     "@types/mongoose": "^5.7.22"
   }
 }
