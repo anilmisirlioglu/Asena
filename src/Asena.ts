@@ -67,9 +67,10 @@ export default class Asena extends SuperClient{
         // noinspection JSIgnoredPromiseFromCall
         connection() // prepare conn
 
+        const isDev = (process.argv[2] ?? null) === 'dev'
         super({
-            prefix: process.env.PREFIX ?? '!a',
-            isDevBuild: (process.argv[2] ?? null) === 'dev'
+            prefix: (isDev ? 'dev' : '') + process.env.PREFIX ?? '!a',
+            isDevBuild: isDev
         })
 
         // Guild counter
