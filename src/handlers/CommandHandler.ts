@@ -12,7 +12,13 @@ import { SuperClient } from '../Asena';
 import Handler from './Handler';
 import { Message } from 'discord.js';
 
-export class CommandHandler<C extends SuperClient> extends Handler<C>{
+interface CommandRunner{
+
+    run(message: Message): void
+
+}
+
+export class CommandHandler<C extends SuperClient> extends Handler<C> implements CommandRunner{
 
     // noinspection JSPotentiallyInvalidConstructorUsage
     private readonly table: ascii = new ascii('Komutlar')
