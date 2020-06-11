@@ -3,8 +3,8 @@ import { Message, MessageEmbed } from 'discord.js'
 import { Command } from '../Command'
 import { Constants } from '../../Constants'
 import call from '../../utils/call'
-import { SuperClient } from '../../helpers/Helper';
 import { ErrorCodes } from '../../utils/ErrorCodes';
+import { SuperClient } from '../../Asena';
 
 export class CancelRaffle extends Command{
 

@@ -2,14 +2,15 @@
   "name": "asena",
   "version": "1.0.1",
   "main": "src/index.js",
+  "license": "MIT",
   "author": {
     "email": "misirlioglisamet@gmail.com",
     "name": "Anıl Mısırlıoğlu"
   },
   "scripts": {
     "build": "tsc",
-    "start:dev": "nodemon --ext js, graphql src/connection.js",
-    "start": "node src/index.js"
+    "start:dev": "nodemon --ext ts-node src/index.ts",
+    "start": "node build/index.js"
   },
   "dependencies": {
     "apollo-link-ws": "^1.0.20",
@@ -32,7 +33,10 @@
     "ws": "^7.3.0"
   },
   "devDependencies": {
+    "@types/dotenv": "^8.2.0",
     "@types/jsonwebtoken": "^8.5.0",
-    "@types/mongoose": "^5.7.22"
+    "@types/mongoose": "^5.7.22",
+    "@types/node": "^14.0.13",
+    "ts-node": "^8.10.2"
   }
 }

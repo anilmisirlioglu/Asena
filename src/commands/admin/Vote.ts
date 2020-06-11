@@ -1,7 +1,7 @@
 import { Command } from '../Command';
-import { SuperClient } from '../../helpers/Helper';
 import { Message, MessageEmbed } from 'discord.js';
 import { Constants } from '../../Constants';
+import { SuperClient } from '../../Asena';
 
 export class Vote extends Command{
 

@@ -2,13 +2,15 @@ import { GuildChannel, Message, MessageEmbed, MessageReaction, TextChannel } fro
 
 import { Constants } from '../Constants'
 import { ArrayRandom } from '../array/ArrayRandom'
-import { Helper, SuperClient } from './Helper'
+import Helper from './Helper'
 import { DateTimeHelper } from './DateTimeHelper'
 import call from '../utils/call'
+import { SuperClient } from '../Asena';
+import { IRaffle } from '../models/Raffle';
 
 export class RaffleHelper<C extends SuperClient> extends Helper<C>{
 
-    public async identifyWinners(raffle): Promise<string[]>{
+    public async identifyWinners(raffle: IRaffle): Promise<string[]>{
         let winners = []
 
         const channel: GuildChannel | undefined = await this.getClient().helpers.channel.fetchChannel(raffle.server_id, raffle.channel_id)
@@ -32,7 +34,7 @@ export class RaffleHelper<C extends SuperClient> extends Helper<C>{
         return winners
     }
 
-    public getMessageURL(raffle): string{
+    public getMessageURL(raffle: IRaffle): string{
         return `https://discordapp.com/channels/${raffle.server_id}/${raffle.channel_id}/${raffle.message_id}`
     }
 
@@ -103,6 +105,38 @@ export class RaffleHelper<C extends SuperClient> extends Helper<C>{
                 raffle_id
             }
         })
+    }
+
+    public async finishRaffle(raffle: IRaffle){
+        const client: SuperClient = this.client
+        if(raffle){
+            const channel: GuildChannel = await client.helpers.channel.fetchChannel(raffle.server_id, raffle.channel_id)
+            if(channel instanceof TextChannel){
+                const message: Message = await channel.messages.fetch(raffle.message_id)
+                if(message){
+                    const winners: string[] = await client.helpers.raffle.identifyWinners(raffle)
+                    const _message: string = client.helpers.raffle.getMessageURL(raffle)
+                    if(winners.length === 0){
+                        await channel.send(`Yeterli katılım olmadığından dolayı çekilişin kazananı olmadı.\n**Çekiliş:** ${_message}`)
+                    }else{
+                        const winnersOfMentions: string[] = winners.map(winner => `<@${winner}>`)
+                        const embed: MessageEmbed = new MessageEmbed()
+                            .setAuthor(raffle.prize)
+                            .setDescription(`${
+                                winners.length === 1 ? `Kazanan: <@${winners.shift()}>` : `Kazananlar:\n${winnersOfMentions.join('\n')}`
+                            }\nOluşturan: <@${raffle.constituent_id}>`)
+                            .setFooter(`${raffle.numbersOfWinner} Kazanan | Sona Erdi`)
+                            .setTimestamp(new Date(raffle.finishAt))
+                            .setColor('#36393F')
+
+                        await channel.send(`Tebrikler ${winnersOfMentions.join(', ')}! **${raffle.prize}** kazandınız\n**Çekiliş:** ${_message}`)
+                        await channel.send(`${Constants.CONFETTI_EMOJI} **ÇEKİLİŞ BİTTİ** ${Constants.CONFETTI_EMOJI}`, {
+                            embed
+                        })
+                    }
+                }
+            }
+        }
     }
 
 }

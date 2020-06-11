@@ -1,7 +1,8 @@
 import cron from 'node-cron';
 import { Constants } from '../Constants';
-import Raffle from '../models/Raffle';
+import Raffle, { IRaffle } from '../models/Raffle';
 import pubsub from '../utils/PubSub';
+import RaffleFinishEvent from '../event/raffle/RaffleFinishEvent';
 
 export class RaffleHandler{
 
@@ -34,12 +35,15 @@ export class RaffleHandler{
         }
     }
 
-    private setRaffleInterval(timeout: number, raffle: any): void{
+    private setRaffleInterval(timeout: number, raffle: IRaffle): void{
         setTimeout(async () => {
             await raffle.updateOne({ status: 'FINISHED' })
             await pubsub.publish(Constants.SUBSCRIPTIONS.ON_RAFFLE_FINISHED, {
                 onRaffleFinished: raffle
             })
+
+            const event: RaffleFinishEvent = new RaffleFinishEvent(raffle)
+            event.call()
         }, timeout)
     }
     

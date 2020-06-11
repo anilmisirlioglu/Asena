@@ -1,7 +1,7 @@
 import { Message, MessageEmbed } from 'discord.js'
 
 import { Command } from '../Command'
-import { SuperClient } from '../../helpers/Helper';
+import { SuperClient } from '../../Asena';
 
 export class Help extends Command{
 
@@ -19,9 +19,9 @@ export class Help extends Command{
         const command: undefined | string = args[0];
         if(args[0] === undefined){
             const text = client.commands.map(command => {
-                return command.permission === 'ADMINISTRATOR' ? (
-                    message.member.hasPermission('ADMINISTRATOR') ? `\`${command.name}\`` : undefined
-                ) : `\`${command.name}\``;
+                return command.getPermission() === 'ADMINISTRATOR' ? (
+                    message.member.hasPermission('ADMINISTRATOR') ? `\`${command.getName()}\`` : undefined
+                ) : `\`${command.getName()}\``;
             }).filter(item => item !== undefined).join(', ');
 
             const embed = new MessageEmbed()
@@ -42,7 +42,7 @@ export class Help extends Command{
 
             return true;
         }else{
-            const searchCommand: Command | undefined = client.commands.filter($command => $command.name === command.trim()).first();
+            const searchCommand: Command | undefined = client.commands.filter($command => $command.getName() === command.trim()).first();
             if(searchCommand !== undefined){
                 const embed = new MessageEmbed()
                     .setAuthor('📍 Komut Yardımı', message.author.displayAvatarURL() || message.author.defaultAvatarURL)
@@ -51,7 +51,7 @@ export class Help extends Command{
                         return `**${process.env.PREFIX}${alias}**`
                     }).join('\n'))
                     .addField('Açıklaması', `${searchCommand.getDescription()}`)
-                    .addField('Min. Yetki Seviyesi', `${searchCommand.getPermissions() === 'ADMINISTRATOR' ? '**Admin**' : '**Üye**'}`)
+                    .addField('Min. Yetki Seviyesi', `${searchCommand.getPermission() === 'ADMINISTRATOR' ? '**Admin**' : '**Üye**'}`)
                     .addField('Kullanımı: ', `${process.env.PREFIX}${searchCommand.getName()} ${searchCommand.getUsage() === null ? '' : searchCommand.getUsage()}`)
                     .setColor('GREEN');
 

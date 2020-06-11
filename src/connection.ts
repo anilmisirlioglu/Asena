@@ -5,10 +5,10 @@ import jwt from 'jsonwebtoken'
 
 import MongoDB from './drivers/MongoDB'
 
-import dotenv from 'dotenv'
-
 import resolvers from './graphql/resolvers'
+
 import { RaffleHandler } from './handlers/RaffleHandler'
+
 import * as http from 'http';
 
 const typeDefs = importSchema('src/graphql/schema.graphql')
@@ -31,10 +31,6 @@ const connection = async() => {
         }),
         introspection: true,
         playground: true
-    })
-
-    dotenv.config({
-        path: `${__dirname}/../.env`
     })
 
     const mongodb = new MongoDB();

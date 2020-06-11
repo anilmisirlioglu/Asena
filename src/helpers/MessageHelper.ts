@@ -7,7 +7,9 @@ import {
     Snowflake,
     TextChannel
 } from 'discord.js'
-import { Helper, SuperClient } from './Helper'
+import Helper from './Helper'
+import { SuperClient } from '../Asena'
+import { Command } from '../commands/Command'
 
 export class MessageHelper<C extends SuperClient> extends Helper<C>{
 
@@ -25,9 +27,16 @@ export class MessageHelper<C extends SuperClient> extends Helper<C>{
 
     public getErrorEmbed(error: string): MessageEmbed{
         return new MessageEmbed()
-            .setAuthor(this.getClient().user.username, this.getClient().user.avatarURL())
+            .setAuthor(this.client.user.username, this.client.user.avatarURL())
             .setDescription(error)
             .setColor('RED')
+    }
+
+    public getCommandUsageEmbed(command: Command): MessageEmbed{
+        return new MessageEmbed()
+            .setAuthor(this.client.user.username, this.client.user.avatarURL())
+            .setDescription(`Kullanımı: **${this.client.prefix}${command.getName()} ${command.getUsage()}**`)
+            .setColor('GOLD');
     }
 
 }

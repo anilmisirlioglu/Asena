@@ -1,10 +1,12 @@
-class Exception{
-    constructor(){
-        Error.apply(this, arguments)
-    }
-}
+class Exception extends Error{
 
-Exception.prototype = new Error();
+    constructor(message: string){
+        super(message)
+
+        Object.setPrototypeOf(this, Exception.prototype)
+    }
+
+}
 
 export {
     Exception

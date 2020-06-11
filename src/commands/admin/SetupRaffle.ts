@@ -1,11 +1,11 @@
 import { Command } from '../Command'
-import { SuperClient } from '../../helpers/Helper'
 import { DateTimeHelper } from '../../helpers/DateTimeHelper'
 import { Message, TextChannel } from 'discord.js'
 import { Constants } from '../../Constants'
 import { InteractiveSetup, SetupPhase } from '../../utils/InteractiveSetup'
 import { ErrorCodes } from '../../utils/ErrorCodes'
 import call from '../../utils/call'
+import { SuperClient } from '../../Asena';
 
 export class SetupRaffle extends Command{
 

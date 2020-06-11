@@ -3,9 +3,13 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "esModuleInterop": true,
+    "outDir": "./build",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "rootDir": "src",
-    "target": "es5",
-    "sourceMap": true
+    "target": "es6",
+    "sourceMap": true,
+    "downlevelIteration": true
   },
   "exclude": [
     "node_modules"

@@ -1,10 +1,14 @@
-export abstract class Constants{
+type Subscription = 'ON_RAFFLE_FINISHED'
+
+abstract class Constants{
 
     public static GRAPH_EMOJI: string = '<:graph:716972905841426453>'
     public static CONFETTI_EMOJI: string = '<a:uwu:716956121289588736>' //<:confetti:713087026051940512>
     public static CONFETTI_REACTION_EMOJI: string = '\uD83C\uDF89'
 
-    public static SUBSCRIPTIONS = {
+    public static SUBSCRIPTIONS: {
+        [key: string]: Subscription
+    } = {
         ON_RAFFLE_FINISHED: 'ON_RAFFLE_FINISHED'
     }
 
@@ -15,3 +19,6 @@ export abstract class Constants{
     public static ALLOWED_TIME_TYPES: string[] = ['m', 'h', 'd']
 
 }
+
+export default Constants
+export { Constants }

@@ -1,6 +1,6 @@
-import { SuperClient } from '../helpers/Helper';
 import { InvalidArgumentException } from '../exceptions/InvalidArgumentException';
 import { Collection, Message, TextChannel, User } from 'discord.js';
+import { SuperClient } from '../Asena';
 
 interface ValidatorCallbackReturnType{
     result: boolean,

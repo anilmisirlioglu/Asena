@@ -1,5 +1,5 @@
-import { Client, Message, PermissionString } from 'discord.js'
-import { SuperClient } from '../helpers/Helper';
+import { GuildMember, Message, PermissionString } from 'discord.js'
+import { SuperClient } from '../Asena';
 
 export abstract class Command{
 
@@ -27,8 +27,16 @@ export abstract class Command{
         return this.usage
     }
 
-    public getPermissions(): string | undefined{
+    public getPermission(): string | undefined{
         return this.permission
+    }
+
+    public hasPermission(member: GuildMember): boolean{
+        if(this.permission){
+            return member.hasPermission(this.permission)
+        }
+
+        return true
     }
 
     public async abstract run(client: SuperClient, message: Message, args: string[]): Promise<boolean>

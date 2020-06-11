@@ -1,12 +1,22 @@
-import { SuperClient } from '../helpers/Helper';
-import { Constants } from '../Constants';
+import { Constants } from '../Constants'
+import { SuperClient } from '../Asena';
+import Handler from './Handler';
 
-export class GuildHandler{
+export class GuildHandler<C extends SuperClient> extends Handler<C>{
 
     private counter: number = 0
-    private static readonly UPDATE_INTERVAL = 1000 * 60 * 10
+    private static readonly UPDATE_INTERVAL: number = 1000 * 60 * 5
 
-    constructor(private readonly client: SuperClient){
+    public start(): void{
+        this.client.on('ready', async () => {
+            const client: SuperClient = this.client
+
+            await client.user.setStatus('online')
+
+            client.logger.info(`Asena ${client.version.getFullVersion()} başlatılıyor...`)
+            client.logger.info(`${client.user.username} aktif, toplam ${client.guilds.cache.size} sunucu ve ${client.users.cache.size} kullanıcıya hizmet veriliyor!`)
+        })
+
         this.setGuildCounterListeners()
 
         this.setActivityUpdateInterval()

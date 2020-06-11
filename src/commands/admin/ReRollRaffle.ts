@@ -3,11 +3,11 @@ import { Message } from 'discord.js'
 import { Command } from '../Command'
 import { Constants } from '../../Constants'
 import call from '../../utils/call'
-import { SuperClient } from '../../helpers/Helper';
+import { SuperClient } from '../../Asena';
 
 export class ReRollRaffle extends Command{
 
-    constructor() {
+    constructor(){
         super(
             'reroll',
             ['tekrarcek', 'tekrarçek'],

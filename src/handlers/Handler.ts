@@ -1,6 +1,6 @@
 import { SuperClient } from '../Asena';
 
-export default abstract class Helper<C extends SuperClient>{
+export default abstract class Handler<C extends SuperClient>{
 
     constructor(protected readonly client: C){}
 

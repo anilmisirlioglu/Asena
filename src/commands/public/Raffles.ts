@@ -4,7 +4,7 @@ import { Command } from '../Command'
 import { Constants } from '../../Constants'
 import { DateTimeHelper } from '../../helpers/DateTimeHelper'
 import call from '../../utils/call'
-import { SuperClient } from '../../helpers/Helper';
+import { SuperClient } from '../../Asena';
 
 export class Raffles extends Command{
 
