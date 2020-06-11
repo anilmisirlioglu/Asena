@@ -12,6 +12,9 @@ export class GuildHandler<C extends SuperClient> extends Handler<C>{
             const client: SuperClient = this.client
 
             await client.user.setStatus('online')
+            await client.user.setActivity(`${Constants.CONFETTI_REACTION_EMOJI} ${this.counter} Sunucu | ${process.env.PREFIX}help\nhttps://asena.xyz`, {
+                type: 'PLAYING'
+            })
 
             client.logger.info(`Asena ${client.version.getFullVersion()} başlatılıyor...`)
             client.logger.info(`${client.user.username} aktif, toplam ${client.guilds.cache.size} sunucu ve ${client.users.cache.size} kullanıcıya hizmet veriliyor!`)
@@ -40,7 +43,7 @@ export class GuildHandler<C extends SuperClient> extends Handler<C>{
         setInterval(async () => {
             await this.client.user.setActivity(`${Constants.CONFETTI_REACTION_EMOJI} ${this.counter} Sunucu | ${process.env.PREFIX}help\nhttps://asena.xyz`, {
                 type: 'PLAYING'
-            });
+            })
         }, GuildHandler.UPDATE_INTERVAL)
     }
 

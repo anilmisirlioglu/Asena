@@ -43,7 +43,7 @@ export class CommandHandler<C extends SuperClient> extends Handler<C>{
     public run(message: Message): void{
         const client: SuperClient = this.client
 
-        if(message.guild){
+        if(message.guild === null){
             return
         }
 
