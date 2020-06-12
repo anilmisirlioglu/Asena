@@ -17,12 +17,22 @@ interface OnFinishCallback{
     (store: DataStoreType): boolean
 }
 
+interface SetupPhaseOptions{
+    readonly message: string
+    readonly validator: ValidatorCallback
+}
+
 export class SetupPhase{
 
-    public constructor(
-        public readonly message: string,
-        public readonly validator: ValidatorCallback
-    ){}
+    public constructor(private readonly options: SetupPhaseOptions){}
+    
+    public get message(){
+        return this.options.message
+    }
+
+    public get validator(){
+        return this.options.validator
+    }
 
 }
 

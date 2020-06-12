@@ -21,6 +21,13 @@ export class SetupRaffle extends Command{
 
     async run(client: SuperClient, message: Message, args: string[]): Promise<boolean>{
         if(message.channel instanceof TextChannel){
+            if(client.setups.get(message.author.id)){
+                await message.channel.send({
+                    embed: client.helpers.message.getErrorEmbed('Zaten bir kurulum sihirbazı içindesin. Lütfen önce başlattığınız kurulumu bitirin veya iptal edin.')
+                })
+                return true
+            }
+
             const GET_CONTINUES_RAFFLES = `
                 query($server_id: String!){
                     getContinuesRaffles(server_id: $server_id){
@@ -40,7 +47,7 @@ export class SetupRaffle extends Command{
                 await message.channel.send({
                     embed: client.helpers.message.getErrorEmbed('Maksimum çekiliş oluşturma sınırı aşıyorsunuz. (Maks 5)')
                 })
-                return false
+                return true
             }
 
             new InteractiveSetup(
@@ -48,14 +55,14 @@ export class SetupRaffle extends Command{
                 message.channel,
                 client,
                 [
-                    new SetupPhase(
-                        [
+                    new SetupPhase({
+                        message: [
                             `${Constants.CONFETTI_REACTION_EMOJI} ${client.user.username} interaktif kurulum sihirbazına **hoşgeldiniz**!`,
                             'Eğer sihirbazdan **çıkmak** isterseniz lütfen sohbete `iptal`, `cancel` veya `exit` yazın. Hadi kuruluma geçelim.\n',
                             '**Adım 1:** Öncelikle çekilişin hangi metin kanalında yapılacağını belirleyelim\n',
                             '`Lütfen sunucuda var olan botun erişebileceği bir metin kanalını etiketlemeniz gerektiğini unutmayın.`'
                         ].join('\n'),
-                        (message: Message) => {
+                        validator: (message: Message) => {
                             const channels = message.mentions.channels
                             if(channels.size === 0){
                                 message.channel.send(':boom: Lütfen bir metin kanalı etiketleyin.')
@@ -80,13 +87,13 @@ export class SetupRaffle extends Command{
                                 value: channel.id
                             }
                         }
-                    ),
-                    new SetupPhase(
-                        [
+                    }),
+                    new SetupPhase({
+                        message: [
                             '**Adım 2:** Kaç kazanan olucağını belirleyelim\n',
                             '`Lütfen sayısal ve 1 ila 20 aralığında bir sayı girmeniz gerektiğini unutmayın.`'
                         ].join('\n'),
-                        (message: Message) => {
+                        validator: (message: Message) => {
                             const toInt: number = Number(message.content.trim())
                             if(isNaN(toInt)){
                                 message.channel.send(':boom: Lütfen sayısal bir değer giriniz.')
@@ -110,15 +117,15 @@ export class SetupRaffle extends Command{
                                 value: toInt
                             }
                         }
-                    ),
-                    new SetupPhase(
-                        [
+                    }),
+                    new SetupPhase({
+                        message: [
                             '**Adım 3:** Şimdide insanların çekilişe katılımlarını alabilmek için süre belirleyelim\n',
                             '`Unutmayın süre en az 1 dakika, en fazla 60 gün olabilir. Süre belirlerken m (veya dakika), h (veya saat), d (veya gün) gibi süre belirten' +
                             ' terimler kullanmanız gerekir. Bunu kullanırken önce süre daha sonra boşluk bırakarak süre cinsini yazmayı unutmayın. Sadece tek bir süre tipi' +
                             ' süre cinsi kullanabileceğini unutmayın.`'
                         ].join('\n'),
-                        (message: Message) => {
+                        validator: (message: Message) => {
                             const content = message.content
                             const toArray = content.split(' ')
                             const time = Number(toArray.shift())
@@ -176,13 +183,13 @@ export class SetupRaffle extends Command{
                                 value: toSecond
                             }
                         }
-                    ),
-                    new SetupPhase(
-                        [
+                    }),
+                    new SetupPhase({
+                        message: [
                             '**Adım 4:** Son olarak çekilişin ödülünü belirleyelim (Aynı zamanda başlık olarak kullanılacak)\n',
                             '`Ödülün maksimum uzunluğunun 255 karakter olabileceğini unutmayın.`'
                         ].join('\n'),
-                        (message: Message) => {
+                        validator: (message: Message) => {
                             const prize = message.content
                             if(prize.length > 255){
                                 message.channel.send(':boom: Çekiliş başlığı maksimum 255 karakter uzunluğunda olmalıdır.')
@@ -198,7 +205,7 @@ export class SetupRaffle extends Command{
                                 value: prize
                             }
                         }
-                    )
+                    })
                 ],
                 (store) => {
                     const CREATE_RAFFLE = `
