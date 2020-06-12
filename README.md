@@ -1,11 +1,11 @@
-## [Asena](https://asena.xyz) 🤖
+# [Asena](https://asena.xyz) 🤖
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Stars](https://img.shields.io/github/stars/anilmisirlioglu/Asena)](https://github.com/anilmisirlioglu/Asena/stargazers)
 
 > Tamamen Türkçe, stabil, hızlı, kolay ve yeni nesil teknolojilerle kuşatılmış Discord çekiliş & anket botu!
 
-### Komut Listesi 🦾
+## Komut Listesi 🦾
 
 > Prefix: !a
 
@@ -20,12 +20,12 @@
 | a!vote | Sunucuda 2 seçenekli basit anket başlatır. |
 | a!help | Yardım menüsünü özel mesaj aracılığı ile mesaj kutunuza gönderir. |
 
-### Davet 🔗
+## Davet 🔗
 
 Siz de bu özelliklerden yararlanıp, kolay ve hızlı şekilde çekilişler oluşturmak istiyorsanız
 buradan Asena 'yı sunucunuza ekleyebilirsiniz: **[Asena Davet](https://discord.com/oauth2/authorize?permissions=347200&scope=bot&client_id=716259870910840832&redirect_uri=https%3A%2F%2Fasena.xyz&response_type=code)**
 
-### Self-Hosting ‍‼️
+## Self-Hosting ‍‼️
 
 Asena herhangi bir gelir amacı gütmeyen bir yazılımdır. Tüm özellikleri ücretsiz olarak sunulmaktadır.
 Fakat ısrarla kendi hostlamak isteyenler için; Botun kodlarının açık kaynak olmasının sebebi, bot kodlamak
@@ -34,11 +34,11 @@ katkıda bulunabilmeleri içindir. Onun dışında herhangi bir şekilde botu ke
 ihlalidir. Aksi takdirde bu depodaki herhangi bir kodu düzenlemek, derlemek veya oluşturmak için herhangi bir
 yardım sağlanmayacaktır.
 
-### Destek Sunucusu
+## Destek Sunucusu
 [Buraya tıklayarak botun resmi discord sunucusuna katılabilirsiniz.](https://discord.gg/CRgXhfs)
 
 
-### Görseller 📷
+## Görseller 📷
 ![image](https://cdn.discordapp.com/attachments/712449488471719976/720381041499570236/hello4.PNG)
 -
 ![image](https://cdn.discordapp.com/attachments/712449488471719976/720381037338820776/hello.PNG)

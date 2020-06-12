@@ -8,7 +8,7 @@ export abstract class Command{
         private readonly aliases: string[],
         private readonly description: string,
         private readonly usage: string | null,
-        private readonly permission: PermissionString
+        private readonly permission: PermissionString | undefined
     ){}
 
     public getName(): string{
