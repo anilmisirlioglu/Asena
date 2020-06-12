@@ -26,11 +26,11 @@ export class SetupPhase{
 
     public constructor(private readonly options: SetupPhaseOptions){}
     
-    public get message(){
+    public get message(): string{
         return this.options.message
     }
 
-    public get validator(){
+    public get validator(): ValidatorCallback{
         return this.options.validator
     }
 
