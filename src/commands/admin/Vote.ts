@@ -6,13 +6,13 @@ import { SuperClient } from '../../Asena';
 export class Vote extends Command{
 
     constructor(){
-        super(
-            'vote',
-            ['anket', 'anketoluştur', 'startvote', 'voting'],
-            'İki seçenekli oylama anketi oluşturur.',
-            '[süre(saniye)] [oylama metni]',
-            'ADMINISTRATOR'
-        );
+        super({
+            name: 'vote',
+            aliases: ['anket', 'anketoluştur', 'startvote', 'voting'],
+            description: 'İki seçenekli oylama anketi oluşturur.',
+            usage: '[süre(saniye)] [oylama metni]',
+            permission: 'ADMINISTRATOR'
+        });
     }
 
     async run(client: SuperClient, message: Message, args: string[]): Promise<boolean>{

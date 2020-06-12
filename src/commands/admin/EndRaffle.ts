@@ -8,13 +8,13 @@ import { SuperClient } from '../../Asena';
 export class EndRaffle extends Command{
 
     constructor(){
-        super(
-            'end',
-            ['hemenbitir', 'finish', 'bitir', 'erkenbitir'],
-            'Çekilişi erken bitirir.',
-            '[mesaj id]',
-            'ADMINISTRATOR'
-        );
+        super({
+            name: 'end',
+            aliases: ['hemenbitir', 'finish', 'bitir', 'erkenbitir'],
+            description: 'Çekilişi erken bitirir.',
+            usage: '[mesaj id]',
+            permission: 'ADMINISTRATOR'
+        });
     }
 
     async run(client: SuperClient, message: Message, args: string[]): Promise<boolean>{

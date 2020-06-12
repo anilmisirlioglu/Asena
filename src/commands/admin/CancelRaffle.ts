@@ -9,13 +9,13 @@ import { SuperClient } from '../../Asena';
 export class CancelRaffle extends Command{
 
     constructor(){
-        super(
-            'cancel',
-            ['çekilişiptalet', 'çekilişiiptalet', 'cekilisiptal', 'çekilişiptal', 'cancelraffle'],
-            'Var olan bir çekilişi bitirir.',
-            '[çekiliş mesaj id]',
-            'ADMINISTRATOR'
-        );
+        super({
+            name: 'cancel',
+            aliases: ['çekilişiptalet', 'çekilişiiptalet', 'cekilisiptal', 'çekilişiptal', 'cancelraffle'],
+            description: 'Var olan bir çekilişi bitirir.',
+            usage: '[çekiliş mesaj id]',
+            permission: 'ADMINISTRATOR'
+        });
     }
 
     async run(client: SuperClient, message: Message, args: string[]): Promise<boolean>{

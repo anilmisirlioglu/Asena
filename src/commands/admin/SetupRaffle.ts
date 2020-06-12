@@ -10,13 +10,13 @@ import { SuperClient } from '../../Asena';
 export class SetupRaffle extends Command{
 
     constructor(){
-        super(
-            'setup',
-            ['sihirbaz'],
-            'Çekiliş kurulum sihirbazını başlatır.',
-            null,
-            'ADMINISTRATOR'
-        );
+        super({
+            name: 'setup',
+            aliases: ['sihirbaz'],
+            description: 'Çekiliş kurulum sihirbazını başlatır.',
+            usage: null,
+            permission: 'ADMINISTRATOR'
+        });
     }
 
     async run(client: SuperClient, message: Message, args: string[]): Promise<boolean>{

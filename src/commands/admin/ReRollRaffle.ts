@@ -8,13 +8,13 @@ import { SuperClient } from '../../Asena';
 export class ReRollRaffle extends Command{
 
     constructor(){
-        super(
-            'reroll',
-            ['tekrarcek', 'tekrarçek'],
-            'Çekilişin kazananlarını tekrar belirler.',
-            '[mesaj id]',
-            'ADMINISTRATOR'
-        );
+        super({
+            name: 'reroll',
+            aliases: ['tekrarcek', 'tekrarçek'],
+            description: 'Çekilişin kazananlarını tekrar belirler.',
+            usage: '[mesaj id]',
+            permission: 'ADMINISTRATOR'
+        });
     }
 
     async run(client: SuperClient, message: Message, args: string[]): Promise<boolean>{

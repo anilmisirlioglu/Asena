@@ -8,13 +8,13 @@ import { SuperClient } from '../../Asena';
 export class CreateRaffle extends Command{
 
     constructor(){
-        super(
-            'create',
-            ['çekilişoluştur', 'çekilişbaşlat', 'cekilisbaslat', 'createraffle'],
-            'Çekiliş oluşturur.',
-            '[kazanan sayısı<1 | 20>] [süre] [süre tipi<m(dakika) | h(saat) | d(gün)>] [ödül]',
-            'ADMINISTRATOR'
-        );
+        super({
+            name: 'create',
+            aliases: ['çekilişoluştur', 'çekilişbaşlat', 'cekilisbaslat', 'createraffle'],
+            description: 'Çekiliş oluşturur.',
+            usage: '[kazanan sayısı<1 | 20>] [süre] [süre tipi<m(dakika) | h(saat) | d(gün)>] [ödül]',
+            permission: 'ADMINISTRATOR'
+        });
     }
 
     async run(client: SuperClient, message: Message, args: string[]): Promise<boolean>{

@@ -6,13 +6,13 @@ import { SuperClient } from '../../Asena';
 export class Help extends Command{
 
     constructor(){
-        super(
-            'help',
-            ['yardim', 'yardım'],
-            'Komutlar hakkında bilgi verir.',
-            null,
-            undefined
-        )
+        super({
+            name: 'help',
+            aliases: ['yardim', 'yardım'],
+            description: 'Komutlar hakkında bilgi verir.',
+            usage: null,
+            permission: undefined
+        })
     }
 
     async run(client: SuperClient, message: Message, args: string[]): Promise<boolean>{

@@ -9,13 +9,13 @@ import { SuperClient } from '../../Asena';
 export class Raffles extends Command{
 
     public constructor(){
-        super(
-            'raffles',
-            ['çekilişler', 'aktifçekilişler', 'cekilisler', 'activeraffles', 'list'],
-            'Sunucudaki aktif  çekilişleri listeler',
-            null,
-            undefined
-        );
+        super({
+            name: 'raffles',
+            aliases: ['çekilişler', 'aktifçekilişler', 'cekilisler', 'activeraffles', 'list'],
+            description: 'Sunucudaki aktif  çekilişleri listeler',
+            usage: null,
+            permission: undefined
+        });
     }
 
     async run(client: SuperClient, message: Message, args: string[]): Promise<boolean>{
