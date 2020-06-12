@@ -68,10 +68,6 @@ const connection = async() => {
         console.log(`🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`);
         console.log(`🚀 Subscriptions ready at ws://localhost:${PORT}${server.subscriptionsPath}`);
     });
-
-    // start raffle handler & check
-    const raffleHandler = new RaffleHandler();
-    raffleHandler.startJobSchedule();
 }
 
 export default connection

@@ -1,10 +1,6 @@
 import {
     Client,
     Collection,
-    GuildChannel,
-    Message,
-    MessageEmbed,
-    TextChannel
 } from 'discord.js';
 
 import { Logger } from './utils/Logger';
@@ -16,10 +12,7 @@ import { CommandHandler } from './handlers/CommandHandler';
 import { GuildHandler } from './handlers/GuildHandler';
 import { Command } from './commands/Command';
 import connection from './connection';
-import EventHandler from './handlers/EventHandler';
-import RaffleFinishEvent from './event/raffle/RaffleFinishEvent';
-import { IRaffle } from './models/Raffle';
-import Constants from './Constants';
+import { RaffleHandler } from './handlers/RaffleHandler';
 
 interface IHelper<C extends SuperClient>{
     readonly message: MessageHelper<C>
@@ -30,6 +23,7 @@ interface IHelper<C extends SuperClient>{
 interface IHandler<C extends SuperClient>{
     readonly command: CommandHandler<C>
     readonly guild: GuildHandler<C>
+    readonly raffle: RaffleHandler<C>
 }
 
 interface SuperClientBuilderOptions{
@@ -52,7 +46,8 @@ export abstract class SuperClient extends Client{
     }
     readonly handlers: IHandler<SuperClient> = {
         command: new CommandHandler<SuperClient>(this),
-        guild: new GuildHandler<SuperClient>(this)
+        guild: new GuildHandler<SuperClient>(this),
+        raffle: new RaffleHandler<SuperClient>(this)
     }
 
     protected constructor(private opts: SuperClientBuilderOptions){
@@ -73,24 +68,19 @@ export default class Asena extends SuperClient{
             isDevBuild: isDev
         })
 
-        // Guild counter
+        // Guild counter start
         this.handlers.guild.start()
 
         // Load commands
         this.handlers.command.load()
 
+        // Command run
         this.on('message', async message => {
             this.handlers.command.run(message)
         })
 
-        // Raffle Listener
-        const raffleHelper = this.helpers.raffle
-        EventHandler.register({
-            type: 'RAFFLE_FINISH',
-            async onCall(event: RaffleFinishEvent){
-                await raffleHelper.finishRaffle(event.getRaffle())
-            }
-        })
+        // start raffle schedule
+        this.handlers.raffle.startJobSchedule()
     }
 
 }

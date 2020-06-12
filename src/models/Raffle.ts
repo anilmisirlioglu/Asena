@@ -1,5 +1,7 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
+type RaffleStatus = 'FINISHED' | 'ALMOST_DONE' | 'CONTINUES'
+
 export interface IRaffle extends Document{
     prize: string
     server_id: string
@@ -7,7 +9,7 @@ export interface IRaffle extends Document{
     channel_id: string
     message_id?: string
     numbersOfWinner: number
-    status: string
+    status: RaffleStatus
     finishAt: Date
 }
 

@@ -13,7 +13,6 @@
     "start": "node build/index.js"
   },
   "dependencies": {
-    "apollo-link-ws": "^1.0.20",
     "apollo-server-express": "^2.11.0",
     "ascii-table": "0.0.9",
     "child_process": "^1.0.2",
