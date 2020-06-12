@@ -54,6 +54,10 @@ export class DateTimeHelper{
                     arr.push(`${minutes} dakika`)
                 }
 
+                if(seconds !== 0){
+                    arr.push(`${seconds} saniye`)
+                }
+
                 return arr.join(', ')
             }
         }

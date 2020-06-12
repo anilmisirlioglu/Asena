@@ -11,6 +11,7 @@ import { SetupRaffle } from '../commands/admin/SetupRaffle';
 import { SuperClient } from '../Asena';
 import Handler from './Handler';
 import { Message } from 'discord.js';
+import { BotInfo } from '../commands/public/BotInfo';
 
 interface CommandRunner{
 
@@ -30,7 +31,8 @@ export class CommandHandler<C extends SuperClient> extends Handler<C> implements
         new EndRaffle(),
         new Raffles(),
         new Vote(),
-        new Help()
+        new Help(),
+        new BotInfo()
     ]
 
     public load(): void{
