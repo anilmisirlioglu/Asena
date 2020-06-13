@@ -8,8 +8,4 @@ export class InvalidArgumentException extends Exception{
     
     public getError = (): string => this.error;
 
-    public getError(): string{
-        return this.error
-    }
-
 }
