@@ -83,7 +83,7 @@ export class CommandHandler<C extends SuperClient> extends Handler<C> implements
             return
         }
 
-        let command: Command = client.commands.get(cmd);
+        let command: Command | undefined = client.commands.get(cmd);
         // control is alias command
         if(!command){
             command = client.commands.get(client.aliases.get(cmd))
