@@ -16,8 +16,8 @@ export class Vote extends Command{
     }
 
     async run(client: SuperClient, message: Message, args: string[]): Promise<boolean>{
-        const AGREE = "✔";
-        const DISAGREE = "✖";
+        const AGREE = Constants.AGREE_EMOJI_ID;
+        const DISAGREE = Constants.DISAGREE_EMOJI_ID;
 
         if(args.length <= 1) return false
 
@@ -53,7 +53,7 @@ export class Vote extends Command{
         await vote.react(DISAGREE);
 
         const reactions = await vote.awaitReactions(
-            reaction => reaction.emoji.name === AGREE || reaction.emoji.name === DISAGREE,
+            reaction => reaction.emoji.id === AGREE || reaction.emoji.id === DISAGREE,
             { time }
         )
 
@@ -90,10 +90,10 @@ export class Vote extends Command{
             .setFooter('Oylama sonuçları')
             .setTimestamp()
             .setTitle(args.filter(arg => arg !== undefined).join(' '))
-            .addField(`\`${AGREE}\` (Evet)`, agreeCount, true)
-            .addField(`\`${DISAGREE}\` (Hayır)`, disagreeCount, true)
+            .addField(`<a:yes:${AGREE}> (Evet)`, agreeCount, true)
+            .addField(`<a:no:${DISAGREE}> (Hayır)`, disagreeCount, true)
 
-        await message.channel.send(`${Constants.GRAPH_EMOJI} **ANKET SONUÇLARI** ${Constants.GRAPH_EMOJI}`, {
+        await message.channel.send(`${Constants.RUBY_EMOJI} **ANKET SONUÇLARI**`, {
             embed: resultEmbed
         })
 
