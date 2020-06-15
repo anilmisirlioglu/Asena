@@ -31,14 +31,18 @@ export class Help extends Command{
                 .addField(`🌐 Daha Fazla Bilgi?`, '**[Website](https://asena.xyz)**')
                 .setColor('RANDOM')
 
-            await message.author.send({ embed });
-            await message.channel
-                .send(`<@${message.author.id}> yardım menüsünü DM kutunuza gönderildi.`)
-                .then($message => {
-                    $message.delete({ timeout: 2000 }).then(() => {
-                        message.delete();
-                    })
-                });
+            message.author.send({ embed })
+                .then(async () => {
+                    await message.channel.send(`<@${message.author.id}> yardım menüsünü DM kutunuza gönderildi.`)
+                        .then($message => {
+                            $message.delete({ timeout: 2000 }).then(() => {
+                                message.delete();
+                            })
+                        });
+                })
+                .catch(async () => {
+                    await message.channel.send({ embed })
+                })
 
             return true;
         }else{
