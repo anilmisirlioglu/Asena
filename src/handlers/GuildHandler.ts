@@ -26,16 +26,21 @@ export class GuildHandler<C extends SuperClient> extends Handler<C>{
     }
 
     private setGuildCounterListeners(): void{
+        const webHook = this.client.webHook
         this.client.on('ready', () => {
             this.counter = this.client.guilds.cache.size
         })
 
-        this.client.on('guildCreate', () => {
+        this.client.on('guildCreate', guild => {
             this.counter += 1
+
+            webHook.resolveGuild(guild)
         })
 
-        this.client.on('guildDelete', () => {
+        this.client.on('guildDelete', guild => {
             this.counter -= 1
+
+            webHook.resolveGuild(guild, false)
         })
     }
 

@@ -13,6 +13,7 @@ import { GuildHandler } from './handlers/GuildHandler';
 import { Command } from './commands/Command';
 import connection from './connection';
 import { RaffleHandler } from './handlers/RaffleHandler';
+import SyntaxWebHook from './SyntaxWebhook';
 
 interface IHelper<C extends SuperClient>{
     readonly message: MessageHelper<C>
@@ -34,21 +35,28 @@ interface SuperClientBuilderOptions{
 export abstract class SuperClient extends Client{
 
     readonly prefix: string = this.opts.prefix
+
     readonly version: Version = new Version(process.env.npm_package_version || '1.0.0', this.opts.isDevBuild)
+
     readonly logger: Logger = new Logger()
+
     readonly commands: Collection<string, Command> = new Collection<string, Command>()
     readonly aliases: Collection<string, string> = new Collection<string, string>()
     readonly setups: Collection<string, string> = new Collection<string, string>()
+
     readonly helpers: IHelper<SuperClient> = {
         message: new MessageHelper<SuperClient>(this),
         channel: new ChannelHelper<SuperClient>(this),
         raffle: new RaffleHelper<SuperClient>(this)
     }
+
     readonly handlers: IHandler<SuperClient> = {
         command: new CommandHandler<SuperClient>(this),
         guild: new GuildHandler<SuperClient>(this),
         raffle: new RaffleHandler<SuperClient>(this)
     }
+
+    readonly webHook: SyntaxWebHook = new SyntaxWebHook()
 
     protected constructor(private opts: SuperClientBuilderOptions){
         super()
