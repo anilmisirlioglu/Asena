@@ -12,6 +12,7 @@ import { SuperClient } from '../Asena';
 import Handler from './Handler';
 import { Message } from 'discord.js';
 import { BotInfo } from '../commands/public/BotInfo';
+import Constants from '../Constants';
 
 interface CommandRunner{
 
@@ -84,13 +85,14 @@ export class CommandHandler<C extends SuperClient> extends Handler<C> implements
         }
 
         let command: Command | undefined = client.commands.get(cmd);
-        // control is alias command
-        if(!command){
+        if(!command){ // control is alias command
             command = client.commands.get(client.aliases.get(cmd))
         }
 
         if(command){
-            const authorized: boolean = command.hasPermission(message.member)
+            const authorized: boolean = command.hasPermission(message.member) || message.member.roles.cache.filter(role => {
+                return role.name.trim().toLowerCase() === Constants.PERMITTED_ROLE_NAME
+            }).size !== 0
             if(authorized){
                 command.run(client, message, args).then(async (result: boolean) => {
                     if(!result){

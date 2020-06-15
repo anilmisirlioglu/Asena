@@ -9,6 +9,8 @@ abstract class Constants{
     public static DISAGREE_EMOJI_ID: string = '721179958378233887'
     public static RUBY_EMOJI: string = '<a:ruby:721700215190454344>'
 
+    public static PERMITTED_ROLE_NAME: string = 'asena' // if there is no permission, this role is checked
+
     public static SUBSCRIPTIONS: {
         [key: string]: Subscription
     } = {
