@@ -12,15 +12,28 @@ export class ReRollRaffle extends Command{
             name: 'reroll',
             aliases: ['tekrarcek', 'tekrarçek'],
             description: 'Çekilişin kazananlarını tekrar belirler.',
-            usage: '[mesaj id]',
+            usage: null,
             permission: 'ADMINISTRATOR'
         });
     }
 
     async run(client: SuperClient, message: Message, args: string[]): Promise<boolean>{
-        const message_id: string | undefined = args[0]
+        let message_id: string | undefined = args[0]
 
-        if(!message_id) return false
+        if(!message_id){
+            const raffle = await client.managers.raffle.getServerLastRaffle(message.guild.id)
+            if(raffle){
+                if(!raffle.message_id){
+                    await message.channel.send({
+                        embed: client.helpers.message.getErrorEmbed(`Tekrar çekilebilecek çekiliş bulunamadı.`)
+                    })
+
+                    return true
+                }
+
+                message_id = raffle.message_id
+            }
+        }
 
         const SEARCH_RAFFLE = `
             query($message_id: String!){

@@ -12,14 +12,28 @@ export class EndRaffle extends Command{
             name: 'end',
             aliases: ['hemenbitir', 'finish', 'bitir', 'erkenbitir'],
             description: 'Çekilişi erken bitirir.',
-            usage: '[mesaj id]',
+            usage: null,
             permission: 'ADMINISTRATOR'
         });
     }
 
     async run(client: SuperClient, message: Message, args: string[]): Promise<boolean>{
-        const message_id: string | undefined = args[0]
-        if(!message_id) return false
+        let message_id: string | undefined = args[0]
+
+        if(!message_id){
+            const raffle = await client.managers.raffle.getServerLastRaffle(message.guild.id)
+            if(raffle){
+                if(!raffle.message_id){
+                    await message.channel.send({
+                        embed: client.helpers.message.getErrorEmbed(`Bitirilebilecek bir çekiliş bulunamadı.`)
+                    })
+
+                    return true
+                }
+
+                message_id = raffle.message_id
+            }
+        }
 
         const FINISH_EARLY_RAFFLE = `
             mutation($message_id: String!){

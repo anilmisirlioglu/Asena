@@ -11,8 +11,6 @@ export interface IRaffle extends Document{
     numbersOfWinner: number
     status: RaffleStatus
     finishAt: Date
-    createdAt: Date
-    updatedAt: Date
 }
 
 const RaffleSchema: Schema = new Schema({

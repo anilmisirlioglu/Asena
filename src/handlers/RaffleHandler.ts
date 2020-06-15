@@ -40,7 +40,7 @@ export class RaffleHandler extends Handler{
             await raffle.updateOne({
                 status: 'FINISHED'
             })
-            await this.client.handlers.raffle.finishRaffle(raffle)
+            await this.client.helpers.raffle.finishRaffle(raffle)
 
             // No function for now
             await pubsub.publish(Constants.SUBSCRIPTIONS.ON_RAFFLE_FINISHED, {

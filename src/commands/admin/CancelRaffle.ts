@@ -13,15 +13,28 @@ export class CancelRaffle extends Command{
             name: 'cancel',
             aliases: ['çekilişiptalet', 'çekilişiiptalet', 'cekilisiptal', 'çekilişiptal', 'cancelraffle'],
             description: 'Var olan bir çekilişi bitirir.',
-            usage: '[çekiliş mesaj id]',
+            usage: null,
             permission: 'ADMINISTRATOR'
         });
     }
 
     async run(client: SuperClient, message: Message, args: string[]): Promise<boolean>{
-        const message_id = args[0];
+        let message_id: string | undefined = args[0];
 
-        if(!message_id || typeof message_id !== 'string') return false;
+        if(!message_id){
+            const raffle = await client.managers.raffle.getServerLastRaffle(message.guild.id)
+            if(raffle){
+                if(!raffle.message_id){
+                    await message.channel.send({
+                        embed: client.helpers.message.getErrorEmbed(`İptal edilebilecek bir çekiliş bulunamadı.`)
+                    })
+
+                    return true
+                }
+
+                message_id = raffle.message_id
+            }
+        }
 
         const CANCEL_RAFFLE = `
             mutation(

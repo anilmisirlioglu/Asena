@@ -14,6 +14,7 @@ import { Command } from './commands/Command';
 import connection from './connection';
 import { RaffleHandler } from './handlers/RaffleHandler';
 import SyntaxWebHook from './SyntaxWebhook';
+import RaffleManager from './managers/RaffleManager';
 
 interface IHelper{
     readonly message: MessageHelper
@@ -25,6 +26,10 @@ interface IHandler{
     readonly command: CommandHandler
     readonly guild: GuildHandler
     readonly raffle: RaffleHandler
+}
+
+interface IManager{
+    readonly raffle: RaffleManager
 }
 
 interface SuperClientBuilderOptions{
@@ -54,6 +59,10 @@ export abstract class SuperClient extends Client{
         command: new CommandHandler(this),
         guild: new GuildHandler(this),
         raffle: new RaffleHandler(this)
+    }
+
+    readonly managers: IManager = {
+        raffle: new RaffleManager(this)
     }
 
     readonly webHook: SyntaxWebHook = new SyntaxWebHook()
