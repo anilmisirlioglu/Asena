@@ -2,10 +2,9 @@ import cron from 'node-cron';
 import { Constants } from '../Constants';
 import Raffle, { IRaffle } from '../models/Raffle';
 import pubsub from '../utils/PubSub';
-import { RaffleHelper } from '../helpers/RaffleHelper';
-import { SuperClient } from '../Asena';
+import Handler from './Handler';
 
-export class RaffleHandler<C extends SuperClient> extends RaffleHelper<C>{
+export class RaffleHandler extends Handler{
 
     public startJobSchedule(): void{
         cron.schedule('* * * * *', async () => {

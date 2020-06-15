@@ -13,14 +13,9 @@ import Handler from './Handler';
 import { Message } from 'discord.js';
 import { BotInfo } from '../commands/public/BotInfo';
 import Constants from '../Constants';
+import CommandRunner from '../commands/CommandRunner';
 
-interface CommandRunner{
-
-    run(message: Message): void
-
-}
-
-export class CommandHandler<C extends SuperClient> extends Handler<C> implements CommandRunner{
+export class CommandHandler extends Handler implements CommandRunner{
 
     // noinspection JSPotentiallyInvalidConstructorUsage
     private readonly table: ascii = new ascii('Komutlar')

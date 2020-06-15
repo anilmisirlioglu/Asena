@@ -1,5 +1,4 @@
 import {
-    Client,
     Guild,
     GuildChannel,
     Message,
@@ -8,10 +7,9 @@ import {
     TextChannel
 } from 'discord.js'
 import Helper from './Helper'
-import { SuperClient } from '../Asena'
 import { Command } from '../commands/Command'
 
-export class MessageHelper<C extends SuperClient> extends Helper<C>{
+export class MessageHelper extends Helper{
 
     public fetchMessage<T extends Snowflake>(guildId: T, channelId: T, messageId: T): Promise<Message | undefined>{
         const guild: Guild = this.getClient().guilds.cache.get(guildId)

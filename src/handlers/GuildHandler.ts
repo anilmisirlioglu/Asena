@@ -2,7 +2,7 @@ import { Constants } from '../Constants'
 import { SuperClient } from '../Asena';
 import Handler from './Handler';
 
-export class GuildHandler<C extends SuperClient> extends Handler<C>{
+export class GuildHandler extends Handler{
 
     private counter: number = 0
     private static readonly UPDATE_INTERVAL: number = 1000 * 60 * 5

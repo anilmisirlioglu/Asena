@@ -15,16 +15,16 @@ import connection from './connection';
 import { RaffleHandler } from './handlers/RaffleHandler';
 import SyntaxWebHook from './SyntaxWebhook';
 
-interface IHelper<C extends SuperClient>{
-    readonly message: MessageHelper<C>
-    readonly channel: ChannelHelper<C>
-    readonly raffle: RaffleHelper<C>
+interface IHelper{
+    readonly message: MessageHelper
+    readonly channel: ChannelHelper
+    readonly raffle: RaffleHelper
 }
 
-interface IHandler<C extends SuperClient>{
-    readonly command: CommandHandler<C>
-    readonly guild: GuildHandler<C>
-    readonly raffle: RaffleHandler<C>
+interface IHandler{
+    readonly command: CommandHandler
+    readonly guild: GuildHandler
+    readonly raffle: RaffleHandler
 }
 
 interface SuperClientBuilderOptions{
@@ -44,16 +44,16 @@ export abstract class SuperClient extends Client{
     readonly aliases: Collection<string, string> = new Collection<string, string>()
     readonly setups: Collection<string, string> = new Collection<string, string>()
 
-    readonly helpers: IHelper<SuperClient> = {
-        message: new MessageHelper<SuperClient>(this),
-        channel: new ChannelHelper<SuperClient>(this),
-        raffle: new RaffleHelper<SuperClient>(this)
+    readonly helpers: IHelper = {
+        message: new MessageHelper(this),
+        channel: new ChannelHelper(this),
+        raffle: new RaffleHelper(this)
     }
 
-    readonly handlers: IHandler<SuperClient> = {
-        command: new CommandHandler<SuperClient>(this),
-        guild: new GuildHandler<SuperClient>(this),
-        raffle: new RaffleHandler<SuperClient>(this)
+    readonly handlers: IHandler = {
+        command: new CommandHandler(this),
+        guild: new GuildHandler(this),
+        raffle: new RaffleHandler(this)
     }
 
     readonly webHook: SyntaxWebHook = new SyntaxWebHook()

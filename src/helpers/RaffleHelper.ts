@@ -5,10 +5,9 @@ import { ArrayRandom } from '../array/ArrayRandom'
 import Helper from './Helper'
 import { DateTimeHelper } from './DateTimeHelper'
 import call from '../utils/call'
-import { SuperClient } from '../Asena';
 import { IRaffle } from '../models/Raffle';
 
-export class RaffleHelper<C extends SuperClient> extends Helper<C>{
+export class RaffleHelper extends Helper{
 
     public async identifyWinners(raffle: IRaffle): Promise<string[]>{
         let winners = []
@@ -108,14 +107,13 @@ export class RaffleHelper<C extends SuperClient> extends Helper<C>{
     }
 
     public async finishRaffle(raffle: IRaffle){
-        const client: SuperClient = this.client
         if(raffle){
-            const channel: GuildChannel = await client.helpers.channel.fetchChannel(raffle.server_id, raffle.channel_id)
+            const channel: GuildChannel = await this.client.helpers.channel.fetchChannel(raffle.server_id, raffle.channel_id)
             if(channel instanceof TextChannel){
                 const message: Message = await channel.messages.fetch(raffle.message_id)
                 if(message){
-                    const winners: string[] = await client.helpers.raffle.identifyWinners(raffle)
-                    const _message: string = client.helpers.raffle.getMessageURL(raffle)
+                    const winners: string[] = await this.identifyWinners(raffle)
+                    const _message: string = this.getMessageURL(raffle)
                     if(winners.length === 0){
                         await channel.send(`Yeterli katılım olmadığından dolayı çekilişin kazananı olmadı.\n**Çekiliş:** ${_message}`)
                     }else{
