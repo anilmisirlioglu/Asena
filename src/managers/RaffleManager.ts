@@ -89,7 +89,7 @@ export default class RaffleManager extends Manager{
     }
 
     public async setRaffleMessageID(raffle_id: string, message_id: Snowflake): Promise<Boolean>{
-        Raffle.findByIdAndUpdate(raffle_id, {
+        await Raffle.findByIdAndUpdate(raffle_id, {
             message_id
         })
 
@@ -97,7 +97,7 @@ export default class RaffleManager extends Manager{
     }
 
     public async deleteRaffle(raffle_id: string): Promise<Boolean>{
-        Raffle.findByIdAndDelete(raffle_id)
+        await Raffle.findByIdAndDelete(raffle_id)
 
         return Promise.resolve(true)
     }
