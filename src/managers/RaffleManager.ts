@@ -73,7 +73,7 @@ export default class RaffleManager extends Manager{
             status: 'CONTINUES'
         })
 
-        if(search.length >= 3){
+        if(search.length >= 5){
             return undefined
         }
 
