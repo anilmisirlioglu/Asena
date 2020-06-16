@@ -53,17 +53,20 @@ export class RaffleHelper extends Helper{
             .setFooter(`${numbersOfWinner} Kazanan | Bitiş`)
             .setTimestamp(new Date(finishAt))
 
-        channel.send(`${Constants.CONFETTI_EMOJI} **ÇEKİLİŞ BAŞLADI** ${Constants.CONFETTI_EMOJI}`, {
-            embed: embedOfRaffle
-        }).then(async $message => {
-            if($message){
+        channel
+            .send(`${Constants.CONFETTI_EMOJI} **ÇEKİLİŞ BAŞLADI** ${Constants.CONFETTI_EMOJI}`, {
+                embed: embedOfRaffle
+            })
+            .then(async $message => {
                 await this.client.managers.raffle.setRaffleMessageID(raffleId, $message.id)
 
                 await $message.react(Constants.CONFETTI_REACTION_EMOJI)
-            }else{
+            })
+            .catch(async () => {
                 await this.client.managers.raffle.deleteRaffle(raffleId)
-            }
-        })
+
+                await message.channel.send(':boom: Botun yetkileri, bu kanalda çekiliş oluşturmak için yetersiz olduğu için çekiliş başlatılamadı.')
+            })
     }
 
     public async finishRaffle(raffle: IRaffle){
