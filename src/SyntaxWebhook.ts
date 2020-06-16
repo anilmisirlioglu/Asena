@@ -17,7 +17,7 @@ export default class SyntaxWebHook extends WebhookClient{
                 [
                     `Sunucu: **${guild.name}**`,
                     `Sunucu ID: **${guild.id}**`,
-                    `Sunucu Sahibi: **${guild.owner.displayName}`,
+                    `Sunucu Sahibi: **${guild.owner.displayName}**`,
                     `Sunucu Sahibi ID: **${guild.ownerID}**`,
                     `Üye Sayısı: **${guild.members.cache.size}**`,
                     `Sunucu Kurulma Tarihi: **${DateTimeHelper.getDateTimeToString(guild.createdAt)}**`
