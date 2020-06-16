@@ -1,4 +1,0 @@
-# import Subscription from "./types/raffle.graphql";
-# import Mutation from "./types/raffle.graphql";
-# import Query from "./types/raffle.graphql";
-# import Raffle from "./types/raffle.graphql";

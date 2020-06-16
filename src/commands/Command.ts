@@ -17,15 +17,7 @@ export abstract class Command{
         return this.options.name
     }
 
-    public getName(): string{
-        return this.options.name
-    }
-
     public get aliases(): string[]{
-        return this.options.aliases
-    }
-
-    public getAliases(): string[]{
         return this.options.aliases
     }
 
@@ -33,23 +25,11 @@ export abstract class Command{
         return this.options.description
     }
 
-    public getDescription(): string{
-        return this.options.description
-    }
-
     public get usage(): string | null{
         return this.options.usage
     }
 
-    public getUsage(): string | null{
-        return this.options.usage
-    }
-
     public get permission(): string | undefined{
-        return this.options.permission
-    }
-
-    public getPermission(): string | undefined{
         return this.options.permission
     }
 

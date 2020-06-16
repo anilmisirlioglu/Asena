@@ -1,7 +1,6 @@
 import { Message } from 'discord.js'
 
 import { Command } from '../Command'
-import call from '../../utils/call'
 import { ErrorCodes } from '../../utils/ErrorCodes';
 import { SuperClient } from '../../Asena';
 
@@ -35,37 +34,8 @@ export class EndRaffle extends Command{
             }
         }
 
-        const FINISH_EARLY_RAFFLE = `
-            mutation($message_id: String!){
-                finishEarlyRaffle(data: {
-                    message_id: $message_id
-                }){
-                    raffle{
-                        id
-                        prize
-                        channel_id
-                        constituent_id
-                        message_id
-                        server_id
-                        numbersOfWinner
-                        status
-                        finishAt
-                    }
-                    errorCode
-                }
-            }
-        `
-
-        const result = await call({
-            source: FINISH_EARLY_RAFFLE,
-            variableValues: {
-                message_id
-            }
-        })
-        const finishEarlyRaffle = result.data.finishEarlyRaffle
-        const errorCode = finishEarlyRaffle.errorCode
-
-        if(errorCode === ErrorCodes.NOT_FOUND){
+        const finishEarlyRaffle = await client.managers.raffle.finishEarlyRaffle(message_id)
+        if(finishEarlyRaffle.errorCode === ErrorCodes.NOT_FOUND){
             await message.channel.send({
                 embed: client.helpers.message.getErrorEmbed('Çekiliş bulunamadı.')
             })
@@ -73,7 +43,7 @@ export class EndRaffle extends Command{
             return true
         }
 
-        if(errorCode === ErrorCodes.RAFFLE_FINISHED_ERROR){
+        if(finishEarlyRaffle.errorCode === ErrorCodes.RAFFLE_FINISHED_ERROR){
             await message.channel.send({
                 embed: client.helpers.message.getErrorEmbed('Anlaşılan bu çekiliş zaten bitmiş veya iptal edilmiş.')
             })

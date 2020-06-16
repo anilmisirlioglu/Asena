@@ -33,7 +33,7 @@ export class MessageHelper extends Helper{
     public getCommandUsageEmbed(command: Command): MessageEmbed{
         return new MessageEmbed()
             .setAuthor(this.client.user.username, this.client.user.avatarURL())
-            .setDescription(`Kullanımı: **${this.client.prefix}${command.getName()} ${command.getUsage()}**`)
+            .setDescription(`Kullanımı: **${this.client.prefix}${command.name} ${command.usage}**`)
             .setColor('GOLD');
     }
 

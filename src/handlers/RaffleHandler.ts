@@ -1,7 +1,5 @@
 import cron from 'node-cron';
-import { Constants } from '../Constants';
 import Raffle, { IRaffle } from '../models/Raffle';
-import pubsub from '../utils/PubSub';
 import Handler from './Handler';
 
 export class RaffleHandler extends Handler{
@@ -40,12 +38,8 @@ export class RaffleHandler extends Handler{
             await raffle.updateOne({
                 status: 'FINISHED'
             })
-            await this.client.helpers.raffle.finishRaffle(raffle)
 
-            // No function for now
-            await pubsub.publish(Constants.SUBSCRIPTIONS.ON_RAFFLE_FINISHED, {
-                onRaffleFinished: raffle
-            })
+            await this.client.helpers.raffle.finishRaffle(raffle)
         }, timeout)
     }
     

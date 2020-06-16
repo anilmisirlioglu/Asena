@@ -1,5 +1,3 @@
-type Subscription = 'ON_RAFFLE_FINISHED'
-
 abstract class Constants{
 
     public static GRAPH_EMOJI: string = '<:graph:716972905841426453>'
@@ -10,12 +8,6 @@ abstract class Constants{
     public static RUBY_EMOJI: string = '<a:ruby:721700215190454344>'
 
     public static PERMITTED_ROLE_NAME: string = 'asena' // if there is no permission, this role is checked
-
-    public static SUBSCRIPTIONS: {
-        [key: string]: Subscription
-    } = {
-        ON_RAFFLE_FINISHED: 'ON_RAFFLE_FINISHED'
-    }
 
     public static MIN_TIME: number = 60
     public static MAX_TIME: number = 60 * 60 * 24 * 60

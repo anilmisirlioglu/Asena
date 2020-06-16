@@ -2,7 +2,6 @@ import { Message } from 'discord.js'
 
 import { Command } from '../Command'
 import { Constants } from '../../Constants'
-import call from '../../utils/call'
 import { SuperClient } from '../../Asena';
 
 export class ReRollRaffle extends Command{
@@ -35,30 +34,8 @@ export class ReRollRaffle extends Command{
             }
         }
 
-        const SEARCH_RAFFLE = `
-            query($message_id: String!){
-                searchRaffle(message_id: $message_id){
-                    id
-                    prize
-                    channel_id
-                    constituent_id
-                    message_id
-                    server_id
-                    numbersOfWinner
-                    status
-                    finishAt
-                }
-            }
-        `
-        const result = await call({
-            source: SEARCH_RAFFLE,
-            variableValues: {
-                message_id
-            }
-        })
-
-        const raffle = result.data.searchRaffle
-        if(raffle === null){
+        const raffle = await client.managers.raffle.searchRaffle(message_id)
+        if(!raffle){
             await message.channel.send({
                 embed: client.helpers.message.getErrorEmbed(`${message_id} ID 'li çekiliş bulunamadı.`)
             })

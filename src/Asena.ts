@@ -63,7 +63,6 @@ export abstract class SuperClient extends Client{
 export default class Asena extends SuperClient{
 
     constructor(){
-        // noinspection JSIgnoredPromiseFromCall
         connection() // prepare conn
 
         const isDev = (process.argv[2] ?? null) === 'dev'

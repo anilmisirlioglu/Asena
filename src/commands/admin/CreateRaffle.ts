@@ -2,7 +2,6 @@ import { Message, TextChannel } from 'discord.js'
 
 import { Command } from '../Command'
 import { Constants } from '../../Constants'
-import call from '../../utils/call'
 import { SuperClient } from '../../Asena';
 
 export class CreateRaffle extends Command{
@@ -73,46 +72,17 @@ export class CreateRaffle extends Command{
             return Promise.resolve(true)
         }
 
-        const CREATE_RAFFLE = `
-            mutation(
-                $prize: String!
-                $server_id: String!
-                $constituent_id: String!
-                $channel_id: String!
-                $numbersOfWinner: Int!
-                $finishAt: Date!
-            ){
-                createRaffle(data: {
-                    prize: $prize
-                    server_id: $server_id
-                    constituent_id: $constituent_id
-                    channel_id: $channel_id
-                    numbersOfWinner: $numbersOfWinner
-                    finishAt: $finishAt
-                }){
-                    raffle{
-                        id
-                    }
-                    errorCode
-                }
-            }
-        `;
-
         const finishAt: number = Date.now() + (toSecond * 1000)
-        const result = await call({
-            source: CREATE_RAFFLE,
-            variableValues: {
-                prize: stringToPrize,
-                server_id: message.guild.id,
-                constituent_id: message.author.id,
-                channel_id: message.channel.id,
-                numbersOfWinner,
-                finishAt: finishAt
-            }
-        });
+        const createRaffle = await client.managers.raffle.createRaffle({
+            prize: stringToPrize,
+            server_id: message.guild.id,
+            constituent_id: message.author.id,
+            channel_id: message.channel.id,
+            numbersOfWinner,
+            finishAt: new Date(finishAt)
+        })
 
-        const createRaffle = result.data.createRaffle;
-        if(createRaffle.errorCode === 0x225){
+        if(!createRaffle){
             await message.channel.send({
                 embed: client.helpers.message.getErrorEmbed('Maksimum çekiliş oluşturma sınırına ulaşmışsınız. (Max: 5)')
             })
@@ -127,82 +97,8 @@ export class CreateRaffle extends Command{
             stringToPrize,
             numbersOfWinner,
             finishAt,
-            createRaffle.raffle.id
+            createRaffle.id
         )
-
-        /*const $secondsToTime = DateTimeHelper.secondsToTime(toSecond)
-        const timeString: string = (() => {
-            let arr = [];
-            if($secondsToTime.d !== 0){
-                arr.push(`${$secondsToTime.d} gün`)
-            }
-
-            if($secondsToTime.h !== 0){
-                arr.push(`${$secondsToTime.h} saat`)
-            }
-
-            if($secondsToTime.m !== 0){
-                arr.push(`${$secondsToTime.m} dakika`)
-            }
-
-            return arr.join(', ')
-        })()
-
-        const embedOfRaffle = new MessageEmbed()
-            .setAuthor(stringToPrize)
-            .setDescription(`Çekilişe katılmak için ${Constants.CONFETTI_REACTION_EMOJI} emojisine tıklayın!\nSüre: **${timeString}**\nOluşturan: <@${message.author.id}>`)
-            .setColor('#bd087d')
-            .setFooter(`${numbersOfWinner} Kazanan | Bitiş`)
-            .setTimestamp(new Date(finishAt))
-
-        message.channel.send(`${Constants.CONFETTI_EMOJI} **ÇEKİLİŞ BAŞLADI** ${Constants.CONFETTI_EMOJI}`, {
-            embed: embedOfRaffle
-        }).then(async $message => {
-            if($message){
-                const SET_RAFFLE_MESSAGE_ID = `
-                    mutation(
-                        $raffle_id: ID!
-                        $message_id: String!
-                    ){
-                        setRaffleMessageID(data: {
-                            raffle_id: $raffle_id
-                            message_id: $message_id
-                        }){
-                            errorCode
-                        }
-                    }
-                `
-
-                await call({
-                    source: SET_RAFFLE_MESSAGE_ID,
-                    variableValues: {
-                        raffle_id: createRaffle.raffle.id,
-                        message_id: $message.id
-                    }
-                })
-
-                await $message.react(Constants.CONFETTI_REACTION_EMOJI)
-            }else{
-                const DELETE_RAFFLE = `
-                    mutation(
-                        $raffle_id: ID!
-                    ){
-                        deleteRaffle(data: {
-                            raffle_id: $raffle_id
-                        }){
-                            errorCode
-                        }
-                    }
-                `
-
-                await call({
-                    source: DELETE_RAFFLE,
-                    variableValues: {
-                        raffle_id: createRaffle.raffle.id
-                    }
-                })
-            }
-        })*/
 
         await message.delete({
             timeout: 0

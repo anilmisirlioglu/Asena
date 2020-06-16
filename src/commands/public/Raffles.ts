@@ -3,7 +3,6 @@ import { Message, MessageEmbed } from 'discord.js'
 import { Command } from '../Command'
 import { Constants } from '../../Constants'
 import { DateTimeHelper } from '../../helpers/DateTimeHelper'
-import call from '../../utils/call'
 import { SuperClient } from '../../Asena';
 
 export class Raffles extends Command{
@@ -19,31 +18,7 @@ export class Raffles extends Command{
     }
 
     async run(client: SuperClient, message: Message, args: string[]): Promise<boolean>{
-        const CONTINUES_RAFFLES = `
-            query($server_id: String!){
-                getContinuesRaffles(server_id: $server_id){
-                    id
-                    prize
-                    message_id
-                    server_id
-                    constituent_id
-                    channel_id
-                    numbersOfWinner
-                    status
-                    finishAt
-                    createdAt
-                }
-            }
-        `;
-
-        const result = await call({
-            source: CONTINUES_RAFFLES,
-            variableValues: {
-                server_id: message.guild.id
-            }
-        })
-
-        const raffles = result.data.getContinuesRaffles;
+        const raffles = await client.managers.raffle.getContinuesRaffles(message.guild.id);
         const embed: MessageEmbed = new MessageEmbed()
             .setAuthor(`${message.guild.name} | Aktif Çekilişler`)
             .setColor('#DDA0DD')

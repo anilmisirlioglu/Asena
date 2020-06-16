@@ -19,9 +19,9 @@ export class Help extends Command{
         const command: undefined | string = args[0];
         if(args[0] === undefined){
             const text = client.commands.map(command => {
-                return command.getPermission() === 'ADMINISTRATOR' ? (
-                    message.member.hasPermission('ADMINISTRATOR') ? `\`${command.getName()}\`` : undefined
-                ) : `\`${command.getName()}\``;
+                return command.permission === 'ADMINISTRATOR' ? (
+                    message.member.hasPermission('ADMINISTRATOR') ? `\`${command.name}\`` : undefined
+                ) : `\`${command.name}\``;
             }).filter(item => item !== undefined).join(', ');
 
             const embed = new MessageEmbed()
@@ -46,17 +46,17 @@ export class Help extends Command{
 
             return true;
         }else{
-            const searchCommand: Command | undefined = client.commands.filter($command => $command.getName() === command.trim()).first();
+            const searchCommand: Command | undefined = client.commands.filter($command => $command.name === command.trim()).first();
             if(searchCommand !== undefined){
                 const embed = new MessageEmbed()
                     .setAuthor('📍 Komut Yardımı', message.author.displayAvatarURL() || message.author.defaultAvatarURL)
-                    .addField('Komut', `**${process.env.PREFIX}${searchCommand.getName()}**`)
-                    .addField('Takma Adları (Alias)', searchCommand.getAliases().map(alias => {
+                    .addField('Komut', `**${process.env.PREFIX}${searchCommand.name}**`)
+                    .addField('Takma Adları (Alias)', searchCommand.aliases.map(alias => {
                         return `**${process.env.PREFIX}${alias}**`
                     }).join('\n'))
-                    .addField('Açıklaması', `${searchCommand.getDescription()}`)
-                    .addField('Min. Yetki Seviyesi', `${searchCommand.getPermission() === 'ADMINISTRATOR' ? '**Admin**' : '**Üye**'}`)
-                    .addField('Kullanımı: ', `${process.env.PREFIX}${searchCommand.getName()} ${searchCommand.getUsage() === null ? '' : searchCommand.getUsage()}`)
+                    .addField('Açıklaması', `${searchCommand.description}`)
+                    .addField('Min. Yetki Seviyesi', `${searchCommand.permission === 'ADMINISTRATOR' ? '**Admin**' : '**Üye**'}`)
+                    .addField('Kullanımı: ', `${process.env.PREFIX}${searchCommand.name} ${searchCommand.usage === null ? '' : searchCommand.usage}`)
                     .setColor('GREEN');
 
                 await message.channel.send({ embed });

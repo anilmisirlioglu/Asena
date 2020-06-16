@@ -13,21 +13,13 @@
     "start": "node build/index.js"
   },
   "dependencies": {
-    "apollo-server-express": "^2.11.0",
     "ascii-table": "0.0.9",
     "child_process": "^1.0.2",
     "common-tags": "^1.8.0",
-    "cors": "^2.8.5",
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "graphql": "^14.6.0",
-    "graphql-import": "^1.0.0",
-    "graphql-tools": "^4.0.7",
-    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.7",
     "node-cron": "^2.0.3",
-    "nodemon": "^2.0.4",
     "typescript": "^3.8.3",
     "ws": "^7.3.0"
   },
@@ -36,6 +28,7 @@
     "@types/jsonwebtoken": "^8.5.0",
     "@types/mongoose": "^5.7.22",
     "@types/node": "^14.0.13",
+    "nodemon": "^2.0.4",
     "ts-node": "^8.10.2"
   }
 }

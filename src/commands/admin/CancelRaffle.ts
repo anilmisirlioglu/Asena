@@ -2,7 +2,6 @@ import { Message } from 'discord.js'
 
 import { Command } from '../Command'
 import { Constants } from '../../Constants'
-import call from '../../utils/call'
 import { ErrorCodes } from '../../utils/ErrorCodes';
 import { SuperClient } from '../../Asena';
 
@@ -36,31 +35,7 @@ export class CancelRaffle extends Command{
             }
         }
 
-        const CANCEL_RAFFLE = `
-            mutation(
-                $message_id: String!
-            ){
-                cancelRaffle(data: {
-                    message_id: $message_id
-                }){
-                    errorCode
-                    raffle{
-                        message_id
-                        channel_id
-                        server_id
-                    }
-                }
-            }
-        `;
-
-        const result = await call({
-            source: CANCEL_RAFFLE,
-            variableValues: {
-                message_id: message_id
-            }
-        })
-
-        const cancelRaffle = result.data.cancelRaffle;
+        const cancelRaffle = await client.managers.raffle.cancelRaffle(message_id)
         if(cancelRaffle.errorCode === ErrorCodes.NOT_FOUND){
             await message.channel.send({
                 embed: client.helpers.message.getErrorEmbed('Çekiliş bulunamadı.')

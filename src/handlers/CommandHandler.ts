@@ -33,11 +33,11 @@ export class CommandHandler extends Handler implements CommandRunner{
 
     public load(): void{
         CommandHandler.COMMANDS.forEach(command => {
-            this.client.commands.set(command.getName(), command);
-            this.table.addRow(command.getName(), '✅');
+            this.client.commands.set(command.name, command);
+            this.table.addRow(command.name, '✅');
 
-            if(command.getAliases() && Array.isArray(command.getAliases())){
-                command.getAliases().forEach(alias => this.client.aliases.set(alias, command.getName()));
+            if(command.aliases && Array.isArray(command.aliases)){
+                command.aliases.forEach(alias => this.client.aliases.set(alias, command.name));
             }
         })
 

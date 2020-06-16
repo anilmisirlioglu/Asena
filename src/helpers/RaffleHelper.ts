@@ -4,7 +4,6 @@ import { Constants } from '../Constants'
 import { ArrayRandom } from '../array/ArrayRandom'
 import Helper from './Helper'
 import { DateTimeHelper } from './DateTimeHelper'
-import call from '../utils/call'
 import { IRaffle } from '../models/Raffle';
 
 export class RaffleHelper extends Helper{
@@ -58,50 +57,11 @@ export class RaffleHelper extends Helper{
             embed: embedOfRaffle
         }).then(async $message => {
             if($message){
-                const SET_RAFFLE_MESSAGE_ID = `
-                    mutation(
-                        $raffle_id: ID!
-                        $message_id: String!
-                    ){
-                        setRaffleMessageID(data: {
-                            raffle_id: $raffle_id
-                            message_id: $message_id
-                        }){
-                            errorCode
-                        }
-                    }
-                `
-
-                await call({
-                    source: SET_RAFFLE_MESSAGE_ID,
-                    variableValues: {
-                        raffle_id: raffleId,
-                        message_id: $message.id
-                    }
-                })
+                await this.client.managers.raffle.setRaffleMessageID(raffleId, $message.id)
 
                 await $message.react(Constants.CONFETTI_REACTION_EMOJI)
             }else{
-                await this.deleteRaffle(raffleId)
-            }
-        })
-    }
-
-    public async deleteRaffle(raffle_id: string){
-        const DELETE_RAFFLE = `
-            mutation($raffle_id: ID!){
-                deleteRaffle(data: {
-                    raffle_id: $raffle_id
-                }){
-                    errorCode
-                }
-            }
-         `
-
-        await call({
-            source: DELETE_RAFFLE,
-            variableValues: {
-                raffle_id
+                await this.client.managers.raffle.deleteRaffle(raffleId)
             }
         })
     }

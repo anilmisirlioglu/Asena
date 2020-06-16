@@ -3,8 +3,6 @@ import { DateTimeHelper } from '../../helpers/DateTimeHelper'
 import { Message, TextChannel } from 'discord.js'
 import { Constants } from '../../Constants'
 import { InteractiveSetup, SetupPhase } from '../../utils/InteractiveSetup'
-import { ErrorCodes } from '../../utils/ErrorCodes'
-import call from '../../utils/call'
 import { SuperClient } from '../../Asena';
 
 export class SetupRaffle extends Command{
@@ -28,22 +26,8 @@ export class SetupRaffle extends Command{
                 return true
             }
 
-            const GET_CONTINUES_RAFFLES = `
-                query($server_id: String!){
-                    getContinuesRaffles(server_id: $server_id){
-                        id
-                    }
-                }
-            `
-
-            const result = await call({
-                source: GET_CONTINUES_RAFFLES,
-                variableValues: {
-                    server_id: message.guild.id
-                }
-            })
-
-            if(result.data.getContinuesRaffles.length >= 5){
+            const result = await client.managers.raffle.getContinuesRaffles(message.guild.id)
+            if(result.length >= 5){
                 await message.channel.send({
                     embed: client.helpers.message.getErrorEmbed('Maksimum çekiliş oluşturma sınırı aşıyorsunuz. (Maks 5)')
                 })
@@ -208,67 +192,35 @@ export class SetupRaffle extends Command{
                     })
                 ],
                 (store) => {
-                    const CREATE_RAFFLE = `
-                        mutation(
-                            $prize: String!
-                            $server_id: String!
-                            $constituent_id: String!
-                            $channel_id: String!
-                            $numbersOfWinner: Int!
-                            $finishAt: Date!
-                        ){
-                            createRaffle(data: {
-                                prize: $prize
-                                server_id: $server_id
-                                constituent_id: $constituent_id
-                                channel_id: $channel_id
-                                numbersOfWinner: $numbersOfWinner
-                                finishAt: $finishAt
-                            }){
-                                raffle{
-                                    id
-                                }
-                                errorCode
-                            }
-                        }
-                    `;
-
                     const finishAt: number = Date.now() + (store.get(2) * 1000)
-                    call({
-                        source: CREATE_RAFFLE,
-                        variableValues: {
-                            prize: store.get(3),
-                            server_id: message.guild.id,
-                            constituent_id: message.author.id,
-                            channel_id: store.get(0),
-                            numbersOfWinner: store.get(1),
-                            finishAt: finishAt
-                        }
+                    client.managers.raffle.createRaffle({
+                        prize: store.get(3),
+                        server_id: message.guild.id,
+                        constituent_id: message.author.id,
+                        channel_id: store.get(0),
+                        numbersOfWinner: store.get(1),
+                        finishAt: new Date(finishAt)
                     }).then(async result => {
-                        if(result.data !== null){
-                            if(result.data.createRaffle.errorCode === ErrorCodes.SUCCESS){
-                                const raffleId = result.data.createRaffle.raffle.id
-                                const channel = message.guild.channels.cache.get(store.get(0))
-                                if(channel instanceof TextChannel){
-                                    await client.helpers.raffle.sendRaffleStartMessage(
-                                        message,
-                                        channel,
-                                        store.get(2),
-                                        store.get(3),
-                                        store.get(1),
-                                        finishAt,
-                                        raffleId
-                                    )
-                                    await message.channel.send(`:star2: Çekiliş başarıyla oluşturuldu! Oluşturduğun çekiliş <#${store.get(0)}> kanalında yayınlandı...`)
-                                }else{
-                                    await client.helpers.raffle.deleteRaffle(raffleId)
-                                    await message.channel.send(`:boom: Çekiliş oluşturulamadı. Girdiğiniz kanal sunucunuzda bulunamadı. Birden bire yok olmuş...`)
-                                }
+                        if(result){
+                            const raffleId = result.id
+                            const channel = message.guild.channels.cache.get(store.get(0))
+                            if(channel instanceof TextChannel){
+                                await client.helpers.raffle.sendRaffleStartMessage(
+                                    message,
+                                    channel,
+                                    store.get(2),
+                                    store.get(3),
+                                    store.get(1),
+                                    finishAt,
+                                    raffleId
+                                )
+                                await message.channel.send(`:star2: Çekiliş başarıyla oluşturuldu! Oluşturduğun çekiliş <#${store.get(0)}> kanalında yayınlandı...`)
                             }else{
-                                await message.channel.send(':boom: Çekiliş oluşturma sınırını aşıyorsunuz. (Max: 5)')
+                                await client.managers.raffle.deleteRaffle(raffleId)
+                                await message.channel.send(`:boom: Çekiliş oluşturulamadı. Girdiğiniz kanal sunucunuzda bulunamadı. Birden bire yok olmuş...`)
                             }
                         }else{
-                            await message.channel.send(':boom: Belirlenemeyen bir sebepten dolayı çekiliş oluşturulamadı.')
+                            await message.channel.send(':boom: Çekiliş oluşturma sınırını aşıyorsunuz. (Max: 5)')
                         }
                     })
 
