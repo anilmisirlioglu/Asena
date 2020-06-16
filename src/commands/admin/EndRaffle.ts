@@ -11,7 +11,7 @@ export class EndRaffle extends Command{
             name: 'end',
             aliases: ['hemenbitir', 'finish', 'bitir', 'erkenbitir'],
             description: 'Çekilişi erken bitirir.',
-            usage: null,
+            usage: '[mesaj id]',
             permission: 'ADMINISTRATOR'
         });
     }

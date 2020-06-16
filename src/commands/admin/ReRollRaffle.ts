@@ -11,7 +11,7 @@ export class ReRollRaffle extends Command{
             name: 'reroll',
             aliases: ['tekrarcek', 'tekrarçek'],
             description: 'Çekilişin kazananlarını tekrar belirler.',
-            usage: null,
+            usage: '[mesaj id]',
             permission: 'ADMINISTRATOR'
         });
     }

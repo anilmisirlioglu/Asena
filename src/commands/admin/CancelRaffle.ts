@@ -12,7 +12,7 @@ export class CancelRaffle extends Command{
             name: 'cancel',
             aliases: ['çekilişiptalet', 'çekilişiiptalet', 'cekilisiptal', 'çekilişiptal', 'cancelraffle'],
             description: 'Var olan bir çekilişi bitirir.',
-            usage: null,
+            usage: '[mesaj id]',
             permission: 'ADMINISTRATOR'
         });
     }
