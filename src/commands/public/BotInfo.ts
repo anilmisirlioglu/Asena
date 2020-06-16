@@ -4,6 +4,7 @@ import { SuperClient } from '../../Asena';
 import { DateTimeHelper } from '../../helpers/DateTimeHelper';
 import * as os from 'os';
 import Byte from '../../utils/Byte';
+import MongoDB from '../../drivers/MongoDB';
 
 export class BotInfo extends Command{
 
@@ -33,7 +34,7 @@ export class BotInfo extends Command{
             `Artemis Version: **${client.version.getFullVersion()}**`,
             `Artemis Last Update: **${client.version.getLastUpdate().substr(0, 7)}**`,
             `Platform (OS): **${os.platform()} (${os.type()} ${os.arch()}) - ${os.release()}**`,
-            `Veritabanı Bağlantısı: **Bağlı, stabil.**`, // Bağlı olmasa bot çalışmaz olurdu zaten...
+            `Veritabanı Bağlantısı: ${MongoDB.isConnected() ? '**Bağlı, stabil.**' : '**Bağlı değil.**'}`,
             `CPU: **${os.cpus().shift().model}**`,
             `CPU Hız: **${os.cpus().shift().speed} MHz**`,
             `CPU Core: **${os.cpus().length / 2} Core / ${os.cpus().length} Thread**`,
