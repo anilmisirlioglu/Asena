@@ -5,32 +5,19 @@ import {
 
 import { Logger } from './utils/Logger';
 import { Version } from './utils/Version';
+import { Command } from './commands/Command';
+import connection from './connection';
+import SyntaxWebHook from './SyntaxWebhook';
+import { IHelper } from './helpers/Helper';
+import { IHandler } from './handlers/Handler';
+import { IManager } from './managers/Manager';
+import RaffleManager from './managers/RaffleManager';
+import { CommandHandler } from './handlers/CommandHandler';
+import { GuildHandler } from './handlers/GuildHandler';
+import { RaffleHandler } from './handlers/RaffleHandler';
 import { MessageHelper } from './helpers/MessageHelper';
 import { ChannelHelper } from './helpers/ChannelHelper';
 import { RaffleHelper } from './helpers/RaffleHelper';
-import { CommandHandler } from './handlers/CommandHandler';
-import { GuildHandler } from './handlers/GuildHandler';
-import { Command } from './commands/Command';
-import connection from './connection';
-import { RaffleHandler } from './handlers/RaffleHandler';
-import SyntaxWebHook from './SyntaxWebhook';
-import RaffleManager from './managers/RaffleManager';
-
-interface IHelper{
-    readonly message: MessageHelper
-    readonly channel: ChannelHelper
-    readonly raffle: RaffleHelper
-}
-
-interface IHandler{
-    readonly command: CommandHandler
-    readonly guild: GuildHandler
-    readonly raffle: RaffleHandler
-}
-
-interface IManager{
-    readonly raffle: RaffleManager
-}
 
 interface SuperClientBuilderOptions{
     prefix: string

@@ -1,11 +1,12 @@
-import { SuperClient } from '../Asena';
+import Factory from '../Factory';
+import { MessageHelper } from './MessageHelper';
+import { ChannelHelper } from './ChannelHelper';
+import { RaffleHelper } from './RaffleHelper';
 
-export default abstract class Helper{
-
-    constructor(protected readonly client: SuperClient){}
-
-    protected getClient(): SuperClient{
-        return this.client
-    }
-
+export interface IHelper{
+    readonly message: MessageHelper
+    readonly channel: ChannelHelper
+    readonly raffle: RaffleHelper
 }
+
+export default abstract class Helper extends Factory{}
