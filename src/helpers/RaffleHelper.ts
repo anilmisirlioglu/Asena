@@ -73,8 +73,8 @@ export class RaffleHelper extends Helper{
         if(raffle){
             const channel: GuildChannel = await this.client.helpers.channel.fetchChannel(raffle.server_id, raffle.channel_id)
             if(channel instanceof TextChannel){
-                const message: Message = await channel.messages.fetch(raffle.message_id)
-                if(message){
+                const message: Message | undefined = await channel.messages.fetch(raffle.message_id)
+                if(message instanceof Message){
                     const winners: string[] = await this.identifyWinners(raffle)
                     const _message: string = this.getMessageURL(raffle)
                     if(winners.length === 0){
@@ -91,7 +91,7 @@ export class RaffleHelper extends Helper{
                             .setColor('#36393F')
 
                         await channel.send(`Tebrikler ${winnersOfMentions.join(', ')}! **${raffle.prize}** kazandınız\n**Çekiliş:** ${_message}`)
-                        await channel.send(`${Constants.CONFETTI_EMOJI} **ÇEKİLİŞ BİTTİ** ${Constants.CONFETTI_EMOJI}`, {
+                        await message.edit(`${Constants.CONFETTI_REACTION_EMOJI} **ÇEKİLİŞ BİTTİ** ${Constants.CONFETTI_REACTION_EMOJI}`, {
                             embed
                         })
                     }
