@@ -1,6 +1,6 @@
 import { Snowflake } from 'discord.js';
 import Raffle, { IRaffle } from '../models/Raffle';
-import Manager from './Manager';
+import Manager, { ID, Timestamps } from './Manager';
 import { ErrorCodes } from '../utils/ErrorCodes';
 
 interface CreateRaffleOptions{
@@ -10,15 +10,6 @@ interface CreateRaffleOptions{
     channel_id: string
     numbersOfWinner: number
     finishAt: Date
-}
-
-interface Timestamps{
-    createdAt?: Date
-    updatedAt?: Date
-}
-
-interface ID{
-    _id?: string
 }
 
 interface RaffleReturnType{

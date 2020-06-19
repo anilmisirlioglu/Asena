@@ -99,7 +99,6 @@ export class Vote extends Command{
             await message.channel.send(`${Constants.RUBY_EMOJI} **ANKET SONUÇLARI**`, {
                 embed: resultEmbed
             })
-
         }else{
             const embed = new MessageEmbed()
                 .setAuthor(message.guild.name, message.guild.iconURL())

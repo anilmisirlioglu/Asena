@@ -18,6 +18,7 @@ import { RaffleHandler } from './handlers/RaffleHandler';
 import { MessageHelper } from './helpers/MessageHelper';
 import { ChannelHelper } from './helpers/ChannelHelper';
 import { RaffleHelper } from './helpers/RaffleHelper';
+import ServerManager from './managers/ServerManager';
 
 interface SuperClientBuilderOptions{
     prefix: string
@@ -49,7 +50,8 @@ export abstract class SuperClient extends Client{
     }
 
     readonly managers: IManager = {
-        raffle: new RaffleManager(this)
+        raffle: new RaffleManager(this),
+        server: new ServerManager(this)
     }
 
     readonly webHook: SyntaxWebHook = new SyntaxWebHook()
