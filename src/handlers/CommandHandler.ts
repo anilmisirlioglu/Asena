@@ -14,6 +14,7 @@ import { Message } from 'discord.js';
 import { BotInfo } from '../commands/public/BotInfo';
 import Constants from '../Constants';
 import CommandRunner from '../commands/CommandRunner';
+import { Question } from '../commands/admin/Question';
 
 export class CommandHandler extends Handler implements CommandRunner{
 
@@ -27,6 +28,7 @@ export class CommandHandler extends Handler implements CommandRunner{
         new EndRaffle(),
         new Raffles(),
         new Vote(),
+        new Question(),
         new Help(),
         new BotInfo()
     ]

@@ -1,3 +1,12 @@
+import { EmojiResolvable } from 'discord.js';
+
+export type Letter = 'a' | 'b' | 'c' | 'd' | 'e'
+
+export interface ILetter{
+    name: Letter,
+    emoji: EmojiResolvable
+}
+
 abstract class Constants{
 
     public static GRAPH_EMOJI: string = '<:graph:716972905841426453>'
@@ -14,6 +23,36 @@ abstract class Constants{
     public static MAX_WINNER: number = 20
 
     public static ALLOWED_TIME_TYPES: string[] = ['m', 'h', 'd']
+
+    public static ANSWER_REGEX: RegExp = /\[(.*?)]/g
+    public static ANSWER_REPLACE_REGEX: RegExp = /[\[\]]/g
+    public static QUESTION_REGEX: RegExp = /{(.*?)}/g
+    public static QUESTION_REPLACE_REGEX: RegExp = /[{}]/g
+
+    public static MAX_ANSWER_LENGTH: number = 5
+
+    public static LETTERS: ILetter[] = [
+        {
+            name: 'a',
+            emoji: '🇦'
+        },
+        {
+            name: 'b',
+            emoji: '🇧'
+        },
+        {
+            name: 'c',
+            emoji: '🇨'
+        },
+        {
+            name: 'd',
+            emoji: '🇩'
+        },
+        {
+            name: 'e',
+            emoji: '🇪'
+        }
+    ] //allowed letters
 
 }
 

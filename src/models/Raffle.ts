@@ -13,7 +13,7 @@ export interface IRaffle extends Document{
     finishAt: Date
 }
 
-const RaffleSchema: Schema = new Schema({
+const RaffleSchema: Schema = new Schema<IRaffle>({
     prize: {
         type: String,
         required: true
