@@ -66,7 +66,7 @@ export default class Question extends Command{
         message.channel
             .send({ embed })
             .then(vote => {
-                emojis.map(async item => await vote.react(item.emoji))
+                emojis.map(item => vote.react(item.emoji))
             })
             .catch(async () => {
                 await message.channel.send(':boom: Soru sohbet kanalına bir sebepten dolayı gönderilemedi.')

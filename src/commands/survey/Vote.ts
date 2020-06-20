@@ -21,7 +21,7 @@ export default class Vote extends Command{
 
         if(args.length <= 1) return false
 
-        const second = parseInt(args[0])
+        const second = parseInt(args[0], 10)
 
         if(second !== -1){
             if(!second || second <= 0) return false
