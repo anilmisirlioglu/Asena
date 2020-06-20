@@ -1,8 +1,7 @@
 import Manager from './Manager'
 import { Snowflake } from 'discord.js'
 import Server, { IServer } from '../models/Server';
-import { DocumentQuery, UpdateQuery } from 'mongoose';
-import { IRaffle } from '../models/Raffle';
+import { UpdateQuery } from 'mongoose';
 
 type CommandUpdateOption = 'ADD' | 'DELETE'
 
@@ -20,6 +19,12 @@ export default class ServerManager extends Manager{
         }
 
         return server
+    }
+
+    public async deleteServerData(server_id: Snowflake): Promise<void>{
+        await Server.deleteOne({ server_id })
+
+        this.deleteServerDataFromCache(server_id)
     }
 
     public async setServerPrefix(server_id: Snowflake, prefix: string): Promise<void>{

@@ -6,7 +6,8 @@ Asena sürüm tablosu
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 1.1.1   | :white_check_mark: |
+| 1.2.0   | :white_check_mark: |
+| 1.1.1   | :x:                |
 | 1.0.0   | :x:                |
 | < 1.0   | :x:                |
 

@@ -42,6 +42,5 @@ export abstract class Command{
     }
 
     public async abstract run(client: SuperClient, message: Message, args: string[]): Promise<boolean>
+
 }
-
-
