@@ -21,10 +21,11 @@ export default class Vote extends Command{
 
         if(args.length <= 1) return false
 
-        const second = parseInt(args[0], 10)
+        const second = Number(args[0])
+        if(isNaN(second)) return false
 
         if(second !== -1){
-            if(!second || second <= 0) return false
+            if(second <= 0) return false
 
             if(second > (60 * 60)){
                 await message.channel.send({
@@ -46,7 +47,7 @@ export default class Vote extends Command{
                 .setAuthor(message.author.username, message.author.displayAvatarURL() || message.author.defaultAvatarURL)
                 .setColor('#ffd1dc')
                 .setDescription('Oylama başladı!')
-                .setFooter(`Süre: ${second >= 60 ? `${Math.ceil(second / 60)} dakika, ${second % 60} saniye` : `${second} saniye`}`)
+                .setFooter(`Süre: ${second >= 60 ? `${Math.floor(second / 60)} dakika, ${second % 60} saniye` : `${second} saniye`}`)
                 .setTimestamp()
                 .addField('Soru', args.filter(arg => arg !== undefined).join(' '), true)
 
