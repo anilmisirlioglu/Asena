@@ -18,6 +18,7 @@
 | a!end | Oluşturulan çekiliş erken bitirir. |
 | a!raffles | Sunucudaki aktif çekilişleri listeler. |
 | a!vote | Sunucuda 2 seçenekli basit anket başlatır. |
+| a!question | Bir soru sorar. |
 | a!help | Yardım menüsünü özel mesaj aracılığı ile mesaj kutunuza gönderir. |
 | a!setprefix | Komut ön adını değiştirir. |
 | a!scperm | Komutun yetkisini düzenler. |
