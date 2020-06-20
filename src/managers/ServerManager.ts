@@ -1,6 +1,8 @@
 import Manager from './Manager'
 import { Snowflake } from 'discord.js'
 import Server, { IServer } from '../models/Server';
+import { DocumentQuery, UpdateQuery } from 'mongoose';
+import { IRaffle } from '../models/Raffle';
 
 type CommandUpdateOption = 'ADD' | 'DELETE'
 
@@ -21,9 +23,7 @@ export default class ServerManager extends Manager{
     }
 
     public async setServerPrefix(server_id: Snowflake, prefix: string): Promise<void>{
-        await Server.findByIdAndUpdate(await this.getServerId(server_id), {
-            prefix
-        })
+        await this.updateServer(server_id, { prefix })
     }
 
     public async setPublicCommandServer(server_id: Snowflake, command: string, type: CommandUpdateOption): Promise<void>{
@@ -33,9 +33,13 @@ export default class ServerManager extends Manager{
             }
         }
 
+        await this.updateServer(server_id, object)
+    }
+
+    private async updateServer(server_id: Snowflake, query: UpdateQuery<any>): Promise<void>{
         const update = await Server.findByIdAndUpdate(
-            await this.getServerId(server_id),
-            object,
+            (await this.getServerData(server_id))._id,
+            query,
             { new: true }
         )
 
@@ -63,10 +67,6 @@ export default class ServerManager extends Manager{
 
     private deleteServerDataFromCache(server_id: Snowflake): void{
         delete this.servers[server_id]
-    }
-
-    private async getServerId(server_id: Snowflake){
-        return (await this.getServerData(server_id))._id
     }
 
 }
