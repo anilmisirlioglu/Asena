@@ -9,7 +9,7 @@ export default class Question extends Command{
     constructor(){
         super({
             name: 'question',
-            aliases: ['sorusor'],
+            aliases: ['sorusor', 'soru'],
             description: 'Sunucuya bir soru sorarsınız.',
             usage: '{soru} ...[şıklar]',
             permission: 'ADMINISTRATOR'
