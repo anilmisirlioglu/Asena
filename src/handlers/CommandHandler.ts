@@ -1,20 +1,23 @@
 import ascii from 'ascii-table'
 import { Command } from '../commands/Command'
-import { CancelRaffle } from '../commands/admin/CancelRaffle';
-import { CreateRaffle } from '../commands/admin/CreateRaffle';
-import { ReRollRaffle } from '../commands/admin/ReRollRaffle';
-import { EndRaffle } from '../commands/admin/EndRaffle';
-import { Raffles } from '../commands/public/Raffles';
-import { Help } from '../commands/public/Help';
-import { Vote } from '../commands/admin/Vote';
-import { SetupRaffle } from '../commands/admin/SetupRaffle';
 import { SuperClient } from '../Asena';
 import Handler from './Handler';
 import { Message } from 'discord.js';
-import { BotInfo } from '../commands/public/BotInfo';
 import Constants from '../Constants';
 import CommandRunner from '../commands/CommandRunner';
-import { Question } from '../commands/admin/Question';
+
+import CancelRaffle from '../commands/raffle/CancelRaffle';
+import CreateRaffle from '../commands/raffle/CreateRaffle';
+import ReRollRaffle from '../commands/raffle/ReRollRaffle';
+import SetupRaffle from '../commands/raffle/SetupRaffle';
+import EndRaffle from '../commands/raffle/EndRaffle';
+import Raffles from '../commands/raffle/Raffles';
+import Vote from '../commands/survey/Vote';
+import Question from '../commands/survey/Question';
+import Help from '../commands/bot/Help';
+import BotInfo from '../commands/bot/BotInfo';
+import SetPrefix from '../commands/server/SetPrefix';
+import SetCommandPermission from '../commands/server/SetCommandPermission';
 
 export class CommandHandler extends Handler implements CommandRunner{
 
@@ -30,7 +33,9 @@ export class CommandHandler extends Handler implements CommandRunner{
         new Vote(),
         new Question(),
         new Help(),
-        new BotInfo()
+        new BotInfo(),
+        new SetPrefix(),
+        new SetCommandPermission()
     ]
 
     public load(): void{
@@ -46,7 +51,7 @@ export class CommandHandler extends Handler implements CommandRunner{
         console.log(this.table.toString());
     }
 
-    public run(message: Message): void{
+    public async run(message: Message){
         const client: SuperClient = this.client
 
         if(message.guild === null){
@@ -57,7 +62,10 @@ export class CommandHandler extends Handler implements CommandRunner{
             return
         }
 
-        if(!message.content.startsWith(client.prefix)){
+        const server = await client.managers.server.getServerData(message.guild.id)
+        const prefix = (client.isDevBuild ? 'dev' : '') + (server.prefix || client.prefix)
+
+        if(!message.content.startsWith(prefix)){
             return
         }
 
@@ -72,7 +80,7 @@ export class CommandHandler extends Handler implements CommandRunner{
         }
 
         const args: string[] = message.content
-            .slice(client.prefix.length)
+            .slice(prefix.length)
             .trim()
             .split(/ +/g)
         const cmd = args.shift().toLowerCase()
@@ -89,7 +97,7 @@ export class CommandHandler extends Handler implements CommandRunner{
         if(command){
             const authorized: boolean = command.hasPermission(message.member) || message.member.roles.cache.filter(role => {
                 return role.name.trim().toLowerCase() === Constants.PERMITTED_ROLE_NAME
-            }).size !== 0
+            }).size !== 0 || server.publicCommands.indexOf(command.name) !== -1
             if(authorized){
                 command.run(client, message, args).then(async (result: boolean) => {
                     if(!result){
@@ -99,15 +107,14 @@ export class CommandHandler extends Handler implements CommandRunner{
                     }
                 })
             }else{
-                // noinspection JSIgnoredPromiseFromCall
-                message.channel.send({
+                await message.channel.send({
                     embed: client.helpers.message.getErrorEmbed('Bu komutu kullanmak için **yetkiniz** yok.')
                 })
             }
         }
     }
 
-    public getLoadedCommands(): Command[]{
+    public get commands(): Command[]{
         return CommandHandler.COMMANDS
     }
 

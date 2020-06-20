@@ -1,15 +1,15 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 export interface IServer extends Document{
-    prefix: string,
+    prefix?: string,
     server_id: string,
-    publicCommands: string[]
+    publicCommands?: string[]
 }
 
 const ServerSchema: Schema = new Schema<IServer>({
     prefix: {
         type: String,
-        default: process.env.PREFIX
+        default: '!a'
     },
     server_id: {
         type: String,

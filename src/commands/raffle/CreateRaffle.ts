@@ -4,7 +4,7 @@ import { Command } from '../Command'
 import { Constants } from '../../Constants'
 import { SuperClient } from '../../Asena';
 
-export class CreateRaffle extends Command{
+export default class CreateRaffle extends Command{
 
     constructor(){
         super({

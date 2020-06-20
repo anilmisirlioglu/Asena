@@ -5,7 +5,7 @@ import { Constants } from '../../Constants'
 import { ErrorCodes } from '../../utils/ErrorCodes';
 import { SuperClient } from '../../Asena';
 
-export class CancelRaffle extends Command{
+export default class CancelRaffle extends Command{
 
     constructor(){
         super({

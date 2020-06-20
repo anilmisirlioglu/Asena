@@ -1,20 +1,14 @@
 import Manager from './Manager'
 import { Snowflake } from 'discord.js'
-import Server from '../models/Server';
+import Server, { IServer } from '../models/Server';
 
-interface IServer{
-    server_id: string,
-    prefix: string,
-    publicCommands: string[]
-}
-
-type TServer = IServer | undefined
+type CommandUpdateOption = 'ADD' | 'DELETE'
 
 export default class ServerManager extends Manager{
 
     private readonly servers: { [key: string]: IServer } = {}
 
-    public async getServer(server_id: Snowflake){
+    public async getServerData(server_id: Snowflake): Promise<IServer>{
         let server = this.getServerDataFromCache(server_id)
         if(!server){
             server = await this.getServerDataFromDatabase(server_id)
@@ -26,16 +20,40 @@ export default class ServerManager extends Manager{
         return server
     }
 
-    public async getServerDataFromDatabase(server_id: Snowflake): Promise<TServer>{
-        const server = await Server.findOne({ server_id })
+    public async setServerPrefix(server_id: Snowflake, prefix: string): Promise<void>{
+        await Server.findByIdAndUpdate(await this.getServerId(server_id), {
+            prefix
+        })
+    }
+
+    public async setPublicCommandServer(server_id: Snowflake, command: string, type: CommandUpdateOption): Promise<void>{
+        const object = {
+            [type === 'ADD' ? '$push' : '$pull']: {
+                publicCommands: command
+            }
+        }
+
+        const update = await Server.findByIdAndUpdate(
+            await this.getServerId(server_id),
+            object,
+            { new: true }
+        )
+
+        if(update){
+            this.setServerDataCache(server_id, update)
+        }
+    }
+
+    private async getServerDataFromDatabase(server_id: Snowflake): Promise<IServer>{
+        let server = await Server.findOne({ server_id })
         if(!server){
-            return null
+            server = await Server.create({ server_id })
         }
 
         return server
     }
 
-    private getServerDataFromCache(server_id: Snowflake): TServer{
+    private getServerDataFromCache(server_id: Snowflake): IServer | undefined{
         return this.servers[server_id]
     }
 
@@ -45,6 +63,10 @@ export default class ServerManager extends Manager{
 
     private deleteServerDataFromCache(server_id: Snowflake): void{
         delete this.servers[server_id]
+    }
+
+    private async getServerId(server_id: Snowflake){
+        return (await this.getServerData(server_id))._id
     }
 
 }

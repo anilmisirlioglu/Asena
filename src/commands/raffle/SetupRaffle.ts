@@ -5,7 +5,7 @@ import { Constants } from '../../Constants'
 import { InteractiveSetup, SetupPhase } from '../../utils/InteractiveSetup'
 import { SuperClient } from '../../Asena';
 
-export class SetupRaffle extends Command{
+export default class SetupRaffle extends Command{
 
     constructor(){
         super({

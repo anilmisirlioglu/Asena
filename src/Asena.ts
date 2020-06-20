@@ -28,6 +28,7 @@ interface SuperClientBuilderOptions{
 export abstract class SuperClient extends Client{
 
     readonly prefix: string = this.opts.prefix
+    readonly isDevBuild: boolean = this.opts.isDevBuild
 
     readonly version: Version = new Version(process.env.npm_package_version || '1.0.0', this.opts.isDevBuild)
 
@@ -67,10 +68,9 @@ export default class Asena extends SuperClient{
     constructor(){
         connection() // prepare conn
 
-        const isDev = (process.argv[2] ?? null) === 'dev'
         super({
-            prefix: (isDev ? 'dev' : '') + process.env.PREFIX ?? '!a',
-            isDevBuild: isDev
+            prefix: process.env.PREFIX ?? '!a',
+            isDevBuild: (process.argv[2] ?? null) === 'dev'
         })
 
         // Guild counter start
@@ -81,7 +81,7 @@ export default class Asena extends SuperClient{
 
         // Command run
         this.on('message', async message => {
-            this.handlers.command.run(message)
+            await this.handlers.command.run(message)
         })
 
         // start raffle schedule

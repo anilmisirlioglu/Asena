@@ -6,7 +6,7 @@ import * as os from 'os';
 import Byte from '../../utils/Byte';
 import MongoDB from '../../drivers/MongoDB';
 
-export class BotInfo extends Command{
+export default class BotInfo extends Command{
 
     constructor(){
         super({

@@ -4,7 +4,7 @@ import { Command } from '../Command'
 import { ErrorCodes } from '../../utils/ErrorCodes';
 import { SuperClient } from '../../Asena';
 
-export class EndRaffle extends Command{
+export default class EndRaffle extends Command{
 
     constructor(){
         super({

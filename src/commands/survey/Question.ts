@@ -4,7 +4,7 @@ import { Message, MessageEmbed } from 'discord.js';
 import Constants, { ILetter } from '../../Constants';
 import regional from '../../utils/RegionalIndicator';
 
-export class Question extends Command{
+export default class Question extends Command{
 
     constructor(){
         super({

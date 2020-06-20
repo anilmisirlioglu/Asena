@@ -5,7 +5,7 @@ import { Constants } from '../../Constants'
 import { DateTimeHelper } from '../../helpers/DateTimeHelper'
 import { SuperClient } from '../../Asena';
 
-export class Raffles extends Command{
+export default class Raffles extends Command{
 
     public constructor(){
         super({

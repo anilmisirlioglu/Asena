@@ -3,7 +3,7 @@ import { Message, MessageEmbed } from 'discord.js';
 import { Constants } from '../../Constants';
 import { SuperClient } from '../../Asena';
 
-export class Vote extends Command{
+export default class Vote extends Command{
 
     constructor(){
         super({
