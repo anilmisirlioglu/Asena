@@ -77,24 +77,37 @@ export class RaffleHelper extends Helper{
                 if(message instanceof Message){
                     const winners: string[] = await this.identifyWinners(raffle)
                     const _message: string = this.getMessageURL(raffle)
-                    if(winners.length === 0){
-                        await channel.send(`Yeterli katılım olmadığından dolayı çekilişin kazananı olmadı.\n**Çekiliş:** ${_message}`)
-                    }else{
-                        const winnersOfMentions: string[] = winners.map(winner => `<@${winner}>`)
-                        const embed: MessageEmbed = new MessageEmbed()
-                            .setAuthor(raffle.prize)
-                            .setDescription(`${
-                                winners.length === 1 ? `Kazanan: <@${winners.shift()}>` : `Kazananlar:\n${winnersOfMentions.join('\n')}`
-                            }\nOluşturan: <@${raffle.constituent_id}>`)
-                            .setFooter(`${raffle.numbersOfWinner} Kazanan | Sona Erdi`)
-                            .setTimestamp(new Date(raffle.finishAt))
-                            .setColor('#36393F')
+                    const winnersOfMentions: string[] = winners.map(winner => `<@${winner}>`)
 
-                        await channel.send(`Tebrikler ${winnersOfMentions.join(', ')}! **${raffle.prize}** kazandınız\n**Çekiliş:** ${_message}`)
-                        await message.edit(`${Constants.CONFETTI_REACTION_EMOJI} **ÇEKİLİŞ BİTTİ** ${Constants.CONFETTI_REACTION_EMOJI}`, {
-                            embed
-                        })
+                    let description, content
+                    switch(winners.length){
+                        case 0:
+                            description = 'Yetersiz katılım. Kazanan olmadı.'
+                            content = 'Yeterli katılım olmadığından dolayı çekilişin kazananı olmadı.'
+                            break
+
+                        case 1:
+                            description = `Kazanan: <@${winners.shift()}>`
+                            content = `Tebrikler ${winnersOfMentions.join(', ')}! **${raffle.prize}** kazandınız`
+                            break
+
+                        default:
+                            description = `Kazananlar:\n${winnersOfMentions.join('\n')}`
+                            content = `Tebrikler ${winnersOfMentions.join(', ')}! **${raffle.prize}** kazandınız`
+                            break
                     }
+
+                    const embed: MessageEmbed = new MessageEmbed()
+                        .setAuthor(raffle.prize)
+                        .setDescription(`${description}\nOluşturan: <@${raffle.constituent_id}>`)
+                        .setFooter(`${raffle.numbersOfWinner} Kazanan | Sona Erdi`)
+                        .setTimestamp(new Date(raffle.finishAt))
+                        .setColor('#36393F')
+
+                    await message.edit(`${Constants.CONFETTI_REACTION_EMOJI} **ÇEKİLİŞ BİTTİ** ${Constants.CONFETTI_REACTION_EMOJI}`, {
+                        embed
+                    })
+                    await channel.send(`${content}\n**Çekiliş** ${_message}`)
                 }
             }
         }
