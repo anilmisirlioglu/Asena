@@ -70,7 +70,7 @@ export default class Asena extends SuperClient{
 
         super({
             prefix: process.env.PREFIX ?? '!a',
-            isDevBuild: (process.argv[2] ?? null) === 'dev'
+            isDevBuild: process.argv.includes('dev')
         })
 
         // Guild counter start
