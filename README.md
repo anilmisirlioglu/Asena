@@ -3,6 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Stars](https://img.shields.io/github/stars/anilmisirlioglu/Asena)](https://github.com/anilmisirlioglu/Asena/stargazers)
 [![CodeFactor](https://www.codefactor.io/repository/github/anilmisirlioglu/asena/badge/master)](https://www.codefactor.io/repository/github/anilmisirlioglu/asena/overview/master)
+[![Discord](https://discordapp.com/api/guilds/701790578874253363/widget.png?style=shield)](https://discord.gg/CRgXhfs)
 
 > Tamamen Türkçe, stabil, hızlı, kolay ve yeni nesil teknolojilerle kuşatılmış Discord çekiliş & anket botu!
 
