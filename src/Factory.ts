@@ -8,4 +8,8 @@ export default abstract class Factory{
         this.client = client
     }
 
+    protected getClient(): SuperClient{
+        return this.client
+    }
+
 }

@@ -24,7 +24,8 @@ export default class Logger{
     private static send(message: string, level: LogLevel, color: Colors): void{
         const date = new Date()
             .toISOString()
-            .replace(/T/, ' ').replace(/\..+/, '')
+            .replace(/T/, ' ')
+            .replace(/\..+/, '')
 
         const format = `[${date}] [${level}] ${message}`;
 

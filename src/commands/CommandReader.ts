@@ -1,28 +1,27 @@
-import ascii from 'ascii-table';
 import { Message } from 'discord.js';
-import { Command } from '../commands/Command';
+
+import CommandRunner from './CommandRunner';
+import Factory from '../Factory';
+import { Command } from './Command';
+import { Colors } from '../utils/TextFormat';
+
+import CancelRaffle from './raffle/CancelRaffle';
+import CreateRaffle from './raffle/CreateRaffle';
+import ReRollRaffle from './raffle/ReRollRaffle';
+import SetupRaffle from './raffle/SetupRaffle';
+import EndRaffle from './raffle/EndRaffle';
+import Raffles from './raffle/Raffles';
+import Vote from './survey/Vote';
+import Question from './survey/Question';
+import Help from './bot/Help';
+import BotInfo from './bot/BotInfo';
+import SetPrefix from './server/SetPrefix';
+import SetCommandPermission from './server/SetCommandPermission';
 import { SuperClient } from '../Asena';
-import Handler from './Handler';
 import Constants from '../Constants';
-import CommandRunner from '../commands/CommandRunner';
 
-import CancelRaffle from '../commands/raffle/CancelRaffle';
-import CreateRaffle from '../commands/raffle/CreateRaffle';
-import ReRollRaffle from '../commands/raffle/ReRollRaffle';
-import SetupRaffle from '../commands/raffle/SetupRaffle';
-import EndRaffle from '../commands/raffle/EndRaffle';
-import Raffles from '../commands/raffle/Raffles';
-import Vote from '../commands/survey/Vote';
-import Question from '../commands/survey/Question';
-import Help from '../commands/bot/Help';
-import BotInfo from '../commands/bot/BotInfo';
-import SetPrefix from '../commands/server/SetPrefix';
-import SetCommandPermission from '../commands/server/SetCommandPermission';
+export default class CommandReader extends Factory implements CommandRunner{
 
-export class CommandHandler extends Handler implements CommandRunner{
-
-    // noinspection JSPotentiallyInvalidConstructorUsage
-    private readonly table: ascii = new ascii('Komutlar')
     private static readonly COMMANDS: Command[] = [
         new CancelRaffle(),
         new CreateRaffle(),
@@ -38,20 +37,25 @@ export class CommandHandler extends Handler implements CommandRunner{
         new SetCommandPermission()
     ]
 
+    constructor(client: SuperClient){
+        super(client)
+
+        this.load()
+    }
+
     public load(): void{
-        CommandHandler.COMMANDS.forEach(command => {
+        this.commands.forEach(command => {
             this.client.commands.set(command.name, command);
-            this.table.addRow(command.name, '✅');
 
             if(command.aliases && Array.isArray(command.aliases)){
                 command.aliases.forEach(alias => this.client.aliases.set(alias, command.name));
             }
         })
 
-        console.log(this.table.toString());
+        this.client.logger.info(`Toplam ${Colors.LIGHT_PURPLE}${this.commands.length} ${Colors.AQUA}komut başarıyla yüklendi.`)
     }
 
-    public async run(message: Message){
+    async run(message: Message){
         const client: SuperClient = this.client
 
         if(message.guild === null){
@@ -115,7 +119,7 @@ export class CommandHandler extends Handler implements CommandRunner{
     }
 
     public get commands(): Command[]{
-        return CommandHandler.COMMANDS
+        return CommandReader.COMMANDS
     }
 
 }

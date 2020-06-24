@@ -9,7 +9,6 @@ import { IHelper } from './helpers/Helper';
 import { IHandler } from './handlers/Handler';
 import { IManager } from './managers/Manager';
 import RaffleManager from './managers/RaffleManager';
-import { CommandHandler } from './handlers/CommandHandler';
 import { GuildHandler } from './handlers/GuildHandler';
 import { RaffleHandler } from './handlers/RaffleHandler';
 import { MessageHelper } from './helpers/MessageHelper';
@@ -18,6 +17,7 @@ import { RaffleHelper } from './helpers/RaffleHelper';
 import ServerManager from './managers/ServerManager';
 import { SurveyHelper } from './helpers/SurveyHelper';
 import { SurveyHandler } from './handlers/SurveyHandler';
+import CommandReader from './commands/CommandReader';
 
 interface SuperClientBuilderOptions{
     prefix: string
@@ -37,6 +37,8 @@ export abstract class SuperClient extends Client{
     readonly aliases: Collection<string, string> = new Collection<string, string>()
     readonly setups: Collection<string, string> = new Collection<string, string>()
 
+    private readonly commandReader: CommandReader = new CommandReader(this)
+
     private readonly helpers: IHelper = {
         message: new MessageHelper(this),
         channel: new ChannelHelper(this),
@@ -45,7 +47,6 @@ export abstract class SuperClient extends Client{
     }
 
     private readonly handlers: IHandler = {
-        command: new CommandHandler(this),
         guild: new GuildHandler(this),
         raffle: new RaffleHandler(this),
         survey: new SurveyHandler(this)
@@ -72,10 +73,6 @@ export abstract class SuperClient extends Client{
     }
 
     /* HANDLERS */
-    public getCommandHandler(): CommandHandler{
-        return this.handlers.command
-    }
-
     public getGuildHandler(): GuildHandler{
         return this.handlers.guild
     }
@@ -105,6 +102,11 @@ export abstract class SuperClient extends Client{
         return this.helpers.survey
     }
 
+    /* OTHER */
+    public getCommandReader(): CommandReader{
+        return this.commandReader
+    }
+
 }
 
 export default class Asena extends SuperClient{
@@ -120,12 +122,9 @@ export default class Asena extends SuperClient{
         // Guild counter start
         this.getGuildHandler().start()
 
-        // Load commands
-        this.getCommandHandler().load()
-
         // Command run
         this.on('message', async message => {
-            await this.getCommandHandler().run(message)
+            await this.getCommandReader().run(message)
         })
 
         // Delete server data from db
