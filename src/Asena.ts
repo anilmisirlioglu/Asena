@@ -17,7 +17,7 @@ import { RaffleHelper } from './helpers/RaffleHelper';
 import ServerManager from './managers/ServerManager';
 import { SurveyHelper } from './helpers/SurveyHelper';
 import { SurveyHandler } from './handlers/SurveyHandler';
-import CommandReader from './commands/CommandReader';
+import CommandHandler from './commands/CommandHandler';
 
 interface SuperClientBuilderOptions{
     prefix: string
@@ -37,8 +37,6 @@ export abstract class SuperClient extends Client{
     readonly aliases: Collection<string, string> = new Collection<string, string>()
     readonly setups: Collection<string, string> = new Collection<string, string>()
 
-    private readonly commandReader: CommandReader = new CommandReader(this)
-
     private readonly helpers: IHelper = {
         message: new MessageHelper(this),
         channel: new ChannelHelper(this),
@@ -49,7 +47,8 @@ export abstract class SuperClient extends Client{
     private readonly handlers: IHandler = {
         guild: new GuildHandler(this),
         raffle: new RaffleHandler(this),
-        survey: new SurveyHandler(this)
+        survey: new SurveyHandler(this),
+        command: new CommandHandler(this)
     }
 
     private readonly managers: IManager = {
@@ -85,6 +84,10 @@ export abstract class SuperClient extends Client{
         return this.handlers.survey
     }
 
+    public getCommandHandler(): CommandHandler{
+        return this.handlers.command
+    }
+
     /* HELPERS */
     public getMessageHelper(): MessageHelper{
         return this.helpers.message
@@ -100,11 +103,6 @@ export abstract class SuperClient extends Client{
 
     public getSurveyHelper(): SurveyHelper{
         return this.helpers.survey
-    }
-
-    /* OTHER */
-    public getCommandReader(): CommandReader{
-        return this.commandReader
     }
 
 }
@@ -124,7 +122,7 @@ export default class Asena extends SuperClient{
 
         // Command run
         this.on('message', async message => {
-            await this.getCommandReader().run(message)
+            await this.getCommandHandler().run(message)
         })
 
         // Delete server data from db

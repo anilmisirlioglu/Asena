@@ -21,7 +21,7 @@ export default class SetCommandPermission extends Command{
         if(['everyone', 'admin'].indexOf(cluster) === -1) return false
 
         const command: string = args[1].trim().toLowerCase()
-        const commands: Command[] = client.getCommandReader().commands
+        const commands: Command[] = client.getCommandHandler().commands
 
         const commandAuth: Command[] = commands.filter($command => $command.name === command)
         if(commandAuth.length === 0){

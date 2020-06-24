@@ -1,9 +1,11 @@
 import { Message } from 'discord.js';
 
 import CommandRunner from './CommandRunner';
-import Factory from '../Factory';
 import { Command } from './Command';
 import { Colors } from '../utils/TextFormat';
+import { SuperClient } from '../Asena';
+import Constants from '../Constants';
+import Handler from '../handlers/Handler';
 
 import CancelRaffle from './raffle/CancelRaffle';
 import CreateRaffle from './raffle/CreateRaffle';
@@ -17,10 +19,8 @@ import Help from './bot/Help';
 import BotInfo from './bot/BotInfo';
 import SetPrefix from './server/SetPrefix';
 import SetCommandPermission from './server/SetCommandPermission';
-import { SuperClient } from '../Asena';
-import Constants from '../Constants';
 
-export default class CommandReader extends Factory implements CommandRunner{
+export default class CommandHandler extends Handler implements CommandRunner{
 
     private static readonly COMMANDS: Command[] = [
         new CancelRaffle(),
@@ -119,7 +119,7 @@ export default class CommandReader extends Factory implements CommandRunner{
     }
 
     public get commands(): Command[]{
-        return CommandReader.COMMANDS
+        return CommandHandler.COMMANDS
     }
 
 }
