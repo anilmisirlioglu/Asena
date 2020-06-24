@@ -1,6 +1,6 @@
 import { Command } from '../Command';
 import { Message, MessageEmbed } from 'discord.js';
-import { Constants } from '../../Constants';
+import Constants from '../../Constants';
 import { SuperClient } from '../../Asena';
 import Survey from '../../models/Survey';
 import { DateTimeHelper } from '../../helpers/DateTimeHelper';
@@ -47,7 +47,7 @@ export default class Vote extends Command{
             const time = DateTimeHelper.detectTime(second)
             if(!time){
                 await message.channel.send({
-                    embed: client.helpers.message.getErrorEmbed('Lütfen geçerli bir süre giriniz. (Örn; **1s** - **1m** - **5m** - **1h** vb.)')
+                    embed: client.getMessageHelper().getErrorEmbed('Lütfen geçerli bir süre giriniz. (Örn; **1s** - **1m** - **5m** - **1h** vb.)')
                 })
 
                 return true
@@ -55,7 +55,7 @@ export default class Vote extends Command{
 
             if(time < Constants.MIN_SURVEY_TIME || time > Constants.MAX_SURVEY_TIME){
                 await message.channel.send({
-                    embed: client.helpers.message.getErrorEmbed(`Anket süresi en az 1 dakika, maksimum 7 gün olabilir.`)
+                    embed: client.getMessageHelper().getErrorEmbed(`Anket süresi en az 1 dakika, maksimum 7 gün olabilir.`)
                 })
 
                 return true

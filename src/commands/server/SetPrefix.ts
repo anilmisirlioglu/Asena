@@ -20,13 +20,13 @@ export default class SetPrefix extends Command{
 
         if(prefix.length > 5){
             await message.channel.send({
-                embed: client.helpers.message.getErrorEmbed('Komut prefix \'i en fazla 5 karakterden oluşabilir.')
+                embed: client.getMessageHelper().getErrorEmbed('Komut prefix \'i en fazla 5 karakterden oluşabilir.')
             })
 
             return true
         }
 
-        await client.managers.server.setServerPrefix(message.guild.id, prefix)
+        await client.getServerManager().setServerPrefix(message.guild.id, prefix)
         await message.channel.send(`:comet: Komut ön adı **${prefix}** olarak değiştirildi.`)
 
         return true

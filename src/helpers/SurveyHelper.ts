@@ -6,7 +6,7 @@ import Constants from '../Constants';
 export class SurveyHelper extends Helper{
 
     public async finishSurvey(survey: ISurvey){
-        const channel: GuildChannel | undefined = await this.client.helpers.channel.fetchChannel(survey.server_id, survey.channel_id)
+        const channel: GuildChannel | undefined = await this.client.getChannelHelper().fetchChannel(survey.server_id, survey.channel_id)
         if(channel instanceof TextChannel){
             const message: Message | undefined = await channel.messages.fetch(survey.message_id)
             if(message instanceof Message){

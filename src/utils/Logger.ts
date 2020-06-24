@@ -8,7 +8,7 @@ enum LogLevel{
     DEBUG = 'Debug'
 }
 
-export class Logger{
+export default class Logger{
 
     private static LOG = 'log.txt';
     private static LOG_DIR = `${__dirname}/../../` + Logger.LOG;

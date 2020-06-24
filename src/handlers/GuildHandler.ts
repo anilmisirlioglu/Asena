@@ -1,4 +1,4 @@
-import { Constants } from '../Constants'
+import Constants from '../Constants'
 import { SuperClient } from '../Asena';
 import Handler from './Handler';
 

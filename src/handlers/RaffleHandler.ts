@@ -39,7 +39,7 @@ export class RaffleHandler extends Handler{
                 status: 'FINISHED'
             })
 
-            await this.client.helpers.raffle.finishRaffle(raffle)
+            await this.client.getRaffleHelper().finishRaffle(raffle)
         }, timeout)
     }
     

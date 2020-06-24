@@ -20,11 +20,11 @@ export default class EndRaffle extends Command{
         let message_id: string | undefined = args[0]
 
         if(!message_id){
-            const raffle = await client.managers.raffle.getServerLastRaffle(message.guild.id)
+            const raffle = await client.getRaffleManager().getServerLastRaffle(message.guild.id)
             if(raffle){
                 if(!raffle.message_id){
                     await message.channel.send({
-                        embed: client.helpers.message.getErrorEmbed(`Bitirilebilecek bir çekiliş bulunamadı.`)
+                        embed: client.getMessageHelper().getErrorEmbed(`Bitirilebilecek bir çekiliş bulunamadı.`)
                     })
 
                     return true
@@ -34,10 +34,10 @@ export default class EndRaffle extends Command{
             }
         }
 
-        const finishEarlyRaffle = await client.managers.raffle.finishEarlyRaffle(message_id)
+        const finishEarlyRaffle = await client.getRaffleManager().finishEarlyRaffle(message_id)
         if(finishEarlyRaffle.errorCode === ErrorCodes.NOT_FOUND){
             await message.channel.send({
-                embed: client.helpers.message.getErrorEmbed('Çekiliş bulunamadı.')
+                embed: client.getMessageHelper().getErrorEmbed('Çekiliş bulunamadı.')
             })
 
             return true
@@ -45,13 +45,13 @@ export default class EndRaffle extends Command{
 
         if(finishEarlyRaffle.errorCode === ErrorCodes.RAFFLE_FINISHED_ERROR){
             await message.channel.send({
-                embed: client.helpers.message.getErrorEmbed('Anlaşılan bu çekiliş zaten bitmiş veya iptal edilmiş.')
+                embed: client.getMessageHelper().getErrorEmbed('Anlaşılan bu çekiliş zaten bitmiş veya iptal edilmiş.')
             })
 
             return true
         }
 
-        await client.helpers.raffle.finishRaffle(finishEarlyRaffle.raffle)
+        await client.getRaffleHelper().finishRaffle(finishEarlyRaffle.raffle)
         await message.channel.send(`**${finishEarlyRaffle.raffle.prize}** çekilişi erken bitirildi. Sonuçlar <#${finishEarlyRaffle.raffle.channel_id}> kanalına gönderildi.`)
         await message.delete({
             timeout: 100

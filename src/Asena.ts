@@ -1,10 +1,7 @@
-import {
-    Client,
-    Collection,
-} from 'discord.js';
+import { Client, Collection, } from 'discord.js';
 
-import { Logger } from './utils/Logger';
-import { Version } from './utils/Version';
+import Logger from './utils/Logger';
+import Version from './utils/Version';
 import { Command } from './commands/Command';
 import connection from './connection';
 import SyntaxWebHook from './SyntaxWebhook';
@@ -40,21 +37,21 @@ export abstract class SuperClient extends Client{
     readonly aliases: Collection<string, string> = new Collection<string, string>()
     readonly setups: Collection<string, string> = new Collection<string, string>()
 
-    readonly helpers: IHelper = {
+    private readonly helpers: IHelper = {
         message: new MessageHelper(this),
         channel: new ChannelHelper(this),
         raffle: new RaffleHelper(this),
         survey: new SurveyHelper(this)
     }
 
-    readonly handlers: IHandler = {
+    private readonly handlers: IHandler = {
         command: new CommandHandler(this),
         guild: new GuildHandler(this),
         raffle: new RaffleHandler(this),
         survey: new SurveyHandler(this)
     }
 
-    readonly managers: IManager = {
+    private readonly managers: IManager = {
         raffle: new RaffleManager(this),
         server: new ServerManager(this)
     }
@@ -63,6 +60,49 @@ export abstract class SuperClient extends Client{
 
     protected constructor(private opts: SuperClientBuilderOptions){
         super()
+    }
+
+    /* MANAGERS */
+    public getRaffleManager(): RaffleManager{
+        return this.managers.raffle
+    }
+
+    public getServerManager(): ServerManager{
+        return this.managers.server
+    }
+
+    /* HANDLERS */
+    public getCommandHandler(): CommandHandler{
+        return this.handlers.command
+    }
+
+    public getGuildHandler(): GuildHandler{
+        return this.handlers.guild
+    }
+
+    public getRaffleHandler(): RaffleHandler{
+        return this.handlers.raffle
+    }
+
+    public getSurveyHandler(): SurveyHandler{
+        return this.handlers.survey
+    }
+
+    /* HELPERS */
+    public getMessageHelper(): MessageHelper{
+        return this.helpers.message
+    }
+
+    public getChannelHelper(): ChannelHelper{
+        return this.helpers.channel
+    }
+
+    public getRaffleHelper(): RaffleHelper{
+        return this.helpers.raffle
+    }
+
+    public getSurveyHelper(): SurveyHelper{
+        return this.helpers.survey
     }
 
 }
@@ -78,24 +118,24 @@ export default class Asena extends SuperClient{
         })
 
         // Guild counter start
-        this.handlers.guild.start()
+        this.getGuildHandler().start()
 
         // Load commands
-        this.handlers.command.load()
+        this.getCommandHandler().load()
 
         // Command run
         this.on('message', async message => {
-            await this.handlers.command.run(message)
+            await this.getCommandHandler().run(message)
         })
 
         // Delete server data from db
         this.on('guildDelete', async guild => {
-            await this.managers.server.deleteServerData(guild.id)
+            await this.getServerManager().deleteServerData(guild.id)
         })
 
         // start schedulers
-        this.handlers.raffle.startJobSchedule()
-        this.handlers.survey.startJobSchedule()
+        this.getRaffleHandler().startJobSchedule()
+        this.getSurveyHandler().startJobSchedule()
     }
 
 }

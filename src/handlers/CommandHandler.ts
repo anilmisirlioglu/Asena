@@ -1,8 +1,8 @@
-import ascii from 'ascii-table'
-import { Command } from '../commands/Command'
+import ascii from 'ascii-table';
+import { Message } from 'discord.js';
+import { Command } from '../commands/Command';
 import { SuperClient } from '../Asena';
 import Handler from './Handler';
-import { Message } from 'discord.js';
 import Constants from '../Constants';
 import CommandRunner from '../commands/CommandRunner';
 
@@ -62,7 +62,7 @@ export class CommandHandler extends Handler implements CommandRunner{
             return
         }
 
-        const server = await client.managers.server.getServerData(message.guild.id)
+        const server = await client.getServerManager().getServerData(message.guild.id)
         const prefix = (client.isDevBuild ? 'dev' : '') + (server.prefix || client.prefix)
 
         if(!message.content.startsWith(prefix)){
@@ -102,13 +102,13 @@ export class CommandHandler extends Handler implements CommandRunner{
                 command.run(client, message, args).then(async (result: boolean) => {
                     if(!result){
                         await message.channel.send({
-                            embed: client.helpers.message.getCommandUsageEmbed(command)
+                            embed: client.getMessageHelper().getCommandUsageEmbed(command)
                         })
                     }
                 })
             }else{
                 await message.channel.send({
-                    embed: client.helpers.message.getErrorEmbed('Bu komutu kullanmak için **yetkiniz** yok.')
+                    embed: client.getMessageHelper().getErrorEmbed('Bu komutu kullanmak için **yetkiniz** yok.')
                 })
             }
         }

@@ -27,7 +27,7 @@ export class SurveyHandler extends Handler{
         setTimeout(async () => {
             await survey.remove()
 
-            await this.client.helpers.survey.finishSurvey(survey)
+            await this.client.getSurveyHelper().finishSurvey(survey)
         }, timeout)
     }
 

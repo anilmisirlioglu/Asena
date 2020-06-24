@@ -64,7 +64,7 @@ export default class Help extends Command{
                 return true;
             }else{
                 await message.channel.send({
-                    embed: client.helpers.message.getErrorEmbed(`**${command}** adında komut bulunamadı.`)
+                    embed: client.getMessageHelper().getErrorEmbed(`**${command}** adında komut bulunamadı.`)
                 });
 
                 return true;

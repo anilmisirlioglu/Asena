@@ -4,7 +4,7 @@ import { InvalidArgumentException } from '../exceptions/InvalidArgumentException
 /**
  * @link https://semver.org/lang/en/
  */
-export class Version{
+export default class Version{
 
     private readonly baseVersion: string;
     private readonly suffix: string;

@@ -21,12 +21,12 @@ export default class SetCommandPermission extends Command{
         if(['everyone', 'admin'].indexOf(cluster) === -1) return false
 
         const command: string = args[1].trim().toLowerCase()
-        const commands: Command[] = client.handlers.command.commands
+        const commands: Command[] = client.getCommandHandler().commands
 
         const commandAuth: Command[] = commands.filter($command => $command.name === command)
         if(commandAuth.length === 0){
             await message.channel.send({
-                embed: client.helpers.message.getErrorEmbed('Komut bulunamadı.')
+                embed: client.getMessageHelper().getErrorEmbed('Komut bulunamadı.')
             })
 
             return true
@@ -35,14 +35,14 @@ export default class SetCommandPermission extends Command{
         const $command: Command = commandAuth.shift()
         if(!$command.permission || this.name === $command.name){
             await message.channel.send({
-                embed: client.helpers.message.getErrorEmbed('Bu komutun izinlerini düzenleyemezsin.')
+                embed: client.getMessageHelper().getErrorEmbed('Bu komutun izinlerini düzenleyemezsin.')
             })
 
             return true
         }
 
         const guildId: Snowflake = message.guild.id
-        const server = await client.managers.server.getServerData(guildId)
+        const server = await client.getServerManager().getServerData(guildId)
         const commandStatus: number = server.publicCommands.indexOf(command)
 
         let opcl: string, err: boolean = false, type
@@ -68,13 +68,13 @@ export default class SetCommandPermission extends Command{
 
         if(err){
             await message.channel.send({
-                embed: client.helpers.message.getErrorEmbed(`Bu komut zaten herkese **${opcl}**.`)
+                embed: client.getMessageHelper().getErrorEmbed(`Bu komut zaten herkese **${opcl}**.`)
             })
 
             return true
         }
 
-        await client.managers.server.setPublicCommandServer(guildId, $command.name, type)
+        await client.getServerManager().setPublicCommandServer(guildId, $command.name, type)
         await message.channel.send(`🌈  '**${$command.name}**' komutunun izinleri başarıyla düzenlendi. Komut durumu: **Herkese ${type === 'ADD' ? 'açık' : 'kapalı'}**`)
 
         return true

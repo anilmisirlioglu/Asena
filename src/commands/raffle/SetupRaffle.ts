@@ -1,7 +1,7 @@
 import { Command } from '../Command'
 import { DateTimeHelper } from '../../helpers/DateTimeHelper'
 import { Message, TextChannel } from 'discord.js'
-import { Constants } from '../../Constants'
+import Constants from '../../Constants'
 import { InteractiveSetup, SetupPhase } from '../../utils/InteractiveSetup'
 import { SuperClient } from '../../Asena';
 
@@ -21,15 +21,15 @@ export default class SetupRaffle extends Command{
         if(message.channel instanceof TextChannel){
             if(client.setups.get(message.author.id)){
                 await message.channel.send({
-                    embed: client.helpers.message.getErrorEmbed('Zaten bir kurulum sihirbazı içindesin. Lütfen önce başlattığınız kurulumu bitirin veya iptal edin.')
+                    embed: client.getMessageHelper().getErrorEmbed('Zaten bir kurulum sihirbazı içindesin. Lütfen önce başlattığınız kurulumu bitirin veya iptal edin.')
                 })
                 return true
             }
 
-            const result = await client.managers.raffle.getContinuesRaffles(message.guild.id)
+            const result = await client.getRaffleManager().getContinuesRaffles(message.guild.id)
             if(result.length >= 5){
                 await message.channel.send({
-                    embed: client.helpers.message.getErrorEmbed('Maksimum çekiliş oluşturma sınırı aşıyorsunuz. (Maks 5)')
+                    embed: client.getMessageHelper().getErrorEmbed('Maksimum çekiliş oluşturma sınırı aşıyorsunuz. (Maks 5)')
                 })
                 return true
             }
@@ -161,7 +161,7 @@ export default class SetupRaffle extends Command{
                 ],
                 (store) => {
                     const finishAt: number = Date.now() + (store.get(2) * 1000)
-                    client.managers.raffle.createRaffle({
+                    client.getRaffleManager().createRaffle({
                         prize: store.get(3),
                         server_id: message.guild.id,
                         constituent_id: message.author.id,
@@ -173,7 +173,7 @@ export default class SetupRaffle extends Command{
                             const raffleId = result.id
                             const channel = message.guild.channels.cache.get(store.get(0))
                             if(channel instanceof TextChannel){
-                                await client.helpers.raffle.sendRaffleStartMessage(
+                                await client.getRaffleHelper().sendRaffleStartMessage(
                                     message,
                                     channel,
                                     store.get(2),
@@ -184,7 +184,7 @@ export default class SetupRaffle extends Command{
                                 )
                                 await message.channel.send(`:star2: Çekiliş başarıyla oluşturuldu! Oluşturduğun çekiliş <#${store.get(0)}> kanalında yayınlandı...`)
                             }else{
-                                await client.managers.raffle.deleteRaffle(raffleId)
+                                await client.getRaffleManager().deleteRaffle(raffleId)
                                 await message.channel.send(`:boom: Çekiliş oluşturulamadı. Girdiğiniz kanal sunucunuzda bulunamadı. Birden bire yok olmuş...`)
                             }
                         }else{

@@ -1,7 +1,7 @@
 import { Message } from 'discord.js'
 
 import { Command } from '../Command'
-import { Constants } from '../../Constants'
+import Constants from '../../Constants'
 import { ErrorCodes } from '../../utils/ErrorCodes';
 import { SuperClient } from '../../Asena';
 
@@ -21,11 +21,11 @@ export default class CancelRaffle extends Command{
         let message_id: string | undefined = args[0];
 
         if(!message_id){
-            const raffle = await client.managers.raffle.getServerLastRaffle(message.guild.id)
+            const raffle = await client.getRaffleManager().getServerLastRaffle(message.guild.id)
             if(raffle){
                 if(!raffle.message_id){
                     await message.channel.send({
-                        embed: client.helpers.message.getErrorEmbed(`İptal edilebilecek bir çekiliş bulunamadı.`)
+                        embed: client.getMessageHelper().getErrorEmbed(`İptal edilebilecek bir çekiliş bulunamadı.`)
                     })
 
                     return true
@@ -35,10 +35,10 @@ export default class CancelRaffle extends Command{
             }
         }
 
-        const cancelRaffle = await client.managers.raffle.cancelRaffle(message_id)
+        const cancelRaffle = await client.getRaffleManager().cancelRaffle(message_id)
         if(cancelRaffle.errorCode === ErrorCodes.NOT_FOUND){
             await message.channel.send({
-                embed: client.helpers.message.getErrorEmbed('Çekiliş bulunamadı.')
+                embed: client.getMessageHelper().getErrorEmbed('Çekiliş bulunamadı.')
             })
 
             return true
@@ -46,14 +46,14 @@ export default class CancelRaffle extends Command{
 
         if(cancelRaffle.errorCode === ErrorCodes.RAFFLE_FINISHED_ERROR){
             await message.channel.send({
-                embed: client.helpers.message.getErrorEmbed('Bu çekiliş devam eden bir çekiliş değil. Bu komut sadece devam eden çekilişlerde kullanılabilir.')
+                embed: client.getMessageHelper().getErrorEmbed('Bu çekiliş devam eden bir çekiliş değil. Bu komut sadece devam eden çekilişlerde kullanılabilir.')
             })
 
             return true
         }
 
         const raffle = cancelRaffle.raffle
-        const $message = await client.helpers.message.fetchMessage(raffle.server_id, raffle.channel_id, raffle.message_id)
+        const $message = await client.getMessageHelper().fetchMessage(raffle.server_id, raffle.channel_id, raffle.message_id)
         if($message){
             await $message.delete({
                 timeout: 0

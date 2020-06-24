@@ -1,7 +1,7 @@
 import { Message, MessageEmbed } from 'discord.js'
 
 import { Command } from '../Command'
-import { Constants } from '../../Constants'
+import Constants from '../../Constants'
 import { DateTimeHelper } from '../../helpers/DateTimeHelper'
 import { SuperClient } from '../../Asena';
 
@@ -18,7 +18,7 @@ export default class Raffles extends Command{
     }
 
     async run(client: SuperClient, message: Message, args: string[]): Promise<boolean>{
-        const raffles = await client.managers.raffle.getContinuesRaffles(message.guild.id);
+        const raffles = await client.getRaffleManager().getContinuesRaffles(message.guild.id);
         const embed: MessageEmbed = new MessageEmbed()
             .setAuthor(`${message.guild.name} | Aktif Çekilişler`)
             .setColor('#DDA0DD')

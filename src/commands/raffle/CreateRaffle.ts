@@ -1,7 +1,7 @@
 import { Message, TextChannel } from 'discord.js'
 
 import { Command } from '../Command'
-import { Constants } from '../../Constants'
+import Constants from '../../Constants'
 import { SuperClient } from '../../Asena';
 import { DateTimeHelper } from '../../helpers/DateTimeHelper';
 
@@ -28,7 +28,7 @@ export default class CreateRaffle extends Command{
 
         if(numbersOfWinner > Constants.MAX_RAFFLE_WINNER || numbersOfWinner === 0){
             await message.channel.send({
-                embed: client.helpers.message.getErrorEmbed('Çekilişi kazanan üye sayısı maksimum 25, minimum 1 kişi olabilir.')
+                embed: client.getMessageHelper().getErrorEmbed('Çekilişi kazanan üye sayısı maksimum 25, minimum 1 kişi olabilir.')
             })
 
             return true
@@ -37,7 +37,7 @@ export default class CreateRaffle extends Command{
         const stringToPrize: string = prize.join(' ')
         if(stringToPrize.length > 255){
             await message.channel.send({
-                embed: client.helpers.message.getErrorEmbed('Çekiliş başlığı maksimum 255 karakter uzunluğunda olmalıdır.')
+                embed: client.getMessageHelper().getErrorEmbed('Çekiliş başlığı maksimum 255 karakter uzunluğunda olmalıdır.')
             })
 
             return true
@@ -46,7 +46,7 @@ export default class CreateRaffle extends Command{
         const toSecond: number = DateTimeHelper.detectTime(time);
         if(!toSecond){
             await message.channel.send({
-                embed: client.helpers.message.getErrorEmbed('Lütfen geçerli bir süre giriniz. (Örn; **1s** - **1m** - **5m** - **1h** vb.)')
+                embed: client.getMessageHelper().getErrorEmbed('Lütfen geçerli bir süre giriniz. (Örn; **1s** - **1m** - **5m** - **1h** vb.)')
             })
 
             return true
@@ -54,14 +54,14 @@ export default class CreateRaffle extends Command{
 
         if(toSecond < Constants.MIN_RAFFLE_TIME || toSecond > Constants.MAX_RAFFLE_TIME){
             await message.channel.send({
-                embed: client.helpers.message.getErrorEmbed('Çekiliş süresi en az 1 dakika, en fazla 60 gün olabilir.')
+                embed: client.getMessageHelper().getErrorEmbed('Çekiliş süresi en az 1 dakika, en fazla 60 gün olabilir.')
             })
 
             return true
         }
 
         const finishAt: number = Date.now() + (toSecond * 1000)
-        const createRaffle = await client.managers.raffle.createRaffle({
+        const createRaffle = await client.getRaffleManager().createRaffle({
             prize: stringToPrize,
             server_id: message.guild.id,
             constituent_id: message.author.id,
@@ -72,13 +72,13 @@ export default class CreateRaffle extends Command{
 
         if(!createRaffle){
             await message.channel.send({
-                embed: client.helpers.message.getErrorEmbed('Maksimum çekiliş oluşturma sınırına ulaşmışsınız. (Max: 5)')
+                embed: client.getMessageHelper().getErrorEmbed('Maksimum çekiliş oluşturma sınırına ulaşmışsınız. (Max: 5)')
             })
 
             return true
         }
 
-        await client.helpers.raffle.sendRaffleStartMessage(
+        await client.getRaffleHelper().sendRaffleStartMessage(
             message,
             message.channel as TextChannel,
             toSecond,

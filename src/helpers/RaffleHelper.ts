@@ -1,7 +1,7 @@
 import { GuildChannel, Message, MessageEmbed, MessageReaction, TextChannel } from 'discord.js'
 
-import { Constants } from '../Constants'
-import { ArrayRandom } from '../array/ArrayRandom'
+import Constants from '../Constants'
+import ArrayRandom from '../array/ArrayRandom'
 import Helper from './Helper'
 import { DateTimeHelper } from './DateTimeHelper'
 import { IRaffle } from '../models/Raffle';
@@ -11,7 +11,7 @@ export class RaffleHelper extends Helper{
     public async identifyWinners(raffle: IRaffle): Promise<string[]>{
         let winners = []
 
-        const channel: GuildChannel | undefined = await this.client.helpers.channel.fetchChannel(raffle.server_id, raffle.channel_id)
+        const channel: GuildChannel | undefined = await this.client.getChannelHelper().fetchChannel(raffle.server_id, raffle.channel_id)
         if(channel && channel instanceof TextChannel){
             const message = await channel.messages.fetch(raffle.message_id)
             if(message){
@@ -58,19 +58,19 @@ export class RaffleHelper extends Helper{
                 embed: embedOfRaffle
             })
             .then(async $message => {
-                await this.client.managers.raffle.setRaffleMessageID(raffleId, $message.id)
+                await this.client.getRaffleManager().setRaffleMessageID(raffleId, $message.id)
 
                 await $message.react(Constants.CONFETTI_REACTION_EMOJI)
             })
             .catch(async () => {
-                await this.client.managers.raffle.deleteRaffle(raffleId)
+                await this.client.getRaffleManager().deleteRaffle(raffleId)
 
                 await message.channel.send(':boom: Botun yetkileri, bu kanalda çekiliş oluşturmak için yetersiz olduğu için çekiliş başlatılamadı.')
             })
     }
 
     public async finishRaffle(raffle: IRaffle){
-        const channel: GuildChannel | undefined = await this.client.helpers.channel.fetchChannel(raffle.server_id, raffle.channel_id)
+        const channel: GuildChannel | undefined = await this.client.getChannelHelper().fetchChannel(raffle.server_id, raffle.channel_id)
         if(channel instanceof TextChannel){
             const message: Message | undefined = await channel.messages.fetch(raffle.message_id)
             if(message instanceof Message){

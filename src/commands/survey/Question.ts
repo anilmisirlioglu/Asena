@@ -33,7 +33,7 @@ export default class Question extends Command{
 
         if(questions.length !== 0){
              await message.channel.send({
-                embed: client.helpers.message.getErrorEmbed('Birden fazla soru yazamazsınız. Lütfen tek bir soru yazarak tekrar deneyin.')
+                embed: client.getMessageHelper().getErrorEmbed('Birden fazla soru yazamazsınız. Lütfen tek bir soru yazarak tekrar deneyin.')
             })
 
             return true
@@ -41,7 +41,7 @@ export default class Question extends Command{
 
         if(answers.length > Constants.MAX_ANSWER_LENGTH){
             await message.channel.send({
-                embed: client.helpers.message.getErrorEmbed(`Sorunuza maksimum ${Constants.MAX_ANSWER_LENGTH} adet şık ekleyebilirsiniz.`)
+                embed: client.getMessageHelper().getErrorEmbed(`Sorunuza maksimum ${Constants.MAX_ANSWER_LENGTH} adet şık ekleyebilirsiniz.`)
             })
 
             return true
