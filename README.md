@@ -4,6 +4,7 @@
 [![Stars](https://img.shields.io/github/stars/anilmisirlioglu/Asena)](https://github.com/anilmisirlioglu/Asena/stargazers)
 [![CodeFactor](https://www.codefactor.io/repository/github/anilmisirlioglu/asena/badge/master)](https://www.codefactor.io/repository/github/anilmisirlioglu/asena/overview/master)
 [![Discord](https://discordapp.com/api/guilds/701790578874253363/widget.png?style=shield)](https://discord.gg/CRgXhfs)
+[![Version](https://img.shields.io/github/package-json/v/anilmisirlioglu/Asena?color=blue)](https://github.com/anilmisirlioglu/Asena)
 
 > Tamamen Türkçe, stabil, hızlı, kolay ve yeni nesil teknolojilerle kuşatılmış Discord çekiliş & anket botu!
 
