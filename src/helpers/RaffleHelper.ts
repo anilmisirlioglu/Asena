@@ -70,45 +70,43 @@ export class RaffleHelper extends Helper{
     }
 
     public async finishRaffle(raffle: IRaffle){
-        if(raffle){
-            const channel: GuildChannel = await this.client.helpers.channel.fetchChannel(raffle.server_id, raffle.channel_id)
-            if(channel instanceof TextChannel){
-                const message: Message | undefined = await channel.messages.fetch(raffle.message_id)
-                if(message instanceof Message){
-                    const winners: string[] = await this.identifyWinners(raffle)
-                    const _message: string = this.getMessageURL(raffle)
-                    const winnersOfMentions: string[] = winners.map(winner => `<@${winner}>`)
+        const channel: GuildChannel | undefined = await this.client.helpers.channel.fetchChannel(raffle.server_id, raffle.channel_id)
+        if(channel instanceof TextChannel){
+            const message: Message | undefined = await channel.messages.fetch(raffle.message_id)
+            if(message instanceof Message){
+                const winners: string[] = await this.identifyWinners(raffle)
+                const _message: string = this.getMessageURL(raffle)
+                const winnersOfMentions: string[] = winners.map(winner => `<@${winner}>`)
 
-                    let description, content
-                    switch(winners.length){
-                        case 0:
-                            description = 'Yetersiz katılım. Kazanan olmadı.'
-                            content = 'Yeterli katılım olmadığından dolayı çekilişin kazananı olmadı.'
-                            break
+                let description, content
+                switch(winners.length){
+                    case 0:
+                        description = 'Yetersiz katılım. Kazanan olmadı.'
+                        content = 'Yeterli katılım olmadığından dolayı çekilişin kazananı olmadı.'
+                        break
 
-                        case 1:
-                            description = `Kazanan: <@${winners.shift()}>`
-                            content = `Tebrikler ${winnersOfMentions.join(', ')}! **${raffle.prize}** kazandınız`
-                            break
+                    case 1:
+                        description = `Kazanan: <@${winners.shift()}>`
+                        content = `Tebrikler ${winnersOfMentions.join(', ')}! **${raffle.prize}** kazandınız`
+                        break
 
-                        default:
-                            description = `Kazananlar:\n${winnersOfMentions.join('\n')}`
-                            content = `Tebrikler ${winnersOfMentions.join(', ')}! **${raffle.prize}** kazandınız`
-                            break
-                    }
-
-                    const embed: MessageEmbed = new MessageEmbed()
-                        .setAuthor(raffle.prize)
-                        .setDescription(`${description}\nOluşturan: <@${raffle.constituent_id}>`)
-                        .setFooter(`${raffle.numbersOfWinner} Kazanan | Sona Erdi`)
-                        .setTimestamp(new Date(raffle.finishAt))
-                        .setColor('#36393F')
-
-                    await message.edit(`${Constants.CONFETTI_REACTION_EMOJI} **ÇEKİLİŞ BİTTİ** ${Constants.CONFETTI_REACTION_EMOJI}`, {
-                        embed
-                    })
-                    await channel.send(`${content}\n**Çekiliş** ${_message}`)
+                    default:
+                        description = `Kazananlar:\n${winnersOfMentions.join('\n')}`
+                        content = `Tebrikler ${winnersOfMentions.join(', ')}! **${raffle.prize}** kazandınız`
+                        break
                 }
+
+                const embed: MessageEmbed = new MessageEmbed()
+                    .setAuthor(raffle.prize)
+                    .setDescription(`${description}\nOluşturan: <@${raffle.constituent_id}>`)
+                    .setFooter(`${raffle.numbersOfWinner} Kazanan | Sona Erdi`)
+                    .setTimestamp(new Date(raffle.finishAt))
+                    .setColor('#36393F')
+
+                await message.edit(`${Constants.CONFETTI_REACTION_EMOJI} **ÇEKİLİŞ BİTTİ** ${Constants.CONFETTI_REACTION_EMOJI}`, {
+                    embed
+                })
+                await channel.send(`${content}\n**Çekiliş** ${_message}`)
             }
         }
     }

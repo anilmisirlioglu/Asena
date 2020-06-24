@@ -18,9 +18,12 @@ abstract class Constants{
 
     public static PERMITTED_ROLE_NAME: string = 'asena' // if there is no permission, this role is checked
 
-    public static MIN_TIME: number = 60
-    public static MAX_TIME: number = 60 * 60 * 24 * 60
-    public static MAX_WINNER: number = 20
+    public static MIN_RAFFLE_TIME: number = 60
+    public static MAX_RAFFLE_TIME: number = 60 * 60 * 24 * 60
+    public static MAX_RAFFLE_WINNER: number = 20
+
+    public static MIN_SURVEY_TIME: number = 60
+    public static MAX_SURVEY_TIME: number = 60 * 60 * 24 * 7
 
     public static ALLOWED_TIME_TYPES: string[] = ['m', 'h', 'd']
 

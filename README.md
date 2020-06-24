@@ -34,7 +34,7 @@ buradan Asena 'yı sunucunuza ekleyebilirsiniz: **[Asena Davet](https://discord.
 
 Asena herhangi bir gelir amacı gütmeyen bir yazılımdır. Tüm özellikleri ücretsiz olarak sunulmaktadır.
 Fakat ısrarla kendi hostlamak isteyenler için; Botun kodlarının açık kaynak olmasının sebebi, bot kodlamak
-isteyen diğer geliştiricilere yardım etmesi, çalışma prensibini görebilmeli ve botun yazılımsal sorunlarını düzeltmek isteyenlerin
+isteyen diğer geliştiricilere yardım etmesi, çalışma prensibini görebilmesi ve botun yazılımsal sorunlarını düzeltmek isteyenlerin
 katkıda bulunabilmeleri içindir. Onun dışında herhangi bir şekilde botu kendiniz host edemezsiniz. Bu hak
 ihlalidir. Aksi takdirde bu depodaki herhangi bir kodu düzenlemek, derlemek veya oluşturmak için herhangi bir
 yardım sağlanmayacaktır.

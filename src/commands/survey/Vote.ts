@@ -2,15 +2,17 @@ import { Command } from '../Command';
 import { Message, MessageEmbed } from 'discord.js';
 import { Constants } from '../../Constants';
 import { SuperClient } from '../../Asena';
+import Survey from '../../models/Survey';
+import { DateTimeHelper } from '../../helpers/DateTimeHelper';
 
 export default class Vote extends Command{
 
     constructor(){
         super({
-            name: 'vote',
-            aliases: ['anket', 'anketoluştur', 'startvote', 'voting'],
+            name: 'survey',
+            aliases: ['anket', 'anketoluştur', 'startvote', 'voting', 'vote'],
             description: 'İki seçenekli oylama anketi oluşturur.',
-            usage: '[süre(saniye) | -1] [oylama metni]',
+            usage: '[süre(1m | 1h) | -1(süresiz)] [oylama metni]',
             permission: 'ADMINISTRATOR'
         });
     }
@@ -21,86 +23,12 @@ export default class Vote extends Command{
 
         if(args.length <= 1) return false
 
-        const second = Number(args[0])
-        if(isNaN(second)) return false
-
-        if(second !== -1){
-            if(second <= 0) return false
-
-            if(second > (60 * 60)){
-                await message.channel.send({
-                    embed: client.helpers.message.getErrorEmbed('Oylama süresi maksimum 60 dakika olabilir.')
-                })
-
-                return true;
-            }
-        }
-
-        await message.delete({
-            timeout: 0
-        })
+        const second = args[0]
         delete args[0]
 
-        if(second > 0){
-            const time = second * 1000;
-            const embed = new MessageEmbed()
-                .setAuthor(message.author.username, message.author.displayAvatarURL() || message.author.defaultAvatarURL)
-                .setColor('#ffd1dc')
-                .setDescription('Oylama başladı!')
-                .setFooter(`Süre: ${second >= 60 ? `${Math.floor(second / 60)} dakika, ${second % 60} saniye` : `${second} saniye`}`)
-                .setTimestamp()
-                .addField('Soru', args.filter(arg => arg !== undefined).join(' '), true)
+        if(!isNaN(Number(second))){
+            if(Number(second) !== -1) return false
 
-            const vote = await message.channel.send({ embed })
-
-            await vote.react(AGREE);
-            await vote.react(DISAGREE);
-
-            const reactions = await vote.awaitReactions(
-                reaction => reaction.emoji.id === AGREE || reaction.emoji.id === DISAGREE,
-                { time }
-            )
-
-            let agreeCount, disagreeCount
-
-            try{
-                agreeCount = reactions.get(AGREE).count - 1
-            }catch(e){
-                agreeCount = 0
-            }
-
-            try{
-                disagreeCount = reactions.get(DISAGREE).count - 1
-            }catch(e){
-                disagreeCount = 0
-            }
-
-            await vote.delete({
-                timeout: 0
-            })
-
-            let color;
-            if(agreeCount > disagreeCount){
-                color = 'GREEN'
-            }else if(agreeCount === disagreeCount){
-                color = 'YELLOW'
-            }else{
-                color = 'RED'
-            }
-
-            const resultEmbed = new MessageEmbed()
-                .setColor(color)
-                .setAuthor(message.author.username, message.author.displayAvatarURL() || message.author.defaultAvatarURL)
-                .setFooter('Oylama sonuçları')
-                .setTimestamp()
-                .setTitle(args.filter(arg => arg !== undefined).join(' '))
-                .addField(`<a:yes:${AGREE}> (Evet)`, agreeCount, true)
-                .addField(`<a:no:${DISAGREE}> (Hayır)`, disagreeCount, true)
-
-            await message.channel.send(`${Constants.RUBY_EMOJI} **ANKET SONUÇLARI**`, {
-                embed: resultEmbed
-            })
-        }else{
             const embed = new MessageEmbed()
                 .setAuthor(message.guild.name, message.guild.iconURL())
                 .setColor('#E74C3C')
@@ -108,15 +36,63 @@ export default class Vote extends Command{
                 .setTimestamp()
                 .addField('Soru', args.filter(arg => arg !== undefined).join(' '), true)
 
+            await message.delete({ timeout: 0 })
             await message.channel
                 .send({ embed })
                 .then(async vote => {
                     await vote.react(AGREE);
                     await vote.react(DISAGREE);
                 })
+        }else{
+            const time = DateTimeHelper.detectTime(second)
+            if(!time){
+                await message.channel.send({
+                    embed: client.helpers.message.getErrorEmbed('Lütfen geçerli bir süre giriniz. (Örn; **1s** - **1m** - **5m** - **1h** vb.)')
+                })
+
+                return true
+            }
+
+
+            if(time < Constants.MIN_SURVEY_TIME || time > Constants.MAX_SURVEY_TIME){
+                await message.channel.send({
+                    embed: client.helpers.message.getErrorEmbed(`Anket süresi en az 1 dakika, maksimum 7 gün olabilir.`)
+                })
+
+                return true
+            }
+
+            const embed = new MessageEmbed()
+                .setAuthor(message.author.username, message.author.displayAvatarURL() || message.author.defaultAvatarURL)
+                .setColor('#ffd1dc')
+                .setDescription('Oylama başladı!')
+                .setFooter(`Süre: ${DateTimeHelper.secondsToTime(time).toString()}`)
+                .setTimestamp()
+                .addField('Soru', args.filter(arg => arg !== undefined).join(' '), true)
+
+            await message.delete({ timeout: 0 })
+            message.channel
+                .send({ embed })
+                .then(async $message => {
+                    const survey = await Survey.create({
+                        server_id: $message.guild.id,
+                        channel_id: $message.channel.id,
+                        message_id: $message.id,
+                        title: args.filter(arg => arg !== undefined).join(' '),
+                        finishAt: new Date(Date.now() + time)
+                    })
+
+                    if(!survey){
+                        await $message.delete()
+                        await message.channel.send(':boom: Anket verisi veritabanına kaydedilemediği için iptal edildi.')
+                    }else{
+                        await $message.react(AGREE)
+                        await $message.react(DISAGREE)
+                    }
+                })
         }
 
-        return true;
+        return true
     }
 
 }

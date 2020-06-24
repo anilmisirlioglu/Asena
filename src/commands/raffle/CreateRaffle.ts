@@ -26,7 +26,7 @@ export default class CreateRaffle extends Command{
             return Promise.resolve(false);
         }
 
-        if(numbersOfWinner > Constants.MAX_WINNER || numbersOfWinner === 0){
+        if(numbersOfWinner > Constants.MAX_RAFFLE_WINNER || numbersOfWinner === 0){
             await message.channel.send({
                 embed: client.helpers.message.getErrorEmbed('Çekilişi kazanan üye sayısı maksimum 25, minimum 1 kişi olabilir.')
             })
@@ -64,7 +64,7 @@ export default class CreateRaffle extends Command{
                 break;
         }
 
-        if(toSecond < Constants.MIN_TIME || toSecond > Constants.MAX_TIME){
+        if(toSecond < Constants.MIN_RAFFLE_TIME || toSecond > Constants.MAX_RAFFLE_TIME){
             await message.channel.send({
                 embed: client.helpers.message.getErrorEmbed('Çekiliş süresi en az 1 dakika, en fazla 60 gün olabilir.')
             })

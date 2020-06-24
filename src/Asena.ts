@@ -19,6 +19,8 @@ import { MessageHelper } from './helpers/MessageHelper';
 import { ChannelHelper } from './helpers/ChannelHelper';
 import { RaffleHelper } from './helpers/RaffleHelper';
 import ServerManager from './managers/ServerManager';
+import { SurveyHelper } from './helpers/SurveyHelper';
+import { SurveyHandler } from './handlers/SurveyHandler';
 
 interface SuperClientBuilderOptions{
     prefix: string
@@ -41,13 +43,15 @@ export abstract class SuperClient extends Client{
     readonly helpers: IHelper = {
         message: new MessageHelper(this),
         channel: new ChannelHelper(this),
-        raffle: new RaffleHelper(this)
+        raffle: new RaffleHelper(this),
+        survey: new SurveyHelper(this)
     }
 
     readonly handlers: IHandler = {
         command: new CommandHandler(this),
         guild: new GuildHandler(this),
-        raffle: new RaffleHandler(this)
+        raffle: new RaffleHandler(this),
+        survey: new SurveyHandler(this)
     }
 
     readonly managers: IManager = {
@@ -89,8 +93,9 @@ export default class Asena extends SuperClient{
             await this.managers.server.deleteServerData(guild.id)
         })
 
-        // start raffle schedule
+        // start schedulers
         this.handlers.raffle.startJobSchedule()
+        this.handlers.survey.startJobSchedule()
     }
 
 }

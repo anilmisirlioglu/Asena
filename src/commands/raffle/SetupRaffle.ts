@@ -152,7 +152,7 @@ export default class SetupRaffle extends Command{
                                 }
                             }
 
-                            if(toSecond < Constants.MIN_TIME || toSecond > Constants.MAX_TIME){
+                            if(toSecond < Constants.MIN_RAFFLE_TIME || toSecond > Constants.MAX_RAFFLE_TIME){
                                 message.channel.send(':boom: Çekiliş süresi en az 1 dakika, en fazla 60 gün olabilir.')
                                 return {
                                     result: false,

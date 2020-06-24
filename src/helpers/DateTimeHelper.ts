@@ -6,9 +6,13 @@ declare interface SecondsToTime{
     toString(): string
 }
 
+type TimeType =
+    'm' | 'h' | 'd' | 'auto'
+
+
 export class DateTimeHelper{
 
-    private static MONTH_ARRAY = [
+    private static MONTH_ARRAY: string[] = [
         'Ocak', 'Şubat', 'Mart',
         'Nisan', 'Mayıs', 'Haziran',
         'Temmuz', 'Ağustos', 'Eylül',
@@ -77,6 +81,36 @@ export class DateTimeHelper{
     public static microTime(): number{
         const hrTime: [number, number] = process.hrtime();
         return hrTime[0] * 1000000 + hrTime[1] / 1000;
+    }
+
+    public static detectTime(time: string): number | undefined{
+        const type: string = time.slice(-1)
+        const value: number = Number(time.slice(0, time.length - 1))
+
+        let toSecond: number | undefined = undefined
+        if(isNaN(value)){
+            return undefined
+        }
+
+        switch(type){
+            case 's':
+                toSecond = value
+                break
+
+            case 'm':
+                toSecond = 60 * value
+                break
+
+            case 'h':
+                toSecond = 60 * 60 * value
+                break
+
+            case 'd':
+                toSecond = ((60 * 60) * 24) * value
+                break
+        }
+
+        return toSecond
     }
 
 }
