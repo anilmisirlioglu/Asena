@@ -53,7 +53,6 @@ export default class Vote extends Command{
                 return true
             }
 
-
             if(time < Constants.MIN_SURVEY_TIME || time > Constants.MAX_SURVEY_TIME){
                 await message.channel.send({
                     embed: client.helpers.message.getErrorEmbed(`Anket süresi en az 1 dakika, maksimum 7 gün olabilir.`)

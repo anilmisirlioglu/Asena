@@ -6,10 +6,6 @@ declare interface SecondsToTime{
     toString(): string
 }
 
-type TimeType =
-    'm' | 'h' | 'd' | 'auto'
-
-
 export class DateTimeHelper{
 
     private static MONTH_ARRAY: string[] = [

@@ -3,6 +3,7 @@ import { Message, TextChannel } from 'discord.js'
 import { Command } from '../Command'
 import { Constants } from '../../Constants'
 import { SuperClient } from '../../Asena';
+import { DateTimeHelper } from '../../helpers/DateTimeHelper';
 
 export default class CreateRaffle extends Command{
 
@@ -11,19 +12,18 @@ export default class CreateRaffle extends Command{
             name: 'create',
             aliases: ['çekilişoluştur', 'çekilişbaşlat', 'cekilisbaslat', 'createraffle'],
             description: 'Çekiliş oluşturur.',
-            usage: '[kazanan sayısı<1 | 20>] [süre] [süre tipi<m(dakika) | h(saat) | d(gün)>] [ödül]',
+            usage: '[kazanan sayısı<1 | 20>] [süre(1m | 5s) - [s(saniye) m(dakika) h(saat) d(gün)]] [ödül]',
             permission: 'ADMINISTRATOR'
         });
     }
 
     async run(client: SuperClient, message: Message, args: string[]): Promise<boolean>{
         const numbersOfWinner: number = Number(args[0])
-        const time: number = Number(args[1])
-        const timeType: string = args[2] as string
-        const prize: string[] = args.slice(3, args.length)
+        const time: string = args[1]
+        const prize: string[] = args.slice(2, args.length)
 
-        if(isNaN(numbersOfWinner) || isNaN(time) || Constants.ALLOWED_TIME_TYPES.indexOf(timeType) === -1 || prize.length === 0){
-            return Promise.resolve(false);
+        if(isNaN(numbersOfWinner) || time === undefined || prize.length === 0){
+            return false
         }
 
         if(numbersOfWinner > Constants.MAX_RAFFLE_WINNER || numbersOfWinner === 0){
@@ -31,7 +31,7 @@ export default class CreateRaffle extends Command{
                 embed: client.helpers.message.getErrorEmbed('Çekilişi kazanan üye sayısı maksimum 25, minimum 1 kişi olabilir.')
             })
 
-            return Promise.resolve(true)
+            return true
         }
 
         const stringToPrize: string = prize.join(' ')
@@ -40,28 +40,16 @@ export default class CreateRaffle extends Command{
                 embed: client.helpers.message.getErrorEmbed('Çekiliş başlığı maksimum 255 karakter uzunluğunda olmalıdır.')
             })
 
-            return Promise.resolve(true)
+            return true
         }
 
-        let toSecond: number = 0;
-        switch(timeType){
-            case 'm':
-            case 'dakika':
-            case 'minute':
-                toSecond = 60 * time
-                break;
+        const toSecond: number = DateTimeHelper.detectTime(time);
+        if(!toSecond){
+            await message.channel.send({
+                embed: client.helpers.message.getErrorEmbed('Lütfen geçerli bir süre giriniz. (Örn; **1s** - **1m** - **5m** - **1h** vb.)')
+            })
 
-            case 'h':
-            case 'saat':
-            case 'hour':
-                toSecond = 60 * 60 * time
-                break;
-
-            case 'd':
-            case 'gün':
-            case 'day':
-                toSecond = ((60 * 60) * 24) * time
-                break;
+            return true
         }
 
         if(toSecond < Constants.MIN_RAFFLE_TIME || toSecond > Constants.MAX_RAFFLE_TIME){
@@ -69,7 +57,7 @@ export default class CreateRaffle extends Command{
                 embed: client.helpers.message.getErrorEmbed('Çekiliş süresi en az 1 dakika, en fazla 60 gün olabilir.')
             })
 
-            return Promise.resolve(true)
+            return true
         }
 
         const finishAt: number = Date.now() + (toSecond * 1000)
@@ -87,7 +75,7 @@ export default class CreateRaffle extends Command{
                 embed: client.helpers.message.getErrorEmbed('Maksimum çekiliş oluşturma sınırına ulaşmışsınız. (Max: 5)')
             })
 
-            return Promise.resolve(true)
+            return true
         }
 
         await client.helpers.raffle.sendRaffleStartMessage(
@@ -104,7 +92,7 @@ export default class CreateRaffle extends Command{
             timeout: 0
         })
 
-        return Promise.resolve(true)
+        return true
     }
 
 }

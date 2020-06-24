@@ -105,47 +105,15 @@ export default class SetupRaffle extends Command{
                     new SetupPhase({
                         message: [
                             '**Adım 3:** Şimdide insanların çekilişe katılımlarını alabilmek için süre belirleyelim\n',
-                            '`Unutmayın süre en az 1 dakika, en fazla 60 gün olabilir. Süre belirlerken m (veya dakika), h (veya saat), d (veya gün) gibi süre belirten' +
-                            ' terimler kullanmanız gerekir. Bunu kullanırken önce süre daha sonra boşluk bırakarak süre cinsini yazmayı unutmayın. Sadece tek bir süre tipi' +
-                            ' süre cinsi kullanabileceğini unutmayın.`'
+                            '`Unutmayın süre en az 1 dakika, en fazla 60 gün olabilir. Süre belirlerken s (saniye) m (dakika), h (saat), d (gün) gibi süre belirten' +
+                            ' terimler kullanmanız gerekir. Bunu kullanırken önce süre daha sonra boşluk bırakarak veya bırakmadan süre cinsini yazmayı unutmayın. Sadece tek bir süre tipi' +
+                            ' kullanabileceğini unutmayın.`'
                         ].join('\n'),
                         validator: (message: Message) => {
-                            const content = message.content
-                            const toArray = content.split(' ')
-                            const time = Number(toArray.shift())
-                            const timeType = toArray.shift()
-
-                            if(isNaN(time) || time <= 0){
-                                message.channel.send(':boom: Lütfen zaman değerinin sayısal ve pozitif bir değer olarak girip tekrar deneyin.')
-                                return {
-                                    result: false,
-                                    value: null
-                                }
-                            }
-
-                            let toSecond: number = -1;
-                            switch(timeType){
-                                case 'm':
-                                case 'dakika':
-                                case 'minute':
-                                    toSecond = 60 * time
-                                    break;
-
-                                case 'h':
-                                case 'saat':
-                                case 'hour':
-                                    toSecond = 60 * 60 * time
-                                    break;
-
-                                case 'd':
-                                case 'gün':
-                                case 'day':
-                                    toSecond = ((60 * 60) * 24) * time
-                                    break;
-                            }
-
-                            if(toSecond === -1){
-                                message.channel.send(':boom: Lütfen geçerli bir süre biçimi girin. (m, h, d | Örnek: `1 m`, `3 h`)')
+                            const time = message.content.replace(/ /g,'')
+                            const toSecond = DateTimeHelper.detectTime(time)
+                            if(!toSecond){
+                                message.channel.send('Lütfen geçerli bir süre giriniz. (Örn; **1s** - **1m** - **5m** - **1h** vb.)')
                                 return {
                                     result: false,
                                     value: null
