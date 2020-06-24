@@ -87,7 +87,7 @@ export class DateTimeHelper{
         const type: string = time.slice(-1)
         const value: number = Number(time.slice(0, time.length - 1))
 
-        let toSecond: number | undefined = undefined
+        let toSecond: number | undefined
         if(isNaN(value)){
             return undefined
         }

@@ -13,17 +13,17 @@
 
 | Komut | Açıklama |
 |:-----------:|:----------:|
-| a!cancel | Oluşturulan çekilişi iptal eder. |
-| a!create | Tek satırda yeni çekiliş başlatır. |
-| a!reroll | Çekiliş sonuçlarını tekrar çeker. |
-| a!setup | Interaktif kurulum sihirbazını başlatır. |
-| a!end | Oluşturulan çekiliş erken bitirir. |
-| a!raffles | Sunucudaki aktif çekilişleri listeler. |
-| a!vote | Sunucuda 2 seçenekli basit anket başlatır. |
-| a!question | Bir soru sorar. |
-| a!help | Yardım menüsünü özel mesaj aracılığı ile mesaj kutunuza gönderir. |
-| a!setprefix | Komut ön adını değiştirir. |
-| a!scperm | Komutun yetkisini düzenler. |
+| cancel | Oluşturulan çekilişi iptal eder. |
+| create | Tek satırda yeni çekiliş başlatır. |
+| reroll | Çekiliş sonuçlarını tekrar çeker. |
+| setup | Interaktif kurulum sihirbazını başlatır. |
+| end | Oluşturulan çekiliş erken bitirir. |
+| raffles | Sunucudaki aktif çekilişleri listeler. |
+| vote | Sunucuda 2 seçenekli basit anket başlatır. |
+| question | Bir soru sorar. |
+| help | Yardım menüsünü özel mesaj aracılığı ile mesaj kutunuza gönderir. |
+| setprefix | Komut ön adını değiştirir. |
+| scperm | Komutun yetkisini düzenler. |
 
 ## Davet 🔗
 
@@ -41,7 +41,6 @@ yardım sağlanmayacaktır.
 
 ## Destek Sunucusu
 [Buraya tıklayarak botun resmi discord sunucusuna katılabilirsiniz.](https://discord.gg/CRgXhfs)
-
 
 ## Görseller 📷
 ![image](https://cdn.discordapp.com/attachments/712449369827180596/724982732513607710/asena.png)
