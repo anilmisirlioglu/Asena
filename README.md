@@ -29,7 +29,7 @@
 ## Davet 🔗
 
 Siz de bu özelliklerden yararlanıp, kolay ve hızlı şekilde çekilişler oluşturmak istiyorsanız
-buradan Asena 'yı sunucunuza ekleyebilirsiniz: **[Asena Davet](https://discord.com/oauth2/authorize?permissions=355392&scope=bot&client_id=716259870910840832&redirect_uri=https%3A%2F%2Fdiscord.gg%2FCRgXhfs&response_type=code)**
+buradan Asena 'yı sunucunuza ekleyebilirsiniz: **[Asena Davet](https://discord.com/oauth2/authorize?permissions=347200&scope=bot&client_id=716259870910840832&redirect_uri=https%3A%2F%2Fdiscord.gg%2FCRgXhfs&response_type=code)**
 
 ## Self-Hosting ‍‼️
 
