@@ -78,9 +78,8 @@ export default class Vote extends Command{
                         channel_id: $message.channel.id,
                         message_id: $message.id,
                         title: args.filter(arg => arg !== undefined).join(' '),
-                        finishAt: new Date(Date.now() + time)
+                        finishAt: new Date(Date.now() + (time * 1000))
                     })
-
                     if(!survey){
                         await $message.delete()
                         await message.channel.send(':boom: Anket verisi veritabanına kaydedilemediği için iptal edildi.')
