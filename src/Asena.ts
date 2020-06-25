@@ -1,4 +1,4 @@
-import { Client, Collection, } from 'discord.js';
+import { Client, Collection, Guild, GuildChannel, Message, Snowflake, TextChannel, } from 'discord.js';
 
 import Logger from './utils/Logger';
 import Version from './utils/Version';
@@ -12,7 +12,6 @@ import RaffleManager from './managers/RaffleManager';
 import { GuildHandler } from './handlers/GuildHandler';
 import { RaffleHandler } from './handlers/RaffleHandler';
 import { MessageHelper } from './helpers/MessageHelper';
-import { ChannelHelper } from './helpers/ChannelHelper';
 import { RaffleHelper } from './helpers/RaffleHelper';
 import ServerManager from './managers/ServerManager';
 import { SurveyHelper } from './helpers/SurveyHelper';
@@ -39,7 +38,6 @@ export abstract class SuperClient extends Client{
 
     private readonly helpers: IHelper = {
         message: new MessageHelper(this),
-        channel: new ChannelHelper(this),
         raffle: new RaffleHelper(this),
         survey: new SurveyHelper(this)
     }
@@ -93,16 +91,33 @@ export abstract class SuperClient extends Client{
         return this.helpers.message
     }
 
-    public getChannelHelper(): ChannelHelper{
-        return this.helpers.channel
-    }
-
     public getRaffleHelper(): RaffleHelper{
         return this.helpers.raffle
     }
 
     public getSurveyHelper(): SurveyHelper{
         return this.helpers.survey
+    }
+
+    public fetchChannel<T extends Snowflake>(guildId: T, channelId: T): GuildChannel | undefined{
+        const guild: Guild = this.guilds.cache.get(guildId)
+        if(guild){
+            return guild.channels.cache.get(channelId)
+        }
+
+        return undefined
+    }
+
+    public fetchMessage<T extends Snowflake>(guildId: T, channelId: T, messageId: T): Promise<Message | undefined>{
+        const guild: Guild = this.guilds.cache.get(guildId)
+        if(guild){
+            const channel: GuildChannel = guild.channels.cache.get(channelId)
+            if(channel instanceof TextChannel){
+                return channel.messages.fetch(messageId)
+            }
+        }
+
+        return undefined
     }
 
 }

@@ -1,27 +1,8 @@
-import {
-    Guild,
-    GuildChannel,
-    Message,
-    MessageEmbed,
-    Snowflake,
-    TextChannel
-} from 'discord.js'
+import { MessageEmbed } from 'discord.js'
 import Helper from './Helper';
 import { Command } from '../commands/Command'
 
 export class MessageHelper extends Helper{
-
-    public fetchMessage<T extends Snowflake>(guildId: T, channelId: T, messageId: T): Promise<Message | undefined>{
-        const guild: Guild = this.client.guilds.cache.get(guildId)
-        if(guild){
-            const channel: GuildChannel = guild.channels.cache.get(channelId)
-            if(channel instanceof TextChannel){
-                return channel.messages.fetch(messageId)
-            }
-        }
-
-        return undefined
-    }
 
     public getErrorEmbed(error: string): MessageEmbed{
         return new MessageEmbed()

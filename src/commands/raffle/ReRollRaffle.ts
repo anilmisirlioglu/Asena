@@ -51,7 +51,7 @@ export default class ReRollRaffle extends Command{
             return true
         }
 
-        const fetch: Message | undefined = await client.getMessageHelper().fetchMessage(raffle.server_id, raffle.channel_id, raffle.message_id)
+        const fetch: Message | undefined = await client.fetchMessage(raffle.server_id, raffle.channel_id, raffle.message_id)
         if(!fetch){
             await message.channel.send({
                 embed: client.getMessageHelper().getErrorEmbed('Anlaşılan bu çekiliş mesajı silinmiş veya zaman aşımına uğramış.')

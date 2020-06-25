@@ -11,7 +11,7 @@ export class RaffleHelper extends Helper{
     public async identifyWinners(raffle: IRaffle): Promise<string[]>{
         let winners = []
 
-        const channel: GuildChannel | undefined = await this.client.getChannelHelper().fetchChannel(raffle.server_id, raffle.channel_id)
+        const channel: GuildChannel | undefined = await this.client.fetchChannel(raffle.server_id, raffle.channel_id)
         if(channel && channel instanceof TextChannel){
             const message = await channel.messages.fetch(raffle.message_id)
             if(message){
@@ -70,7 +70,7 @@ export class RaffleHelper extends Helper{
     }
 
     public async finishRaffle(raffle: IRaffle){
-        const channel: GuildChannel | undefined = await this.client.getChannelHelper().fetchChannel(raffle.server_id, raffle.channel_id)
+        const channel: GuildChannel | undefined = await this.client.fetchChannel(raffle.server_id, raffle.channel_id)
         if(channel instanceof TextChannel){
             const message: Message | undefined = await channel.messages.fetch(raffle.message_id)
             if(message instanceof Message){

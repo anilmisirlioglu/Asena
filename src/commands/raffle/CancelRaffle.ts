@@ -53,7 +53,7 @@ export default class CancelRaffle extends Command{
         }
 
         const raffle = cancelRaffle.raffle
-        const $message = await client.getMessageHelper().fetchMessage(raffle.server_id, raffle.channel_id, raffle.message_id)
+        const $message = await client.fetchMessage(raffle.server_id, raffle.channel_id, raffle.message_id)
         if($message){
             await $message.delete({
                 timeout: 0
