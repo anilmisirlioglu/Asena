@@ -1,23 +1,17 @@
 import cron from 'node-cron';
 import Raffle, { IRaffle } from '../models/Raffle';
-import Handler from './Handler';
-import { SuperClient } from '../Asena';
+import Task from './Task';
+import { Document } from 'mongoose';
 
-export class RaffleHandler extends Handler{
+export default class RaffleTask extends Task{
 
-    constructor(client: SuperClient){
-        super(client)
-
-        this.startJobSchedule()
-    }
-
-    public startJobSchedule(): void{
+    public startScheduleTask(): void{
         cron.schedule('* * * * *', async () => {
-            await this.checkRaffles()
+            await this.check()
         })
     }
 
-    private async checkRaffles(){
+    protected async check(): Promise<void>{
         const cursor = await Raffle
             .find({
                 $or: [
@@ -32,22 +26,22 @@ export class RaffleHandler extends Handler{
             const remaining: number = +finishAt - Date.now()
             if(remaining <= 60 * 1000){
                 await raffle.updateOne({ status: 'ALMOST_DONE' })
-                this.setRaffleInterval(remaining - 2000, raffle)
+                this.setInterval<IRaffle>(remaining - 2000, raffle)
             }else if(Date.now() >= +finishAt){
                 await raffle.updateOne({ status: 'ALMOST_DONE' })
-                this.setRaffleInterval(1000, raffle)
+                this.setInterval<IRaffle>(1000, raffle)
             }
         }
     }
 
-    private setRaffleInterval(timeout: number, raffle: IRaffle): void{
-        setTimeout(async () => {
-            await raffle.updateOne({
+    protected intervalCallback<T extends Document>(model: T & IRaffle): () => void{
+        return async () => {
+            await model.updateOne({
                 status: 'FINISHED'
             })
 
-            await this.client.getRaffleHelper().finishRaffle(raffle)
-        }, timeout)
+            await this.getClient().getRaffleHelper().finishRaffle(model)
+        }
     }
     
 }

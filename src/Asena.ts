@@ -9,12 +9,14 @@ import { IHandler } from './handlers/Handler';
 import { IManager } from './managers/Manager';
 import RaffleManager from './managers/RaffleManager';
 import { GuildHandler } from './handlers/GuildHandler';
-import { RaffleHandler } from './handlers/RaffleHandler';
 import { RaffleHelper } from './helpers/RaffleHelper';
 import ServerManager from './managers/ServerManager';
 import { SurveyHelper } from './helpers/SurveyHelper';
-import { SurveyHandler } from './handlers/SurveyHandler';
 import CommandHandler from './commands/CommandHandler';
+import SurveyTask from './tasks/SurveyTask';
+import RaffleTask from './tasks/RaffleTask';
+import TaskManager from './tasks/TaskManager';
+import Task from './tasks/Task';
 
 interface SuperClientBuilderOptions{
     prefix: string
@@ -34,16 +36,16 @@ export abstract class SuperClient extends Client{
     readonly aliases: Collection<string, string> = new Collection<string, string>()
     readonly setups: Collection<string, string> = new Collection<string, string>()
 
+    private readonly taskManager: TaskManager = new TaskManager()
+    private readonly commandHandler: CommandHandler = new CommandHandler(this)
+
     private readonly helpers: IHelper = {
         raffle: new RaffleHelper(this),
         survey: new SurveyHelper(this)
     }
 
     private readonly handlers: IHandler = {
-        guild: new GuildHandler(this),
-        raffle: new RaffleHandler(this),
-        survey: new SurveyHandler(this),
-        command: new CommandHandler(this)
+        guild: new GuildHandler(this)
     }
 
     private readonly managers: IManager = {
@@ -65,6 +67,10 @@ export abstract class SuperClient extends Client{
     }
 
     /* MANAGERS */
+    public getTaskManager(): TaskManager{
+        return this.taskManager
+    }
+
     public getRaffleManager(): RaffleManager{
         return this.managers.raffle
     }
@@ -74,12 +80,12 @@ export abstract class SuperClient extends Client{
     }
 
     /* HANDLERS */
-    public getGuildHandler(): GuildHandler{
-        return this.handlers.guild
+    public getCommandHandler(): CommandHandler{
+        return this.commandHandler
     }
 
-    public getCommandHandler(): CommandHandler{
-        return this.handlers.command
+    public getGuildHandler(): GuildHandler{
+        return this.handlers.guild
     }
 
     /* HELPERS */
@@ -134,6 +140,8 @@ export default class Asena extends SuperClient{
         this.on('guildDelete', async guild => {
             await this.getServerManager().deleteServerData(guild.id)
         })
+
+        this.getTaskManager().runTasks()
     }
 
 }

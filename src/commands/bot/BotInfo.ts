@@ -38,6 +38,7 @@ export default class BotInfo extends Command{
             `CPU: **${os.cpus().shift().model}**`,
             `CPU Hız: **${os.cpus().shift().speed} MHz**`,
             `CPU Core: **${os.cpus().length / 2} Core / ${os.cpus().length} Thread**`,
+            `CPU Uptime: **${DateTimeHelper.secondsToTime(os.uptime())}**`,
             `Toplam Bellek: **${Byte.getSymbolByQuantity(os.totalmem())}**`,
             `Kullanılan Bellek: **${Byte.getSymbolByQuantity(os.totalmem() - os.freemem())}**`,
             `Kullanılabilir Bellek: **${Byte.getSymbolByQuantity(os.freemem())}**`,
