@@ -106,13 +106,13 @@ export default class CommandHandler extends Handler implements CommandRunner{
                 command.run(client, message, args).then(async (result: boolean) => {
                     if(!result){
                         await message.channel.send({
-                            embed: client.getMessageHelper().getCommandUsageEmbed(command)
+                            embed: command.getUsageEmbed()
                         })
                     }
                 })
             }else{
                 await message.channel.send({
-                    embed: client.getMessageHelper().getErrorEmbed('Bu komutu kullanmak için **yetkiniz** yok.')
+                    embed: command.getErrorEmbed('Bu komutu kullanmak için **yetkiniz** yok.')
                 })
             }
         }

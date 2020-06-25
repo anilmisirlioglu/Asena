@@ -1,4 +1,4 @@
-import { GuildMember, Message, PermissionString } from 'discord.js'
+import { GuildMember, Message, MessageEmbed, PermissionString } from 'discord.js'
 import { SuperClient } from '../Asena';
 
 interface CommandOptions{
@@ -8,6 +8,8 @@ interface CommandOptions{
     usage: string | null,
     permission: PermissionString | undefined
 }
+
+const client = SuperClient.getInstance()
 
 export abstract class Command{
 
@@ -42,5 +44,19 @@ export abstract class Command{
     }
 
     public async abstract run(client: SuperClient, message: Message, args: string[]): Promise<boolean>
+
+    public getErrorEmbed(error: string): MessageEmbed{
+        return new MessageEmbed()
+            .setAuthor(client.user.username, client.user.avatarURL())
+            .setDescription(error)
+            .setColor('RED')
+    }
+
+    public getUsageEmbed(): MessageEmbed{
+        return new MessageEmbed()
+            .setAuthor(client.user.username, client.user.avatarURL())
+            .setDescription(`Kullanımı: **${client.prefix}${this.name} ${this.usage}**`)
+            .setColor('GOLD');
+    }
 
 }

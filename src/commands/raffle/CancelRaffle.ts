@@ -25,7 +25,7 @@ export default class CancelRaffle extends Command{
             if(raffle){
                 if(!raffle.message_id){
                     await message.channel.send({
-                        embed: client.getMessageHelper().getErrorEmbed(`İptal edilebilecek bir çekiliş bulunamadı.`)
+                        embed: this.getErrorEmbed(`İptal edilebilecek bir çekiliş bulunamadı.`)
                     })
 
                     return true
@@ -38,7 +38,7 @@ export default class CancelRaffle extends Command{
         const cancelRaffle = await client.getRaffleManager().cancelRaffle(message_id)
         if(cancelRaffle.errorCode === ErrorCodes.NOT_FOUND){
             await message.channel.send({
-                embed: client.getMessageHelper().getErrorEmbed('Çekiliş bulunamadı.')
+                embed: this.getErrorEmbed('Çekiliş bulunamadı.')
             })
 
             return true
@@ -46,7 +46,7 @@ export default class CancelRaffle extends Command{
 
         if(cancelRaffle.errorCode === ErrorCodes.RAFFLE_FINISHED_ERROR){
             await message.channel.send({
-                embed: client.getMessageHelper().getErrorEmbed('Bu çekiliş devam eden bir çekiliş değil. Bu komut sadece devam eden çekilişlerde kullanılabilir.')
+                embed: this.getErrorEmbed('Bu çekiliş devam eden bir çekiliş değil. Bu komut sadece devam eden çekilişlerde kullanılabilir.')
             })
 
             return true

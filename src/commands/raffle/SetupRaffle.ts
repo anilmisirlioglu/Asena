@@ -21,7 +21,7 @@ export default class SetupRaffle extends Command{
         if(message.channel instanceof TextChannel){
             if(client.setups.get(message.author.id)){
                 await message.channel.send({
-                    embed: client.getMessageHelper().getErrorEmbed('Zaten bir kurulum sihirbazı içindesin. Lütfen önce başlattığınız kurulumu bitirin veya iptal edin.')
+                    embed: this.getErrorEmbed('Zaten bir kurulum sihirbazı içindesin. Lütfen önce başlattığınız kurulumu bitirin veya iptal edin.')
                 })
                 return true
             }
@@ -29,7 +29,7 @@ export default class SetupRaffle extends Command{
             const result = await client.getRaffleManager().getContinuesRaffles(message.guild.id)
             if(result.length >= 5){
                 await message.channel.send({
-                    embed: client.getMessageHelper().getErrorEmbed('Maksimum çekiliş oluşturma sınırı aşıyorsunuz. (Maks 5)')
+                    embed: this.getErrorEmbed('Maksimum çekiliş oluşturma sınırı aşıyorsunuz. (Maks 5)')
                 })
                 return true
             }

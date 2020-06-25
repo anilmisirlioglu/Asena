@@ -26,7 +26,7 @@ export default class SetCommandPermission extends Command{
         const commandAuth: Command[] = commands.filter($command => $command.name === command)
         if(commandAuth.length === 0){
             await message.channel.send({
-                embed: client.getMessageHelper().getErrorEmbed('Komut bulunamadı.')
+                embed: this.getErrorEmbed('Komut bulunamadı.')
             })
 
             return true
@@ -35,7 +35,7 @@ export default class SetCommandPermission extends Command{
         const $command: Command = commandAuth.shift()
         if(!$command.permission || this.name === $command.name){
             await message.channel.send({
-                embed: client.getMessageHelper().getErrorEmbed('Bu komutun izinlerini düzenleyemezsin.')
+                embed: this.getErrorEmbed('Bu komutun izinlerini düzenleyemezsin.')
             })
 
             return true
@@ -68,7 +68,7 @@ export default class SetCommandPermission extends Command{
 
         if(err){
             await message.channel.send({
-                embed: client.getMessageHelper().getErrorEmbed(`Bu komut zaten herkese **${opcl}**.`)
+                embed: this.getErrorEmbed(`Bu komut zaten herkese **${opcl}**.`)
             })
 
             return true

@@ -24,7 +24,7 @@ export default class ReRollRaffle extends Command{
             if(raffle){
                 if(!raffle.message_id){
                     await message.channel.send({
-                        embed: client.getMessageHelper().getErrorEmbed(`Tekrar çekilebilecek çekiliş bulunamadı.`)
+                        embed: this.getErrorEmbed(`Tekrar çekilebilecek çekiliş bulunamadı.`)
                     })
 
                     return true
@@ -37,7 +37,7 @@ export default class ReRollRaffle extends Command{
         const raffle = await client.getRaffleManager().searchRaffle(message_id)
         if(!raffle){
             await message.channel.send({
-                embed: client.getMessageHelper().getErrorEmbed(`${message_id} ID 'li çekiliş bulunamadı.`)
+                embed: this.getErrorEmbed(`${message_id} ID 'li çekiliş bulunamadı.`)
             })
 
             return true
@@ -45,7 +45,7 @@ export default class ReRollRaffle extends Command{
 
         if(raffle.status !== 'FINISHED'){
             await message.channel.send({
-                embed: client.getMessageHelper().getErrorEmbed(raffle.status === 'CONTINUES' ? 'Bu çekiliş daha sonuçlanmamış. Lütfen çekilişin bitmesini bekleyin.' : 'Bu çekiliş iptal edilmiş. İptal edilmiş bir çekilişin sonucu tekrar çekilemez.')
+                embed: this.getErrorEmbed(raffle.status === 'CONTINUES' ? 'Bu çekiliş daha sonuçlanmamış. Lütfen çekilişin bitmesini bekleyin.' : 'Bu çekiliş iptal edilmiş. İptal edilmiş bir çekilişin sonucu tekrar çekilemez.')
             })
 
             return true
@@ -54,7 +54,7 @@ export default class ReRollRaffle extends Command{
         const fetch: Message | undefined = await client.fetchMessage(raffle.server_id, raffle.channel_id, raffle.message_id)
         if(!fetch){
             await message.channel.send({
-                embed: client.getMessageHelper().getErrorEmbed('Anlaşılan bu çekiliş mesajı silinmiş veya zaman aşımına uğramış.')
+                embed: this.getErrorEmbed('Anlaşılan bu çekiliş mesajı silinmiş veya zaman aşımına uğramış.')
             })
 
             return true

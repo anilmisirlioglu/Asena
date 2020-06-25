@@ -20,7 +20,7 @@ export default class SetPrefix extends Command{
 
         if(prefix.length > 5){
             await message.channel.send({
-                embed: client.getMessageHelper().getErrorEmbed('Komut prefix \'i en fazla 5 karakterden oluşabilir.')
+                embed: this.getErrorEmbed('Komut prefix \'i en fazla 5 karakterden oluşabilir.')
             })
 
             return true

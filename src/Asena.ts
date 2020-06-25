@@ -11,7 +11,6 @@ import { IManager } from './managers/Manager';
 import RaffleManager from './managers/RaffleManager';
 import { GuildHandler } from './handlers/GuildHandler';
 import { RaffleHandler } from './handlers/RaffleHandler';
-import { MessageHelper } from './helpers/MessageHelper';
 import { RaffleHelper } from './helpers/RaffleHelper';
 import ServerManager from './managers/ServerManager';
 import { SurveyHelper } from './helpers/SurveyHelper';
@@ -37,7 +36,6 @@ export abstract class SuperClient extends Client{
     readonly setups: Collection<string, string> = new Collection<string, string>()
 
     private readonly helpers: IHelper = {
-        message: new MessageHelper(this),
         raffle: new RaffleHelper(this),
         survey: new SurveyHelper(this)
     }
@@ -55,9 +53,16 @@ export abstract class SuperClient extends Client{
     }
 
     readonly webHook: SyntaxWebHook = new SyntaxWebHook()
+    private static self: SuperClient
 
     protected constructor(private opts: SuperClientBuilderOptions){
         super()
+
+        SuperClient.self = this
+    }
+
+    public static getInstance(): SuperClient{
+        return this.self
     }
 
     /* MANAGERS */
@@ -87,9 +92,6 @@ export abstract class SuperClient extends Client{
     }
 
     /* HELPERS */
-    public getMessageHelper(): MessageHelper{
-        return this.helpers.message
-    }
 
     public getRaffleHelper(): RaffleHelper{
         return this.helpers.raffle

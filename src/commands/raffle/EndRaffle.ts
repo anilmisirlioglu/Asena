@@ -24,7 +24,7 @@ export default class EndRaffle extends Command{
             if(raffle){
                 if(!raffle.message_id){
                     await message.channel.send({
-                        embed: client.getMessageHelper().getErrorEmbed(`Bitirilebilecek bir çekiliş bulunamadı.`)
+                        embed: this.getErrorEmbed(`Bitirilebilecek bir çekiliş bulunamadı.`)
                     })
 
                     return true
@@ -37,7 +37,7 @@ export default class EndRaffle extends Command{
         const finishEarlyRaffle = await client.getRaffleManager().finishEarlyRaffle(message_id)
         if(finishEarlyRaffle.errorCode === ErrorCodes.NOT_FOUND){
             await message.channel.send({
-                embed: client.getMessageHelper().getErrorEmbed('Çekiliş bulunamadı.')
+                embed: this.getErrorEmbed('Çekiliş bulunamadı.')
             })
 
             return true
@@ -45,7 +45,7 @@ export default class EndRaffle extends Command{
 
         if(finishEarlyRaffle.errorCode === ErrorCodes.RAFFLE_FINISHED_ERROR){
             await message.channel.send({
-                embed: client.getMessageHelper().getErrorEmbed('Anlaşılan bu çekiliş zaten bitmiş veya iptal edilmiş.')
+                embed: this.getErrorEmbed('Anlaşılan bu çekiliş zaten bitmiş veya iptal edilmiş.')
             })
 
             return true
