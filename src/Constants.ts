@@ -23,7 +23,7 @@ abstract class Constants{
     public static MAX_RAFFLE_WINNER: number = 20
 
     public static MIN_SURVEY_TIME: number = 60
-    public static MAX_SURVEY_TIME: number = 60 * 60 * 24 * 7
+    public static MAX_SURVEY_TIME: number = 60 * 60 * 24 * 15
 
     public static ALLOWED_TIME_TYPES: string[] = ['m', 'h', 'd']
 
