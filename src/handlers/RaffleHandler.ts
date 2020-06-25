@@ -1,8 +1,15 @@
 import cron from 'node-cron';
 import Raffle, { IRaffle } from '../models/Raffle';
 import Handler from './Handler';
+import { SuperClient } from '../Asena';
 
 export class RaffleHandler extends Handler{
+
+    constructor(client: SuperClient){
+        super(client)
+
+        this.startJobSchedule()
+    }
 
     public startJobSchedule(): void{
         cron.schedule('* * * * *', async () => {

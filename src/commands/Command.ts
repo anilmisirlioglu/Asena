@@ -9,8 +9,6 @@ interface CommandOptions{
     permission: PermissionString | undefined
 }
 
-const client = SuperClient.getInstance()
-
 export abstract class Command{
 
     protected constructor(protected readonly options: CommandOptions){}
@@ -46,6 +44,7 @@ export abstract class Command{
     public async abstract run(client: SuperClient, message: Message, args: string[]): Promise<boolean>
 
     public getErrorEmbed(error: string): MessageEmbed{
+        const client = SuperClient.getInstance()
         return new MessageEmbed()
             .setAuthor(client.user.username, client.user.avatarURL())
             .setDescription(error)
@@ -53,6 +52,7 @@ export abstract class Command{
     }
 
     public getUsageEmbed(): MessageEmbed{
+        const client = SuperClient.getInstance()
         return new MessageEmbed()
             .setAuthor(client.user.username, client.user.avatarURL())
             .setDescription(`Kullanımı: **${client.prefix}${this.name} ${this.usage}**`)

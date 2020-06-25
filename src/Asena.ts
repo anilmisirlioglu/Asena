@@ -3,7 +3,6 @@ import { Client, Collection, Guild, GuildChannel, Message, Snowflake, TextChanne
 import Logger from './utils/Logger';
 import Version from './utils/Version';
 import { Command } from './commands/Command';
-import connection from './connection';
 import SyntaxWebHook from './SyntaxWebhook';
 import { IHelper } from './helpers/Helper';
 import { IHandler } from './handlers/Handler';
@@ -79,20 +78,11 @@ export abstract class SuperClient extends Client{
         return this.handlers.guild
     }
 
-    public getRaffleHandler(): RaffleHandler{
-        return this.handlers.raffle
-    }
-
-    public getSurveyHandler(): SurveyHandler{
-        return this.handlers.survey
-    }
-
     public getCommandHandler(): CommandHandler{
         return this.handlers.command
     }
 
     /* HELPERS */
-
     public getRaffleHelper(): RaffleHelper{
         return this.helpers.raffle
     }
@@ -127,8 +117,6 @@ export abstract class SuperClient extends Client{
 export default class Asena extends SuperClient{
 
     constructor(){
-        connection() // prepare conn
-
         super({
             prefix: process.env.PREFIX ?? '!a',
             isDevBuild: process.argv.includes('dev')
@@ -146,10 +134,6 @@ export default class Asena extends SuperClient{
         this.on('guildDelete', async guild => {
             await this.getServerManager().deleteServerData(guild.id)
         })
-
-        // start schedulers
-        this.getRaffleHandler().startJobSchedule()
-        this.getSurveyHandler().startJobSchedule()
     }
 
 }

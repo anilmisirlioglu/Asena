@@ -1,9 +1,14 @@
-import dotenv from 'dotenv'
+import dotenv from 'dotenv';
 import Asena from './Asena';
+import MongoDB from './drivers/MongoDB';
 
 dotenv.config({
     path: `${__dirname}/../.env`
 })
+
+const mongo = new MongoDB()
+// noinspection JSIgnoredPromiseFromCall
+mongo.connect()
 
 const client = new Asena()
 // noinspection JSIgnoredPromiseFromCall

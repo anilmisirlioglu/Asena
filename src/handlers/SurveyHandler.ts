@@ -1,8 +1,15 @@
 import cron from 'node-cron';
 import Handler from './Handler';
 import Survey, { ISurvey } from '../models/Survey';
+import { SuperClient } from '../Asena';
 
 export class SurveyHandler extends Handler{
+
+    constructor(client: SuperClient){
+        super(client);
+
+        this.startJobSchedule()
+    }
 
     public startJobSchedule(): void{
         cron.schedule('* * * * *', async () => {
