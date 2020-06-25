@@ -1,8 +1,8 @@
 import Constants from '../Constants'
 import { SuperClient } from '../Asena';
-import Handler from './Handler';
+import Factory from '../Factory';
 
-export class GuildHandler extends Handler{
+export default class ActivityUpdater extends Factory{
 
     private counter: number = 0
     private static readonly UPDATE_INTERVAL: number = 1000 * 60 * 5
@@ -12,7 +12,7 @@ export class GuildHandler extends Handler{
             const client: SuperClient = this.client
 
             await client.user.setStatus('online')
-            await client.user.setActivity(`${Constants.CONFETTI_REACTION_EMOJI} ${this.counter} Sunucu | ${process.env.PREFIX}help\nhttps://asena.xyz`, {
+            await client.user.setActivity(this.getActivityName(), {
                 type: 'PLAYING'
             })
 
@@ -23,6 +23,10 @@ export class GuildHandler extends Handler{
         this.setGuildCounterListeners()
 
         this.setActivityUpdateInterval()
+    }
+
+    private getActivityName(): string{
+        return `${Constants.CONFETTI_REACTION_EMOJI} ${this.counter} Sunucu | ${process.env.PREFIX}help\nhttps://asena.xyz`
     }
 
     private setGuildCounterListeners(): void{
@@ -46,10 +50,10 @@ export class GuildHandler extends Handler{
 
     private setActivityUpdateInterval(){
         setInterval(async () => {
-            await this.client.user.setActivity(`${Constants.CONFETTI_REACTION_EMOJI} ${this.counter} Sunucu | ${process.env.PREFIX}help\nhttps://asena.xyz`, {
+            await this.client.user.setActivity(this.getActivityName(), {
                 type: 'PLAYING'
             })
-        }, GuildHandler.UPDATE_INTERVAL)
+        }, ActivityUpdater.UPDATE_INTERVAL)
     }
 
     public getCounter(): number{

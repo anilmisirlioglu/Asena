@@ -5,15 +5,14 @@ import Version from './utils/Version';
 import { Command } from './commands/Command';
 import SyntaxWebHook from './SyntaxWebhook';
 import { IHelper } from './helpers/Helper';
-import { IHandler } from './handlers/Handler';
 import { IManager } from './managers/Manager';
 import RaffleManager from './managers/RaffleManager';
-import { GuildHandler } from './handlers/GuildHandler';
 import { RaffleHelper } from './helpers/RaffleHelper';
 import ServerManager from './managers/ServerManager';
 import { SurveyHelper } from './helpers/SurveyHelper';
 import CommandHandler from './commands/CommandHandler';
 import TaskTiming from './tasks/TaskTiming';
+import ActivityUpdater from './updater/ActivityUpdater';
 
 interface SuperClientBuilderOptions{
     prefix: string
@@ -34,15 +33,14 @@ export abstract class SuperClient extends Client{
     readonly setups: Collection<string, string> = new Collection<string, string>()
 
     private readonly taskTiming: TaskTiming = new TaskTiming()
+
     private readonly commandHandler: CommandHandler = new CommandHandler(this)
+
+    private readonly activityUpdater: ActivityUpdater = new ActivityUpdater(this)
 
     private readonly helpers: IHelper = {
         raffle: new RaffleHelper(this),
         survey: new SurveyHelper(this)
-    }
-
-    private readonly handlers: IHandler = {
-        guild: new GuildHandler(this)
     }
 
     private readonly managers: IManager = {
@@ -68,6 +66,14 @@ export abstract class SuperClient extends Client{
         return this.taskTiming
     }
 
+    public getActivityUpdater(): ActivityUpdater{
+        return this.activityUpdater
+    }
+
+    public getCommandHandler(): CommandHandler{
+        return this.commandHandler
+    }
+
     /* MANAGERS */
     public getRaffleManager(): RaffleManager{
         return this.managers.raffle
@@ -75,15 +81,6 @@ export abstract class SuperClient extends Client{
 
     public getServerManager(): ServerManager{
         return this.managers.server
-    }
-
-    /* HANDLERS */
-    public getCommandHandler(): CommandHandler{
-        return this.commandHandler
-    }
-
-    public getGuildHandler(): GuildHandler{
-        return this.handlers.guild
     }
 
     /* HELPERS */
@@ -126,8 +123,8 @@ export default class Asena extends SuperClient{
             isDevBuild: process.argv.includes('dev')
         })
 
-        // Guild counter start
-        this.getGuildHandler().start()
+        // Activity updater start
+        this.getActivityUpdater().start()
 
         // Command run
         this.on('message', async message => {

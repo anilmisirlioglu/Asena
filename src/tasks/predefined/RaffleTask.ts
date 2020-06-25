@@ -1,5 +1,5 @@
-import Raffle, { IRaffle } from '../models/Raffle';
-import Task from './Task';
+import Raffle, { IRaffle } from '../../models/Raffle';
+import Task from '../Task';
 import { Document } from 'mongoose';
 
 export default class RaffleTask extends Task{

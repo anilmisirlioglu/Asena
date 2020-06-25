@@ -5,7 +5,7 @@ import { Command } from './Command';
 import { Colors } from '../utils/TextFormat';
 import { SuperClient } from '../Asena';
 import Constants from '../Constants';
-import Handler from '../handlers/Handler';
+import Factory from '../Factory';
 
 import CancelRaffle from './raffle/CancelRaffle';
 import CreateRaffle from './raffle/CreateRaffle';
@@ -20,7 +20,7 @@ import BotInfo from './bot/BotInfo';
 import SetPrefix from './server/SetPrefix';
 import SetCommandPermission from './server/SetCommandPermission';
 
-export default class CommandHandler extends Handler implements CommandRunner{
+export default class CommandHandler extends Factory implements CommandRunner{
 
     private static readonly COMMANDS: Command[] = [
         new CancelRaffle(),

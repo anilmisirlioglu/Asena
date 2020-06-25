@@ -1,5 +1,5 @@
-import Survey, { ISurvey } from '../models/Survey';
-import Task from './Task';
+import Survey, { ISurvey } from '../../models/Survey';
+import Task from '../Task';
 import { Document } from 'mongoose';
 
 export default class SurveyTask extends Task{

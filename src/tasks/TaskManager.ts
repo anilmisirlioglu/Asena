@@ -1,6 +1,6 @@
 import Task from './Task';
-import RaffleTask from './RaffleTask';
-import SurveyTask from './SurveyTask';
+import RaffleTask from './predefined/RaffleTask';
+import SurveyTask from './predefined/SurveyTask';
 
 export default class TaskManager{
 
