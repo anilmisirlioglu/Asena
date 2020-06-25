@@ -13,10 +13,7 @@ import { RaffleHelper } from './helpers/RaffleHelper';
 import ServerManager from './managers/ServerManager';
 import { SurveyHelper } from './helpers/SurveyHelper';
 import CommandHandler from './commands/CommandHandler';
-import SurveyTask from './tasks/SurveyTask';
-import RaffleTask from './tasks/RaffleTask';
-import TaskManager from './tasks/TaskManager';
-import Task from './tasks/Task';
+import TaskTiming from './tasks/TaskTiming';
 
 interface SuperClientBuilderOptions{
     prefix: string
@@ -36,7 +33,7 @@ export abstract class SuperClient extends Client{
     readonly aliases: Collection<string, string> = new Collection<string, string>()
     readonly setups: Collection<string, string> = new Collection<string, string>()
 
-    private readonly taskManager: TaskManager = new TaskManager()
+    private readonly taskTiming: TaskTiming = new TaskTiming()
     private readonly commandHandler: CommandHandler = new CommandHandler(this)
 
     private readonly helpers: IHelper = {
@@ -54,6 +51,7 @@ export abstract class SuperClient extends Client{
     }
 
     readonly webHook: SyntaxWebHook = new SyntaxWebHook()
+
     private static self: SuperClient
 
     protected constructor(private opts: SuperClientBuilderOptions){
@@ -66,11 +64,11 @@ export abstract class SuperClient extends Client{
         return this.self
     }
 
-    /* MANAGERS */
-    public getTaskManager(): TaskManager{
-        return this.taskManager
+    public getTaskTiming(): TaskTiming{
+        return this.taskTiming
     }
 
+    /* MANAGERS */
     public getRaffleManager(): RaffleManager{
         return this.managers.raffle
     }
@@ -141,7 +139,7 @@ export default class Asena extends SuperClient{
             await this.getServerManager().deleteServerData(guild.id)
         })
 
-        this.getTaskManager().runTasks()
+        this.getTaskTiming().startTimings()
     }
 
 }

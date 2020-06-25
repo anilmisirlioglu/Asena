@@ -1,17 +1,10 @@
-import cron from 'node-cron';
 import Survey, { ISurvey } from '../models/Survey';
 import Task from './Task';
 import { Document } from 'mongoose';
 
 export default class SurveyTask extends Task{
 
-    public startScheduleTask(): void{
-        cron.schedule('* * * * *', async () => {
-            await this.check()
-        })
-    }
-
-    protected async check(): Promise<void>{
+    async onRun(): Promise<void>{
         const cursor = await Survey.find({}).cursor()
         for(let survey = await cursor.next(); survey !== null; survey = await cursor.next()){
             const finishAt: Date = new Date(survey.finishAt)

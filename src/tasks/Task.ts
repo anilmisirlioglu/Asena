@@ -5,9 +5,7 @@ export default abstract class Task{
 
     private client: SuperClient = SuperClient.getInstance()
 
-    public abstract startScheduleTask(): void
-
-    protected abstract async check(): Promise<void>
+    public abstract async onRun(): Promise<void>
 
     protected abstract intervalCallback<T extends Document>(model: T): () => void
 

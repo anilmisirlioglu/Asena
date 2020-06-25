@@ -27,9 +27,9 @@ export default class TaskManager{
         return this.tasks
     }
 
-    public runTasks(): void{
+    public async runTasks(): Promise<void>{
         for(const task of this.tasks){
-            task.startScheduleTask()
+            await task.onRun()
         }
     }
 

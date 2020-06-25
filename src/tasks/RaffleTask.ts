@@ -1,17 +1,10 @@
-import cron from 'node-cron';
 import Raffle, { IRaffle } from '../models/Raffle';
 import Task from './Task';
 import { Document } from 'mongoose';
 
 export default class RaffleTask extends Task{
 
-    public startScheduleTask(): void{
-        cron.schedule('* * * * *', async () => {
-            await this.check()
-        })
-    }
-
-    protected async check(): Promise<void>{
+    async onRun(): Promise<void>{
         const cursor = await Raffle
             .find({
                 $or: [
