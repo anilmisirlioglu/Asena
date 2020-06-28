@@ -81,11 +81,7 @@ export default class CreateRaffle extends Command{
         await client.getRaffleHelper().sendRaffleStartMessage(
             message,
             message.channel as TextChannel,
-            toSecond,
-            stringToPrize,
-            numbersOfWinner,
-            finishAt,
-            createRaffle.id
+            createRaffle
         )
 
         await message.delete({

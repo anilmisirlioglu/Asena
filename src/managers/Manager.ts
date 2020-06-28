@@ -7,13 +7,4 @@ export interface IManager{
     readonly server: ServerManager
 }
 
-export interface Timestamps{
-    createdAt?: Date
-    updatedAt?: Date
-}
-
-export interface ID{
-    _id?: string
-}
-
 export default abstract class Manager extends Factory{}

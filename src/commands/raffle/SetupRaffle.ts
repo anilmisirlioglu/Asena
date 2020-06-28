@@ -176,11 +176,7 @@ export default class SetupRaffle extends Command{
                                 await client.getRaffleHelper().sendRaffleStartMessage(
                                     message,
                                     channel,
-                                    store.get(2),
-                                    store.get(3),
-                                    store.get(1),
-                                    finishAt,
-                                    raffleId
+                                    result
                                 )
                                 await message.channel.send(`:star2: Çekiliş başarıyla oluşturuldu! Oluşturduğun çekiliş <#${store.get(0)}> kanalında yayınlandı...`)
                             }else{

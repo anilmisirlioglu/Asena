@@ -13,6 +13,7 @@ import { SurveyHelper } from './helpers/SurveyHelper';
 import CommandHandler from './commands/CommandHandler';
 import TaskTiming from './tasks/TaskTiming';
 import ActivityUpdater from './updater/ActivityUpdater';
+import RaffleTimeUpdater from './updater/RaffleTimeUpdater';
 
 interface SuperClientBuilderOptions{
     prefix: string
@@ -37,6 +38,7 @@ export abstract class SuperClient extends Client{
     private readonly commandHandler: CommandHandler = new CommandHandler(this)
 
     private readonly activityUpdater: ActivityUpdater = new ActivityUpdater(this)
+    private readonly raffleTimeUpdater: RaffleTimeUpdater = new RaffleTimeUpdater(this)
 
     private readonly helpers: IHelper = {
         raffle: new RaffleHelper(this),
@@ -53,7 +55,9 @@ export abstract class SuperClient extends Client{
     private static self: SuperClient
 
     protected constructor(private opts: SuperClientBuilderOptions){
-        super()
+        super({
+            partials: ['CHANNEL', 'MESSAGE', 'REACTION']
+        })
 
         SuperClient.self = this
     }
@@ -68,6 +72,10 @@ export abstract class SuperClient extends Client{
 
     public getActivityUpdater(): ActivityUpdater{
         return this.activityUpdater
+    }
+
+    public getRaffleTimeUpdater(): RaffleTimeUpdater{
+        return this.raffleTimeUpdater
     }
 
     public getCommandHandler(): CommandHandler{
@@ -136,6 +144,7 @@ export default class Asena extends SuperClient{
             await this.getServerManager().deleteServerData(guild.id)
         })
 
+        this.getRaffleTimeUpdater().listenReactions()
         this.getTaskTiming().startTimings()
     }
 

@@ -5,6 +5,7 @@ import ArrayRandom from '../array/ArrayRandom'
 import Helper from './Helper'
 import { DateTimeHelper } from './DateTimeHelper'
 import { IRaffle } from '../models/Raffle';
+import Timestamps from '../models/legacy/Timestamps';
 
 export class RaffleHelper extends Helper{
 
@@ -36,34 +37,50 @@ export class RaffleHelper extends Helper{
         return `https://discordapp.com/channels/${raffle.server_id}/${raffle.channel_id}/${raffle.message_id}`
     }
 
+    public getRaffleEmbed(raffle: IRaffle & Timestamps, alert: boolean = false, customRemainingTime: number = undefined): MessageEmbed{
+        const finishAt: Date = raffle.finishAt
+        const time = DateTimeHelper.secondsToTime(Math.ceil((finishAt.getTime() - raffle.createdAt.getTime()) / 1000))
+        const remaining = DateTimeHelper.secondsToTime(customRemainingTime ?? Math.ceil((finishAt.getTime() - Date.now()) / 1000))
+
+        return new MessageEmbed()
+            .setAuthor(raffle.prize)
+            .setDescription(
+                [
+                    `Çekilişe Katılmak İçin ${Constants.CONFETTI_REACTION_EMOJI} emojisine tıklayın!`,
+                    `Süre: **${time}**`,
+                    `Bitmesine: **${remaining}**`,
+                    `Oluşturan: <@${raffle.constituent_id}>`
+                ].join('\n')
+            )
+            .setColor(alert ? 'RED' : '#bd087d')
+            .setFooter(`${raffle.numbersOfWinner} Kazanan | Bitiş`)
+            .setTimestamp(finishAt)
+    }
+
+    public getRaffleMessage(): string{
+        return `${Constants.CONFETTI_EMOJI} **ÇEKİLİŞ BAŞLADI** ${Constants.CONFETTI_EMOJI}`
+    }
+
+    public getRaffleAlertMessage(): string{
+        return `${Constants.CONFETTI_EMOJI} **ÇEKİLİŞ İÇİN SON KATILIM** ${Constants.CONFETTI_EMOJI}`
+    }
+
     public async sendRaffleStartMessage(
         message: Message,
         channel: TextChannel,
-        toSecond: number,
-        stringToPrize: string,
-        numbersOfWinner: number,
-        finishAt: number,
-        raffleId: string
+        raffle: IRaffle
     ){
-        const secondsToTime = DateTimeHelper.secondsToTime(toSecond)
-        const embedOfRaffle = new MessageEmbed()
-            .setAuthor(stringToPrize)
-            .setDescription(`Çekilişe katılmak için ${Constants.CONFETTI_REACTION_EMOJI} emojisine tıklayın!\nSüre: **${secondsToTime.toString()}**\nOluşturan: <@${message.author.id}>`)
-            .setColor('#bd087d')
-            .setFooter(`${numbersOfWinner} Kazanan | Bitiş`)
-            .setTimestamp(new Date(finishAt))
-
         channel
-            .send(`${Constants.CONFETTI_EMOJI} **ÇEKİLİŞ BAŞLADI** ${Constants.CONFETTI_EMOJI}`, {
-                embed: embedOfRaffle
+            .send(this.getRaffleMessage(), {
+                embed: this.getRaffleEmbed(raffle)
             })
             .then(async $message => {
-                await this.client.getRaffleManager().setRaffleMessageID(raffleId, $message.id)
+                await this.client.getRaffleManager().setRaffleMessageID(raffle.id, $message.id)
 
                 await $message.react(Constants.CONFETTI_REACTION_EMOJI)
             })
             .catch(async () => {
-                await this.client.getRaffleManager().deleteRaffle(raffleId)
+                await this.client.getRaffleManager().deleteRaffle(raffle.id)
 
                 await message.channel.send(':boom: Botun yetkileri, bu kanalda çekiliş oluşturmak için yetersiz olduğu için çekiliş başlatılamadı.')
             })

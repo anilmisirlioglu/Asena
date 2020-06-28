@@ -1,7 +1,9 @@
 import { Snowflake } from 'discord.js';
 import Raffle, { IRaffle } from '../models/Raffle';
-import Manager, { ID, Timestamps } from './Manager';
+import Manager from './Manager';
 import { ErrorCodes } from '../utils/ErrorCodes';
+import Timestamps from '../models/legacy/Timestamps';
+import ID from '../models/legacy/ID';
 
 interface CreateRaffleOptions{
     prize: string
@@ -31,6 +33,16 @@ export default class RaffleManager extends Manager{
     public async getContinuesRaffles(server_id: Snowflake): Promise<SuperRaffle[]>{
         return Raffle.find({
             server_id,
+            $or: [
+                { status: 'CONTINUES' },
+                { status: 'ALMOST_DONE' }
+            ]
+        })
+    }
+
+    public async findContinuesRaffleByMessageId(message_id: Snowflake): TRaffle{
+        return Raffle.findOne({
+            message_id,
             $or: [
                 { status: 'CONTINUES' },
                 { status: 'ALMOST_DONE' }

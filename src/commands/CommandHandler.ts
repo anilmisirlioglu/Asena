@@ -74,7 +74,7 @@ export default class CommandHandler extends Factory implements CommandRunner{
         }
 
         if(!message.member){
-            return // eğer komut çalışmazsa buraya bak
+            return
         }
 
         // check setup
