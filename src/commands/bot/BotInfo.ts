@@ -11,7 +11,7 @@ export default class BotInfo extends Command{
     constructor(){
         super({
             name: 'botinfo',
-            aliases: [],
+            aliases: ['teknikbilgi'],
             description: 'Bot hakkında teknik bilgi verir.',
             usage: null,
             permission: undefined

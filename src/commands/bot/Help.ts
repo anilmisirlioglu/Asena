@@ -17,6 +17,7 @@ export default class Help extends Command{
 
     async run(client: SuperClient, message: Message, args: string[]): Promise<boolean>{
         const command: undefined | string = args[0];
+        const prefix = (await client.getServerManager().getServerData(message.guild.id)).prefix
         if(args[0] === undefined){
             const text = client.commands.map(command => {
                 return command.permission === 'ADMINISTRATOR' ? (
@@ -27,7 +28,7 @@ export default class Help extends Command{
             const embed = new MessageEmbed()
                 .setAuthor('📍 Komut Yardımı', message.author.displayAvatarURL() || message.author.defaultAvatarURL)
                 .addField('Komutlar', text)
-                .addField(`🌟 Daha Detaylı Yardım?`, `${process.env.PREFIX}help [komut]`)
+                .addField(`🌟 Daha Detaylı Yardım?`, `${prefix}help [komut]`)
                 .addField(`🌐 Daha Fazla Bilgi?`, '**[Website](https://asena.xyz)**')
                 .setColor('RANDOM')
 
@@ -50,13 +51,13 @@ export default class Help extends Command{
             if(searchCommand !== undefined){
                 const embed = new MessageEmbed()
                     .setAuthor('📍 Komut Yardımı', message.author.displayAvatarURL() || message.author.defaultAvatarURL)
-                    .addField('Komut', `**${process.env.PREFIX}${searchCommand.name}**`)
+                    .addField('Komut', `${prefix}${searchCommand.name}`)
                     .addField('Takma Adları (Alias)', searchCommand.aliases.map(alias => {
-                        return `**${process.env.PREFIX}${alias}**`
+                        return `${prefix}${alias}`
                     }).join('\n'))
                     .addField('Açıklaması', `${searchCommand.description}`)
-                    .addField('Min. Yetki Seviyesi', `${searchCommand.permission === 'ADMINISTRATOR' ? '**Admin**' : '**Üye**'}`)
-                    .addField('Kullanımı: ', `${process.env.PREFIX}${searchCommand.name} ${searchCommand.usage === null ? '' : searchCommand.usage}`)
+                    .addField('Min. Yetki Seviyesi', `${searchCommand.permission === 'ADMINISTRATOR' ? 'Admin' : 'Üye'}`)
+                    .addField('Kullanımı', `${prefix}${searchCommand.name} ${searchCommand.usage === null ? '' : searchCommand.usage}`)
                     .setColor('GREEN');
 
                 await message.channel.send({ embed });
