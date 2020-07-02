@@ -57,6 +57,8 @@ abstract class Constants{
         }
     ] //allowed letters
 
+    public static PREFIX_COMMAND = '>>prefix'
+
 }
 
 export default Constants

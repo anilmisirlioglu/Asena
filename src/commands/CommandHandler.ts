@@ -70,6 +70,10 @@ export default class CommandHandler extends Factory implements CommandRunner{
         const prefix = (client.isDevBuild ? 'dev' : '') + (server.prefix || client.prefix)
 
         if(!message.content.startsWith(prefix)){
+            if(message.content === Constants.PREFIX_COMMAND){
+                await message.channel.send(`🌈   Botun sunucu içerisinde ki komut ön adı(prefix): **${server.prefix}**`)
+            }
+
             return
         }
 
