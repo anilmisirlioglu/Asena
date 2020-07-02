@@ -55,7 +55,7 @@ export abstract class Command{
         const client = SuperClient.getInstance()
         return new MessageEmbed()
             .setAuthor(client.user.username, client.user.avatarURL())
-            .setDescription(`Kullanımı: **${client.prefix}${this.name} ${this.usage}**`)
+            .setDescription(`Kullanımı: **${this.name} ${this.usage}**`)
             .setColor('GOLD');
     }
 
