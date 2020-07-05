@@ -1,4 +1,4 @@
-import { Message } from 'discord.js';
+import { Message, TextChannel } from 'discord.js';
 
 import CommandRunner from './CommandRunner';
 import { Command } from './Command';
@@ -66,6 +66,10 @@ export default class CommandHandler extends Factory implements CommandRunner{
             return
         }
 
+        if(!(message.channel instanceof TextChannel)){
+            return
+        }
+
         const server = await client.getServerManager().getServerData(message.guild.id)
         const prefix = (client.isDevBuild ? 'dev' : '') + (server.prefix || client.prefix)
 
@@ -107,13 +111,31 @@ export default class CommandHandler extends Factory implements CommandRunner{
                 return role.name.trim().toLowerCase() === Constants.PERMITTED_ROLE_NAME
             }).size !== 0 || server.publicCommands.indexOf(command.name) !== -1
             if(authorized){
-                command.run(client, message, args).then(async (result: boolean) => {
-                    if(!result){
-                        await message.channel.send({
-                            embed: command.getUsageEmbed()
-                        })
+                const checkPermissions = client.getPermissionController().checkSelfPermissions(
+                    message.guild,
+                    message.channel
+                )
+                if(checkPermissions.has){
+                    command.run(client, message, args).then(async (result: boolean) => {
+                        if(!result){
+                            await message.channel.send({
+                                embed: command.getUsageEmbed()
+                            })
+                        }
+                    })
+                }else{
+                    if(checkPermissions.missing.includes('SEND_MESSAGES') || checkPermissions.missing.includes('VIEW_CHANNEL')){
+                        await message.author
+                            .send(`Botun çalışabilmesi için '**${message.channel.name}**' kanalında bota '**Mesaj Gönder**' yetkisini sağlamanız/vermeniz gerekiyor. Aksi takdirde bot bu kanala mesaj gönderemez ve işlevini yerine getiremez/çalışamaz.`)
+                            .catch(() => {})
+                    }else{
+                        await message.channel.send([
+                            'Botun çalışabilmesi için gerekli olan **izinler** eksik. Lütfen aşağıda ki listede bulunan izinleri bota sağlayıp/verip tekrar deneyin.',
+                            `\n${checkPermissions}\n`,
+                            'Eğer daha detaylı yardıma ihtiyacınız varsa bizle iletişime geçmekten çekinmeyin.'
+                        ].join('\n'))
                     }
-                })
+                }
             }else{
                 await message.channel.send({
                     embed: command.getErrorEmbed('Bu komutu kullanmak için **yetkiniz** yok.')

@@ -14,6 +14,7 @@ import CommandHandler from './commands/CommandHandler';
 import TaskTiming from './tasks/TaskTiming';
 import ActivityUpdater from './updater/ActivityUpdater';
 import RaffleTimeUpdater from './updater/RaffleTimeUpdater';
+import PermissionController from './controllers/PermissionController';
 
 interface SuperClientBuilderOptions{
     prefix: string
@@ -39,6 +40,8 @@ export abstract class SuperClient extends Client{
 
     private readonly activityUpdater: ActivityUpdater = new ActivityUpdater(this)
     private readonly raffleTimeUpdater: RaffleTimeUpdater = new RaffleTimeUpdater(this)
+
+    private readonly permissionController: PermissionController = new PermissionController()
 
     private readonly helpers: IHelper = {
         raffle: new RaffleHelper(this),
@@ -80,6 +83,10 @@ export abstract class SuperClient extends Client{
 
     public getCommandHandler(): CommandHandler{
         return this.commandHandler
+    }
+
+    public getPermissionController(): PermissionController{
+        return this.permissionController
     }
 
     /* MANAGERS */

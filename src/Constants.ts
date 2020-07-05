@@ -1,4 +1,4 @@
-import { EmojiResolvable } from 'discord.js';
+import { EmojiResolvable, PermissionString } from 'discord.js';
 
 export type Letter = 'a' | 'b' | 'c' | 'd' | 'e'
 
@@ -8,6 +8,15 @@ export interface ILetter{
 }
 
 abstract class Constants{
+
+    public static REQUIRED_PERMISSIONS: PermissionString[] = [
+        'SEND_MESSAGES',
+        'ADD_REACTIONS',
+        'VIEW_CHANNEL',
+        'EMBED_LINKS',
+        'READ_MESSAGE_HISTORY',
+        'USE_EXTERNAL_EMOJIS'
+    ]
 
     public static GRAPH_EMOJI: string = '<:graph:716972905841426453>'
     public static CONFETTI_EMOJI: string = '<a:uwu:716956121289588736>' //<:confetti:713087026051940512>
