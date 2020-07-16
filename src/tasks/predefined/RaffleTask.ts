@@ -28,7 +28,7 @@ export default class RaffleTask extends Task{
         new Promise(resolve => {
             this.getClient()
                 .fetchMessage(document.server_id, document.channel_id, document.message_id)
-                .then(result => {
+                .then(async result => {
                     if(result){
                         const helper = this.getClient().getRaffleHelper()
                         const updateCallback = async (
@@ -41,7 +41,7 @@ export default class RaffleTask extends Task{
                             })
                         }
 
-                        setTimeout(async () => {
+                        await setTimeout(async () => {
                             await updateCallback(10, helper.getRaffleMessage(), false)
                             await this.sleep(7 * 1000)
                             await updateCallback(3)
@@ -49,13 +49,15 @@ export default class RaffleTask extends Task{
                             await updateCallback(2)
                             await this.sleep(1000)
                             await updateCallback(1)
-                        }, timeout - (10 * 1000))
-                    }
 
-                    resolve()
+                            resolve()
+                        }, timeout - (10 * 1000))
+                    }else{
+                        resolve()
+                    }
                 })
                 .catch(resolve)
-        }).then(() => super.setInterval(timeout, document))
+        }).then(() => super.setInterval(500, document))
     }
 
     protected intervalCallback<T extends Document>(model: T & IRaffle): () => void{

@@ -5,7 +5,7 @@ import CooldownService from '../services/CooldownService';
 
 export default class RaffleTimeUpdater extends Factory{
 
-    private cooldownService: CooldownService = new CooldownService(3)
+    private cooldownService: CooldownService = new CooldownService(Constants.COOLDOWN_TIME)
 
     public listenReactions(){
         this.client.on('messageReactionAdd', async (reaction: MessageReaction, user: User | PartialUser) => {

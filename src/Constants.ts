@@ -34,6 +34,8 @@ abstract class Constants{
     public static MIN_SURVEY_TIME: number = 60
     public static MAX_SURVEY_TIME: number = 60 * 60 * 24 * 15
 
+    public static COOLDOWN_TIME: number = 5
+
     public static ALLOWED_TIME_TYPES: string[] = ['m', 'h', 'd']
 
     public static ANSWER_REGEX: RegExp = /\[(.*?)]/g
