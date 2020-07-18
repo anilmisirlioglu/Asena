@@ -1,4 +1,4 @@
-import { Command } from '../Command'
+import Command from '../Command'
 import { DateTimeHelper } from '../../helpers/DateTimeHelper'
 import { Message, TextChannel } from 'discord.js'
 import Constants from '../../Constants'

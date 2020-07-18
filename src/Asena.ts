@@ -2,14 +2,12 @@ import { Client, Collection, Guild, GuildChannel, Message, Snowflake, TextChanne
 
 import Logger from './utils/Logger';
 import Version from './utils/Version';
-import { Command } from './commands/Command';
+import Command from './commands/Command';
 import SyntaxWebHook from './SyntaxWebhook';
-import { IHelper } from './helpers/Helper';
-import { IManager } from './managers/Manager';
 import RaffleManager from './managers/RaffleManager';
-import { RaffleHelper } from './helpers/RaffleHelper';
 import ServerManager from './managers/ServerManager';
-import { SurveyHelper } from './helpers/SurveyHelper';
+import RaffleHelper from './helpers/RaffleHelper';
+import SurveyHelper from './helpers/SurveyHelper';
 import CommandHandler from './commands/CommandHandler';
 import TaskTiming from './tasks/TaskTiming';
 import ActivityUpdater from './updater/ActivityUpdater';
@@ -43,15 +41,12 @@ export abstract class SuperClient extends Client{
 
     private readonly permissionController: PermissionController = new PermissionController()
 
-    private readonly helpers: IHelper = {
-        raffle: new RaffleHelper(this),
-        survey: new SurveyHelper(this)
-    }
+    private readonly raffleHelper: RaffleHelper = new RaffleHelper(this)
+    private readonly raffleManager: RaffleManager = new RaffleManager(this)
 
-    private readonly managers: IManager = {
-        raffle: new RaffleManager(this),
-        server: new ServerManager(this)
-    }
+    private readonly surveyHelper: SurveyHelper = new SurveyHelper(this)
+
+    private readonly serverManager: ServerManager = new ServerManager(this)
 
     readonly webHook: SyntaxWebHook = new SyntaxWebHook()
 
@@ -89,22 +84,20 @@ export abstract class SuperClient extends Client{
         return this.permissionController
     }
 
-    /* MANAGERS */
     public getRaffleManager(): RaffleManager{
-        return this.managers.raffle
+        return this.raffleManager
     }
 
     public getServerManager(): ServerManager{
-        return this.managers.server
+        return this.serverManager
     }
 
-    /* HELPERS */
     public getRaffleHelper(): RaffleHelper{
-        return this.helpers.raffle
+        return this.raffleHelper
     }
 
     public getSurveyHelper(): SurveyHelper{
-        return this.helpers.survey
+        return this.surveyHelper
     }
 
     public fetchChannel<T extends Snowflake>(guildId: T, channelId: T): GuildChannel | undefined{

@@ -1,4 +1,4 @@
-import { Command } from '../Command';
+import Command from '../Command';
 import { Message, MessageEmbed, version } from 'discord.js';
 import { SuperClient } from '../../Asena';
 import { DateTimeHelper } from '../../helpers/DateTimeHelper';

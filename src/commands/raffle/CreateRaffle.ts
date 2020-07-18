@@ -1,6 +1,6 @@
 import { Message, TextChannel } from 'discord.js'
 
-import { Command } from '../Command'
+import Command from '../Command'
 import Constants from '../../Constants'
 import { SuperClient } from '../../Asena';
 import { DateTimeHelper } from '../../helpers/DateTimeHelper';

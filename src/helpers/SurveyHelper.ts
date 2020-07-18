@@ -1,9 +1,9 @@
-import Helper from './Helper';
 import { ISurvey } from '../models/Survey';
 import { ColorResolvable, GuildChannel, Message, MessageEmbed, MessageReaction, TextChannel } from 'discord.js';
 import Constants from '../Constants';
+import Factory from '../Factory';
 
-export class SurveyHelper extends Helper{
+export default class SurveyHelper extends Factory{
 
     public async finishSurvey(survey: ISurvey){
         const channel: GuildChannel | undefined = await this.client.fetchChannel(survey.server_id, survey.channel_id)

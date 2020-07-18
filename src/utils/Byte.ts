@@ -20,4 +20,3 @@ class Byte{
 }
 
 export default Byte
-export { Byte }

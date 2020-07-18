@@ -1,4 +1,4 @@
-import { Command } from '../Command';
+import Command from '../Command';
 import { SuperClient } from '../../Asena';
 import { Message, MessageEmbed } from 'discord.js';
 import Constants, { ILetter } from '../../Constants';

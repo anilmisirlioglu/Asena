@@ -2,12 +2,12 @@ import { GuildChannel, Message, MessageEmbed, MessageReaction, TextChannel } fro
 
 import Constants from '../Constants'
 import ArrayRandom from '../array/ArrayRandom'
-import Helper from './Helper'
 import { DateTimeHelper } from './DateTimeHelper'
 import { IRaffle } from '../models/Raffle';
 import Timestamps from '../models/legacy/Timestamps';
+import Factory from '../Factory';
 
-export class RaffleHelper extends Helper{
+export default class RaffleHelper extends Factory{
 
     public async identifyWinners(raffle: IRaffle): Promise<string[]>{
         let winners = []

@@ -9,7 +9,7 @@ interface CommandOptions{
     permission: PermissionString | undefined
 }
 
-export abstract class Command{
+export default abstract class Command{
 
     protected constructor(protected readonly options: CommandOptions){}
 

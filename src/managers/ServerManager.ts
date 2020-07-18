@@ -1,11 +1,11 @@
-import Manager from './Manager'
 import { Snowflake } from 'discord.js'
 import Server, { IServer } from '../models/Server';
 import { UpdateQuery } from 'mongoose';
+import Factory from '../Factory';
 
 type CommandUpdateOption = 'ADD' | 'DELETE'
 
-export default class ServerManager extends Manager{
+export default class ServerManager extends Factory{
 
     private readonly servers: { [key: string]: IServer } = {}
 

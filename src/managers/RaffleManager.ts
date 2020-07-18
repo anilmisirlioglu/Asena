@@ -1,9 +1,9 @@
 import { Snowflake } from 'discord.js';
 import Raffle, { IRaffle } from '../models/Raffle';
-import Manager from './Manager';
 import { ErrorCodes } from '../utils/ErrorCodes';
 import Timestamps from '../models/legacy/Timestamps';
 import ID from '../models/legacy/ID';
+import Factory from '../Factory';
 
 interface CreateRaffleOptions{
     prize: string
@@ -22,7 +22,7 @@ interface RaffleReturnType{
 type SuperRaffle = IRaffle & Timestamps & ID
 type TRaffle = Promise<SuperRaffle | undefined>
 
-export default class RaffleManager extends Manager{
+export default class RaffleManager extends Factory{
 
     public async getServerLastRaffle(server_id: Snowflake): TRaffle{
         return Raffle
