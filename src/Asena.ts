@@ -13,6 +13,7 @@ import TaskTiming from './tasks/TaskTiming';
 import ActivityUpdater from './updater/ActivityUpdater';
 import RaffleTimeUpdater from './updater/RaffleTimeUpdater';
 import PermissionController from './controllers/PermissionController';
+import Constants from './Constants';
 
 interface SuperClientBuilderOptions{
     prefix: string
@@ -54,7 +55,11 @@ export abstract class SuperClient extends Client{
 
     protected constructor(private opts: SuperClientBuilderOptions){
         super({
-            partials: ['CHANNEL', 'MESSAGE', 'REACTION']
+            partials: [
+                'CHANNEL',
+                'MESSAGE',
+                'REACTION'
+            ]
         })
 
         SuperClient.self = this
@@ -142,6 +147,11 @@ export default class Asena extends SuperClient{
         // Delete server data from db
         this.on('guildDelete', async guild => {
             await this.getServerManager().deleteServerData(guild.id)
+            await guild.owner?.send([
+                `> ${Constants.RUBY_EMOJI} Botun kullanımı ile ilgili sorunlar mı yaşıyorsun? Lütfen bizimle iletişime geçmekten çekinme.\n`,
+                `:earth_americas: Website: https://asena.xyz`,
+                ':sparkles: Destek Sunucusu: https://discord.gg/CRgXhfs'
+            ].join('\n'))
         })
 
         this.getRaffleTimeUpdater().listenReactions()

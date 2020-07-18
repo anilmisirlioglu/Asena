@@ -58,7 +58,7 @@ export default class CommandHandler extends Factory implements CommandRunner{
     async run(message: Message){
         const client: SuperClient = this.client
 
-        if(message.guild === null){
+        if(!message.guild){
             return
         }
 
