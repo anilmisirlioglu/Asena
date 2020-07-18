@@ -31,7 +31,7 @@ export enum Colors{
     RESET = Markers.ESCAPE + 'r'
 }
 
-export class TextFormat{
+export default class TextFormat{
 
     public static FORMAT_BOLD: String = "";
     public static FORMAT_OBFUSCATED: String = "";

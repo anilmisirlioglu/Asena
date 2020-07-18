@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { Colors, TextFormat } from './TextFormat';
+import TextFormat, { Colors } from './TextFormat';
 
 enum LogLevel{
     ERROR = 'Error',

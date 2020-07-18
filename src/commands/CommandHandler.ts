@@ -1,7 +1,7 @@
 import { Message, TextChannel } from 'discord.js';
 
 import CommandRunner from './CommandRunner';
-import { Command } from './Command';
+import Command from './Command';
 import { Colors } from '../utils/TextFormat';
 import { SuperClient } from '../Asena';
 import Constants from '../Constants';
