@@ -55,11 +55,8 @@ export abstract class SuperClient extends Client{
 
     protected constructor(private opts: SuperClientBuilderOptions){
         super({
-            partials: [
-                'CHANNEL',
-                'MESSAGE',
-                'REACTION'
-            ]
+            partials: ['CHANNEL', 'MESSAGE', 'REACTION'],
+            fetchAllMembers: true
         })
 
         SuperClient.self = this

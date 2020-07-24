@@ -18,13 +18,13 @@
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
     "mongoose": "^5.9.7",
-    "node-cron": "^2.0.3",
-    "typescript": "^3.8.3"
+    "node-cron": "^2.0.3"
   },
   "devDependencies": {
     "@types/dotenv": "^8.2.0",
     "@types/mongoose": "^5.7.22",
     "@types/node": "^14.0.13",
+    "typescript": "^3.8.3",
     "nodemon": "^2.0.4",
     "ts-node": "^8.10.2"
   }

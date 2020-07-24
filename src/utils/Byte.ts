@@ -1,9 +1,9 @@
 class Byte{
 
     private static readonly symbols: string[] = [
-        'Bayt',
-        'Kilobayt',
-        'Megabayt',
+        'Byte',
+        'Kilobyte',
+        'Megabyte',
         'Gigabyte',
         'Terabyte',
         'PiB',
