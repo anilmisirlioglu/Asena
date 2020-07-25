@@ -1,15 +1,7 @@
-import { InvalidArgumentException } from '../exceptions/InvalidArgumentException';
-import { Collection, Message, TextChannel, User } from 'discord.js';
+import { Collection, TextChannel, User } from 'discord.js';
 import { SuperClient } from '../Asena';
-
-interface ValidatorCallbackReturnType{
-    result: boolean,
-    value: any
-}
-
-interface ValidatorCallback{
-    (message: Message): ValidatorCallbackReturnType
-}
+import { InvalidArgumentException } from '../exceptions/InvalidArgumentException';
+import SetupPhase from './SetupPhase';
 
 type DataStoreType = Collection<number, any>
 
@@ -17,48 +9,46 @@ interface OnFinishCallback{
     (store: DataStoreType): boolean
 }
 
-interface SetupPhaseOptions{
-    readonly message: string
-    readonly validator: ValidatorCallback
+interface InteractiveSetupOptions{
+    readonly user: User
+    readonly channel: TextChannel
+    readonly client: SuperClient
+    readonly phases: SetupPhase[]
+    readonly onFinishCallback: OnFinishCallback,
+    readonly timeout: number | undefined
 }
 
-export class SetupPhase{
-
-    public constructor(private readonly options: SetupPhaseOptions){}
-    
-    public get message(): string{
-        return this.options.message
-    }
-
-    public get validator(): ValidatorCallback{
-        return this.options.validator
-    }
-
-}
-
-export class InteractiveSetup{
+export default class InteractiveSetup{
 
     private currentPhaseIndex: number = 0
-    private isItOver: boolean = false
+    public isItOver: boolean = false
     private cancelKeywords: string[] = ['iptal', 'cancel', 'exit']
     private dataStore: DataStoreType = new Collection<number, any>()
 
-    constructor(
-        private readonly user: User,
-        private readonly channel: TextChannel,
-        private readonly client: SuperClient,
-        private readonly phases: SetupPhase[],
-        private readonly onFinishCallback: OnFinishCallback,
-        private readonly timeout: number = 60 * 5
-    ){
-        if(phases.length === 0){
-            throw new InvalidArgumentException('Yetersiz aşama. En az 1 aşama olmalıdır')
-        }else{
-            this.client.setups.set(user.id, channel.id)
+    public readonly user: User
+    public readonly channel: TextChannel
+    private readonly client: SuperClient
+    private readonly phases: SetupPhase[]
+    private readonly onFinishCallback: OnFinishCallback
+    private readonly timeout: number
 
-            this.setPhaseListener()
-            this.setTimeoutTimer()
+    constructor(options: InteractiveSetupOptions){
+        if(options.phases.length === 0){
+            throw new InvalidArgumentException('Yetersiz aşama. En az 1 aşama olmalıdır')
         }
+
+        this.user = options.user
+        this.channel = options.channel
+        this.client = options.client
+        this.phases = options.phases
+        this.onFinishCallback = options.onFinishCallback
+        this.timeout = options.timeout || 60 * 5 // 5 minute
+    }
+
+    public start(): void{
+        this.client.getSetupManager().addSetup(this)
+        this.setPhaseListener()
+        this.setTimeoutTiming()
     }
 
     private setPhaseListener(message: boolean = true): void{
@@ -82,19 +72,15 @@ export class InteractiveSetup{
                                 this.currentPhaseIndex++
                                 this.setPhaseListener()
                             }else{
-                                this.client.setups.delete(this.user.id)
-                                this.isItOver = true
-
+                                this.client.getSetupManager().deleteSetup(this)
                                 this.onFinishCallback(this.dataStore)
                             }
                         }else{
                             this.setPhaseListener(false)
                         }
                     }else{
+                        this.client.getSetupManager().deleteSetup(this)
                         await this.channel.send(':boom: İnteraktif kurulum sihirbazı iptal edildi.')
-
-                        this.client.setups.delete(this.user.id)
-                        this.isItOver = true
                     }
                 }
             }else{
@@ -103,13 +89,11 @@ export class InteractiveSetup{
         })
     }
 
-    private setTimeoutTimer(){
+    private setTimeoutTiming(){
         setTimeout(async () => {
             if(!this.isItOver){
+                this.client.getSetupManager().deleteSetup(this)
                 await this.channel.send(':boom: İnteraktif kurulum sihirbazı zaman aşımına uğradı ve kapandı.')
-
-                this.client.setups.delete(this.user.id)
-                this.isItOver = true
             }
         }, this.timeout * 1000)
     }

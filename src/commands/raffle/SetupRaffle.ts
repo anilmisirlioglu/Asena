@@ -2,7 +2,9 @@ import Command from '../Command'
 import { DateTimeHelper } from '../../helpers/DateTimeHelper'
 import { Message, TextChannel } from 'discord.js'
 import Constants from '../../Constants'
-import { InteractiveSetup, SetupPhase } from '../../utils/InteractiveSetup'
+import InteractiveSetup from '../../setup/InteractiveSetup'
+import SetupPhase from '../../setup/SetupPhase';
+//import { InteractiveSetup, SetupPhase } from '../../utils/InteractiveSetup'
 import { SuperClient } from '../../Asena';
 
 export default class SetupRaffle extends Command{
@@ -34,11 +36,11 @@ export default class SetupRaffle extends Command{
                 return true
             }
 
-            new InteractiveSetup(
-                message.author,
-                message.channel,
+            const setup = new InteractiveSetup({
+                user: message.author,
+                channel: message.channel,
                 client,
-                [
+                phases: [
                     new SetupPhase({
                         message: [
                             `${Constants.CONFETTI_REACTION_EMOJI} ${client.user.username} interaktif kurulum sihirbazına **hoşgeldiniz**!`,
@@ -110,7 +112,7 @@ export default class SetupRaffle extends Command{
                             ' kullanabileceğini unutmayın.`'
                         ].join('\n'),
                         validator: (message: Message) => {
-                            const time = message.content.replace(/ /g,'')
+                            const time = message.content.replace(/ /g, '')
                             const toSecond = DateTimeHelper.detectTime(time)
                             if(!toSecond){
                                 message.channel.send('Lütfen geçerli bir süre giriniz. (Örn; **1s** - **1m** - **5m** - **1h** vb.)')
@@ -159,7 +161,7 @@ export default class SetupRaffle extends Command{
                         }
                     })
                 ],
-                (store) => {
+                onFinishCallback: (store) => {
                     const finishAt: number = Date.now() + (store.get(2) * 1000)
                     client.getRaffleManager().createRaffle({
                         prize: store.get(3),
@@ -189,8 +191,11 @@ export default class SetupRaffle extends Command{
                     })
 
                     return true
-                }
-            )
+                },
+                timeout: 60 * 5
+            })
+
+            setup.start()
         }
 
         return true

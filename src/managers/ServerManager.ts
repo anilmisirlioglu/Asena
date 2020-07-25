@@ -5,7 +5,7 @@ import Factory from '../Factory';
 
 type CommandUpdateOption = 'ADD' | 'DELETE'
 
-export default class ServerManager extends Factory{
+export default class ServerManager{
 
     private readonly servers: { [key: string]: IServer } = {}
 

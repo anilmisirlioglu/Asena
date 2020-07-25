@@ -85,9 +85,8 @@ export default class CommandHandler extends Factory implements CommandRunner{
             return
         }
 
-        // check setup
-        const channel_id: string = client.setups.get(message.member.id)
-        if(channel_id && channel_id === message.channel.id){
+        const channel_id: string = this.client.getSetupManager().getSetupChannel(message.member.id)
+        if(channel_id && channel_id === message.channel.id){ // check setup
             return
         }
 

@@ -22,7 +22,7 @@ interface RaffleReturnType{
 type SuperRaffle = IRaffle & Timestamps & ID
 type TRaffle = Promise<SuperRaffle | undefined>
 
-export default class RaffleManager extends Factory{
+export default class RaffleManager{
 
     public async getServerLastRaffle(server_id: Snowflake): TRaffle{
         return Raffle

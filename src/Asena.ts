@@ -14,6 +14,7 @@ import ActivityUpdater from './updater/ActivityUpdater';
 import RaffleTimeUpdater from './updater/RaffleTimeUpdater';
 import PermissionController from './controllers/PermissionController';
 import Constants from './Constants';
+import SetupManager from './setup/SetupManager';
 
 interface SuperClientBuilderOptions{
     prefix: string
@@ -43,11 +44,12 @@ export abstract class SuperClient extends Client{
     private readonly permissionController: PermissionController = new PermissionController()
 
     private readonly raffleHelper: RaffleHelper = new RaffleHelper(this)
-    private readonly raffleManager: RaffleManager = new RaffleManager(this)
+    private readonly raffleManager: RaffleManager = new RaffleManager()
 
     private readonly surveyHelper: SurveyHelper = new SurveyHelper(this)
 
-    private readonly serverManager: ServerManager = new ServerManager(this)
+    private readonly serverManager: ServerManager = new ServerManager()
+    private readonly setupManager: SetupManager = new SetupManager()
 
     readonly webHook: SyntaxWebHook = new SyntaxWebHook()
 
@@ -92,6 +94,10 @@ export abstract class SuperClient extends Client{
 
     public getServerManager(): ServerManager{
         return this.serverManager
+    }
+
+    public getSetupManager(): SetupManager{
+        return this.setupManager
     }
 
     public getRaffleHelper(): RaffleHelper{
