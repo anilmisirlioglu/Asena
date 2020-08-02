@@ -2,7 +2,7 @@ import { Message, MessageEmbed } from 'discord.js'
 
 import Command from '../Command'
 import Constants from '../../Constants'
-import { DateTimeHelper } from '../../helpers/DateTimeHelper'
+import { getDateTimeToString } from '../../helpers/DateTimeHelper'
 import SuperClient from '../../SuperClient';
 
 export default class Raffles extends Command{
@@ -30,7 +30,7 @@ export default class Raffles extends Command{
         }else{
             let i: number = 1;
             raffles.map(raffle => {
-                embed.addField(`${i++}. ${raffle.prize}`, `Oluşturan: <@${raffle.constituent_id}>\nKanal: <#${raffle.channel_id}>\nKazanan Sayısı: **${raffle.numbersOfWinner} Kişi**\nBaşlangıç Tarihi: **${DateTimeHelper.getDateTimeToString(new Date(raffle.createdAt))}**\nBitiş: **${DateTimeHelper.getDateTimeToString(new Date(raffle.finishAt))}**`)
+                embed.addField(`${i++}. ${raffle.prize}`, `Oluşturan: <@${raffle.constituent_id}>\nKanal: <#${raffle.channel_id}>\nKazanan Sayısı: **${raffle.numbersOfWinner} Kişi**\nBaşlangıç Tarihi: **${getDateTimeToString(new Date(raffle.createdAt))}**\nBitiş: **${getDateTimeToString(new Date(raffle.finishAt))}**`)
             })
             embed.setDescription(`${Constants.CONFETTI_REACTION_EMOJI} Toplam **${raffles.length}** aktif çekiliş var`)
         }

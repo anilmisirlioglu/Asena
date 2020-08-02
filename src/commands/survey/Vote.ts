@@ -3,7 +3,7 @@ import { Message, MessageEmbed } from 'discord.js';
 import Constants from '../../Constants';
 import SuperClient from '../../SuperClient';
 import Survey from '../../models/Survey';
-import { DateTimeHelper } from '../../helpers/DateTimeHelper';
+import { detectTime, secondsToTime } from '../../helpers/DateTimeHelper';
 
 export default class Vote extends Command{
 
@@ -44,7 +44,7 @@ export default class Vote extends Command{
                     await vote.react(DISAGREE);
                 })
         }else{
-            const time = DateTimeHelper.detectTime(second)
+            const time = detectTime(second)
             if(!time){
                 await message.channel.send({
                     embed: this.getErrorEmbed('Lütfen geçerli bir süre giriniz. (Örn; **1s** - **1m** - **5m** - **1h** vb.)')
@@ -65,7 +65,7 @@ export default class Vote extends Command{
                 .setAuthor(message.author.username, message.author.displayAvatarURL() || message.author.defaultAvatarURL)
                 .setColor('#ffd1dc')
                 .setDescription('Oylama başladı!')
-                .setFooter(`Süre: ${DateTimeHelper.secondsToTime(time).toString()}`)
+                .setFooter(`Süre: ${secondsToTime(time).toString()}`)
                 .setTimestamp()
                 .addField('Soru', args.filter(arg => arg !== undefined).join(' '), true)
 

@@ -2,7 +2,7 @@ import { GuildChannel, Message, MessageEmbed, MessageReaction, TextChannel } fro
 
 import Constants from '../Constants'
 import ArrayRandom from '../array/ArrayRandom'
-import { DateTimeHelper } from './DateTimeHelper'
+import { secondsToTime } from './DateTimeHelper'
 import { IRaffle } from '../models/Raffle';
 import Timestamps from '../models/legacy/Timestamps';
 import Factory from '../Factory';
@@ -39,8 +39,8 @@ export default class RaffleHelper extends Factory{
 
     public getRaffleEmbed(raffle: IRaffle & Timestamps, alert: boolean = false, customRemainingTime: number = undefined): MessageEmbed{
         const finishAt: Date = raffle.finishAt
-        const time = DateTimeHelper.secondsToTime(Math.ceil((finishAt.getTime() - raffle.createdAt.getTime()) / 1000))
-        const remaining = DateTimeHelper.secondsToTime(customRemainingTime ?? Math.ceil((finishAt.getTime() - Date.now()) / 1000))
+        const time = secondsToTime(Math.ceil((finishAt.getTime() - raffle.createdAt.getTime()) / 1000))
+        const remaining = secondsToTime(customRemainingTime ?? Math.ceil((finishAt.getTime() - Date.now()) / 1000))
 
         return new MessageEmbed()
             .setAuthor(raffle.prize)

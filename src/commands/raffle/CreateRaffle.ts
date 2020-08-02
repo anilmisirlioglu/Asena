@@ -3,7 +3,7 @@ import { Message, TextChannel } from 'discord.js'
 import Command from '../Command'
 import Constants from '../../Constants'
 import SuperClient from '../../SuperClient';
-import { DateTimeHelper } from '../../helpers/DateTimeHelper';
+import { detectTime } from '../../helpers/DateTimeHelper';
 
 export default class CreateRaffle extends Command{
 
@@ -43,7 +43,7 @@ export default class CreateRaffle extends Command{
             return true
         }
 
-        const toSecond: number = DateTimeHelper.detectTime(time);
+        const toSecond: number = detectTime(time);
         if(!toSecond){
             await message.channel.send({
                 embed: this.getErrorEmbed('Lütfen geçerli bir süre giriniz. (Örn; **1s** - **1m** - **5m** - **1h** vb.)')

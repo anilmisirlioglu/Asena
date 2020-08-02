@@ -1,5 +1,5 @@
 import { Guild, MessageEmbed, WebhookClient } from "discord.js";
-import { DateTimeHelper } from './helpers/DateTimeHelper';
+import { getDateTimeToString } from './helpers/DateTimeHelper';
 
 export default class SyntaxWebHook extends WebhookClient{
 
@@ -19,7 +19,7 @@ export default class SyntaxWebHook extends WebhookClient{
                 `Sunucu Sahibi: **${guild.owner.displayName}**`,
                 `Sunucu Sahibi ID: **${guild.ownerID}**`,
                 `Üye Sayısı: **${guild.members.cache.size}**`,
-                `Sunucu Kurulma Tarihi: **${DateTimeHelper.getDateTimeToString(guild.createdAt)}**`
+                `Sunucu Kurulma Tarihi: **${getDateTimeToString(guild.createdAt)}**`
             ].join('\n'))
             .setColor(isCreate ? 'GREEN' : 'RED')
             .setTimestamp()

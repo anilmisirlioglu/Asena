@@ -1,5 +1,5 @@
 import Command from '../Command'
-import { DateTimeHelper } from '../../helpers/DateTimeHelper'
+import { secondsToTime, detectTime } from '../../helpers/DateTimeHelper'
 import { Message, TextChannel } from 'discord.js'
 import Constants from '../../Constants'
 import InteractiveSetup from '../../setup/InteractiveSetup'
@@ -112,7 +112,7 @@ export default class SetupRaffle extends Command{
                         ],
                         validator: (message: Message) => {
                             const time = message.content.replace(/ /g, '')
-                            const toSecond = DateTimeHelper.detectTime(time)
+                            const toSecond = detectTime(time)
                             if(!toSecond){
                                 message.channel.send('Lütfen geçerli bir süre giriniz. (Örn; **1s** - **1m** - **5m** - **1h** vb.)')
                                 return {
@@ -129,8 +129,8 @@ export default class SetupRaffle extends Command{
                                 }
                             }
 
-                            const secondsToTime = DateTimeHelper.secondsToTime(toSecond)
-                            message.channel.send(`${Constants.CONFETTI_REACTION_EMOJI} Tebrikler! Çekiliş süresi **${secondsToTime.toString()}** olarak belirlendi.`)
+                            const $secondsToTime = secondsToTime(toSecond)
+                            message.channel.send(`${Constants.CONFETTI_REACTION_EMOJI} Tebrikler! Çekiliş süresi **${$secondsToTime.toString()}** olarak belirlendi.`)
                             return {
                                 result: true,
                                 value: toSecond

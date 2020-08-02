@@ -1,7 +1,7 @@
 import Command from '../Command';
 import { Message, MessageEmbed, version } from 'discord.js';
 import SuperClient from '../../SuperClient';
-import { DateTimeHelper } from '../../helpers/DateTimeHelper';
+import { secondsToTime } from '../../helpers/DateTimeHelper';
 import * as os from 'os';
 import Byte from '../../utils/Byte';
 import MongoDB from '../../drivers/MongoDB';
@@ -25,10 +25,8 @@ export default class BotInfo extends Command{
             .setTimestamp()
             .setColor('#CD5C5C')
 
-        const uptime = DateTimeHelper.secondsToTime(Math.floor(client.uptime / 1000))
-
         const textArr: string[] = [
-            `Çalışma Süresi (Uptime): **${uptime.toString()}**`,
+            `Çalışma Süresi (Uptime): **${secondsToTime(Math.floor(client.uptime / 1000))}**`,
             `NodeJS Sürümü: **${process.versions.node}**`,
             `DiscordJS Sürümü: **${version}**`,
             `Artemis Sürümü: **${client.version.getFullVersion()}**`,
@@ -38,7 +36,7 @@ export default class BotInfo extends Command{
             `CPU: **${os.cpus().shift().model}**`,
             `CPU Hız: **${os.cpus().shift().speed} MHz**`,
             `CPU Çekirdek (Core): **${os.cpus().length / 2} Core / ${os.cpus().length} Thread**`,
-            `CPU Çalışma Süresi (Uptime): **${DateTimeHelper.secondsToTime(os.uptime())}**`,
+            `CPU Çalışma Süresi (Uptime): **${secondsToTime(os.uptime())}**`,
             `Toplam Bellek: **${Byte.getSymbolByQuantity(os.totalmem())}**`,
             `Kullanılan Bellek: **${Byte.getSymbolByQuantity(os.totalmem() - os.freemem())}**`,
             `Kullanılabilir Bellek: **${Byte.getSymbolByQuantity(os.freemem())}**`,
