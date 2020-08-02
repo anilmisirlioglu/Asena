@@ -136,7 +136,7 @@ export default class Asena extends SuperClient{
     constructor(){
         super({
             prefix: process.env.PREFIX ?? '!a',
-            isDevBuild: process.argv.includes('dev')
+            isDevBuild: process.env.NODE_ENV !== 'production'
         })
 
         // Activity updater start
