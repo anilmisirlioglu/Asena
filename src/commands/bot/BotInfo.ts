@@ -47,10 +47,7 @@ export default class BotInfo extends Command{
 
         embed.addField('**Asena**', textArr.join('\n'))
 
-        await message.channel.send({
-            embed
-        })
-
+        await message.channel.send({ embed })
         return true
     }
 

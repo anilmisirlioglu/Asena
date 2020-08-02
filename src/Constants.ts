@@ -9,6 +9,8 @@ export interface ILetter{
 
 abstract class Constants{
 
+    public static SETUP_CANCEL_KEYWORDS: string[] = ['iptal', 'cancel', 'exit']
+
     public static REQUIRED_PERMISSIONS: PermissionString[] = [
         'SEND_MESSAGES',
         'ADD_REACTIONS',

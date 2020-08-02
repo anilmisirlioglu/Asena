@@ -14,7 +14,6 @@
   },
   "dependencies": {
     "child_process": "^1.0.2",
-    "common-tags": "^1.8.0",
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
     "mongoose": "^5.9.7",

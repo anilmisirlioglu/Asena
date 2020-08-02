@@ -6,12 +6,12 @@ export default class SetupManager{
     private setups = new Collection<Snowflake, Snowflake>()
 
     public addSetup(setup: InteractiveSetup): void{
-        this.setups.set(setup.user.id, setup.channel.id)
+        this.setups.set(setup.user_id, setup.channel_id)
     }
 
     public deleteSetup(setup: InteractiveSetup): void{
         setup.isItOver = true
-        this.setups.delete(setup.user.id)
+        this.setups.delete(setup.user_id)
     }
 
     public getSetupChannel(user_id: Snowflake): Snowflake | undefined{

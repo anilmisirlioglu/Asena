@@ -3,9 +3,8 @@ import { DateTimeHelper } from '../../helpers/DateTimeHelper'
 import { Message, TextChannel } from 'discord.js'
 import Constants from '../../Constants'
 import InteractiveSetup from '../../setup/InteractiveSetup'
-import SetupPhase from '../../setup/SetupPhase';
-//import { InteractiveSetup, SetupPhase } from '../../utils/InteractiveSetup'
-import { SuperClient } from '../../Asena';
+import SetupPhase from '../../setup/SetupPhase'
+import { SuperClient } from '../../Asena'
 
 export default class SetupRaffle extends Command{
 
@@ -37,8 +36,8 @@ export default class SetupRaffle extends Command{
             }
 
             const setup = new InteractiveSetup({
-                user: message.author,
-                channel: message.channel,
+                user_id: message.author.id,
+                channel_id: message.channel.id,
                 client,
                 phases: [
                     new SetupPhase({
@@ -47,7 +46,7 @@ export default class SetupRaffle extends Command{
                             'Eğer sihirbazdan **çıkmak** isterseniz lütfen sohbete `iptal`, `cancel` veya `exit` yazın. Hadi kuruluma geçelim.\n',
                             '**Adım 1:** Öncelikle çekilişin hangi metin kanalında yapılacağını belirleyelim\n',
                             '`Lütfen sunucuda var olan botun erişebileceği bir metin kanalını etiketlemeniz gerektiğini unutmayın.`'
-                        ].join('\n'),
+                        ],
                         validator: (message: Message) => {
                             const channels = message.mentions.channels
                             if(channels.size === 0){
@@ -78,7 +77,7 @@ export default class SetupRaffle extends Command{
                         message: [
                             '**Adım 2:** Kaç kazanan olucağını belirleyelim\n',
                             '`Lütfen sayısal ve 1 ila 20 aralığında bir sayı girmeniz gerektiğini unutmayın.`'
-                        ].join('\n'),
+                        ],
                         validator: (message: Message) => {
                             const toInt: number = Number(message.content.trim())
                             if(isNaN(toInt)){
@@ -110,7 +109,7 @@ export default class SetupRaffle extends Command{
                             '`Unutmayın süre en az 1 dakika, en fazla 60 gün olabilir. Süre belirlerken m (dakika), h (saat), d (gün) gibi süre belirten' +
                             ' terimler kullanmanız gerekir. Bunu kullanırken önce süre daha sonra boşluk bırakarak veya bırakmadan süre cinsini yazmayı unutmayın. Sadece tek bir süre tipi' +
                             ' kullanabileceğini unutmayın.`'
-                        ].join('\n'),
+                        ],
                         validator: (message: Message) => {
                             const time = message.content.replace(/ /g, '')
                             const toSecond = DateTimeHelper.detectTime(time)
@@ -142,7 +141,7 @@ export default class SetupRaffle extends Command{
                         message: [
                             '**Adım 4:** Son olarak çekilişin ödülünü belirleyelim (Aynı zamanda başlık olarak kullanılacak)\n',
                             '`Ödülün maksimum uzunluğunun 255 karakter olabileceğini unutmayın.`'
-                        ].join('\n'),
+                        ],
                         validator: (message: Message) => {
                             const prize = message.content
                             if(prize.length > 255){
@@ -195,6 +194,12 @@ export default class SetupRaffle extends Command{
                 timeout: 60 * 5
             })
 
+            setup.on('stop', async reason => {
+                await message.channel.send(`:boom: ${reason}`)
+            })
+            setup.on('message', async content => {
+                await message.channel.send(content)
+            })
             setup.start()
         }
 
