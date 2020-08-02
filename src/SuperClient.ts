@@ -9,7 +9,6 @@ import {
 } from "discord.js";
 import Version from './utils/Version';
 import Logger from './utils/Logger';
-import Command from './commands/Command';
 import TaskTiming from './tasks/TaskTiming';
 import CommandHandler from './commands/CommandHandler';
 import ActivityUpdater from './updater/ActivityUpdater';
@@ -36,8 +35,6 @@ export default abstract class SuperClient extends Client{
 
     readonly logger: Logger = new Logger()
 
-    readonly commands: Collection<string, Command> = new Collection<string, Command>()
-    readonly aliases: Collection<string, string> = new Collection<string, string>()
     readonly setups: Collection<string, string> = new Collection<string, string>()
 
     private readonly taskTiming: TaskTiming = new TaskTiming()

@@ -19,7 +19,7 @@ export default class Help extends Command{
         const command: undefined | string = args[0];
         const prefix = (await client.getServerManager().getServerData(message.guild.id)).prefix
         if(args[0] === undefined){
-            const text = client.commands.map(command => {
+            const text = client.getCommandHandler().getCommandsArray().map(command => {
                 return command.permission === 'ADMINISTRATOR' ? (
                     message.member.hasPermission('ADMINISTRATOR') ? `\`${command.name}\`` : undefined
                 ) : `\`${command.name}\``;
@@ -47,7 +47,7 @@ export default class Help extends Command{
 
             return true;
         }else{
-            const searchCommand: Command | undefined = client.commands.filter($command => $command.name === command.trim()).first();
+            const searchCommand: Command | undefined = client.getCommandHandler().getCommandsMap().filter($command => $command.name === command.trim()).first();
             if(searchCommand !== undefined){
                 const embed = new MessageEmbed()
                     .setAuthor('📍 Komut Yardımı', message.author.displayAvatarURL() || message.author.defaultAvatarURL)

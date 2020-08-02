@@ -1,4 +1,4 @@
-import { Message, TextChannel } from 'discord.js';
+import { Collection, Message, TextChannel } from 'discord.js';
 
 import CommandRunner from './CommandRunner';
 import Command from './Command';
@@ -20,6 +20,8 @@ import BotInfo from './bot/BotInfo';
 import SetPrefix from './server/SetPrefix';
 import SetCommandPermission from './server/SetCommandPermission';
 
+type CommandMap = Collection<string, Command>
+
 export default class CommandHandler extends Factory implements CommandRunner{
 
     private static readonly COMMANDS: Command[] = [
@@ -37,22 +39,26 @@ export default class CommandHandler extends Factory implements CommandRunner{
         new SetCommandPermission()
     ]
 
-    constructor(client: SuperClient){
-        super(client)
+    private commands: CommandMap = new Collection<string, Command>()
+    private aliases: Collection<string, string> = new Collection<string, string>()
 
-        this.load()
-    }
-
-    public load(): void{
-        this.commands.forEach(command => {
-            this.client.commands.set(command.name, command);
-
-            if(command.aliases && Array.isArray(command.aliases)){
-                command.aliases.forEach(alias => this.client.aliases.set(alias, command.name));
-            }
+    public registerAllCommands(): void{
+        // TODO::Auto Loader
+        CommandHandler.COMMANDS.forEach(command => {
+            this.registerCommand(command)
         })
 
-        this.client.logger.info(`Toplam ${Colors.LIGHT_PURPLE}${this.commands.length} ${Colors.AQUA}komut başarıyla yüklendi.`)
+        this.client.logger.info(`Toplam ${Colors.LIGHT_PURPLE}${this.commands.keyArray().length} ${Colors.AQUA}komut başarıyla yüklendi.`)
+    }
+
+    public registerCommand(command: Command){
+        this.commands.set(command.name, command)
+
+        if(command.aliases && Array.isArray(command.aliases)){
+            command.aliases.forEach(alias => {
+                this.aliases.set(alias, command.name)
+            })
+        }
     }
 
     async run(message: Message){
@@ -100,9 +106,9 @@ export default class CommandHandler extends Factory implements CommandRunner{
             return
         }
 
-        let command: Command | undefined = client.commands.get(cmd);
+        let command: Command | undefined = this.commands.get(cmd);
         if(!command){ // control is alias command
-            command = client.commands.get(client.aliases.get(cmd))
+            command = this.commands.get(this.aliases.get(cmd))
         }
 
         if(command){
@@ -143,8 +149,12 @@ export default class CommandHandler extends Factory implements CommandRunner{
         }
     }
 
-    public get commands(): Command[]{
-        return CommandHandler.COMMANDS
+    public getCommandsArray(): Command[]{
+        return Array.from(this.commands.values())
+    }
+
+    public getCommandsMap(): CommandMap{
+        return this.commands
     }
 
 }
