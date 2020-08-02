@@ -1,5 +1,5 @@
 import Constants from '../Constants'
-import { SuperClient } from '../Asena';
+import SuperClient from '../SuperClient';
 import Factory from '../Factory';
 
 export default class ActivityUpdater extends Factory{

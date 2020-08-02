@@ -1,5 +1,5 @@
 import Command from '../Command';
-import { SuperClient } from '../../Asena';
+import SuperClient from '../../SuperClient';
 import { Message, Snowflake } from 'discord.js';
 
 export default class SetCommandPermission extends Command{

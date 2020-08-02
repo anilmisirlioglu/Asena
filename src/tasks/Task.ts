@@ -1,4 +1,4 @@
-import { SuperClient } from '../Asena';
+import SuperClient from '../SuperClient';
 import { Document } from 'mongoose';
 
 export default abstract class Task{

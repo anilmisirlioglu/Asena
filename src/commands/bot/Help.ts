@@ -1,7 +1,7 @@
 import { Message, MessageEmbed } from 'discord.js'
 
 import Command from '../Command'
-import { SuperClient } from '../../Asena';
+import SuperClient from '../../SuperClient';
 
 export default class Help extends Command{
 

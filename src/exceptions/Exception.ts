@@ -8,6 +8,4 @@ class Exception extends Error{
 
 }
 
-export {
-    Exception
-}
+export default Exception

@@ -13,22 +13,23 @@ export default class SyntaxWebHook extends WebhookClient{
     public resolveGuild(guild: Guild, isCreate: boolean = true): void{
         const embed = new MessageEmbed()
             .setAuthor(`${isCreate ? 'Yeni Sunucuya Eklendi' : 'Sunucudan Silindi'}`, guild.iconURL() ?? guild.bannerURL())
-            .setDescription(
-                [
-                    `Sunucu: **${guild.name}**`,
-                    `Sunucu ID: **${guild.id}**`,
-                    `Sunucu Sahibi: **${guild.owner.displayName}**`,
-                    `Sunucu Sahibi ID: **${guild.ownerID}**`,
-                    `Üye Sayısı: **${guild.members.cache.size}**`,
-                    `Sunucu Kurulma Tarihi: **${DateTimeHelper.getDateTimeToString(guild.createdAt)}**`
-                ].join('\n')
-            )
+            .setDescription([
+                `Sunucu: **${guild.name}**`,
+                `Sunucu ID: **${guild.id}**`,
+                `Sunucu Sahibi: **${guild.owner.displayName}**`,
+                `Sunucu Sahibi ID: **${guild.ownerID}**`,
+                `Üye Sayısı: **${guild.members.cache.size}**`,
+                `Sunucu Kurulma Tarihi: **${DateTimeHelper.getDateTimeToString(guild.createdAt)}**`
+            ].join('\n'))
             .setColor(isCreate ? 'GREEN' : 'RED')
             .setTimestamp()
 
+        // noinspection JSIgnoredPromiseFromCall
         this.send({
-            embeds: [embed]
-        }).then(() => { /* Ok */ })
+            embeds: [
+                embed
+            ]
+        })
     }
 
 }

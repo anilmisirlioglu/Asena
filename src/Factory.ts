@@ -1,4 +1,4 @@
-import { SuperClient } from './Asena';
+import SuperClient from './SuperClient';
 
 export default abstract class Factory{
 

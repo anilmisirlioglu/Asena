@@ -1,5 +1,5 @@
 import { execSync } from 'child_process';
-import { InvalidArgumentException } from '../exceptions/InvalidArgumentException';
+import InvalidArgumentException from '../exceptions/InvalidArgumentException';
 
 /**
  * @link https://semver.org/lang/en/

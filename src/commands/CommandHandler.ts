@@ -3,7 +3,7 @@ import { Message, TextChannel } from 'discord.js';
 import CommandRunner from './CommandRunner';
 import Command from './Command';
 import { Colors } from '../utils/TextFormat';
-import { SuperClient } from '../Asena';
+import SuperClient from '../SuperClient';
 import Constants from '../Constants';
 import Factory from '../Factory';
 

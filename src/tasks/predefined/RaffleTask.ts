@@ -1,8 +1,6 @@
 import Raffle, { IRaffle } from '../../models/Raffle';
 import Task from '../Task';
 import { Document } from 'mongoose';
-import { REPL_MODE_SLOPPY } from 'repl';
-import { DateTimeHelper } from '../../helpers/DateTimeHelper';
 
 export default class RaffleTask extends Task{
 
@@ -75,5 +73,5 @@ export default class RaffleTask extends Task{
             setTimeout(resolve, ms)
         })
     }
-    
+
 }

@@ -1,5 +1,5 @@
 import Command from '../Command';
-import { SuperClient } from '../../Asena';
+import SuperClient from '../../SuperClient';
 import { Message } from 'discord.js';
 
 export default class SetPrefix extends Command{

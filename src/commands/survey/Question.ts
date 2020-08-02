@@ -1,5 +1,5 @@
 import Command from '../Command';
-import { SuperClient } from '../../Asena';
+import SuperClient from '../../SuperClient';
 import { Message, MessageEmbed } from 'discord.js';
 import Constants, { ILetter } from '../../Constants';
 import regional from '../../utils/RegionalIndicator';

@@ -2,7 +2,7 @@ import { Message, TextChannel } from 'discord.js'
 
 import Command from '../Command'
 import Constants from '../../Constants'
-import { SuperClient } from '../../Asena';
+import SuperClient from '../../SuperClient';
 import { DateTimeHelper } from '../../helpers/DateTimeHelper';
 
 export default class CreateRaffle extends Command{

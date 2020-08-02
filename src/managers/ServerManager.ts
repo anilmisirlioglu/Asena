@@ -1,7 +1,6 @@
 import { Snowflake } from 'discord.js'
 import Server, { IServer } from '../models/Server';
 import { UpdateQuery } from 'mongoose';
-import Factory from '../Factory';
 
 type CommandUpdateOption = 'ADD' | 'DELETE'
 

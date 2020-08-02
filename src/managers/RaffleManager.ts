@@ -3,7 +3,6 @@ import Raffle, { IRaffle } from '../models/Raffle';
 import { ErrorCodes } from '../utils/ErrorCodes';
 import Timestamps from '../models/legacy/Timestamps';
 import ID from '../models/legacy/ID';
-import Factory from '../Factory';
 
 interface CreateRaffleOptions{
     prize: string

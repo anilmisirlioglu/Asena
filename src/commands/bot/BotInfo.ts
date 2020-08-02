@@ -1,6 +1,6 @@
 import Command from '../Command';
 import { Message, MessageEmbed, version } from 'discord.js';
-import { SuperClient } from '../../Asena';
+import SuperClient from '../../SuperClient';
 import { DateTimeHelper } from '../../helpers/DateTimeHelper';
 import * as os from 'os';
 import Byte from '../../utils/Byte';

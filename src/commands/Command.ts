@@ -1,5 +1,5 @@
 import { GuildMember, Message, MessageEmbed, PermissionString } from 'discord.js'
-import { SuperClient } from '../Asena';
+import SuperClient from '../SuperClient';
 
 interface CommandOptions{
     name: string

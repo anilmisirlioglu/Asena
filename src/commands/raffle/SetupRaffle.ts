@@ -4,7 +4,7 @@ import { Message, TextChannel } from 'discord.js'
 import Constants from '../../Constants'
 import InteractiveSetup from '../../setup/InteractiveSetup'
 import SetupPhase from '../../setup/SetupPhase'
-import { SuperClient } from '../../Asena'
+import SuperClient from '../../SuperClient';
 
 export default class SetupRaffle extends Command{
 

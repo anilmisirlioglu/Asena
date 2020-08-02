@@ -1,7 +1,7 @@
 import Command from '../Command';
 import { Message, MessageEmbed } from 'discord.js';
 import Constants from '../../Constants';
-import { SuperClient } from '../../Asena';
+import SuperClient from '../../SuperClient';
 import Survey from '../../models/Survey';
 import { DateTimeHelper } from '../../helpers/DateTimeHelper';
 

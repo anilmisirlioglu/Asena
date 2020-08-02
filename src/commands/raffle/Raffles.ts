@@ -3,7 +3,7 @@ import { Message, MessageEmbed } from 'discord.js'
 import Command from '../Command'
 import Constants from '../../Constants'
 import { DateTimeHelper } from '../../helpers/DateTimeHelper'
-import { SuperClient } from '../../Asena';
+import SuperClient from '../../SuperClient';
 
 export default class Raffles extends Command{
 

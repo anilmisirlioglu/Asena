@@ -2,7 +2,7 @@ import { Message } from 'discord.js'
 
 import Command from '../Command'
 import { ErrorCodes } from '../../utils/ErrorCodes';
-import { SuperClient } from '../../Asena';
+import SuperClient from '../../SuperClient';
 
 export default class EndRaffle extends Command{
 
