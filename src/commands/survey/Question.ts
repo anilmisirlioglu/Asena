@@ -3,6 +3,7 @@ import SuperClient from '../../SuperClient';
 import { Message, MessageEmbed } from 'discord.js';
 import Constants, { ILetter } from '../../Constants';
 import regional from '../../utils/RegionalIndicator';
+import Server from '../../structures/Server';
 
 export default class Question extends Command{
 
@@ -16,7 +17,7 @@ export default class Question extends Command{
         });
     }
 
-    async run(client: SuperClient, message: Message, args: string[]): Promise<boolean>{
+    async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
         if(args.length < 2) return false
 
         const content = args.join(' ')

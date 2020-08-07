@@ -5,6 +5,7 @@ import { secondsToTime } from '../../helpers/DateTimeHelper';
 import * as os from 'os';
 import Byte from '../../utils/Byte';
 import MongoDB from '../../drivers/MongoDB';
+import Server from '../../structures/Server';
 
 export default class BotInfo extends Command{
 
@@ -18,7 +19,7 @@ export default class BotInfo extends Command{
         });
     }
 
-    async run(client: SuperClient, message: Message, args: string[]): Promise<boolean>{
+    async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
         const embed: MessageEmbed = new MessageEmbed()
             .setAuthor('🤖 Bot Bilgisi', '')
             .setFooter('Syntax Software tarafından ❤️ ile yapılmıştır')

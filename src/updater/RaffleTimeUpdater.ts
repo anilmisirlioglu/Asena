@@ -2,6 +2,7 @@ import Factory from '../Factory';
 import Constants from '../Constants';
 import { MessageReaction, PartialUser, User } from 'discord.js';
 import CooldownService from '../services/CooldownService';
+import Raffle from '../structures/Raffle';
 
 export default class RaffleTimeUpdater extends Factory{
 
@@ -13,16 +14,17 @@ export default class RaffleTimeUpdater extends Factory{
                 reaction.message = await reaction.message.fetch()
             }
 
-            if(user.username !== this.getClient().user.username){
+            if(user.username !== this.client.user.username){
                 if(reaction.emoji.name === Constants.CONFETTI_REACTION_EMOJI){
-                    const raffle = await this.getClient().getRaffleManager().findContinuesRaffleByMessageId(reaction.message.id)
                     if(this.getCooldownService().checkCooldown(reaction.message.id)){
-                        if(raffle){
+                        const server = await this.client.servers.get(reaction.message.guild.id)
+                        const raffle = await server.raffles.get(reaction.message.id)
+                        if(raffle.status === 'CONTINUES' || raffle.status === 'ALMOST_DONE'){
                             const remaining = Math.ceil((raffle.finishAt.getTime() - Date.now()) / 1000)
                             if(remaining > 12){
                                 this.getCooldownService().setCooldown(reaction.message.id)
-                                await reaction.message.edit(this.getClient().getRaffleHelper().getRaffleMessage(), {
-                                    embed: this.getClient().getRaffleHelper().getRaffleEmbed(raffle)
+                                await reaction.message.edit(Raffle.getStartMessage(), {
+                                    embed: raffle.getEmbed()
                                 })
                             }
                         }
@@ -35,5 +37,5 @@ export default class RaffleTimeUpdater extends Factory{
     public getCooldownService(): CooldownService{
         return this.cooldownService
     }
-    
+
 }

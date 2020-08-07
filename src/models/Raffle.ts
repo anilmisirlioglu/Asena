@@ -1,13 +1,14 @@
 import mongoose, { Schema, Document } from 'mongoose';
+import { Snowflake } from 'discord.js';
 
-type RaffleStatus = 'FINISHED' | 'ALMOST_DONE' | 'CONTINUES'
+export type RaffleStatus = 'FINISHED' | 'ALMOST_DONE' | 'CONTINUES' | 'CANCELED'
 
 export interface IRaffle extends Document{
     prize: string
-    server_id: string
-    constituent_id: string
-    channel_id: string
-    message_id?: string
+    server_id: Snowflake
+    constituent_id: Snowflake
+    channel_id: Snowflake
+    message_id?: Snowflake
     numbersOfWinner: number
     status: RaffleStatus
     finishAt: Date
@@ -48,6 +49,6 @@ const RaffleSchema: Schema = new Schema<IRaffle>({
     }
 }, {
     timestamps: true
-});
+})
 
 export default mongoose.model<IRaffle>('Raffle', RaffleSchema)

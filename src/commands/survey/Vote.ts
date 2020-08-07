@@ -4,6 +4,7 @@ import Constants from '../../Constants';
 import SuperClient from '../../SuperClient';
 import Survey from '../../models/Survey';
 import { detectTime, secondsToTime } from '../../helpers/DateTimeHelper';
+import Server from '../../structures/Server';
 
 export default class Vote extends Command{
 
@@ -17,7 +18,7 @@ export default class Vote extends Command{
         });
     }
 
-    async run(client: SuperClient, message: Message, args: string[]): Promise<boolean>{
+    async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
         const AGREE = Constants.AGREE_EMOJI_ID;
         const DISAGREE = Constants.DISAGREE_EMOJI_ID;
 

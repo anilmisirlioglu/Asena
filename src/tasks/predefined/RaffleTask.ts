@@ -1,11 +1,12 @@
-import Raffle, { IRaffle } from '../../models/Raffle';
+import RaffleModel, { IRaffle } from '../../models/Raffle';
 import Task from '../Task';
 import { Document } from 'mongoose';
+import Raffle from '../../structures/Raffle';
 
 export default class RaffleTask extends Task{
 
     async onRun(): Promise<void>{
-        const cursor = await Raffle
+        const cursor = await RaffleModel
             .find({ status: 'CONTINUES' })
             .cursor()
 
@@ -28,19 +29,19 @@ export default class RaffleTask extends Task{
                 .fetchMessage(document.server_id, document.channel_id, document.message_id)
                 .then(async result => {
                     if(result){
-                        const helper = this.getClient().getRaffleHelper()
+                        const raffle = new Raffle(document)
                         const updateCallback = async (
                             customTime: number,
-                            message: string = helper.getRaffleAlertMessage(),
+                            message: string = Raffle.getAlertMessage(),
                             alert: boolean = true
                         ) => {
                             await result.edit(message, {
-                                embed: helper.getRaffleEmbed(document, alert, customTime)
+                                embed: raffle.getEmbed(alert, customTime)
                             })
                         }
 
                         await setTimeout(async () => {
-                            await updateCallback(10, helper.getRaffleMessage(), false)
+                            await updateCallback(10, Raffle.getStartMessage(), false)
                             await this.sleep(7 * 1000)
                             await updateCallback(3)
                             await this.sleep(1000)
@@ -58,13 +59,9 @@ export default class RaffleTask extends Task{
         }).then(() => super.setInterval(500, document))
     }
 
-    protected intervalCallback<T extends Document>(model: T & IRaffle): () => void{
+    protected intervalCallback<T extends Document>(document: T & IRaffle): () => void{
         return async () => {
-            await model.updateOne({
-                status: 'FINISHED'
-            })
-
-            await this.getClient().getRaffleHelper().finishRaffle(model)
+            await new Raffle(document).finish(this.getClient())
         }
     }
 

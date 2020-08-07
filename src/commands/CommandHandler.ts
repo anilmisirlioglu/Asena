@@ -76,7 +76,7 @@ export default class CommandHandler extends Factory implements CommandRunner{
             return
         }
 
-        const server = await client.getServerManager().getServerData(message.guild.id)
+        const server = await client.servers.get(message.guild.id)
         const prefix = (client.isDevBuild ? 'dev' : '') + (server.prefix || client.prefix)
 
         if(!message.content.startsWith(prefix)){
@@ -121,7 +121,7 @@ export default class CommandHandler extends Factory implements CommandRunner{
                     message.channel
                 )
                 if(checkPermissions.has){
-                    command.run(client, message, args).then(async (result: boolean) => {
+                    command.run(client, server, message, args).then(async (result: boolean) => {
                         if(!result){
                             await message.channel.send({
                                 embed: command.getUsageEmbed()

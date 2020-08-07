@@ -5,7 +5,7 @@ export default abstract class Task{
 
     public abstract async onRun(): Promise<void>
 
-    protected abstract intervalCallback<T extends Document>(model: T): () => void
+    protected abstract intervalCallback<T extends Document>(document: T): () => void
 
     protected setInterval<T extends Document>(timeout: number, document: T): void{
         setTimeout(this.intervalCallback(document), timeout)

@@ -3,6 +3,7 @@ import { Message } from 'discord.js'
 import Command from '../Command'
 import Constants from '../../Constants'
 import SuperClient from '../../SuperClient';
+import Server from '../../structures/Server';
 
 export default class ReRollRaffle extends Command{
 
@@ -16,30 +17,14 @@ export default class ReRollRaffle extends Command{
         });
     }
 
-    async run(client: SuperClient, message: Message, args: string[]): Promise<boolean>{
+    async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
         let message_id: string | undefined = args[0]
 
-        if(!message_id){
-            const raffle = await client.getRaffleManager().getServerLastRaffle(message.guild.id)
-            if(raffle){
-                if(!raffle.message_id){
-                    await message.channel.send({
-                        embed: this.getErrorEmbed(`Tekrar çekilebilecek çekiliş bulunamadı.`)
-                    })
-
-                    return true
-                }
-
-                message_id = raffle.message_id
-            }
-        }
-
-        const raffle = await client.getRaffleManager().searchRaffle(message_id)
-        if(!raffle){
+        const raffle = await (message_id ? server.raffles.get(message_id) : server.raffles.getLastCreated())
+        if(!raffle || !raffle.message_id){
             await message.channel.send({
-                embed: this.getErrorEmbed(`${message_id} ID 'li çekiliş bulunamadı.`)
+                embed: this.getErrorEmbed(`Tekrar çekilebilecek bir çekiliş bulunamadı.`)
             })
-
             return true
         }
 
@@ -47,7 +32,6 @@ export default class ReRollRaffle extends Command{
             await message.channel.send({
                 embed: this.getErrorEmbed(raffle.status === 'CONTINUES' ? 'Bu çekiliş daha sonuçlanmamış. Lütfen çekilişin bitmesini bekleyin.' : 'Bu çekiliş iptal edilmiş. İptal edilmiş bir çekilişin sonucu tekrar çekilemez.')
             })
-
             return true
         }
 
@@ -60,8 +44,8 @@ export default class ReRollRaffle extends Command{
             return true
         }
 
-        const winners = await client.getRaffleHelper().identifyWinners(raffle)
-        const _message = client.getRaffleHelper().getMessageURL(raffle)
+        const winners = await raffle.identifyWinners(client)
+        const _message = raffle.getMessageURL()
         if(winners.length === 0){
             await message.channel.send(`Yeterli katılım olmadığından dolayı çekiliş tekrar çekilemedi.\n**Çekiliş:** ${_message}`)
         }else{

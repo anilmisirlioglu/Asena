@@ -4,6 +4,8 @@ import Command from '../Command'
 import Constants from '../../Constants'
 import SuperClient from '../../SuperClient';
 import { detectTime } from '../../helpers/DateTimeHelper';
+import { IRaffle } from '../../models/Raffle';
+import Server from '../../structures/Server';
 
 export default class CreateRaffle extends Command{
 
@@ -17,7 +19,7 @@ export default class CreateRaffle extends Command{
         });
     }
 
-    async run(client: SuperClient, message: Message, args: string[]): Promise<boolean>{
+    async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
         const numbersOfWinner: number = Number(args[0])
         const time: string = args[1]
         const prize: string[] = args.slice(2, args.length)
@@ -60,17 +62,8 @@ export default class CreateRaffle extends Command{
             return true
         }
 
-        const finishAt: number = Date.now() + (toSecond * 1000)
-        const createRaffle = await client.getRaffleManager().createRaffle({
-            prize: stringToPrize,
-            server_id: message.guild.id,
-            constituent_id: message.author.id,
-            channel_id: message.channel.id,
-            numbersOfWinner,
-            finishAt: new Date(finishAt)
-        })
-
-        if(!createRaffle){
+        const raffles = await server.raffles.getContinues()
+        if(raffles.length > 5){
             await message.channel.send({
                 embed: this.getErrorEmbed('Maksimum çekiliş oluşturma sınırına ulaşmışsınız. (Max: 5)')
             })
@@ -78,12 +71,28 @@ export default class CreateRaffle extends Command{
             return true
         }
 
-        await client.getRaffleHelper().sendRaffleStartMessage(
-            message,
-            message.channel as TextChannel,
-            createRaffle
-        )
+        const finishAt: number = Date.now() + (toSecond * 1000)
+        const raffle = await server.raffles.create({
+            prize: stringToPrize,
+            server_id: message.guild.id,
+            constituent_id: message.author.id,
+            channel_id: message.channel.id,
+            numbersOfWinner,
+            status: 'CONTINUES',
+            finishAt: new Date(finishAt)
+        } as IRaffle)
 
+        /*const raffle = await client.getRaffleManager().createRaffle({
+            prize: stringToPrize,
+            server_id: message.guild.id,
+            constituent_id: message.author.id,
+            channel_id: message.channel.id,
+            numbersOfWinner,
+            status: 'CONTINUES',
+            finishAt: new Date(finishAt)
+        })*/
+
+        await raffle.start(message, message.channel as TextChannel)
         await message.delete({
             timeout: 0
         })

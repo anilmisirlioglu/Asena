@@ -22,7 +22,7 @@ export default class Asena extends SuperClient{
 
         // Delete server data from db
         this.on('guildDelete', async guild => {
-            await this.getServerManager().deleteServerData(guild.id)
+            await (await this.servers.get(guild.id)).delete()
             await guild.owner?.send([
                 `> ${Constants.RUBY_EMOJI} Botun kullanımı ile ilgili sorunlar mı yaşıyorsun? Lütfen bizimle iletişime geçmekten çekinme.\n`,
                 `:earth_americas: Website: https://asena.xyz`,

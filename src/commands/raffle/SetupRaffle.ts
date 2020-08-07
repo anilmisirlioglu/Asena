@@ -5,6 +5,8 @@ import Constants from '../../Constants'
 import InteractiveSetup from '../../setup/InteractiveSetup'
 import SetupPhase from '../../setup/SetupPhase'
 import SuperClient from '../../SuperClient';
+import { IRaffle } from '../../models/Raffle';
+import Server from '../../structures/Server';
 
 export default class SetupRaffle extends Command{
 
@@ -15,10 +17,10 @@ export default class SetupRaffle extends Command{
             description: 'Çekiliş kurulum sihirbazını başlatır.',
             usage: null,
             permission: 'ADMINISTRATOR'
-        });
+        })
     }
 
-    async run(client: SuperClient, message: Message, args: string[]): Promise<boolean>{
+    async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
         if(message.channel instanceof TextChannel){
             if(client.setups.get(message.author.id)){
                 await message.channel.send({
@@ -27,7 +29,8 @@ export default class SetupRaffle extends Command{
                 return true
             }
 
-            const result = await client.getRaffleManager().getContinuesRaffles(message.guild.id)
+            const server = await client.servers.get(message.guild.id)
+            const result = await server.raffles.getContinues()
             if(result.length >= 5){
                 await message.channel.send({
                     embed: this.getErrorEmbed('Maksimum çekiliş oluşturma sınırı aşıyorsunuz. (Maks 5)')
@@ -162,26 +165,22 @@ export default class SetupRaffle extends Command{
                 ],
                 onFinishCallback: (store) => {
                     const finishAt: number = Date.now() + (store.get(2) * 1000)
-                    client.getRaffleManager().createRaffle({
+                    server.raffles.create({
                         prize: store.get(3),
                         server_id: message.guild.id,
                         constituent_id: message.author.id,
                         channel_id: store.get(0),
                         numbersOfWinner: store.get(1),
+                        status: 'CONTINUES',
                         finishAt: new Date(finishAt)
-                    }).then(async result => {
+                    } as IRaffle).then(async result => {
                         if(result){
-                            const raffleId = result.id
                             const channel = message.guild.channels.cache.get(store.get(0))
                             if(channel instanceof TextChannel){
-                                await client.getRaffleHelper().sendRaffleStartMessage(
-                                    message,
-                                    channel,
-                                    result
-                                )
+                                await result.start(message, channel)
                                 await message.channel.send(`:star2: Çekiliş başarıyla oluşturuldu! Oluşturduğun çekiliş <#${store.get(0)}> kanalında yayınlandı...`)
                             }else{
-                                await client.getRaffleManager().deleteRaffle(raffleId)
+                                await result.delete()
                                 await message.channel.send(`:boom: Çekiliş oluşturulamadı. Girdiğiniz kanal sunucunuzda bulunamadı. Birden bire yok olmuş...`)
                             }
                         }else{

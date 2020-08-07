@@ -1,6 +1,7 @@
 import Command from '../Command';
 import SuperClient from '../../SuperClient';
-import { Message, Snowflake } from 'discord.js';
+import { Message } from 'discord.js';
+import Server from '../../structures/Server';
 
 export default class SetCommandPermission extends Command{
 
@@ -14,7 +15,7 @@ export default class SetCommandPermission extends Command{
         });
     }
 
-    async run(client: SuperClient, message: Message, args: string[]): Promise<boolean>{
+    async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
         if(args.length < 2) return false
 
         const cluster: string = args[0].trim().toLowerCase()
@@ -28,7 +29,6 @@ export default class SetCommandPermission extends Command{
             await message.channel.send({
                 embed: this.getErrorEmbed('Komut bulunamadı.')
             })
-
             return true
         }
 
@@ -37,32 +37,27 @@ export default class SetCommandPermission extends Command{
             await message.channel.send({
                 embed: this.getErrorEmbed('Bu komutun izinlerini düzenleyemezsin.')
             })
-
             return true
         }
 
-        const guildId: Snowflake = message.guild.id
-        const server = await client.getServerManager().getServerData(guildId)
-        const commandStatus: number = server.publicCommands.indexOf(command)
-
-        let opcl: string, err: boolean = false, type
+        let opcl: string, err: boolean = false, add: boolean
         switch(cluster){
             case 'everyone':
-                if(commandStatus !== -1){
+                if(server.isPublicCommand(command)){
                     err = true
                     opcl = 'açık'
                 }
 
-                type = 'ADD'
+                add = true
                 break
 
             default:
-                if(commandStatus === -1){
+                if(!server.isPublicCommand(command)){
                     err = true
                     opcl = 'kapalı'
                 }
 
-                type = 'DELETE'
+                add = false
                 break
         }
 
@@ -70,12 +65,12 @@ export default class SetCommandPermission extends Command{
             await message.channel.send({
                 embed: this.getErrorEmbed(`Bu komut zaten herkese **${opcl}**.`)
             })
-
             return true
         }
 
-        await client.getServerManager().setPublicCommandServer(guildId, $command.name, type)
-        await message.channel.send(`🌈  '**${$command.name}**' komutunun izinleri başarıyla düzenlendi. Komut durumu: **Herkese ${type === 'ADD' ? 'açık' : 'kapalı'}**`)
+        await (add ? server.addPublicCommand($command.name) : server.deletePublicCommand($command.name))
+        /*await client.getServerManager().setPublicCommandServer(guildId, $command.name, type)*/
+        await message.channel.send(`🌈  '**${$command.name}**' komutunun izinleri başarıyla düzenlendi. Komut durumu: **Herkese ${add ? 'açık' : 'kapalı'}**`)
 
         return true
     }

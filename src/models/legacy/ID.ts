@@ -1,3 +1,5 @@
+import { Types } from 'mongoose';
+
 export default interface ID{
-    _id?: string
+    _id?: Types.ObjectId
 }

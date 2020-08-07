@@ -1,165 +1,51 @@
 import { Snowflake } from 'discord.js';
-import Raffle, { IRaffle } from '../models/Raffle';
-import { ErrorCodes } from '../utils/ErrorCodes';
+import RaffleModel, { IRaffle } from '../models/Raffle';
+import Raffle from '../structures/Raffle'
 import Timestamps from '../models/legacy/Timestamps';
 import ID from '../models/legacy/ID';
-
-interface CreateRaffleOptions{
-    prize: string
-    server_id: string
-    constituent_id: string
-    channel_id: string
-    numbersOfWinner: number
-    finishAt: Date
-}
-
-interface RaffleReturnType{
-    raffle: SuperRaffle | undefined
-    errorCode: ErrorCodes
-}
+import Server from '../structures/Server';
+import Manager from './Manager';
 
 type SuperRaffle = IRaffle & Timestamps & ID
-type TRaffle = Promise<SuperRaffle | undefined>
 
-export default class RaffleManager{
+export default class RaffleManager extends Manager<Snowflake, Raffle, typeof RaffleModel, IRaffle>{
 
-    public async getServerLastRaffle(server_id: Snowflake): TRaffle{
-        return Raffle
-            .findOne({ server_id })
+    private readonly server: Server
+
+    constructor(server: Server){
+        super(RaffleModel)
+
+        this.server = server
+    }
+
+    protected key(): string{
+        return 'message_id'
+    }
+
+    protected new(data: IRaffle): Raffle{
+        return new Raffle(data)
+    }
+
+    public async getLastCreated(): Promise<Raffle | undefined>{
+        const search = await RaffleModel
+            .findOne({ server_id: this.server.identifier_id })
             .sort({ createdAt: -1 })
+
+        if(search){
+            return new Raffle(search)
+        }
+
+        return undefined
     }
 
-    public async getContinuesRaffles(server_id: Snowflake): Promise<SuperRaffle[]>{
-        return Raffle.find({
-            server_id,
+    public async getContinues(): Promise<SuperRaffle[]>{
+        return RaffleModel.find({
+            server_id: this.server.server_id,
             $or: [
                 { status: 'CONTINUES' },
                 { status: 'ALMOST_DONE' }
             ]
         })
-    }
-
-    public async findContinuesRaffleByMessageId(message_id: Snowflake): TRaffle{
-        return Raffle.findOne({
-            message_id,
-            $or: [
-                { status: 'CONTINUES' },
-                { status: 'ALMOST_DONE' }
-            ]
-        })
-    }
-
-    public async searchRaffle(message_id: Snowflake): TRaffle{
-        return Raffle.findOne({ message_id })
-    }
-
-    public async createRaffle(options: CreateRaffleOptions): TRaffle{
-        const {
-            prize,
-            server_id,
-            constituent_id,
-            channel_id,
-            numbersOfWinner,
-            finishAt
-        }: {
-            prize: string
-            server_id: string
-            constituent_id: string
-            channel_id: string
-            numbersOfWinner: number
-            finishAt: Date
-        } = options;
-
-        const search: IRaffle[] = await Raffle.find({
-            server_id,
-            status: 'CONTINUES'
-        })
-
-        if(search.length >= 5){
-            return undefined
-        }
-
-        return Raffle.create({
-            prize,
-            server_id,
-            constituent_id,
-            channel_id,
-            numbersOfWinner,
-            status: 'CONTINUES',
-            finishAt
-        })
-    }
-
-    public async setRaffleMessageID(raffle_id: string, message_id: Snowflake): Promise<Boolean>{
-        await Raffle.findByIdAndUpdate(raffle_id, {
-            message_id
-        })
-
-        return Promise.resolve(true)
-    }
-
-    public async deleteRaffle(raffle_id: string): Promise<Boolean>{
-        await Raffle.findByIdAndDelete(raffle_id)
-
-        return Promise.resolve(true)
-    }
-
-    public async cancelRaffle(message_id: Snowflake): Promise<RaffleReturnType>{
-        const raffle: IRaffle | undefined = await Raffle.findOne({
-            message_id
-        })
-
-        if(!raffle){
-            return {
-                raffle: undefined,
-                errorCode: ErrorCodes.NOT_FOUND
-            }
-        }
-
-        if(raffle.status !== 'CONTINUES'){
-            return {
-                raffle: undefined,
-                errorCode: ErrorCodes.RAFFLE_FINISHED_ERROR
-            }
-        }
-
-        await raffle.updateOne({
-            status: 'CANCELED'
-        })
-
-        return {
-            raffle,
-            errorCode: ErrorCodes.SUCCESS
-        }
-    }
-
-    public async finishEarlyRaffle(message_id: Snowflake): Promise<RaffleReturnType>{
-        const raffle: IRaffle | undefined = await Raffle.findOne({
-            message_id
-        })
-
-        if(!raffle){
-            return {
-                raffle: undefined,
-                errorCode: ErrorCodes.NOT_FOUND
-            }
-        }
-
-        if(raffle.status !== 'CONTINUES'){
-            return {
-                raffle: undefined,
-                errorCode: ErrorCodes.RAFFLE_FINISHED_ERROR
-            }
-        }
-
-        await raffle.updateOne({
-            status: 'FINISHED'
-        })
-
-        return {
-            raffle,
-            errorCode: ErrorCodes.SUCCESS
-        }
     }
 
 }

@@ -1,5 +1,6 @@
 import { GuildMember, Message, MessageEmbed, PermissionString } from 'discord.js'
 import SuperClient from '../SuperClient';
+import Server from '../structures/Server';
 
 interface CommandOptions{
     name: string
@@ -41,7 +42,7 @@ export default abstract class Command{
         return true
     }
 
-    public async abstract run(client: SuperClient, message: Message, args: string[]): Promise<boolean>
+    public async abstract run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>
 
     public getErrorEmbed(error: string): MessageEmbed{
         const client = SuperClient.getInstance()

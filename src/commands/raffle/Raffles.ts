@@ -4,6 +4,7 @@ import Command from '../Command'
 import Constants from '../../Constants'
 import { getDateTimeToString } from '../../helpers/DateTimeHelper'
 import SuperClient from '../../SuperClient';
+import Server from '../../structures/Server';
 
 export default class Raffles extends Command{
 
@@ -17,8 +18,8 @@ export default class Raffles extends Command{
         });
     }
 
-    async run(client: SuperClient, message: Message, args: string[]): Promise<boolean>{
-        const raffles = await client.getRaffleManager().getContinuesRaffles(message.guild.id);
+    async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
+        const raffles = await server.raffles.getContinues()
         const embed: MessageEmbed = new MessageEmbed()
             .setAuthor(`${message.guild.name} | Aktif Çekilişler`)
             .setColor('#DDA0DD')

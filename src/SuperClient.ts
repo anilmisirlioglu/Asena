@@ -14,8 +14,6 @@ import CommandHandler from './commands/CommandHandler';
 import ActivityUpdater from './updater/ActivityUpdater';
 import RaffleTimeUpdater from './updater/RaffleTimeUpdater';
 import PermissionController from './controllers/PermissionController';
-import RaffleHelper from './helpers/RaffleHelper';
-import RaffleManager from './managers/RaffleManager';
 import SurveyHelper from './helpers/SurveyHelper';
 import ServerManager from './managers/ServerManager';
 import SetupManager from './setup/SetupManager';
@@ -46,12 +44,9 @@ export default abstract class SuperClient extends Client{
 
     private readonly permissionController: PermissionController = new PermissionController()
 
-    private readonly raffleHelper: RaffleHelper = new RaffleHelper(this)
-    private readonly raffleManager: RaffleManager = new RaffleManager()
-
     private readonly surveyHelper: SurveyHelper = new SurveyHelper(this)
 
-    private readonly serverManager: ServerManager = new ServerManager()
+    readonly servers: ServerManager = new ServerManager()
     private readonly setupManager: SetupManager = new SetupManager()
 
     readonly webHook: SyntaxWebHook = new SyntaxWebHook()
@@ -91,20 +86,8 @@ export default abstract class SuperClient extends Client{
         return this.permissionController
     }
 
-    public getRaffleManager(): RaffleManager{
-        return this.raffleManager
-    }
-
-    public getServerManager(): ServerManager{
-        return this.serverManager
-    }
-
     public getSetupManager(): SetupManager{
         return this.setupManager
-    }
-
-    public getRaffleHelper(): RaffleHelper{
-        return this.raffleHelper
     }
 
     public getSurveyHelper(): SurveyHelper{

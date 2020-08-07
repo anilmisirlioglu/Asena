@@ -1,6 +1,7 @@
 import Command from '../Command';
 import SuperClient from '../../SuperClient';
 import { Message } from 'discord.js';
+import Server from '../../structures/Server';
 
 export default class SetPrefix extends Command{
 
@@ -14,7 +15,7 @@ export default class SetPrefix extends Command{
         });
     }
 
-    async run(client: SuperClient, message: Message, args: string[]): Promise<boolean>{
+    async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
         const prefix = args[0]
         if(!prefix) return false
 
@@ -26,7 +27,9 @@ export default class SetPrefix extends Command{
             return true
         }
 
-        await client.getServerManager().setServerPrefix(message.guild.id, prefix)
+        await server.setPrefix(prefix)
+
+        //await client.getServerManager().setServerPrefix(message.guild.id, prefix)
         await message.channel.send(`:comet: Komut ön adı **${prefix}** olarak değiştirildi.`)
 
         return true

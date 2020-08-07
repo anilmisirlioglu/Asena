@@ -2,6 +2,7 @@ import { Message, MessageEmbed } from 'discord.js'
 
 import Command from '../Command'
 import SuperClient from '../../SuperClient';
+import Server from '../../structures/Server';
 
 export default class Help extends Command{
 
@@ -15,9 +16,9 @@ export default class Help extends Command{
         })
     }
 
-    async run(client: SuperClient, message: Message, args: string[]): Promise<boolean>{
+    async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
         const command: undefined | string = args[0];
-        const prefix = (await client.getServerManager().getServerData(message.guild.id)).prefix
+        const prefix = (await client.servers.get(message.guild.id)).prefix
         if(args[0] === undefined){
             const text = client.getCommandHandler().getCommandsArray().map(command => {
                 return command.permission === 'ADMINISTRATOR' ? (
