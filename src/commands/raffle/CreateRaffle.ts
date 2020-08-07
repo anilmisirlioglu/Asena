@@ -82,16 +82,6 @@ export default class CreateRaffle extends Command{
             finishAt: new Date(finishAt)
         } as IRaffle)
 
-        /*const raffle = await client.getRaffleManager().createRaffle({
-            prize: stringToPrize,
-            server_id: message.guild.id,
-            constituent_id: message.author.id,
-            channel_id: message.channel.id,
-            numbersOfWinner,
-            status: 'CONTINUES',
-            finishAt: new Date(finishAt)
-        })*/
-
         await raffle.start(message, message.channel as TextChannel)
         await message.delete({
             timeout: 0
