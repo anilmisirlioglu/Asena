@@ -20,6 +20,11 @@ export default class Asena extends SuperClient{
             await this.getCommandHandler().run(message)
         })
 
+        this.on('ready', () => {
+            // Initialize static values
+            this.init()
+        })
+
         // Delete server data from db
         this.on('guildDelete', async guild => {
             await (await this.servers.get(guild.id)).delete()

@@ -30,7 +30,7 @@ class Server extends Structure<typeof ServerModel, SuperServer>{
     }
 
     async setPrefix(prefix: string){
-        await this.update({ prefix: prefix })
+        await this.update({ prefix })
     }
 
     isPublicCommand(command: string){

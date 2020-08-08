@@ -45,17 +45,15 @@ export default abstract class Command{
     public async abstract run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>
 
     public getErrorEmbed(error: string): MessageEmbed{
-        const client = SuperClient.getInstance()
         return new MessageEmbed()
-            .setAuthor(client.user.username, client.user.avatarURL())
+            .setAuthor(SuperClient.NAME, SuperClient.AVATAR)
             .setDescription(error)
             .setColor('RED')
     }
 
     public getUsageEmbed(): MessageEmbed{
-        const client = SuperClient.getInstance()
         return new MessageEmbed()
-            .setAuthor(client.user.username, client.user.avatarURL())
+            .setAuthor(SuperClient.NAME, SuperClient.AVATAR)
             .setDescription(`Kullanımı: **${this.name} ${this.usage}**`)
             .setColor('GOLD');
     }

@@ -19,6 +19,7 @@ import Help from './bot/Help';
 import BotInfo from './bot/BotInfo';
 import SetPrefix from './server/SetPrefix';
 import SetCommandPermission from './server/SetCommandPermission';
+import PermissionController from '../controllers/PermissionController';
 
 type CommandMap = Collection<string, Command>
 
@@ -38,6 +39,8 @@ export default class CommandHandler extends Factory implements CommandRunner{
         new SetPrefix(),
         new SetCommandPermission()
     ]
+
+    private permissionController: PermissionController = new PermissionController()
 
     private commands: CommandMap = new Collection<string, Command>()
     private aliases: Collection<string, string> = new Collection<string, string>()
@@ -59,6 +62,10 @@ export default class CommandHandler extends Factory implements CommandRunner{
                 this.aliases.set(alias, command.name)
             })
         }
+    }
+
+    protected getPermissionController(): PermissionController{
+        return this.permissionController
     }
 
     async run(message: Message){
@@ -116,7 +123,7 @@ export default class CommandHandler extends Factory implements CommandRunner{
                 return role.name.trim().toLowerCase() === Constants.PERMITTED_ROLE_NAME
             }).size !== 0 || server.publicCommands.indexOf(command.name) !== -1
             if(authorized){
-                const checkPermissions = client.getPermissionController().checkSelfPermissions(
+                const checkPermissions = this.getPermissionController().checkSelfPermissions(
                     message.guild,
                     message.channel
                 )

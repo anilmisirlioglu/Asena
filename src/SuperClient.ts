@@ -1,6 +1,5 @@
 import {
     Client,
-    Collection,
     Guild,
     GuildChannel,
     Message,
@@ -13,7 +12,6 @@ import TaskTiming from './tasks/TaskTiming';
 import CommandHandler from './commands/CommandHandler';
 import ActivityUpdater from './updater/ActivityUpdater';
 import RaffleTimeUpdater from './updater/RaffleTimeUpdater';
-import PermissionController from './controllers/PermissionController';
 import SurveyHelper from './helpers/SurveyHelper';
 import ServerManager from './managers/ServerManager';
 import SetupManager from './setup/SetupManager';
@@ -33,16 +31,12 @@ export default abstract class SuperClient extends Client{
 
     readonly logger: Logger = new Logger()
 
-    readonly setups: Collection<string, string> = new Collection<string, string>()
-
     private readonly taskTiming: TaskTiming = new TaskTiming()
 
     private readonly commandHandler: CommandHandler = new CommandHandler(this)
 
     private readonly activityUpdater: ActivityUpdater = new ActivityUpdater(this)
     private readonly raffleTimeUpdater: RaffleTimeUpdater = new RaffleTimeUpdater(this)
-
-    private readonly permissionController: PermissionController = new PermissionController()
 
     private readonly surveyHelper: SurveyHelper = new SurveyHelper(this)
 
@@ -51,6 +45,9 @@ export default abstract class SuperClient extends Client{
 
     readonly webHook: SyntaxWebHook = new SyntaxWebHook()
 
+    static NAME: string
+    static AVATAR: string
+
     private static self: SuperClient
 
     protected constructor(private opts: SuperClientBuilderOptions){
@@ -58,6 +55,11 @@ export default abstract class SuperClient extends Client{
             partials: ['CHANNEL', 'MESSAGE', 'REACTION'],
             fetchAllMembers: true
         })
+    }
+
+    protected init(){
+        SuperClient.NAME = this.user.username
+        SuperClient.AVATAR = this.user.avatarURL()
 
         SuperClient.self = this
     }
@@ -80,10 +82,6 @@ export default abstract class SuperClient extends Client{
 
     public getCommandHandler(): CommandHandler{
         return this.commandHandler
-    }
-
-    public getPermissionController(): PermissionController{
-        return this.permissionController
     }
 
     public getSetupManager(): SetupManager{

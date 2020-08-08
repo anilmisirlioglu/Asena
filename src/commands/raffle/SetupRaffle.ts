@@ -22,7 +22,7 @@ export default class SetupRaffle extends Command{
 
     async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
         if(message.channel instanceof TextChannel){
-            if(client.setups.get(message.author.id)){
+            if(client.getSetupManager().inSetup(message.author.id)){
                 await message.channel.send({
                     embed: this.getErrorEmbed('Zaten bir kurulum sihirbazı içindesin. Lütfen önce başlattığınız kurulumu bitirin veya iptal edin.')
                 })
