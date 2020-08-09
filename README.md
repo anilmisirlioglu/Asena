@@ -25,6 +25,7 @@
 | help | Yardım menüsünü özel mesaj aracılığı ile mesaj kutunuza gönderir. |
 | setprefix | Komut ön adını değiştirir. |
 | scperm | Komutun yetkisini düzenler. |
+| invite | Botun davet URLsini sohbete gönderir. |
 
 ## Davet 🔗
 
