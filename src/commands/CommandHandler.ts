@@ -20,6 +20,7 @@ import BotInfo from './bot/BotInfo';
 import SetPrefix from './server/SetPrefix';
 import SetCommandPermission from './server/SetCommandPermission';
 import PermissionController from '../controllers/PermissionController';
+import Invitation from './bot/Invitation';
 
 type CommandMap = Collection<string, Command>
 
@@ -36,6 +37,7 @@ export default class CommandHandler extends Factory implements CommandRunner{
         new Question(),
         new Help(),
         new BotInfo(),
+        new Invitation(),
         new SetPrefix(),
         new SetCommandPermission()
     ]
