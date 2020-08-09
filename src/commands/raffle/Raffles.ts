@@ -2,7 +2,7 @@ import { Message, MessageEmbed } from 'discord.js'
 
 import Command from '../Command'
 import Constants from '../../Constants'
-import { getDateTimeToString } from '../../helpers/DateTimeHelper'
+import { getDateTimeToString } from '../../utils/DateTimeHelper'
 import SuperClient from '../../SuperClient';
 import Server from '../../structures/Server';
 

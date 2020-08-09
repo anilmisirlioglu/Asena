@@ -12,7 +12,6 @@ import TaskTiming from './tasks/TaskTiming';
 import CommandHandler from './commands/CommandHandler';
 import ActivityUpdater from './updater/ActivityUpdater';
 import RaffleTimeUpdater from './updater/RaffleTimeUpdater';
-import SurveyHelper from './helpers/SurveyHelper';
 import ServerManager from './managers/ServerManager';
 import SetupManager from './setup/SetupManager';
 import SyntaxWebHook from './SyntaxWebhook';
@@ -37,8 +36,6 @@ export default abstract class SuperClient extends Client{
 
     private readonly activityUpdater: ActivityUpdater = new ActivityUpdater(this)
     private readonly raffleTimeUpdater: RaffleTimeUpdater = new RaffleTimeUpdater(this)
-
-    private readonly surveyHelper: SurveyHelper = new SurveyHelper(this)
 
     readonly servers: ServerManager = new ServerManager()
     private readonly setupManager: SetupManager = new SetupManager()
@@ -86,10 +83,6 @@ export default abstract class SuperClient extends Client{
 
     public getSetupManager(): SetupManager{
         return this.setupManager
-    }
-
-    public getSurveyHelper(): SurveyHelper{
-        return this.surveyHelper
     }
 
     public fetchChannel<T extends Snowflake>(guildId: T, channelId: T): GuildChannel | undefined{

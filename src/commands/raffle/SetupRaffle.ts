@@ -1,5 +1,5 @@
 import Command from '../Command'
-import { secondsToTime, detectTime } from '../../helpers/DateTimeHelper'
+import { secondsToTime, detectTime } from '../../utils/DateTimeHelper'
 import { Message, TextChannel } from 'discord.js'
 import Constants from '../../Constants'
 import InteractiveSetup from '../../setup/InteractiveSetup'

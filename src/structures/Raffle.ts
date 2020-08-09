@@ -9,7 +9,7 @@ import {
 import Structure from './Structure';
 import RaffleModel, { IRaffle, RaffleStatus } from '../models/Raffle';
 import Timestamps from '../models/legacy/Timestamps';
-import { secondsToTime } from '../helpers/DateTimeHelper';
+import { secondsToTime } from '../utils/DateTimeHelper';
 import Constants from '../Constants';
 import ArrayRandom from '../array/ArrayRandom';
 import ID from '../models/legacy/ID';

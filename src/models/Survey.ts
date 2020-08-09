@@ -1,9 +1,10 @@
 import mongoose, { Schema, Document } from 'mongoose'
+import { Snowflake } from 'discord.js';
 
 export interface ISurvey extends Document{
-    server_id: string
-    channel_id: string
-    message_id: string
+    server_id: Snowflake
+    channel_id: Snowflake
+    message_id: Snowflake
     title: string
     finishAt: Date
 }

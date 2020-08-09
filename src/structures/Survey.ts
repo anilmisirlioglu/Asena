@@ -1,14 +1,49 @@
-import { ISurvey } from '../models/Survey';
-import { ColorResolvable, GuildChannel, Message, MessageEmbed, MessageReaction, TextChannel } from 'discord.js';
+import Structure from './Structure';
+import SurveyModel, { ISurvey } from './../models/Survey'
+import Timestamps from '../models/legacy/Timestamps';
+import ID from '../models/legacy/ID';
+import {
+    ColorResolvable,
+    GuildChannel,
+    Message,
+    MessageEmbed,
+    MessageReaction,
+    Snowflake,
+    TextChannel
+} from 'discord.js';
 import Constants from '../Constants';
-import Factory from '../Factory';
+import SuperClient from '../SuperClient';
 
-export default class SurveyHelper extends Factory{
+type SuperSurvey = ISurvey & Timestamps & ID
 
-    public async finishSurvey(survey: ISurvey){
-        const channel: GuildChannel | undefined = await this.client.fetchChannel(survey.server_id, survey.channel_id)
+class Survey extends Structure<typeof SurveyModel, SuperSurvey>{
+
+    public server_id: Snowflake
+    public channel_id: Snowflake
+    public message_id: Snowflake
+    public title: string
+    public finishAt: Date
+
+    constructor(data: SuperSurvey){
+        super(SurveyModel, data)
+    }
+
+    protected identifierKey(): string{
+        return 'message_id'
+    }
+
+    protected patch(data: SuperSurvey){
+        this.server_id = data.server_id
+        this.channel_id = data.channel_id
+        this.message_id = data.message_id
+        this.title = data.title
+        this.finishAt = data.finishAt
+    }
+
+    public async finishSurvey(client: SuperClient){
+        const channel: GuildChannel | undefined = await client.fetchChannel(this.server_id, this.channel_id)
         if(channel instanceof TextChannel){
-            const message: Message | undefined = await channel.messages.fetch(survey.message_id)
+            const message: Message | undefined = await channel.messages.fetch(this.message_id)
             if(message instanceof Message){
                 const reactions = await Promise.all(
                     [Constants.AGREE_EMOJI_ID, Constants.DISAGREE_EMOJI_ID].map(async emoji => {
@@ -29,7 +64,7 @@ export default class SurveyHelper extends Factory{
                     .setAuthor(message.author.username, message.author.displayAvatarURL() || message.author.defaultAvatarURL)
                     .setFooter('Oylama sonuçları')
                     .setTimestamp()
-                    .setTitle(survey.title)
+                    .setTitle(this.title)
                     .addField(`<a:yes:${Constants.AGREE_EMOJI_ID}> (Evet)`, agreeCount, true)
                     .addField(`<a:no:${Constants.DISAGREE_EMOJI_ID}> (Hayır)`, disagreeCount, true)
 
@@ -52,3 +87,5 @@ export default class SurveyHelper extends Factory{
     }
 
 }
+
+export default Survey

@@ -3,7 +3,7 @@ import { Message, MessageEmbed } from 'discord.js';
 import Constants from '../../Constants';
 import SuperClient from '../../SuperClient';
 import Survey from '../../models/Survey';
-import { detectTime, secondsToTime } from '../../helpers/DateTimeHelper';
+import { detectTime, secondsToTime } from '../../utils/DateTimeHelper';
 import Server from '../../structures/Server';
 
 export default class Vote extends Command{

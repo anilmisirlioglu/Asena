@@ -1,7 +1,7 @@
 import Command from '../Command';
 import { Message, MessageEmbed, version } from 'discord.js';
 import SuperClient from '../../SuperClient';
-import { secondsToTime } from '../../helpers/DateTimeHelper';
+import { secondsToTime } from '../../utils/DateTimeHelper';
 import * as os from 'os';
 import Byte from '../../utils/Byte';
 import MongoDB from '../../drivers/MongoDB';

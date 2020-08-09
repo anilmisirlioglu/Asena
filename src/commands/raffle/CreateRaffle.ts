@@ -3,7 +3,7 @@ import { Message, TextChannel } from 'discord.js'
 import Command from '../Command'
 import Constants from '../../Constants'
 import SuperClient from '../../SuperClient';
-import { detectTime } from '../../helpers/DateTimeHelper';
+import { detectTime } from '../../utils/DateTimeHelper';
 import { IRaffle } from '../../models/Raffle';
 import Server from '../../structures/Server';
 
