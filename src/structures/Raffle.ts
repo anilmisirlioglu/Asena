@@ -64,24 +64,6 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
         await this.setStatus('CANCELED')
     }
 
-    public async start(message: Message, channel: TextChannel){
-        channel
-            .send(Raffle.getStartMessage(), {
-                embed: this.getEmbed()
-            })
-            .then(async $message => {
-                await this.update({
-                    message_id: $message.id
-                })
-
-                await $message.react(Constants.CONFETTI_REACTION_EMOJI)
-            })
-            .catch(async () => {
-                await this.delete()
-                await message.channel.send(':boom: Botun yetkileri, bu kanalda çekiliş oluşturmak için yetersiz olduğu için çekiliş başlatılamadı.')
-            })
-    }
-
     public async finish(client: SuperClient){
         await this.setStatus('FINISHED')
 

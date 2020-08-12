@@ -6,6 +6,7 @@ import SuperClient from '../../SuperClient';
 import { detectTime } from '../../utils/DateTimeHelper';
 import { IRaffle } from '../../models/Raffle';
 import Server from '../../structures/Server';
+import Raffle from '../../structures/Raffle';
 
 export default class CreateRaffle extends Command{
 
@@ -72,7 +73,7 @@ export default class CreateRaffle extends Command{
         }
 
         const finishAt: number = Date.now() + (toSecond * 1000)
-        const raffle = await server.raffles.create({
+        const data = {
             prize: stringToPrize,
             server_id: message.guild.id,
             constituent_id: message.author.id,
@@ -80,9 +81,24 @@ export default class CreateRaffle extends Command{
             numbersOfWinner,
             status: 'CONTINUES',
             finishAt: new Date(finishAt)
-        } as IRaffle)
+        }
 
-        await raffle.start(message, message.channel as TextChannel)
+        const raffle = new Raffle(Object.assign({
+            createdAt: new Date()
+        }, data as IRaffle))
+
+        message.channel.send(Raffle.getStartMessage(), {
+            embed: raffle.getEmbed()
+        }).then(async $message => {
+            await $message.react(Constants.CONFETTI_REACTION_EMOJI)
+
+            await server.raffles.create(Object.assign({
+                message_id: $message.id
+            }, data) as IRaffle)
+        }).catch(async () => {
+            await message.channel.send(':boom: Botun yetkileri, bu kanalda çekiliş oluşturmak için yetersiz olduğu için çekiliş başlatılamadı.')
+        })
+
         await message.delete({
             timeout: 0
         })

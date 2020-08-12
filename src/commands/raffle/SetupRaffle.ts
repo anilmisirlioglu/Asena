@@ -7,6 +7,7 @@ import SetupPhase from '../../setup/SetupPhase'
 import SuperClient from '../../SuperClient';
 import { IRaffle } from '../../models/Raffle';
 import Server from '../../structures/Server';
+import Raffle from '../../structures/Raffle';
 
 export default class SetupRaffle extends Command{
 
@@ -164,29 +165,39 @@ export default class SetupRaffle extends Command{
                     })
                 ],
                 onFinishCallback: (store) => {
-                    const finishAt: number = Date.now() + (store.get(2) * 1000)
-                    server.raffles.create({
-                        prize: store.get(3),
-                        server_id: message.guild.id,
-                        constituent_id: message.author.id,
-                        channel_id: store.get(0),
-                        numbersOfWinner: store.get(1),
-                        status: 'CONTINUES',
-                        finishAt: new Date(finishAt)
-                    } as IRaffle).then(async result => {
-                        if(result){
-                            const channel = message.guild.channels.cache.get(store.get(0))
-                            if(channel instanceof TextChannel){
-                                await result.start(message, channel)
-                                await message.channel.send(`:star2: Çekiliş başarıyla oluşturuldu! Oluşturduğun çekiliş <#${store.get(0)}> kanalında yayınlandı...`)
-                            }else{
-                                await result.delete()
-                                await message.channel.send(`:boom: Çekiliş oluşturulamadı. Girdiğiniz kanal sunucunuzda bulunamadı. Birden bire yok olmuş...`)
-                            }
-                        }else{
-                            await message.channel.send(':boom: Çekiliş oluşturma sınırını aşıyorsunuz. (Max: 5)')
+                    const channel = message.guild.channels.cache.get(store.get(0))
+                    if(channel instanceof TextChannel){
+                        const finishAt: number = Date.now() + (store.get(2) * 1000)
+                        const data = {
+                            prize: store.get(3),
+                            server_id: message.guild.id,
+                            constituent_id: message.author.id,
+                            channel_id: store.get(0),
+                            numbersOfWinner: store.get(1),
+                            status: 'CONTINUES',
+                            finishAt: new Date(finishAt)
                         }
-                    })
+
+                        const raffle = new Raffle(Object.assign({
+                            createdAt: new Date()
+                        }, data as IRaffle))
+
+                        channel.send(Raffle.getStartMessage(), {
+                            embed: raffle.getEmbed()
+                        }).then(async $message => {
+                            await $message.react(Constants.CONFETTI_REACTION_EMOJI)
+
+                            await server.raffles.create(Object.assign({
+                                message_id: $message.id
+                            }, data) as IRaffle)
+                        }).catch(async () => {
+                            await message.channel.send(':boom: Botun yetkileri, bu kanalda çekiliş oluşturmak için yetersiz olduğu için çekiliş başlatılamadı.')
+                        })
+
+                        message.channel.send(`:star2: Çekiliş başarıyla oluşturuldu! Oluşturduğun çekiliş <#${store.get(0)}> kanalında yayınlandı...`)
+                    }else{
+                        message.channel.send(`:boom: Çekiliş oluşturulamadı. Girdiğiniz kanal sunucunuzda bulunamadı. Birden bire yok olmuş...`)
+                    }
 
                     return true
                 },
@@ -199,6 +210,7 @@ export default class SetupRaffle extends Command{
             setup.on('message', async content => {
                 await message.channel.send(content)
             })
+
             setup.start()
         }
 
