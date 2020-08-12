@@ -35,8 +35,8 @@ export default class Raffles extends Command{
                     `Oluşturan: <@${raffle.constituent_id}>`,
                     `Kanal: <#${raffle.channel_id}>`,
                     `Kazanan Sayısı: **${raffle.numbersOfWinner} Kişi**`,
-                    `Başlangıç Tarihi: **${getDateTimeToString(new Date(raffle.createdAt))}**`,
-                    `Bitiş: **${getDateTimeToString(new Date(raffle.finishAt))}**`
+                    `Başlangıç Tarihi: **${getDateTimeToString(new Date(raffle.createdAt))}** (UTC)`,
+                    `Bitiş Tarihi: **${getDateTimeToString(new Date(raffle.finishAt))}** (UTC)`
                 ].join('\n'))
             })
             embed.setDescription(`${Constants.CONFETTI_REACTION_EMOJI} Toplam **${raffles.length}** aktif çekiliş var`)

@@ -33,6 +33,7 @@ abstract class Structure<M extends Model<D>, D extends Document & ID & Timestamp
         const update = await this.model.findByIdAndUpdate(this.id, query, {
             new: true
         })
+
         this.patch(update)
     }
 
