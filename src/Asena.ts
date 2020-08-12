@@ -20,9 +20,22 @@ export default class Asena extends SuperClient{
             await this.getCommandHandler().run(message)
         })
 
+        // Initialize static values
         this.on('ready', () => {
-            // Initialize static values
             this.init()
+        })
+
+        // if it's a raffle message, delete the lottery
+        this.on('messageDelete', async message => {
+            if(message.partial){
+                message = await message.fetch()
+            }
+
+            const server = await this.servers.get(message.guild?.id)
+            const raffle = await server.raffles.get(message.id)
+            if(raffle && raffle.isContinues()){
+                await raffle.delete()
+            }
         })
 
         // Delete server data from db

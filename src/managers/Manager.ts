@@ -23,6 +23,10 @@ abstract class Manager<K, V extends Structure<M, D>, M extends Model<D>, D exten
             [this.key()]: key
         } as any)
 
+        if(!data){
+            return undefined
+        }
+
         const structure = this.new(data)
         this.set(structure.identifier_id, structure)
 

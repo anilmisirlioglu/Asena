@@ -5,6 +5,7 @@ import Factory from '../Factory';
 export default class ActivityUpdater extends Factory{
 
     private counter: number = 0
+
     private static readonly UPDATE_INTERVAL: number = 1000 * 60 * 5
 
     public start(): void{
@@ -17,7 +18,7 @@ export default class ActivityUpdater extends Factory{
             })
 
             client.logger.info(`Asena ${client.version.getFullVersion()} başlatılıyor...`)
-            client.logger.info(`${client.user.username} aktif, toplam ${client.guilds.cache.size} sunucu ve ${client.users.cache.size} kullanıcıya hizmet veriliyor!`)
+            client.logger.info(`${client.user.username} aktif, toplam ${client.guilds.cache.size} sunucuya hizmet veriliyor!`)
         })
 
         this.setGuildCounterListeners()
