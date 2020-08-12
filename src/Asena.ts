@@ -1,6 +1,5 @@
 import SuperClient from './SuperClient';
 import Constants from './Constants';
-
 export default class Asena extends SuperClient{
 
     constructor(){
@@ -27,15 +26,18 @@ export default class Asena extends SuperClient{
 
         // if it's a raffle message, delete the lottery
         this.on('messageDelete', async message => {
-            if(message.partial){
-                message = await message.fetch()
-            }
-
             const server = await this.servers.get(message.guild?.id)
             const raffle = await server.raffles.get(message.id)
             if(raffle && raffle.isContinues()){
                 await raffle.delete()
             }
+        })
+
+        // Create server data from db
+        this.on('guildCreate', async guild => {
+            await this.servers.create({
+                server_id: guild.id
+            } as any)
         })
 
         // Delete server data from db

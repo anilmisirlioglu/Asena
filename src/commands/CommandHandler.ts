@@ -85,9 +85,14 @@ export default class CommandHandler extends Factory implements CommandRunner{
             return
         }
 
-        const server = await client.servers.get(message.guild.id)
-        const prefix = (client.isDevBuild ? 'dev' : '') + (server.prefix || client.prefix)
+        let server = await client.servers.get(message.guild.id)
+        if(!server){
+            server = await client.servers.create({
+                server_id: message.guild?.id
+            } as any)
+        }
 
+        const prefix = (client.isDevBuild ? 'dev' : '') + (server.prefix || client.prefix)
         if(!message.content.startsWith(prefix)){
             if(message.content === Constants.PREFIX_COMMAND){
                 await message.channel.send(`🌈   Botun sunucu içerisinde ki komut ön adı(prefix): **${server.prefix}**`)
