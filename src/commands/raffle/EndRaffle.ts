@@ -36,9 +36,11 @@ export default class EndRaffle extends Command{
 
         await raffle.finish(client)
         await message.channel.send(`**${raffle.prize}** çekilişi erken bitirildi. Sonuçlar <#${raffle.channel_id}> kanalına gönderildi.`)
-        await message.delete({
-            timeout: 100
-        })
+        if(message.guild.me.hasPermission('MANAGE_MESSAGES')){
+            await message.delete({
+                timeout: 100
+            })
+        }
 
         return true
     }

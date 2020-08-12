@@ -29,7 +29,6 @@ export default class SetPrefix extends Command{
 
         await server.setPrefix(prefix)
 
-        //await client.getServerManager().setServerPrefix(message.guild.id, prefix)
         await message.channel.send(`:comet: Komut ön adı **${prefix}** olarak değiştirildi.`)
 
         return true

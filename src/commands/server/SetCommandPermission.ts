@@ -69,7 +69,6 @@ export default class SetCommandPermission extends Command{
         }
 
         await (add ? server.addPublicCommand($command.name) : server.deletePublicCommand($command.name))
-        /*await client.getServerManager().setPublicCommandServer(guildId, $command.name, type)*/
         await message.channel.send(`🌈  '**${$command.name}**' komutunun izinleri başarıyla düzenlendi. Komut durumu: **Herkese ${add ? 'açık' : 'kapalı'}**`)
 
         return true

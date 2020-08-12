@@ -99,9 +99,11 @@ export default class CreateRaffle extends Command{
             await message.channel.send(':boom: Botun yetkileri, bu kanalda çekiliş oluşturmak için yetersiz olduğu için çekiliş başlatılamadı.')
         })
 
-        await message.delete({
-            timeout: 0
-        })
+        if(message.guild.me.hasPermission('MANAGE_MESSAGES')){
+            await message.delete({
+                timeout: 0
+            })
+        }
 
         return true
     }

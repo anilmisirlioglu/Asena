@@ -37,7 +37,11 @@ export default class Vote extends Command{
                 .setTimestamp()
                 .addField('Soru', args.filter(arg => arg !== undefined).join(' '), true)
 
-            await message.delete({ timeout: 0 })
+            if(message.guild.me.hasPermission('MANAGE_MESSAGES')){
+                await message.delete({
+                    timeout: 0
+                })
+            }
             await message.channel
                 .send({ embed })
                 .then(async vote => {
@@ -70,25 +74,27 @@ export default class Vote extends Command{
                 .setTimestamp()
                 .addField('Soru', args.filter(arg => arg !== undefined).join(' '), true)
 
-            await message.delete({ timeout: 0 })
-            message.channel
-                .send({ embed })
-                .then(async $message => {
-                    const survey = await Survey.create({
-                        server_id: $message.guild.id,
-                        channel_id: $message.channel.id,
-                        message_id: $message.id,
-                        title: args.filter(arg => arg !== undefined).join(' '),
-                        finishAt: new Date(Date.now() + (time * 1000))
-                    })
-                    if(!survey){
-                        await $message.delete()
-                        await message.channel.send(':boom: Anket verisi veritabanına kaydedilemediği için iptal edildi.')
-                    }else{
-                        await $message.react(AGREE)
-                        await $message.react(DISAGREE)
-                    }
+            if(message.guild.me.hasPermission('MANAGE_MESSAGES')){
+                await message.delete({
+                    timeout: 0
                 })
+            }
+            message.channel.send({ embed }).then(async $message => {
+                const survey = await Survey.create({
+                    server_id: $message.guild.id,
+                    channel_id: $message.channel.id,
+                    message_id: $message.id,
+                    title: args.filter(arg => arg !== undefined).join(' '),
+                    finishAt: new Date(Date.now() + (time * 1000))
+                })
+                if(!survey){
+                    await $message.delete()
+                    await message.channel.send(':boom: Anket verisi veritabanına kaydedilemediği için iptal edildi.')
+                }else{
+                    await $message.react(AGREE)
+                    await $message.react(DISAGREE)
+                }
+            })
         }
 
         return true

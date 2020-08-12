@@ -31,7 +31,13 @@ export default class Raffles extends Command{
         }else{
             let i: number = 1;
             raffles.map(raffle => {
-                embed.addField(`${i++}. ${raffle.prize}`, `Oluşturan: <@${raffle.constituent_id}>\nKanal: <#${raffle.channel_id}>\nKazanan Sayısı: **${raffle.numbersOfWinner} Kişi**\nBaşlangıç Tarihi: **${getDateTimeToString(new Date(raffle.createdAt))}**\nBitiş: **${getDateTimeToString(new Date(raffle.finishAt))}**`)
+                embed.addField(`${i++}. ${raffle.prize}`, [
+                    `Oluşturan: <@${raffle.constituent_id}>`,
+                    `Kanal: <#${raffle.channel_id}>`,
+                    `Kazanan Sayısı: **${raffle.numbersOfWinner} Kişi**`,
+                    `Başlangıç Tarihi: **${getDateTimeToString(new Date(raffle.createdAt))}**`,
+                    `Bitiş: **${getDateTimeToString(new Date(raffle.finishAt))}**`
+                ].join('\n'))
             })
             embed.setDescription(`${Constants.CONFETTI_REACTION_EMOJI} Toplam **${raffles.length}** aktif çekiliş var`)
         }

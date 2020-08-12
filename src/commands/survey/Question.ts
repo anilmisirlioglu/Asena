@@ -64,18 +64,19 @@ export default class Question extends Command{
             )
             .setColor('#5DADE2')
 
-        message.channel
-            .send({ embed })
-            .then(vote => {
-                emojis.map(item => vote.react(item.emoji))
-            })
-            .catch(async () => {
-                await message.channel.send(':boom: Soru sohbet kanalına bir sebepten dolayı gönderilemedi.')
-            })
-
-        await message.delete({
-            timeout: 0
+        message.channel.send({
+            embed
+        }).then(vote => {
+            emojis.map(item => vote.react(item.emoji))
+        }).catch(async () => {
+            await message.channel.send(':boom: Soru sohbet kanalına bir sebepten dolayı gönderilemedi.')
         })
+
+        if(message.guild.me.hasPermission('MANAGE_MESSAGES')){
+            await message.delete({
+                timeout: 0
+            })
+        }
 
         return true
     }

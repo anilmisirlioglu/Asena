@@ -46,9 +46,11 @@ export default class CancelRaffle extends Command{
 
         await message.channel.send(`${Constants.CONFETTI_EMOJI} Çekiliş başarıyla iptal edildi.`)
 
-        await message.delete({
-            timeout: 0
-        })
+        if(message.guild.me.hasPermission('MANAGE_MESSAGES')){
+            await message.delete({
+                timeout: 0
+            })
+        }
 
         return true;
     }
