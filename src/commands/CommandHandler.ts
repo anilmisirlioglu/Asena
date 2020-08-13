@@ -81,7 +81,8 @@ export default class CommandHandler extends Factory implements CommandRunner{
             return
         }
 
-        if(!(message.channel instanceof TextChannel)){
+        const channel = message.channel
+        if(!(channel instanceof TextChannel)){
             return
         }
 
@@ -95,7 +96,7 @@ export default class CommandHandler extends Factory implements CommandRunner{
         const prefix = (client.isDevBuild ? 'dev' : '') + (server.prefix || client.prefix)
         if(!message.content.startsWith(prefix)){
             if(message.content === Constants.PREFIX_COMMAND){
-                await message.channel.send(`🌈   Botun sunucu içerisinde ki komut ön adı(prefix): **${server.prefix}**`)
+                await channel.send(`🌈   Botun sunucu içerisinde ki komut ön adı(prefix): **${server.prefix}**`)
             }
 
             return
@@ -128,7 +129,7 @@ export default class CommandHandler extends Factory implements CommandRunner{
         if(command){
             const authorized: boolean = command.hasPermission(message.member) || message.member.roles.cache.filter(role => {
                 return role.name.trim().toLowerCase() === Constants.PERMITTED_ROLE_NAME
-            }).size !== 0 || server.publicCommands.indexOf(command.name) !== -1
+            }).size !== 0 || server.isPublicCommand(command.name)
             if(authorized){
                 const checkPermissions = this.getPermissionController().checkSelfPermissions(
                     message.guild,
@@ -137,18 +138,20 @@ export default class CommandHandler extends Factory implements CommandRunner{
                 if(checkPermissions.has){
                     command.run(client, server, message, args).then(async (result: boolean) => {
                         if(!result){
-                            await message.channel.send({
+                            await channel.send({
                                 embed: command.getUsageEmbed()
                             })
                         }
                     })
                 }else{
                     if(checkPermissions.missing.includes('SEND_MESSAGES') || checkPermissions.missing.includes('VIEW_CHANNEL')){
-                        await message.author
-                            .send(`Botun çalışabilmesi için '**${message.channel.name}**' kanalında bota '**Mesaj Gönder**' yetkisini sağlamanız/vermeniz gerekiyor. Aksi takdirde bot bu kanala mesaj gönderemez ve işlevini yerine getiremez/çalışamaz.`)
-                            .catch(() => {})
+                        try{
+                            message.author.createDM().then(dmChannel => {
+                                dmChannel.send(`Botun çalışabilmesi için '**${channel.name}**' kanalında bota '**Mesaj Gönder**' yetkisini sağlamanız/vermeniz gerekiyor. Aksi takdirde bot bu kanala mesaj gönderemez ve işlevini yerine getiremez/çalışamaz.`)
+                            })
+                        }catch(e){}
                     }else{
-                        await message.channel.send([
+                        await channel.send([
                             'Botun çalışabilmesi için gerekli olan **izinler** eksik. Lütfen aşağıda ki listede bulunan izinleri bota sağlayıp/verip tekrar deneyin.',
                             `\n${checkPermissions}\n`,
                             'Eğer daha detaylı yardıma ihtiyacınız varsa bizle iletişime geçmekten çekinmeyin.'
@@ -156,7 +159,7 @@ export default class CommandHandler extends Factory implements CommandRunner{
                     }
                 }
             }else{
-                await message.channel.send({
+                await channel.send({
                     embed: command.getErrorEmbed('Bu komutu kullanmak için **yetkiniz** yok.')
                 })
             }

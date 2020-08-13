@@ -33,18 +33,15 @@ export default class Help extends Command{
                 .addField(`🌐 Daha Fazla Bilgi?`, '**[Website](https://asena.xyz)**')
                 .setColor('RANDOM')
 
-            message.author.send({ embed })
-                .then(async () => {
-                    await message.channel.send(`<@${message.author.id}> yardım menüsünü DM kutunuza gönderildi.`)
-                        .then($message => {
-                            $message.delete({ timeout: 2000 }).then(() => {
-                                message.delete();
-                            })
-                        });
-                })
-                .catch(async () => {
-                    await message.channel.send({ embed })
-                })
+            message.author.createDM().then(channel => {
+                channel.send({ embed }).then(() => {
+                    message.channel.send(`<@${message.author.id}> yardım menüsünü DM kutunuza gönderildi.`).then($message => {
+                        $message.delete({ timeout: 2000 }).then(() => {
+                            message.delete();
+                        })
+                    })
+                }).catch(() => message.channel.send({ embed }))
+            })
 
             return true;
         }else{
