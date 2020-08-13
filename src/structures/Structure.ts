@@ -3,7 +3,11 @@ import Timestamps from '../models/legacy/Timestamps';
 import ID from '../models/legacy/ID';
 import { Snowflake } from 'discord.js';
 
-abstract class Structure<M extends Model<D>, D extends Document & ID & Timestamps>{
+type SuperDocument = Document & ID & Timestamps
+
+export type StructureType = Structure<Model<SuperDocument>, SuperDocument>
+
+abstract class Structure<M extends Model<D>, D extends SuperDocument>{
 
     protected model: M
 

@@ -1,14 +1,14 @@
 import SuperClient from '../SuperClient';
-import { Document } from 'mongoose';
+import { StructureType } from '../structures/Structure';
 
-export default abstract class Task{
+export default abstract class Task<S extends StructureType>{
 
     public abstract async onRun(): Promise<void>
 
-    protected abstract intervalCallback<T extends Document>(document: T): () => void
+    protected abstract intervalCallback(structure: S): () => void
 
-    protected setInterval<T extends Document>(timeout: number, document: T): void{
-        setTimeout(this.intervalCallback(document), timeout)
+    protected setInterval(timeout: number, structure: S): void{
+        setTimeout(this.intervalCallback(structure), timeout)
     }
 
     protected getClient(): SuperClient{

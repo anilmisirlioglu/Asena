@@ -1,29 +1,27 @@
-import SurveyModel, { ISurvey } from '../../models/Survey';
+import SurveyModel from '../../models/Survey';
 import Task from '../Task';
-import { Document } from 'mongoose';
 import Survey from '../../structures/Survey';
 
-export default class SurveyTask extends Task{
+export default class SurveyTask extends Task<Survey>{
 
     async onRun(): Promise<void>{
         const cursor = await SurveyModel.find({}).cursor()
         for(let survey = await cursor.next(); survey !== null; survey = await cursor.next()){
+            const structure = new Survey(survey)
             const finishAt: Date = new Date(survey.finishAt)
             const remaining: number = +finishAt - Date.now()
             if(remaining <= 60 * 1000){
-                this.setInterval<ISurvey>(remaining - 2000, survey)
+                this.setInterval(remaining - 2000, structure)
             }else if(Date.now() >= +finishAt){
-                this.setInterval<ISurvey>(1000, survey)
+                this.setInterval(1000, structure)
             }
         }
     }
 
-    protected intervalCallback<T extends Document>(model: T & ISurvey): () => void{
+    protected intervalCallback(survey: Survey): () => void{
         return async () => {
-            const survey = new Survey(model)
             await survey.finishSurvey(this.getClient())
-
-            await model.remove()
+            await survey.delete()
         }
     }
 
