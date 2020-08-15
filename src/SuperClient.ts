@@ -14,7 +14,7 @@ import ActivityUpdater from './updater/ActivityUpdater';
 import RaffleTimeUpdater from './updater/RaffleTimeUpdater';
 import ServerManager from './managers/ServerManager';
 import SetupManager from './setup/SetupManager';
-import SyntaxWebHook from './SyntaxWebhook';
+import SyntaxWebhook from './SyntaxWebhook';
 
 interface SuperClientBuilderOptions{
     prefix: string
@@ -40,7 +40,7 @@ export default abstract class SuperClient extends Client{
     readonly servers: ServerManager = new ServerManager()
     private readonly setupManager: SetupManager = new SetupManager()
 
-    readonly webHook: SyntaxWebHook = new SyntaxWebHook()
+    readonly webhook: SyntaxWebhook = new SyntaxWebhook()
 
     static NAME: string
     static AVATAR: string

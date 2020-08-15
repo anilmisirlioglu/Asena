@@ -1,19 +1,18 @@
 import Constants from '../Constants'
 import SuperClient from '../SuperClient';
 import Factory from '../Factory';
+import request from '../utils/Internet';
 
 export default class ActivityUpdater extends Factory{
 
     private counter: number = 0
-
-    private static readonly UPDATE_INTERVAL: number = 1000 * 60 * 5
 
     public start(): void{
         this.client.on('ready', async () => {
             const client: SuperClient = this.client
 
             await client.user.setStatus('online')
-            await client.user.setActivity(this.getActivityName(), {
+            await client.user.setActivity(this.getActivityString(), {
                 type: 'PLAYING'
             })
 
@@ -26,12 +25,12 @@ export default class ActivityUpdater extends Factory{
         this.setActivityUpdateInterval()
     }
 
-    private getActivityName(): string{
+    private getActivityString(): string{
         return `${Constants.CONFETTI_REACTION_EMOJI} ${this.counter} Sunucu | ${process.env.PREFIX}help\nhttps://asena.xyz`
     }
 
     private setGuildCounterListeners(): void{
-        const webHook = this.client.webHook
+        const webhook = this.client.webhook
         this.client.on('ready', () => {
             this.counter = this.client.guilds.cache.size
         })
@@ -39,22 +38,53 @@ export default class ActivityUpdater extends Factory{
         this.client.on('guildCreate', guild => {
             this.counter += 1
 
-            webHook.resolveGuild(guild)
+            webhook.resolveGuild(guild)
         })
 
         this.client.on('guildDelete', guild => {
             this.counter -= 1
 
-            webHook.resolveGuild(guild, false)
+            webhook.resolveGuild(guild, false)
         })
     }
 
     private setActivityUpdateInterval(){
         setInterval(async () => {
-            await this.client.user.setActivity(this.getActivityName(), {
+            await this.client.user.setActivity(this.getActivityString(), {
                 type: 'PLAYING'
             })
-        }, ActivityUpdater.UPDATE_INTERVAL)
+
+            if(!this.client.isDevBuild){
+                this.updateTopGGStats()
+                this.updateDiscordBotsGG()
+            }
+        }, Constants.UPDATE_INTERVAL)
+    }
+
+    private updateTopGGStats(){
+        request({
+            host: Constants.TOP_GG_URL,
+            path: `/api/bots/${this.client.user.id}/stats`,
+            method: 'POST',
+            headers: {
+                Authorization: process.env.TOP_GG_API_KEY
+            }
+        }, {
+            server_count: this.counter
+        })
+    }
+
+    private updateDiscordBotsGG(){
+        request({
+            host: Constants.DISCORD_BOTS_GG_URL,
+            path: `/api/v1/bots/${this.client.user.id}/stats`,
+            method: 'POST',
+            headers: {
+                Authorization: process.env.DISCORD_BOTS_GG_API_KEY
+            }
+        }, {
+            guildCount: this.counter
+        })
     }
 
     public getCounter(): number{

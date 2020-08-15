@@ -38,6 +38,8 @@ abstract class Constants{
 
     public static COOLDOWN_TIME: number = 5
 
+    public static UPDATE_INTERVAL: number = 1000 * 60 * 5
+
     public static ALLOWED_TIME_TYPES: string[] = ['m', 'h', 'd']
 
     public static ANSWER_REGEX: RegExp = /\[(.*?)]/g
@@ -71,6 +73,9 @@ abstract class Constants{
     ] //allowed letters
 
     public static PREFIX_COMMAND = '>>prefix'
+
+    public static TOP_GG_URL: string = 'top.gg'
+    public static DISCORD_BOTS_GG_URL: string = 'discord.bots.gg'
 
 }
 
