@@ -30,12 +30,12 @@ export default class ReRollRaffle extends Command{
 
         if(raffle.status !== 'FINISHED'){
             await message.channel.send({
-                embed: this.getErrorEmbed(raffle.status === 'CONTINUES' ? 'Bu çekiliş daha sonuçlanmamış. Lütfen çekilişin bitmesini bekleyin.' : 'Bu çekiliş iptal edilmiş. İptal edilmiş bir çekilişin sonucu tekrar çekilemez.')
+                embed: this.getErrorEmbed((raffle.status === 'CONTINUES' ? 'Bu çekiliş daha sonuçlanmamış. Lütfen çekilişin bitmesini bekleyin.' : 'Bu çekiliş iptal edilmiş. İptal edilmiş bir çekilişin sonucu tekrar çekilemez.'))
             })
             return true
         }
 
-        const fetch: Message | undefined = await client.fetchMessage(raffle.server_id, raffle.channel_id, raffle.message_id)
+        let fetch: Message | undefined = await client.fetchMessage(raffle.server_id, raffle.channel_id, raffle.message_id)
         if(!fetch){
             await message.channel.send({
                 embed: this.getErrorEmbed('Anlaşılan bu çekiliş mesajı silinmiş veya zaman aşımına uğramış.')
@@ -44,7 +44,18 @@ export default class ReRollRaffle extends Command{
             return true
         }
 
-        const winners = await raffle.identifyWinners(client)
+        if(!fetch.reactions){
+           fetch = await message.fetch()
+            if(!fetch){
+                await message.channel.send({
+                    embed: this.getErrorEmbed('Çekilişin katılımcı verileri bulunamadı.')
+                })
+
+                return true
+            }
+        }
+
+        const winners = await raffle.identifyWinners(fetch)
         const _message = raffle.getMessageURL()
         if(winners.length === 0){
             await message.channel.send(`Yeterli katılım olmadığından dolayı çekiliş tekrar çekilemedi.\n**Çekiliş:** ${_message}`)

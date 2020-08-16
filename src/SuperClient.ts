@@ -1,8 +1,11 @@
 import {
     Client,
+    DiscordAPIError,
     Guild,
     GuildChannel,
+    HTTPError,
     Message,
+    MessageEmbed,
     Snowflake,
     TextChannel
 } from "discord.js";
@@ -85,7 +88,7 @@ export default abstract class SuperClient extends Client{
         return this.setupManager
     }
 
-    public fetchChannel<T extends Snowflake>(guildId: T, channelId: T): GuildChannel | undefined{
+    fetchChannel<T extends Snowflake>(guildId: T, channelId: T): GuildChannel | undefined{
         const guild: Guild = this.guilds.cache.get(guildId)
         if(guild){
             return guild.channels.cache.get(channelId)
@@ -94,7 +97,7 @@ export default abstract class SuperClient extends Client{
         return undefined
     }
 
-    public fetchMessage<T extends Snowflake>(guildId: T, channelId: T, messageId: T): Promise<Message | undefined>{
+    fetchMessage<T extends Snowflake>(guildId: T, channelId: T, messageId: T): Promise<Message | undefined>{
         const guild: Guild = this.guilds.cache.get(guildId)
         if(guild){
             const channel: GuildChannel = guild.channels.cache.get(channelId)
@@ -104,6 +107,22 @@ export default abstract class SuperClient extends Client{
         }
 
         return undefined
+    }
+
+    buildErrorReporterEmbed(guild: Guild, err: DiscordAPIError | HTTPError): MessageEmbed{
+        return new MessageEmbed()
+            .setAuthor(`${this.user.username} | Hata Raporlayıcı`, this.user.avatarURL())
+            .setColor('DARK_RED')
+            .setFooter(guild.name, guild.iconURL())
+            .setTimestamp()
+            .setDescription([
+                `**Hata:** ${err.name}`,
+                `**Hata Mesajı:** ${err.message}`,
+                `**Yöntem:** ${err.method}`,
+                `**Veri Yolu:** ${err.path}`,
+                `**Hata Kodu:** ${err.code}`,
+                `**Stack Trace:**\`\`\`${err.stack}\`\`\``
+            ].join('\n'))
     }
 
 }

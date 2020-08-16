@@ -1,5 +1,6 @@
 import {
-    GuildChannel,
+    DiscordAPIError,
+    GuildChannel, HTTPError,
     Message,
     MessageEmbed,
     MessageReaction,
@@ -71,7 +72,7 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
         if(channel instanceof TextChannel){
             const message: Message | undefined = await channel.messages.fetch(this.message_id)
             if(message instanceof Message){
-                const winners: string[] = await this.identifyWinners(client)
+                const winners: string[] = await this.identifyWinners(message)
                 const _message: string = this.getMessageURL()
                 const winnersOfMentions: string[] = winners.map(winner => `<@${winner}>`)
 
@@ -108,24 +109,20 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
         }
     }
 
-    public async identifyWinners(client: SuperClient): Promise<string[]>{
+    public async identifyWinners(message: Message): Promise<string[]>{
         let winners = []
 
-        const channel: GuildChannel | undefined = await client.fetchChannel(this.server_id, this.channel_id)
-        if(channel && channel instanceof TextChannel){
-            const message = await channel.messages.fetch(this.message_id)
-            if(message){
-                const reaction: MessageReaction | undefined = await message.reactions.cache.get(Constants.CONFETTI_REACTION_EMOJI)
-                const [_, users] = (await reaction.users.fetch()).partition(user => user.bot)
-                const userKeys = users.keyArray().filter(user_id => user_id !== this.constituent_id)
+        if(message){
+            const reaction: MessageReaction | undefined = await message.reactions.cache.get(Constants.CONFETTI_REACTION_EMOJI)
+            const [_, users] = (await reaction.users.fetch()).partition(user => user.bot)
+            const userKeys = users.keyArray().filter(user_id => user_id !== this.constituent_id)
 
-                if(userKeys.length > this.numbersOfWinner){
-                    const arrayRandom = new ArrayRandom(userKeys)
-                    arrayRandom.shuffle()
-                    winners.push(...arrayRandom.random(this.numbersOfWinner))
-                }else{
-                    winners.push(...userKeys)
-                }
+            if(userKeys.length > this.numbersOfWinner){
+                const arrayRandom = new ArrayRandom(userKeys)
+                arrayRandom.shuffle()
+                winners.push(...arrayRandom.random(this.numbersOfWinner))
+            }else{
+                winners.push(...userKeys)
             }
         }
 

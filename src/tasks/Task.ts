@@ -11,7 +11,7 @@ export default abstract class Task<S extends StructureType>{
         setTimeout(this.intervalCallback(structure), timeout)
     }
 
-    protected getClient(): SuperClient{
+    protected get client(): SuperClient{
         return SuperClient.getInstance()
     }
 

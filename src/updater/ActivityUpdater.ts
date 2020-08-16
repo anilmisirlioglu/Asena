@@ -56,7 +56,7 @@ export default class ActivityUpdater extends Factory{
 
             if(!this.client.isDevBuild){
                 this.updateTopGGStats()
-                this.updateDiscordBotsGG()
+                this.updateDiscordBotsGGStats()
             }
         }, Constants.UPDATE_INTERVAL)
     }
@@ -74,7 +74,7 @@ export default class ActivityUpdater extends Factory{
         })
     }
 
-    private updateDiscordBotsGG(){
+    private updateDiscordBotsGGStats(){
         request({
             host: Constants.DISCORD_BOTS_GG_URL,
             path: `/api/v1/bots/${this.client.user.id}/stats`,

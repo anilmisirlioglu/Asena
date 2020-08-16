@@ -15,5 +15,5 @@ const client = new Asena()
 client.login(process.env[client.version.isDev() ? 'TOKEN_DEV' : 'TOKEN'])
 
 process.on('unhandledRejection', (rej, promise) => {
-    client.logger.error(rej?.toString() ?? '')
+    client.logger.error(rej?.toString() ?? 'Unknown Error')
 })
