@@ -26,33 +26,38 @@ export default class RaffleTask extends Task<Raffle>{
             this.client
                 .fetchMessage(raffle.server_id, raffle.channel_id, raffle.message_id)
                 .then(async result => {
+                    let isRejected = false;
                     const updateCallback = async (
                         customTime: number,
                         message: string = Raffle.getAlertMessage(),
                         alert: boolean = true
                     ) => {
-                        await result.edit(message, {
-                            embed: raffle.getEmbed(alert, customTime)
-                        }).catch(async (err: DiscordAPIError | HTTPError) => {
-                            const guild = result.guild
-                            if(guild){
-                                const message = [
-                                    `<:down:744193243805384704> Sunucunuzda bulunan çekiliş bir **hatadan** dolayı sonuçlandırılamadı.`,
-                                    `Lütfen çekilişinizi kurtarabilmemiz için bu mesajın **ekran görüntüsü** ile birlikte bizimle iletişime geçin.\n`,
-                                    `> **Destek-İletişim:** https://discord.gg/CRgXhfs\n`,
-                                ].join('\n')
+                        if(!isRejected){
+                            await result.edit(message, {
+                                embed: raffle.getEmbed(alert, customTime)
+                            }).catch(async (err: DiscordAPIError | HTTPError) => {
+                                const guild = result.guild
+                                if(guild){
+                                    const message = [
+                                        `<:down:744193243805384704> Sunucunuzda bulunan çekiliş bir **hatadan** dolayı sonuçlandırılamadı.`,
+                                        `Lütfen çekilişinizi kurtarabilmemiz için bu mesajın **ekran görüntüsü** ile birlikte bizimle iletişime geçin.\n`,
+                                        `> **Destek-İletişim:** https://discord.gg/CRgXhfs\n`,
+                                    ].join('\n')
 
-                                try{
-                                    await guild.owner?.send(message, {
-                                        embed: this.client.buildErrorReporterEmbed(guild, err)
-                                    })
-                                }catch(err){
-                                    return reject(err)
+                                    try{
+                                        await guild.owner?.send(message, {
+                                            embed: this.client.buildErrorReporterEmbed(guild, err)
+                                        })
+                                    }catch(err){
+                                        isRejected = true
+                                        return reject(err)
+                                    }
                                 }
-                            }
 
-                            return reject(err)
-                        })
+                                isRejected = true
+                                return reject(err)
+                            })
+                        }
                     }
 
                     setTimeout(async () => {
@@ -64,7 +69,9 @@ export default class RaffleTask extends Task<Raffle>{
                         await this.sleep(1000)
                         await updateCallback(1)
 
-                        resolve()
+                        if(!isRejected){
+                            resolve()
+                        }
                     }, timeout - (10 * 1000))
                 })
                 .catch(reject)
