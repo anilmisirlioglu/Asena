@@ -21,6 +21,7 @@ import SetPrefix from './server/SetPrefix';
 import SetCommandPermission from './server/SetCommandPermission';
 import PermissionController from '../controllers/PermissionController';
 import Invitation from './bot/Invitation';
+import Premium from './server/Premium';
 
 type CommandMap = Collection<string, Command>
 
@@ -39,7 +40,8 @@ export default class CommandHandler extends Factory implements CommandRunner{
         new BotInfo(),
         new Invitation(),
         new SetPrefix(),
-        new SetCommandPermission()
+        new SetCommandPermission(),
+        new Premium()
     ]
 
     private permissionController: PermissionController = new PermissionController()

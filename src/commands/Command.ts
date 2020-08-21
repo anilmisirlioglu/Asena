@@ -51,6 +51,14 @@ export default abstract class Command{
             .setColor('RED')
     }
 
+    public getPremiumEmbed(): MessageEmbed{
+        return new MessageEmbed()
+            .setAuthor(SuperClient.NAME, SuperClient.AVATAR)
+            .setDescription(`Bu özellik sadece **${SuperClient.NAME} Premium** kullanıcıları içindir.`)
+            .addField(':star2:  Premium \'u Denemeye Ne Dersin?', '<:join_arrow:746358699706024047> [Asena Premium](https://asena.xyz)')
+            .setColor('GREEN')
+    }
+
     public getUsageEmbed(): MessageEmbed{
         return new MessageEmbed()
             .setAuthor(SuperClient.NAME, SuperClient.AVATAR)

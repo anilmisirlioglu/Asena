@@ -1,9 +1,10 @@
 import Structure from './Structure';
-import ServerModel, { IPremium, IServer } from '../models/Server';
+import ServerModel, { IServer } from '../models/Server';
 import Timestamps from '../models/legacy/Timestamps';
 import ID from '../models/legacy/ID';
 import { Snowflake } from 'discord.js';
 import RaffleManager from '../managers/RaffleManager';
+import Premium from './Premium';
 
 type SuperServer = IServer & Timestamps & ID
 
@@ -12,7 +13,7 @@ class Server extends Structure<typeof ServerModel, SuperServer>{
     public prefix?: string
     public server_id: Snowflake
     public publicCommands: string[]
-    public premium?: IPremium
+    public premium?: Premium
 
     public raffles: RaffleManager = new RaffleManager(this)
 
@@ -24,7 +25,8 @@ class Server extends Structure<typeof ServerModel, SuperServer>{
         this.prefix = data.prefix
         this.server_id = data.server_id
         this.publicCommands = data.publicCommands
-        this.premium = data.premium
+        this.premium = data.premium ? new Premium(data.premium) : null
+
     }
 
     protected identifierKey(): string{
@@ -36,7 +38,7 @@ class Server extends Structure<typeof ServerModel, SuperServer>{
     }
 
     isPremium(): boolean{
-        return this.premium !== null
+        return this.premium && this.premium.hasExpired()
     }
 
     isPublicCommand(command: string){

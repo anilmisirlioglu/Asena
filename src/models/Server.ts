@@ -1,10 +1,10 @@
 import mongoose, { Schema, Document } from 'mongoose';
 import { Snowflake } from 'discord.js';
 
-type Premium = 'LIMITED' | 'PERMANENT'
+export type PremiumType = 'LIMITED' | 'PERMANENT'
 
 export interface IPremium{
-    type: Premium
+    type: PremiumType
     startAt: Date
     finishAt: Date
 }
