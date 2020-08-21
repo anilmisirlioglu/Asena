@@ -26,7 +26,6 @@ class Server extends Structure<typeof ServerModel, SuperServer>{
         this.server_id = data.server_id
         this.publicCommands = data.publicCommands
         this.premium = data.premium ? new Premium(data.premium) : null
-
     }
 
     protected identifierKey(): string{

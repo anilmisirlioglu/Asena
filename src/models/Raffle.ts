@@ -3,6 +3,10 @@ import { Snowflake } from 'discord.js';
 
 export type RaffleStatus = 'FINISHED' | 'ALMOST_DONE' | 'CONTINUES' | 'CANCELED'
 
+export interface IRaffleCustomization{
+    server_id?: Snowflake
+}
+
 export interface IRaffle extends Document{
     prize: string
     server_id: Snowflake
@@ -12,6 +16,7 @@ export interface IRaffle extends Document{
     numbersOfWinner: number
     status: RaffleStatus
     finishAt: Date
+    customization?: IRaffleCustomization
 }
 
 const RaffleSchema: Schema = new Schema<IRaffle>({
@@ -46,6 +51,10 @@ const RaffleSchema: Schema = new Schema<IRaffle>({
     finishAt: {
         type: Date,
         required: true
+    },
+    customization: {
+        type: Object,
+        default: null
     }
 }, {
     timestamps: true

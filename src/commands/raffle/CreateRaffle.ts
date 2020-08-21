@@ -1,14 +1,16 @@
-import { Message, TextChannel } from 'discord.js'
+import { Invite, Message } from 'discord.js'
 
 import Command from '../Command'
 import Constants from '../../Constants'
 import SuperClient from '../../SuperClient';
 import { detectTime } from '../../utils/DateTimeHelper';
-import { IRaffle } from '../../models/Raffle';
+import { IRaffle, IRaffleCustomization } from '../../models/Raffle';
 import Server from '../../structures/Server';
 import Raffle from '../../structures/Raffle';
 
 export default class CreateRaffle extends Command{
+
+    private readonly flags: string[] = ['server']
 
     constructor(){
         super({
@@ -37,7 +39,13 @@ export default class CreateRaffle extends Command{
             return true
         }
 
-        const stringToPrize: string = prize.join(' ')
+        const stringToPrize: string = prize
+            .filter(text => this.flags
+                .filter(flag => text.startsWith(`-${flag}`))
+                .length === 0
+            )
+            .join(' ')
+
         if(stringToPrize.length > 255){
             await message.channel.send({
                 embed: this.getErrorEmbed('Çekiliş başlığı maksimum 255 karakter uzunluğunda olmalıdır.')
@@ -72,6 +80,59 @@ export default class CreateRaffle extends Command{
             return true
         }
 
+        let customization: IRaffleCustomization | null = {
+            server_id: null
+        }
+
+        if(server.isPremium()){
+            if(message.content.includes('-server')){
+                const matchInvite = message.content.match(/(https?:\/\/)?(www\.)?(discord\.gg|discordapp\.com\/invite)\/.?(?:[a-zA-Z0-9\-]{2,32})/g)
+                if(!matchInvite || matchInvite.length === 0){
+                    await message.channel.send({
+                        embed: this.getErrorEmbed('Lütfen geçerli bir sunucu davet bağlantısı girin.')
+                    })
+
+                    return true
+                }
+
+                const fetchInvite: Invite | null = await new Promise(resolve => {
+                    client.fetchInvite(matchInvite.shift()).then(resolve).catch(() => {
+                        resolve(null)
+                    })
+                })
+
+                if(!fetchInvite){
+                    await message.channel.send({
+                        embed: this.getErrorEmbed('Geçersiz davet bağlantısı.')
+                    })
+
+                    return true
+                }
+
+                const target = client.guilds.cache.get(fetchInvite.guild.id)
+                if(!target){
+                    await message.channel.send({
+                        embed: this.getErrorEmbed(`**${client.user.username}** katılım zorunluluğu olan sunucuda bulunmak zorundadır. Lütfen davet bağlantısını girdiğiniz sunucuya **${client.user.username}** \'yı ekleyin.`)
+                    })
+
+                    return true
+                }
+
+                customization.server_id = target.id
+            }
+        }else{
+            const filter = this.flags.filter(flag => message.content.includes(`-${flag}`))
+            if(filter.length > 0){
+                await message.channel.send({
+                    embed: this.getPremiumEmbed()
+                })
+
+                return true
+            }
+
+            customization = null
+        }
+
         const finishAt: number = Date.now() + (toSecond * 1000)
         const data = {
             prize: stringToPrize,
@@ -80,7 +141,8 @@ export default class CreateRaffle extends Command{
             channel_id: message.channel.id,
             numbersOfWinner,
             status: 'CONTINUES',
-            finishAt: new Date(finishAt)
+            finishAt: new Date(finishAt),
+            customization
         }
 
         const raffle = new Raffle(Object.assign({
