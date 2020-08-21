@@ -1,5 +1,5 @@
 import Structure from './Structure';
-import ServerModel, { IServer } from '../models/Server';
+import ServerModel, { IPremium, IServer } from '../models/Server';
 import Timestamps from '../models/legacy/Timestamps';
 import ID from '../models/legacy/ID';
 import { Snowflake } from 'discord.js';
@@ -12,6 +12,7 @@ class Server extends Structure<typeof ServerModel, SuperServer>{
     public prefix?: string
     public server_id: Snowflake
     public publicCommands: string[]
+    public premium?: IPremium
 
     public raffles: RaffleManager = new RaffleManager(this)
 
@@ -23,6 +24,7 @@ class Server extends Structure<typeof ServerModel, SuperServer>{
         this.prefix = data.prefix
         this.server_id = data.server_id
         this.publicCommands = data.publicCommands
+        this.premium = data.premium
     }
 
     protected identifierKey(): string{
@@ -31,6 +33,10 @@ class Server extends Structure<typeof ServerModel, SuperServer>{
 
     async setPrefix(prefix: string){
         await this.update({ prefix })
+    }
+
+    isPremium(): boolean{
+        return this.premium !== null
     }
 
     isPublicCommand(command: string){

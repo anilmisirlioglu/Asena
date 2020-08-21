@@ -1,10 +1,19 @@
 import mongoose, { Schema, Document } from 'mongoose';
 import { Snowflake } from 'discord.js';
 
+type Premium = 'LIMITED' | 'PERMANENT'
+
+export interface IPremium{
+    type: Premium
+    startAt: Date
+    finishAt: Date
+}
+
 export interface IServer extends Document{
     prefix?: string,
     server_id: Snowflake,
-    publicCommands: string[]
+    publicCommands: string[],
+    premium?: IPremium
 }
 
 const ServerSchema: Schema = new Schema<IServer>({
@@ -19,6 +28,10 @@ const ServerSchema: Schema = new Schema<IServer>({
     publicCommands: {
         type: Array,
         default: []
+    },
+    premium: {
+        type: Object,
+        default: null
     }
 }, {
     timestamps: true
