@@ -6,6 +6,9 @@ import { Colors } from '../utils/TextFormat';
 import SuperClient from '../SuperClient';
 import Constants from '../Constants';
 import Factory from '../Factory';
+import { ICommandPremium } from '../decorators/Premium';
+import SetCommandPermission from './server/SetCommandPermission';
+import PermissionController from '../controllers/PermissionController';
 
 import CancelRaffle from './raffle/CancelRaffle';
 import CreateRaffle from './raffle/CreateRaffle';
@@ -18,10 +21,9 @@ import Question from './survey/Question';
 import Help from './bot/Help';
 import BotInfo from './bot/BotInfo';
 import SetPrefix from './server/SetPrefix';
-import SetCommandPermission from './server/SetCommandPermission';
-import PermissionController from '../controllers/PermissionController';
 import Invitation from './bot/Invitation';
 import Premium from './server/Premium';
+import EditRaffle from './raffle/EditRaffle';
 
 type CommandMap = Collection<string, Command>
 
@@ -123,9 +125,9 @@ export default class CommandHandler extends Factory implements CommandRunner{
             return
         }
 
-        let command: Command | undefined = this.commands.get(cmd);
+        let command: Command & ICommandPremium | undefined = this.commands.get(cmd) as Command & ICommandPremium;
         if(!command){ // control is alias command
-            command = this.commands.get(this.aliases.get(cmd))
+            command = this.commands.get(this.aliases.get(cmd)) as Command & ICommandPremium;
         }
 
         if(command){
@@ -138,13 +140,19 @@ export default class CommandHandler extends Factory implements CommandRunner{
                     message.channel
                 )
                 if(checkPermissions.has){
-                    command.run(client, server, message, args).then(async (result: boolean) => {
-                        if(!result){
-                            await channel.send({
-                                embed: command.getUsageEmbed()
-                            })
-                        }
-                    })
+                    if(!command.premium || (command.premium && server.isPremium())){
+                        command.run(client, server, message, args).then(async (result: boolean) => {
+                            if(!result){
+                                await channel.send({
+                                    embed: command.getUsageEmbed()
+                                })
+                            }
+                        })
+                    }else{
+                        await channel.send({
+                            embed: command.getPremiumEmbed()
+                        })
+                    }
                 }else{
                     if(checkPermissions.missing.includes('SEND_MESSAGES') || checkPermissions.missing.includes('VIEW_CHANNEL')){
                         try{
