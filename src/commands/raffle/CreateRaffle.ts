@@ -10,14 +10,14 @@ import Raffle from '../../structures/Raffle';
 
 export default class CreateRaffle extends Command{
 
-    private readonly flags: string[] = ['server']
+    private readonly flags: string[] = ['server', 'color']
 
     constructor(){
         super({
             name: 'create',
             aliases: ['çekilişoluştur', 'çekilişbaşlat', 'cekilisbaslat', 'createraffle'],
             description: 'Çekiliş oluşturur.',
-            usage: '[kazanan sayısı<1 | 20>] [süre(1m | 5s) - [s(saniye) m(dakika) h(saat) d(gün)]] [ödül]',
+            usage: '[kazanan sayısı<1 | 20>] [süre(1m | 5s) - [s(saniye) m(dakika) h(saat) d(gün)]] [ödül] [parametreler(isteğe bağlı)]',
             permission: 'ADMINISTRATOR'
         });
     }
@@ -81,12 +81,24 @@ export default class CreateRaffle extends Command{
         }
 
         let customization: IRaffleCustomization | null = {
-            server_id: null
+            server_id: null,
+            color: null
         }
 
         if(server.isPremium()){
+            for(const flag of this.flags){
+                const filterArgs = args.filter(arg => arg.startsWith(`-${flag}`))
+                if(filterArgs.length > 1){
+                    await message.channel.send({
+                        embed: this.getErrorEmbed('Lütfen aynı parametreyi birden fazla kez kullanmayın.')
+                    })
+
+                    return true
+                }
+            }
+
             if(message.content.includes('-server')){
-                const matchInvite = message.content.match(/(https?:\/\/)?(www\.)?(discord\.gg|discordapp\.com\/invite)\/.?(?:[a-zA-Z0-9\-]{2,32})/g)
+                const matchInvite = message.content.match(/-server=(https?:\/\/)?(www\.)?(discord\.gg|discordapp\.com\/invite)\/.?(?:[a-zA-Z0-9\-]{2,32})/g)
                 if(!matchInvite || matchInvite.length === 0){
                     await message.channel.send({
                         embed: this.getErrorEmbed('Lütfen geçerli bir sunucu davet bağlantısı girin.')
@@ -96,7 +108,7 @@ export default class CreateRaffle extends Command{
                 }
 
                 const fetchInvite: Invite | null = await new Promise(resolve => {
-                    client.fetchInvite(matchInvite.shift()).then(resolve).catch(() => {
+                    client.fetchInvite(matchInvite.shift().split('=').pop()).then(resolve).catch(() => {
                         resolve(null)
                     })
                 })
@@ -120,6 +132,19 @@ export default class CreateRaffle extends Command{
 
                 customization.server_id = target.id
             }
+
+            if(message.content.includes('-color')){
+                const matchColor = message.content.match(/-color=#?(?:[0-9a-fA-F]{3}){1,2}|(RED|WHITE|AQUA|GREEN|BLUE|YELLOW|PURPLE|LUMINOUS_VIVID_PINK|GOLD|ORANGE|GREY|NAVY|RANDOM|DARKER_GREY|DARK_AQUA|DARK_GREEN|DARK_BLUE|DARK_PURPLE|DARK_VIVID_PINK|DARK_GOLD|DARK_ORANGE|DARK_RED|DARK_GREY|LIGHT_GREY|DARK_NAVY)/g)
+                if(!matchColor || matchColor.length === 0){
+                    await message.channel.send({
+                        embed: this.getErrorEmbed('Lütfen geçerli bir renk girin. (Hexadecimal renk kodu veya renk.)')
+                    })
+
+                    return true
+                }
+
+                customization.color = matchColor.shift().split('=').pop()
+            }
         }else{
             const filter = this.flags.filter(flag => message.content.includes(`-${flag}`))
             if(filter.length > 0){
@@ -133,6 +158,13 @@ export default class CreateRaffle extends Command{
             customization = null
         }
 
+        /*if(customization){
+            await message.channel.send([
+                `Invite Server ID: **${customization.server_id}**`,
+                `Embed Color: **${customization.color}**`
+            ])
+        }
+        return true*/
         const finishAt: number = Date.now() + (toSecond * 1000)
         const data = {
             prize: stringToPrize,

@@ -1,6 +1,5 @@
 import {
-    DiscordAPIError,
-    GuildChannel, HTTPError,
+    GuildChannel,
     Message,
     MessageEmbed,
     MessageReaction,
@@ -8,7 +7,7 @@ import {
     TextChannel
 } from 'discord.js';
 import Structure from './Structure';
-import RaffleModel, { IRaffle, RaffleStatus } from '../models/Raffle';
+import RaffleModel, { IRaffle, IRaffleCustomization, RaffleStatus } from '../models/Raffle';
 import Timestamps from '../models/legacy/Timestamps';
 import { secondsToTime } from '../utils/DateTimeHelper';
 import Constants from '../Constants';
@@ -28,6 +27,7 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
     public numbersOfWinner: number
     public status: RaffleStatus
     public finishAt: Date
+    public customization?: IRaffleCustomization
 
     constructor(data: SuperRaffle){
         super(RaffleModel, data)
@@ -43,6 +43,7 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
         this.numbersOfWinner = data.numbersOfWinner
         this.status = data.status
         this.finishAt = data.finishAt
+        this.customization = data.customization
     }
 
     protected identifierKey(): string{
@@ -154,7 +155,7 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
                 `Bitmesine: **${remaining}**`,
                 `Oluşturan: <@${this.constituent_id}>`
             ].join('\n'))
-            .setColor(alert ? 'RED' : '#bd087d')
+            .setColor(alert ? 'RED' : this.customization?.color ?? '#bd087d')
             .setFooter(`${this.numbersOfWinner} Kazanan | Bitiş`)
             .setTimestamp(finishAt)
     }

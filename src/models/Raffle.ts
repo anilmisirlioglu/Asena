@@ -1,10 +1,11 @@
 import mongoose, { Schema, Document } from 'mongoose';
-import { Snowflake } from 'discord.js';
+import { ColorResolvable, Snowflake } from 'discord.js';
 
 export type RaffleStatus = 'FINISHED' | 'ALMOST_DONE' | 'CONTINUES' | 'CANCELED'
 
 export interface IRaffleCustomization{
     server_id?: Snowflake
+    color?: ColorResolvable
 }
 
 export interface IRaffle extends Document{
