@@ -81,6 +81,10 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
         await this.updateCustomization('color', color)
     }
 
+    public async setServer(server_id: Snowflake){
+        await this.updateCustomization('server_id', server_id)
+    }
+
     public async finish(client: SuperClient){
         await this.setStatus('FINISHED')
 

@@ -130,6 +130,14 @@ export default class CreateRaffle extends Command{
                     return true
                 }
 
+                if(target.id === message.guild.id){
+                    await message.channel.send({
+                        embed: this.getErrorEmbed('Çekilişi başlattığınız sunucuyu katılım zorunluluğu olan sunucu olarak belirleyemezsiniz.')
+                    })
+
+                    return true
+                }
+
                 customization.server_id = target.id
             }
 
