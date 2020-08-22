@@ -35,6 +35,7 @@ export default class CommandHandler extends Factory implements CommandRunner{
         new ReRollRaffle(),
         new SetupRaffle(),
         new EndRaffle(),
+        new EditRaffle(),
         new Raffles(),
         new Vote(),
         new Question(),

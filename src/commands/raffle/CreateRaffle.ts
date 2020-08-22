@@ -158,13 +158,6 @@ export default class CreateRaffle extends Command{
             customization = null
         }
 
-        /*if(customization){
-            await message.channel.send([
-                `Invite Server ID: **${customization.server_id}**`,
-                `Embed Color: **${customization.color}**`
-            ])
-        }
-        return true*/
         const finishAt: number = Date.now() + (toSecond * 1000)
         const data = {
             prize: stringToPrize,

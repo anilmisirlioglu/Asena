@@ -1,4 +1,5 @@
 import {
+    ColorResolvable,
     GuildChannel,
     Message,
     MessageEmbed,
@@ -64,6 +65,20 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
 
     public async setCanceled(){
         await this.setStatus('CANCELED')
+    }
+
+    private async updateCustomization(key: any, value: any){
+        await this.update({
+            $set: {
+                customization: {
+                    [key]: value
+                }
+            }
+        })
+    }
+
+    public async setColor(color: ColorResolvable){
+        await this.updateCustomization('color', color)
     }
 
     public async finish(client: SuperClient){
