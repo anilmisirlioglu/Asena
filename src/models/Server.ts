@@ -23,6 +23,7 @@ const ServerSchema: Schema = new Schema<IServer>({
     },
     server_id: {
         type: String,
+        unique: true,
         required: true
     },
     publicCommands: {

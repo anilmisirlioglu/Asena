@@ -20,6 +20,7 @@ const SurveySchema = new Schema({
     },
     message_id: {
         type: String,
+        unique: true,
         required: true
     },
     title: {

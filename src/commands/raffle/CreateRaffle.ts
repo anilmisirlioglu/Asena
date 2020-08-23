@@ -1,23 +1,21 @@
-import { Invite, Message } from 'discord.js'
+import { Message } from 'discord.js'
 
 import Command from '../Command'
 import Constants from '../../Constants'
 import SuperClient from '../../SuperClient';
 import { detectTime } from '../../utils/DateTimeHelper';
-import { IRaffle, IRaffleCustomization } from '../../models/Raffle';
+import { IRaffle } from '../../models/Raffle';
 import Server from '../../structures/Server';
 import Raffle from '../../structures/Raffle';
 
 export default class CreateRaffle extends Command{
-
-    private readonly flags: string[] = ['server', 'color']
 
     constructor(){
         super({
             name: 'create',
             aliases: ['çekilişoluştur', 'çekilişbaşlat', 'cekilisbaslat', 'createraffle'],
             description: 'Çekiliş oluşturur.',
-            usage: '[kazanan sayısı<1 | 20>] [süre(1m | 5s) - [s(saniye) m(dakika) h(saat) d(gün)]] [ödül] [parametreler(isteğe bağlı)]',
+            usage: '[kazanan sayısı<1 | 20>] [süre(1m | 5s) - [s(saniye) m(dakika) h(saat) d(gün)]] [ödül]',
             permission: 'ADMINISTRATOR'
         });
     }
@@ -39,13 +37,7 @@ export default class CreateRaffle extends Command{
             return true
         }
 
-        const stringToPrize: string = prize
-            .filter(text => this.flags
-                .filter(flag => text.startsWith(`-${flag}`))
-                .length === 0
-            )
-            .join(' ')
-
+        const stringToPrize: string = prize.join(' ')
         if(stringToPrize.length > 255){
             await message.channel.send({
                 embed: this.getErrorEmbed('Çekiliş başlığı maksimum 255 karakter uzunluğunda olmalıdır.')
@@ -80,92 +72,6 @@ export default class CreateRaffle extends Command{
             return true
         }
 
-        let customization: IRaffleCustomization | null = {
-            server_id: null,
-            color: null
-        }
-
-        if(server.isPremium()){
-            for(const flag of this.flags){
-                const filterArgs = args.filter(arg => arg.startsWith(`-${flag}`))
-                if(filterArgs.length > 1){
-                    await message.channel.send({
-                        embed: this.getErrorEmbed('Lütfen aynı parametreyi birden fazla kez kullanmayın.')
-                    })
-
-                    return true
-                }
-            }
-
-            if(message.content.includes('-server')){
-                const matchInvite = message.content.match(/-server=(https?:\/\/)?(www\.)?(discord\.gg|discordapp\.com\/invite)\/.?(?:[a-zA-Z0-9\-]{2,32})/g)
-                if(!matchInvite || matchInvite.length === 0){
-                    await message.channel.send({
-                        embed: this.getErrorEmbed('Lütfen geçerli bir sunucu davet bağlantısı girin.')
-                    })
-
-                    return true
-                }
-
-                const fetchInvite: Invite | null = await new Promise(resolve => {
-                    client.fetchInvite(matchInvite.shift().split('=').pop()).then(resolve).catch(() => {
-                        resolve(null)
-                    })
-                })
-
-                if(!fetchInvite){
-                    await message.channel.send({
-                        embed: this.getErrorEmbed('Geçersiz davet bağlantısı.')
-                    })
-
-                    return true
-                }
-
-                const target = client.guilds.cache.get(fetchInvite.guild.id)
-                if(!target){
-                    await message.channel.send({
-                        embed: this.getErrorEmbed(`**${client.user.username}** katılım zorunluluğu olan sunucuda bulunmak zorundadır. Lütfen davet bağlantısını girdiğiniz sunucuya **${client.user.username}** \'yı ekleyin.`)
-                    })
-
-                    return true
-                }
-
-                if(target.id === message.guild.id){
-                    await message.channel.send({
-                        embed: this.getErrorEmbed('Çekilişi başlattığınız sunucuyu katılım zorunluluğu olan sunucu olarak belirleyemezsiniz.')
-                    })
-
-                    return true
-                }
-
-                customization.server_id = target.id
-            }
-
-            if(message.content.includes('-color')){
-                const matchColor = message.content.match(/-color=#?(?:[0-9a-fA-F]{3}){1,2}|(RED|WHITE|AQUA|GREEN|BLUE|YELLOW|PURPLE|LUMINOUS_VIVID_PINK|GOLD|ORANGE|GREY|NAVY|RANDOM|DARKER_GREY|DARK_AQUA|DARK_GREEN|DARK_BLUE|DARK_PURPLE|DARK_VIVID_PINK|DARK_GOLD|DARK_ORANGE|DARK_RED|DARK_GREY|LIGHT_GREY|DARK_NAVY)/g)
-                if(!matchColor || matchColor.length === 0){
-                    await message.channel.send({
-                        embed: this.getErrorEmbed('Lütfen geçerli bir renk girin. (Hexadecimal renk kodu veya renk.)')
-                    })
-
-                    return true
-                }
-
-                customization.color = matchColor.shift().split('=').pop()
-            }
-        }else{
-            const filter = this.flags.filter(flag => message.content.includes(`-${flag}`))
-            if(filter.length > 0){
-                await message.channel.send({
-                    embed: this.getPremiumEmbed()
-                })
-
-                return true
-            }
-
-            customization = null
-        }
-
         const finishAt: number = Date.now() + (toSecond * 1000)
         const data = {
             prize: stringToPrize,
@@ -174,8 +80,7 @@ export default class CreateRaffle extends Command{
             channel_id: message.channel.id,
             numbersOfWinner,
             status: 'CONTINUES',
-            finishAt: new Date(finishAt),
-            customization
+            finishAt: new Date(finishAt)
         }
 
         const raffle = new Raffle(Object.assign({

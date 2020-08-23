@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose';
-import { ColorResolvable, Snowflake } from 'discord.js';
+import { ColorResolvable, EmojiResolvable, Snowflake } from 'discord.js';
 
 export type RaffleStatus = 'FINISHED' | 'ALMOST_DONE' | 'CONTINUES' | 'CANCELED'
 
@@ -39,6 +39,7 @@ const RaffleSchema: Schema = new Schema<IRaffle>({
     },
     message_id: {
         type: String,
+        unique: true,
         default: null
     },
     numbersOfWinner: {
@@ -55,7 +56,7 @@ const RaffleSchema: Schema = new Schema<IRaffle>({
     },
     customization: {
         type: Object,
-        default: null
+        required: false
     }
 }, {
     timestamps: true
