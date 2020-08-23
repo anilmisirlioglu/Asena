@@ -12,9 +12,9 @@ import RaffleModel, { IRaffle, IRaffleCustomization, RaffleStatus } from '../mod
 import Timestamps from '../models/legacy/Timestamps';
 import { secondsToTime } from '../utils/DateTimeHelper';
 import Constants from '../Constants';
-import ArrayRandom from '../array/ArrayRandom';
 import ID from '../models/legacy/ID';
 import SuperClient from '../SuperClient';
+import RandomArray from '../utils/RandomArray';
 
 type SuperRaffle = IRaffle & Timestamps & ID
 
@@ -67,7 +67,7 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
         await this.setStatus('CANCELED')
     }
 
-    private async updateCustomization(key: any, value: any){
+    private async updateCustomization(key: keyof IRaffleCustomization, value: any){
         await this.update({
             $set: {
                 customization: {
@@ -138,9 +138,9 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
             const userKeys = users.keyArray().filter(user_id => user_id !== this.constituent_id)
 
             if(userKeys.length > this.numbersOfWinner){
-                const arrayRandom = new ArrayRandom(userKeys)
-                arrayRandom.shuffle()
-                winners.push(...arrayRandom.random(this.numbersOfWinner))
+                const randomArray = new RandomArray(userKeys)
+                randomArray.shuffle()
+                winners.push(...randomArray.random(this.numbersOfWinner))
             }else{
                 winners.push(...userKeys)
             }
