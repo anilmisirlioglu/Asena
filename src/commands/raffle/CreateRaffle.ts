@@ -3,10 +3,10 @@ import { Message } from 'discord.js'
 import Command from '../Command'
 import Constants from '../../Constants'
 import SuperClient from '../../SuperClient';
-import { detectTime } from '../../utils/DateTimeHelper';
 import { IRaffle } from '../../models/Raffle';
 import Server from '../../structures/Server';
 import Raffle from '../../structures/Raffle';
+import FlagValidator from '../../utils/FlagValidator';
 
 export default class CreateRaffle extends Command{
 
@@ -21,46 +21,32 @@ export default class CreateRaffle extends Command{
     }
 
     async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
-        const numbersOfWinner: number = Number(args[0])
+        const validator = new FlagValidator(client, message)
+        const numberOfWinners = args[0]
         const time: string = args[1]
         const prize: string[] = args.slice(2, args.length)
 
-        if(isNaN(numbersOfWinner) || time === undefined || prize.length === 0){
+        if(time === undefined || prize.length === 0){
             return false
         }
 
-        if(numbersOfWinner > Constants.MAX_RAFFLE_WINNER || numbersOfWinner === 0){
-            await message.channel.send({
-                embed: this.getErrorEmbed('Çekilişi kazanan üye sayısı maksimum 25, minimum 1 kişi olabilir.')
-            })
-
-            return true
+        const flags = {
+            numberOfWinners,
+            prize: prize.join(' '),
+            time
         }
 
-        const stringToPrize: string = prize.join(' ')
-        if(stringToPrize.length > 255){
-            await message.channel.send({
-                embed: this.getErrorEmbed('Çekiliş başlığı maksimum 255 karakter uzunluğunda olmalıdır.')
-            })
+        for(const [key, value] of Object.entries(flags)){
+            const validate = await validator.validate(key, value)
+            if(!validate.ok){
+                await message.channel.send({
+                    embed: this.getErrorEmbed(validate.message)
+                })
 
-            return true
-        }
+                return true
+            }
 
-        const toSecond: number = detectTime(time);
-        if(!toSecond){
-            await message.channel.send({
-                embed: this.getErrorEmbed('Lütfen geçerli bir süre giriniz. (Örn; **1s** - **1m** - **5m** - **1h** vb.)')
-            })
-
-            return true
-        }
-
-        if(toSecond < Constants.MIN_RAFFLE_TIME || toSecond > Constants.MAX_RAFFLE_TIME){
-            await message.channel.send({
-                embed: this.getErrorEmbed('Çekiliş süresi en az 1 dakika, en fazla 60 gün olabilir.')
-            })
-
-            return true
+            flags[key] = validate.result
         }
 
         const raffles = await server.raffles.getContinues()
@@ -72,13 +58,13 @@ export default class CreateRaffle extends Command{
             return true
         }
 
-        const finishAt: number = Date.now() + (toSecond * 1000)
+        const finishAt: number = Date.now() + (Number(flags.time) * 1000)
         const data = {
-            prize: stringToPrize,
+            prize: flags.prize,
             server_id: message.guild.id,
             constituent_id: message.author.id,
             channel_id: message.channel.id,
-            numbersOfWinner,
+            numbersOfWinner: Number(flags.numberOfWinners),
             status: 'CONTINUES',
             finishAt: new Date(finishAt)
         }
