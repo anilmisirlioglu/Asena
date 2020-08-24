@@ -9,7 +9,8 @@
     "rootDir": "src",
     "target": "es6",
     "sourceMap": true,
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "declaration": false
   },
   "exclude": [
     "node_modules"
