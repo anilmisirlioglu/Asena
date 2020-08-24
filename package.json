@@ -4,6 +4,7 @@
   "description": "Fast and reliable raffle and poll bot for Discord",
   "homepage": "https://asena.xyz",
   "main": "./src/index.ts",
+  "types": "./typings/index.d.ts",
   "license": "MIT",
   "author": {
     "name": "Anıl Mısırlıoğlu",
