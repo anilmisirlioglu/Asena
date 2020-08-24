@@ -17,7 +17,7 @@ export const RequiredFlags = ['numberOfWinners', 'time', 'prize']
 
 export const Flags: FlagMap = {
     numberOfWinners: async (client, message, value) => {
-        const number = Number(value.trim())
+        const number = Number(value.removeWhiteSpaces())
         if(isNaN(number)){
             return {
                 ok: false,
@@ -28,7 +28,7 @@ export const Flags: FlagMap = {
         if(number > Constants.MAX_RAFFLE_WINNER || number === 0){
             return {
                 ok: false,
-                message: 'Çekilişi kazanan üye sayısı maksimum 25, minimum 1 kişi olabilir.'
+                message: 'Çekilişi kazanan üye sayısı maksimum 20, minimum 1 kişi olabilir.'
             }
         }
 
@@ -72,7 +72,7 @@ export const Flags: FlagMap = {
         }
     },
     servers: async (client, message, value) => {
-        const servers = value.trim().split('/')
+        const servers = value.removeWhiteSpaces().split(',')
         const filterServers = servers.filter(server => {
             const match = server.match(/(https?:\/\/)?(www\.)?(discord\.gg|discordapp\.com\/invite)\/.?(?:[a-zA-Z0-9\-]{2,32})/g)
 
@@ -119,7 +119,7 @@ export const Flags: FlagMap = {
             invites.push(target.id)
         }
 
-        if(checkIfDuplicateExists(invites)){
+        if(invites.checkIfDuplicateExists()){
             return {
                 ok: false,
                 message: 'Davet bağlantılarınızın bazıları aynı sunucuya işaret ediyor. Girdiğiniz her bağlantının farklı sunucuya göstermesi gerekmektedir. Lütfen tekrarlanmayan değerler ile tekrar deneyin.'
@@ -132,7 +132,7 @@ export const Flags: FlagMap = {
         }
     },
     color: async (client, message, value) => {
-        const matchColor = value.trim().match(/#?(?:[0-9a-fA-F]{3}){1,2}|(RED|WHITE|AQUA|GREEN|BLUE|YELLOW|PURPLE|LUMINOUS_VIVID_PINK|GOLD|ORANGE|GREY|NAVY|RANDOM|DARKER_GREY|DARK_AQUA|DARK_GREEN|DARK_BLUE|DARK_PURPLE|DARK_VIVID_PINK|DARK_GOLD|DARK_ORANGE|DARK_RED|DARK_GREY|LIGHT_GREY|DARK_NAVY)/g)
+        const matchColor = value.removeWhiteSpaces().match(/#?(?:[0-9a-fA-F]{3}){1,2}|(RED|WHITE|AQUA|GREEN|BLUE|YELLOW|PURPLE|LUMINOUS_VIVID_PINK|GOLD|ORANGE|GREY|NAVY|RANDOM|DARKER_GREY|DARK_AQUA|DARK_GREEN|DARK_BLUE|DARK_PURPLE|DARK_VIVID_PINK|DARK_GOLD|DARK_ORANGE|DARK_RED|DARK_GREY|LIGHT_GREY|DARK_NAVY)/g)
         if(!matchColor || matchColor.length === 0){
             return {
                 ok: false,
@@ -146,7 +146,7 @@ export const Flags: FlagMap = {
         }
     },
     allowedRoles: async (client, message, value) => {
-        const roles = value.trim().split('/')
+        const roles = value.removeWhiteSpaces().split(',')
         const filterRoles = roles.filter(role => {
             const match = role.match(/<@&(\d{17,19})>/g)
 
@@ -160,7 +160,7 @@ export const Flags: FlagMap = {
             }
         }
 
-        if(checkIfDuplicateExists(filterRoles)){
+        if(filterRoles.checkIfDuplicateExists()){
             return {
                 ok: false,
                 message: 'Çekişe katılabilecek roller arasında etiketlediğiniz rollerin bazıları aynı. Girdiğiniz her rolün birbirinden benzersiz olması gerekmektedir. Lütfen tekrarlanmayan değerler ile tekrar deneyin.'
@@ -194,7 +194,7 @@ export const Flags: FlagMap = {
             }
         }
 
-        const roles = value.trim().split('/')
+        const roles = value.removeWhiteSpaces().split(',')
         const filterRoles = roles.filter(role => {
             const match = role.match(/<@&(\d{17,19})>/g)
 
@@ -208,7 +208,7 @@ export const Flags: FlagMap = {
             }
         }
 
-        if(checkIfDuplicateExists(filterRoles)){
+        if(filterRoles.checkIfDuplicateExists()){
             return {
                 ok: false,
                 message: 'Ödül olarak verilecek roller arasında etiketlediğiniz rollerin bazıları aynı. Girdiğiniz her rolün birbirinden benzersiz olması gerekmektedir. Lütfen tekrarlanmayan değerler ile tekrar deneyin.'
@@ -225,7 +225,7 @@ export const Flags: FlagMap = {
                 }
             }
 
-            if(fetchRole.comparePositionTo(me.roles.highest) < 1){
+            if(fetchRole.comparePositionTo(me.roles.highest) > 0){
                 return {
                     ok: false,
                     message: `**${me.roles.highest.name}** rolü, **${fetchRole.name}** rolünün altında. Botun rolü ödül olarak verilecek rollerin üzerinde olmalıdır. Aksi takdirde ödül olarak rolü kullanıcıya veremez.`
@@ -241,8 +241,6 @@ export const Flags: FlagMap = {
         }
     }
 }
-
-const checkIfDuplicateExists = arr => new Set(arr).size !== arr.length
 
 export default class FlagValidator{
 
