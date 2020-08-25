@@ -64,7 +64,7 @@ export default class CreateRaffle extends Command{
             server_id: message.guild.id,
             constituent_id: message.author.id,
             channel_id: message.channel.id,
-            numbersOfWinner: Number(flags.numberOfWinners),
+            numberOfWinners: Number(flags.numberOfWinners),
             status: 'CONTINUES',
             finishAt: new Date(finishAt)
         }

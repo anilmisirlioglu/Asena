@@ -1,12 +1,7 @@
 import mongoose, { Schema, Document } from 'mongoose';
-import { ColorResolvable, EmojiResolvable, Snowflake } from 'discord.js';
+import { ColorResolvable, Snowflake } from 'discord.js';
 
 export type RaffleStatus = 'FINISHED' | 'ALMOST_DONE' | 'CONTINUES' | 'CANCELED'
-
-export interface IRaffleCustomization{
-    server_id?: Snowflake
-    color?: ColorResolvable
-}
 
 export interface IRaffle extends Document{
     prize: string
@@ -14,10 +9,13 @@ export interface IRaffle extends Document{
     constituent_id: Snowflake
     channel_id: Snowflake
     message_id?: Snowflake
-    numbersOfWinner: number
+    numberOfWinners: number
     status: RaffleStatus
     finishAt: Date
-    customization?: IRaffleCustomization
+    servers?: Snowflake[]
+    allowedRoles?: Snowflake[]
+    rewardRoles?: Snowflake[]
+    color?: ColorResolvable
 }
 
 const RaffleSchema: Schema = new Schema<IRaffle>({
@@ -42,7 +40,7 @@ const RaffleSchema: Schema = new Schema<IRaffle>({
         unique: true,
         default: null
     },
-    numbersOfWinner: {
+    numberOfWinners: {
         type: Number,
         required: true
     },
@@ -54,8 +52,20 @@ const RaffleSchema: Schema = new Schema<IRaffle>({
         type: Date,
         required: true
     },
-    customization: {
-        type: Object,
+    servers: {
+        type: Array,
+        required: false
+    },
+    allowedRoles: {
+        type: Array,
+        required: false
+    },
+    rewardRoles: {
+        type: Array,
+        required: false
+    },
+    color: {
+        type: String,
         required: false
     }
 }, {

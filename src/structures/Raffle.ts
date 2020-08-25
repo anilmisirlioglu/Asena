@@ -8,7 +8,7 @@ import {
     TextChannel
 } from 'discord.js';
 import Structure from './Structure';
-import RaffleModel, { IRaffle, IRaffleCustomization, RaffleStatus } from '../models/Raffle';
+import RaffleModel, { IRaffle, RaffleStatus } from '../models/Raffle';
 import Timestamps from '../models/legacy/Timestamps';
 import { secondsToTime } from '../utils/DateTimeHelper';
 import Constants from '../Constants';
@@ -25,10 +25,13 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
     public constituent_id: Snowflake
     public channel_id: Snowflake
     public message_id?: Snowflake
-    public numbersOfWinner: number
+    public numberOfWinners: number
     public status: RaffleStatus
     public finishAt: Date
-    public customization?: IRaffleCustomization
+    public servers?: Snowflake[]
+    public allowedRoles?: Snowflake[]
+    public rewardRoles?: Snowflake[]
+    public color?: ColorResolvable
 
     constructor(data: SuperRaffle){
         super(RaffleModel, data)
@@ -41,10 +44,13 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
         this.channel_id = data.channel_id
         this.server_id = data.server_id
         this.message_id = data.message_id
-        this.numbersOfWinner = data.numbersOfWinner
+        this.numberOfWinners = data.numberOfWinners
         this.status = data.status
         this.finishAt = data.finishAt
-        this.customization = data.customization
+        this.servers = data.servers
+        this.allowedRoles = data.allowedRoles
+        this.rewardRoles = data.rewardRoles
+        this.color = data.color
     }
 
     protected identifierKey(): string{
@@ -65,24 +71,6 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
 
     public async setCanceled(){
         await this.setStatus('CANCELED')
-    }
-
-    private async updateCustomization(key: keyof IRaffleCustomization, value: any){
-        await this.update({
-            $set: {
-                customization: {
-                    [key]: value
-                }
-            }
-        })
-    }
-
-    public async setColor(color: ColorResolvable){
-        await this.updateCustomization('color', color)
-    }
-
-    public async setServer(server_id: Snowflake){
-        await this.updateCustomization('server_id', server_id)
     }
 
     public async finish(client: SuperClient){
@@ -117,7 +105,7 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
                 const embed: MessageEmbed = new MessageEmbed()
                     .setAuthor(this.prize)
                     .setDescription(`${description}\nOluşturan: <@${this.constituent_id}>`)
-                    .setFooter(`${this.numbersOfWinner} Kazanan | Sona Erdi`)
+                    .setFooter(`${this.numberOfWinners} Kazanan | Sona Erdi`)
                     .setTimestamp(new Date(this.finishAt))
                     .setColor('#36393F')
 
@@ -137,10 +125,10 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
             const [_, users] = (await reaction.users.fetch()).partition(user => user.bot)
             const userKeys = users.keyArray().filter(user_id => user_id !== this.constituent_id)
 
-            if(userKeys.length > this.numbersOfWinner){
+            if(userKeys.length > this.numberOfWinners){
                 const randomArray = new RandomArray(userKeys)
                 randomArray.shuffle()
-                winners.push(...randomArray.random(this.numbersOfWinner))
+                winners.push(...randomArray.random(this.numberOfWinners))
             }else{
                 winners.push(...userKeys)
             }
@@ -174,8 +162,8 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
                 `Bitmesine: **${remaining}**`,
                 `Oluşturan: <@${this.constituent_id}>`
             ].join('\n'))
-            .setColor(alert ? 'RED' : this.customization?.color ?? '#bd087d')
-            .setFooter(`${this.numbersOfWinner} Kazanan | Bitiş`)
+            .setColor(alert ? 'RED' : this.color ?? '#bd087d')
+            .setFooter(`${this.numberOfWinners} Kazanan | Bitiş`)
             .setTimestamp(finishAt)
     }
 

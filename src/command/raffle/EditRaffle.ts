@@ -93,7 +93,7 @@ class EditRaffle extends Command{
                     return true
                 }
 
-                if(raffle.customization?.server_id === target.id){
+                /*if(raffle.customization?.server_id === target.id){
                     await message.channel.send({
                         embed: this.getErrorEmbed('Girdiğiniz sunucu zaten şu anda katılım zorunluluğu olan sunucu.')
                     })
@@ -101,7 +101,7 @@ class EditRaffle extends Command{
                     return true
                 }
 
-                await raffle.setServer(target.id)
+                await raffle.setServer(target.id)*/
                 await message.channel.send(`<:green_tick:737035767301275770> Katılma zorunluluğu olan sunucu başarıyla **${target.name}** olarak değiştirildi.`)
 
                 return true
@@ -119,7 +119,7 @@ class EditRaffle extends Command{
 
                 const color = matchColor.shift()
 
-                await raffle.setColor(color)
+                //await raffle.setColor(color)
                 await fetch.edit({
                     embed: raffle.getEmbed()
                 })

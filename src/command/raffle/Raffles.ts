@@ -34,7 +34,7 @@ export default class Raffles extends Command{
                 embed.addField(`${i++}. ${raffle.prize}`, [
                     `Oluşturan: <@${raffle.constituent_id}>`,
                     `Kanal: <#${raffle.channel_id}>`,
-                    `Kazanan Sayısı: **${raffle.numbersOfWinner} Kişi**`,
+                    `Kazanan Sayısı: **${raffle.numberOfWinners} Kişi**`,
                     `Başlangıç Tarihi: **${getDateTimeToString(new Date(raffle.createdAt))}** (UTC)`,
                     `Bitiş Tarihi: **${getDateTimeToString(new Date(raffle.finishAt))}** (UTC)`
                 ].join('\n'))

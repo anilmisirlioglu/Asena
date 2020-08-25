@@ -173,7 +173,7 @@ export default class SetupRaffle extends Command{
                             server_id: message.guild.id,
                             constituent_id: message.author.id,
                             channel_id: store.get(0),
-                            numbersOfWinner: store.get(1),
+                            numberOfWinners: store.get(1),
                             status: 'CONTINUES',
                             finishAt: new Date(finishAt)
                         }
