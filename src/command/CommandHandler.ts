@@ -165,7 +165,7 @@ export default class CommandHandler extends Factory implements CommandRunner{
                         await channel.send([
                             'Botun çalışabilmesi için gerekli olan **izinler** eksik. Lütfen aşağıda ki listede bulunan izinleri bota sağlayıp/verip tekrar deneyin.',
                             `\n${checkPermissions}\n`,
-                            'Eğer daha detaylı yardıma ihtiyacınız varsa bizle iletişime geçmekten çekinmeyin.'
+                            'Eğer daha detaylı yardıma ihtiyacınız varsa bizimle iletişime geçmekten çekinmeyin.'
                         ].join('\n'))
                     }
                 }
