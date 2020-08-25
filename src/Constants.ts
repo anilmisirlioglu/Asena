@@ -7,6 +7,28 @@ export interface ILetter{
     emoji: EmojiResolvable
 }
 
+interface IRaffleLimits{
+    readonly MIN_TIME: number
+    readonly MAX_TIME: number
+    readonly MAX_WINNER_COUNT: number
+    readonly MAX_COUNT: number
+    readonly MAX_COUNT_PREMIUM: number
+    readonly MAX_SERVER_COUNT: number
+    readonly MAX_ALLOWED_ROLE_COUNT: number
+    readonly MAX_REWARD_ROLE_COUNT: number
+}
+
+export const RaffleLimits: IRaffleLimits = {
+    MIN_TIME: 60,
+    MAX_TIME: 60 * 60 * 24 * 60,
+    MAX_WINNER_COUNT: 20,
+    MAX_COUNT: 5,
+    MAX_COUNT_PREMIUM: 8,
+    MAX_SERVER_COUNT: 3,
+    MAX_ALLOWED_ROLE_COUNT: 10,
+    MAX_REWARD_ROLE_COUNT: 8
+}
+
 abstract class Constants{
 
     public static SETUP_CANCEL_KEYWORDS: string[] = ['iptal', 'cancel', 'exit']
@@ -29,10 +51,6 @@ abstract class Constants{
 
     public static PERMITTED_ROLE_NAME: string = 'asena' // if there is no permission, this role is checked
 
-    public static MIN_RAFFLE_TIME: number = 60
-    public static MAX_RAFFLE_TIME: number = 60 * 60 * 24 * 60
-    public static MAX_RAFFLE_WINNER: number = 20
-
     public static MIN_SURVEY_TIME: number = 60
     public static MAX_SURVEY_TIME: number = 60 * 60 * 24 * 15
 
@@ -41,11 +59,6 @@ abstract class Constants{
     public static UPDATE_INTERVAL: number = 1000 * 60 * 5
 
     public static ALLOWED_TIME_TYPES: string[] = ['m', 'h', 'd']
-
-    public static ANSWER_REGEX: RegExp = /\[(.*?)]/g
-    public static ANSWER_REPLACE_REGEX: RegExp = /[\[\]]/g
-    public static QUESTION_REGEX: RegExp = /{(.*?)}/g
-    public static QUESTION_REPLACE_REGEX: RegExp = /[{}]/g
 
     public static MAX_ANSWER_LENGTH: number = 5
 

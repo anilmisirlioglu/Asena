@@ -1,7 +1,7 @@
 import Command from '../Command'
 import { secondsToTime, detectTime } from '../../utils/DateTimeHelper'
 import { Message, TextChannel } from 'discord.js'
-import Constants from '../../Constants'
+import Constants, { RaffleLimits } from '../../Constants'
 import InteractiveSetup from '../../setup/InteractiveSetup'
 import SetupPhase from '../../setup/SetupPhase'
 import SuperClient from '../../SuperClient';
@@ -92,7 +92,7 @@ export default class SetupRaffle extends Command{
                                 }
                             }
 
-                            if(toInt < 1 || toInt > 20){
+                            if(toInt < 1 || toInt > RaffleLimits.MAX_WINNER_COUNT){
                                 message.channel.send(':boom: Çekiliş kazanan sayısı 1 ila 20 arasında olmalıdır.')
                                 return {
                                     result: false,
@@ -125,7 +125,7 @@ export default class SetupRaffle extends Command{
                                 }
                             }
 
-                            if(toSecond < Constants.MIN_RAFFLE_TIME || toSecond > Constants.MAX_RAFFLE_TIME){
+                            if(toSecond < RaffleLimits.MIN_TIME || toSecond > RaffleLimits.MAX_TIME){
                                 message.channel.send(':boom: Çekiliş süresi en az 1 dakika, en fazla 60 gün olabilir.')
                                 return {
                                     result: false,

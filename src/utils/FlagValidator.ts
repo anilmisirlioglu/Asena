@@ -1,6 +1,6 @@
 import SuperClient from '../SuperClient';
 import { Invite, Message, Role } from 'discord.js';
-import Constants from '../Constants';
+import { RaffleLimits } from '../Constants';
 import { detectTime } from './DateTimeHelper';
 
 interface FlagValidatorReturnType{
@@ -25,7 +25,7 @@ export const Flags: FlagMap = {
             }
         }
 
-        if(number > Constants.MAX_RAFFLE_WINNER || number === 0){
+        if(number > RaffleLimits.MAX_WINNER_COUNT || number === 0){
             return {
                 ok: false,
                 message: 'Çekilişi kazanan üye sayısı maksimum 20, minimum 1 kişi olabilir.'
@@ -46,7 +46,7 @@ export const Flags: FlagMap = {
             }
         }
 
-        if(toSecond < Constants.MIN_RAFFLE_TIME || toSecond > Constants.MAX_RAFFLE_TIME){
+        if(toSecond < RaffleLimits.MIN_TIME || toSecond > RaffleLimits.MAX_TIME){
             return {
                 ok: false,
                 message: 'Çekiliş süresi en az 1 dakika, en fazla 60 gün olabilir.'
@@ -126,7 +126,7 @@ export const Flags: FlagMap = {
             }
         }
 
-        if(invites.length > 3){
+        if(invites.length > RaffleLimits.MAX_SERVER_COUNT){
             return {
                 ok: false,
                 message: 'Maksimum 3 sunucuya katılım zorunluluğu koyabilirsiniz.'
@@ -182,7 +182,7 @@ export const Flags: FlagMap = {
             }
         }
 
-        if(allowedRoles.length > 10){
+        if(allowedRoles.length > RaffleLimits.MAX_ALLOWED_ROLE_COUNT){
             return {
                 ok: false,
                 message: 'Katılım zorunluluğu olarak maksimum 10 rol belirleyebilirsiniz.'
@@ -239,7 +239,7 @@ export const Flags: FlagMap = {
             }
         }
 
-        if(rewardRoles.length > 8){
+        if(rewardRoles.length > RaffleLimits.MAX_REWARD_ROLE_COUNT){
             return {
                 ok: false,
                 message: 'Ödül olarak maksimum 8 rol verebilirsiniz.'

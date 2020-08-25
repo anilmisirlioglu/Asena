@@ -6,7 +6,7 @@ import Premium from '../../decorators/Premium';
 import FlagValidator, { Flags, RequiredFlags } from '../../utils/FlagValidator';
 import { IRaffle } from '../../models/Raffle';
 import Raffle from '../../structures/Raffle';
-import Constants from '../../Constants';
+import Constants, { RaffleLimits } from '../../Constants';
 
 @Premium
 export default class AdvancedCreateRaffle extends Command{
@@ -47,10 +47,10 @@ export default class AdvancedCreateRaffle extends Command{
         if(matchRequiredFlags.length !== RequiredFlags.length){
             await message.channel.send({
                 embed: this.getErrorEmbed([
-                    `Lütfen yazılması zorunlu olan parametreleri eksiksiz yazın. Gereken parametreler:`,
-                    `:join_arrow: **--numberOfWinners**`,
-                    `:join_arrow: **--time**`,
-                    `:join_arrow: **--prize**`
+                    `Lütfen yazılması zorunlu olan parametreleri eksiksiz yazın. Gerekli parametreler:`,
+                    `<:join_arrow:746358699706024047> **--numberOfWinners**`,
+                    `<:join_arrow:746358699706024047> **--time**`,
+                    `<:join_arrow:746358699706024047> **--prize**`
                 ].join('\n'))
             })
 
@@ -68,7 +68,7 @@ export default class AdvancedCreateRaffle extends Command{
             const [key, ...value] = param.split(' ')
             if(!(key in Flags)){
                 await message.channel.send({
-                    error: this.getErrorEmbed('Geçersiz parametre tespit edildi. Lütfen geçerli parametreler dışında bir parametre girmeden tekrar deneyin.')
+                    embed: this.getErrorEmbed(`Geçersiz parametre tespit edildi. Lütfen geçerli parametreler dışında bir parametre girmeden tekrar deneyin. Tespit edilen parametre: **--${key}**`)
                 })
 
                 return true
@@ -76,7 +76,7 @@ export default class AdvancedCreateRaffle extends Command{
 
             if(value.length === 0 || value[0] === ''){
                 await message.channel.send({
-                    error: this.getErrorEmbed(`Lütfen parametre değerlerini boş bırakmayın. Tespit edilen parametre: **--${key}**`)
+                    embed: this.getErrorEmbed(`Lütfen parametre değerlerini boş bırakmayın. Tespit edilen parametre: **--${key}**`)
                 })
 
                 return true
@@ -95,7 +95,7 @@ export default class AdvancedCreateRaffle extends Command{
         }
 
         const raffles = await server.raffles.getContinues()
-        if(raffles.length > 8){
+        if(raffles.length > RaffleLimits.MAX_COUNT_PREMIUM){
             await message.channel.send({
                 embed: this.getErrorEmbed('Maksimum çekiliş oluşturma sınırına ulaşmışsınız. (Max: 8)')
             })

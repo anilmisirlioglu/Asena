@@ -22,11 +22,11 @@ export default class Question extends Command{
 
         const content = args.join(' ')
 
-        const questions = (content.match(Constants.QUESTION_REGEX) || []).map(item => {
-            return item.replace(Constants.QUESTION_REPLACE_REGEX, '')
+        const questions = (content.match(/{(.*?)}/g) || []).map(item => {
+            return item.replace(/[{}]/g, '')
         })
-        const answers = (content.match(Constants.ANSWER_REGEX) || []).map(item => {
-            return item.replace(Constants.ANSWER_REPLACE_REGEX, '')
+        const answers = (content.match(/\[(.*?)]/g) || []).map(item => {
+            return item.replace(/[\[\]]/g, '')
         })
 
         const question = questions.shift()
