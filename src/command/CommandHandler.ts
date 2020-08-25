@@ -24,6 +24,7 @@ import SetPrefix from './server/SetPrefix';
 import Invitation from './bot/Invitation';
 import Premium from './server/Premium';
 import EditRaffle from './raffle/EditRaffle';
+import AdvancedCreateRaffle from './raffle/AdvancedCreateRaffle';
 
 type CommandMap = Collection<string, Command>
 
@@ -32,6 +33,7 @@ export default class CommandHandler extends Factory implements CommandRunner{
     private static readonly COMMANDS: Command[] = [
         new CancelRaffle(),
         new CreateRaffle(),
+        new AdvancedCreateRaffle(),
         new ReRollRaffle(),
         new SetupRaffle(),
         new EndRaffle(),

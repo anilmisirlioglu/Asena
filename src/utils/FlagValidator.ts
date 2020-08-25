@@ -126,6 +126,13 @@ export const Flags: FlagMap = {
             }
         }
 
+        if(invites.length > 3){
+            return {
+                ok: false,
+                message: 'Maksimum 3 sunucuya katılım zorunluluğu koyabilirsiniz.'
+            }
+        }
+
         return {
             ok: true,
             result: invites
@@ -172,6 +179,13 @@ export const Flags: FlagMap = {
             return {
                 ok: false,
                 message: 'Çekişe katılabilecek roller arasında etiketlediğiniz rollerin bazıları aynı. Girdiğiniz her rolün birbirinden benzersiz olması gerekmektedir. Lütfen tekrarlanmayan değerler ile tekrar deneyin.'
+            }
+        }
+
+        if(allowedRoles.length > 10){
+            return {
+                ok: false,
+                message: 'Katılım zorunluluğu olarak maksimum 10 rol belirleyebilirsiniz.'
             }
         }
 
@@ -222,6 +236,13 @@ export const Flags: FlagMap = {
             return {
                 ok: false,
                 message: 'Ödül olarak verilecek roller arasında geçersiz rol(ler) tespit edildi. Lütfen geçerli rol(ler) girip tekrar deneyin.'
+            }
+        }
+
+        if(rewardRoles.length > 8){
+            return {
+                ok: false,
+                message: 'Ödül olarak maksimum 8 rol verebilirsiniz.'
             }
         }
 
