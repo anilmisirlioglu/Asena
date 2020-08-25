@@ -1,5 +1,5 @@
 import SuperClient from '../SuperClient';
-import { Invite, Message } from 'discord.js';
+import { Invite, Message, Role } from 'discord.js';
 import Constants from '../Constants';
 import { detectTime } from './DateTimeHelper';
 
@@ -146,30 +146,18 @@ export const Flags: FlagMap = {
         }
     },
     allowedRoles: async (client, message, value) => {
-        const roles = value.removeWhiteSpaces().split(',')
-        const filterRoles = roles.filter(role => {
-            const match = role.match(/<@&(\d{17,19})>/g)
-
-            return match && match.length !== 0
-        })
-
-        if(filterRoles.length !== roles.length){
-            return {
-                ok: false,
-                message: 'Çekilişe katılabilecek rol(ler) arasında geçersiz rol(ler) tespit edildi. Lütfen geçerli rol(ler) girip tekrar deneyin.'
-            }
-        }
-
-        if(filterRoles.checkIfDuplicateExists()){
-            return {
-                ok: false,
-                message: 'Çekişe katılabilecek roller arasında etiketlediğiniz rollerin bazıları aynı. Girdiğiniz her rolün birbirinden benzersiz olması gerekmektedir. Lütfen tekrarlanmayan değerler ile tekrar deneyin.'
-            }
-        }
-
+        const roles = value.split(',')
         const allowedRoles = []
-        for(const role of filterRoles){
-            const fetchRole = await message.guild.roles.fetch(role.substring(3, role.length - 1))
+
+        let fetchRole: Role | undefined
+        for(const role of roles){
+            const matchRole = role.removeWhiteSpaces().match(/(\d{17,19})/g)
+            if(matchRole && matchRole.length !== 0){
+                fetchRole = await message.guild.roles.fetch(matchRole.shift())
+            }else{
+                fetchRole = message.guild.roles.cache.find(key => key.name === role.trim())
+            }
+
             if(!fetchRole){
                 return {
                     ok: false,
@@ -178,6 +166,13 @@ export const Flags: FlagMap = {
             }
 
             allowedRoles.push(fetchRole.id)
+        }
+
+        if(allowedRoles.checkIfDuplicateExists()){
+            return {
+                ok: false,
+                message: 'Çekişe katılabilecek roller arasında etiketlediğiniz rollerin bazıları aynı. Girdiğiniz her rolün birbirinden benzersiz olması gerekmektedir. Lütfen tekrarlanmayan değerler ile tekrar deneyin.'
+            }
         }
 
         return {
@@ -194,30 +189,18 @@ export const Flags: FlagMap = {
             }
         }
 
-        const roles = value.removeWhiteSpaces().split(',')
-        const filterRoles = roles.filter(role => {
-            const match = role.match(/<@&(\d{17,19})>/g)
-
-            return match && match.length !== 0
-        })
-
-        if(filterRoles.length !== roles.length){
-            return {
-                ok: false,
-                message: 'Ödül olarak verilecek roller arasında geçersiz rol(ler) tespit edildi. Lütfen geçerli rol(ler) girip tekrar deneyin.'
-            }
-        }
-
-        if(filterRoles.checkIfDuplicateExists()){
-            return {
-                ok: false,
-                message: 'Ödül olarak verilecek roller arasında etiketlediğiniz rollerin bazıları aynı. Girdiğiniz her rolün birbirinden benzersiz olması gerekmektedir. Lütfen tekrarlanmayan değerler ile tekrar deneyin.'
-            }
-        }
-
+        const roles = value.split(',')
         const rewardRoles = []
-        for(const role of filterRoles){
-            const fetchRole = await message.guild.roles.fetch(role.substring(3, role.length - 1))
+
+        let fetchRole: Role | undefined
+        for(const role of roles){
+            const matchRole = role.removeWhiteSpaces().match(/(\d{17,19})/g)
+            if(matchRole && matchRole.length !== 0){
+                fetchRole = await message.guild.roles.fetch(matchRole.shift())
+            }else{
+                fetchRole = message.guild.roles.cache.find(key => key.name === role.trim())
+            }
+
             if(!fetchRole){
                 return {
                     ok: false,
@@ -233,6 +216,13 @@ export const Flags: FlagMap = {
             }
 
             rewardRoles.push(fetchRole.id)
+        }
+
+        if(rewardRoles.checkIfDuplicateExists()){
+            return {
+                ok: false,
+                message: 'Ödül olarak verilecek roller arasında geçersiz rol(ler) tespit edildi. Lütfen geçerli rol(ler) girip tekrar deneyin.'
+            }
         }
 
         return {
