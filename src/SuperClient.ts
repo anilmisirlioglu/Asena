@@ -12,7 +12,7 @@ import {
 import Version from './utils/Version';
 import Logger from './utils/Logger';
 import TaskTiming from './tasks/TaskTiming';
-import CommandHandler from './commands/CommandHandler';
+import CommandHandler from './command/CommandHandler';
 import ActivityUpdater from './updater/ActivityUpdater';
 import RaffleTimeUpdater from './updater/RaffleTimeUpdater';
 import ServerManager from './managers/ServerManager';
