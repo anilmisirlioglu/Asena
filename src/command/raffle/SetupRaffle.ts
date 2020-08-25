@@ -27,15 +27,17 @@ export default class SetupRaffle extends Command{
                 await message.channel.send({
                     embed: this.getErrorEmbed('Zaten bir kurulum sihirbazı içindesin. Lütfen önce başlattığınız kurulumu bitirin veya iptal edin.')
                 })
+
                 return true
             }
 
-            const server = await client.servers.get(message.guild.id)
+            const max = RaffleLimits[`MAX_COUNT${server.isPremium() ? '_PREMIUM' : ''}`]
             const result = await server.raffles.getContinues()
-            if(result.length >= 5){
+            if(result.length >= max){
                 await message.channel.send({
-                    embed: this.getErrorEmbed('Maksimum çekiliş oluşturma sınırı aşıyorsunuz. (Maks 5)')
+                    embed: this.getErrorEmbed(`Maksimum çekiliş oluşturma sınırı aşıyorsunuz. (Maks ${max})`)
                 })
+
                 return true
             }
 

@@ -97,7 +97,7 @@ export default class AdvancedCreateRaffle extends Command{
         const raffles = await server.raffles.getContinues()
         if(raffles.length > RaffleLimits.MAX_COUNT_PREMIUM){
             await message.channel.send({
-                embed: this.getErrorEmbed('Maksimum çekiliş oluşturma sınırına ulaşmışsınız. (Max: 8)')
+                embed: this.getErrorEmbed(`Maksimum çekiliş oluşturma sınırına ulaşmışsınız. (Max: ${RaffleLimits.MAX_COUNT_PREMIUM}`)
             })
 
             return true

@@ -1,7 +1,7 @@
 import { Message } from 'discord.js'
 
 import Command from '../Command'
-import Constants from '../../Constants'
+import Constants, { RaffleLimits } from '../../Constants'
 import SuperClient from '../../SuperClient';
 import { IRaffle } from '../../models/Raffle';
 import Server from '../../structures/Server';
@@ -49,10 +49,11 @@ export default class CreateRaffle extends Command{
             flags[key] = validate.result
         }
 
+        const max = RaffleLimits[`MAX_COUNT${server.isPremium() ? '_PREMIUM' : ''}`]
         const raffles = await server.raffles.getContinues()
-        if(raffles.length > 5){
+        if(raffles.length >= max){
             await message.channel.send({
-                embed: this.getErrorEmbed('Maksimum çekiliş oluşturma sınırına ulaşmışsınız. (Max: 5)')
+                embed: this.getErrorEmbed(`Maksimum çekiliş oluşturma sınırına ulaşmışsınız. (Max: ${max})`)
             })
 
             return true

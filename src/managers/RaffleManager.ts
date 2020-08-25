@@ -32,7 +32,10 @@ export default class RaffleManager extends Manager<Snowflake, Raffle, typeof Raf
             .sort({ createdAt: -1 })
 
         if(search){
-            return new Raffle(search)
+            const raffle = this.new(search)
+            this.set(raffle.identifier_id, raffle)
+
+            return raffle
         }
 
         return undefined
