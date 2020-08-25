@@ -6,7 +6,7 @@ interface ValidatorCallbackReturnType{
 }
 
 interface ValidatorCallback{
-    (message: Message): ValidatorCallbackReturnType
+    (message: Message): Promise<ValidatorCallbackReturnType>
 }
 
 interface SetupPhaseOptions{

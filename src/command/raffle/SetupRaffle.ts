@@ -51,10 +51,10 @@ export default class SetupRaffle extends Command{
                             '**Adım 1:** Öncelikle çekilişin hangi metin kanalında yapılacağını belirleyelim\n',
                             '`Lütfen sunucuda var olan botun erişebileceği bir metin kanalını etiketlemeniz gerektiğini unutmayın.`'
                         ],
-                        validator: (message: Message) => {
+                        validator: async (message: Message) => {
                             const channels = message.mentions.channels
                             if(channels.size === 0){
-                                message.channel.send(':boom: Lütfen bir metin kanalı etiketleyin.')
+                                await message.channel.send(':boom: Lütfen bir metin kanalı etiketleyin.')
                                 return {
                                     result: false,
                                     value: null
@@ -63,14 +63,14 @@ export default class SetupRaffle extends Command{
 
                             const channel = channels.first()
                             if(!(channel instanceof TextChannel)){
-                                message.channel.send(':boom: Lütfen geçerli bir metin kanalı etiketleyin.')
+                                await message.channel.send(':boom: Lütfen geçerli bir metin kanalı etiketleyin.')
                                 return {
                                     result: false,
                                     value: null
                                 }
                             }
 
-                            message.channel.send(`${Constants.CONFETTI_REACTION_EMOJI} Başarılı! Çekiliş kanalı <#${channel.id}> olarak belirlendi. Hadi sıradaki aşamaya geçelim.`)
+                            await message.channel.send(`${Constants.CONFETTI_REACTION_EMOJI} Başarılı! Çekiliş kanalı <#${channel.id}> olarak belirlendi. Hadi sıradaki aşamaya geçelim.`)
                             return {
                                 result: true,
                                 value: channel.id
@@ -82,10 +82,10 @@ export default class SetupRaffle extends Command{
                             '**Adım 2:** Kaç kazanan olucağını belirleyelim\n',
                             '`Lütfen sayısal ve 1 ila 20 aralığında bir sayı girmeniz gerektiğini unutmayın.`'
                         ],
-                        validator: (message: Message) => {
+                        validator: async (message: Message) => {
                             const toInt: number = Number(message.content.trim())
                             if(isNaN(toInt)){
-                                message.channel.send(':boom: Lütfen sayısal bir değer giriniz.')
+                                await message.channel.send(':boom: Lütfen sayısal bir değer giriniz.')
                                 return {
                                     result: false,
                                     value: null
@@ -93,14 +93,14 @@ export default class SetupRaffle extends Command{
                             }
 
                             if(toInt < 1 || toInt > RaffleLimits.MAX_WINNER_COUNT){
-                                message.channel.send(':boom: Çekiliş kazanan sayısı 1 ila 20 arasında olmalıdır.')
+                                await message.channel.send(':boom: Çekiliş kazanan sayısı 1 ila 20 arasında olmalıdır.')
                                 return {
                                     result: false,
                                     value: null
                                 }
                             }
 
-                            message.channel.send(`${Constants.CONFETTI_REACTION_EMOJI} Çok iyi! Bu çekilişte toplam **${toInt}** kişinin yüzünü güldüreceksiniz :slight_smile:!`)
+                            await message.channel.send(`${Constants.CONFETTI_REACTION_EMOJI} Çok iyi! Bu çekilişte toplam **${toInt}** kişinin yüzünü güldüreceksiniz :slight_smile:!`)
                             return {
                                 result: true,
                                 value: toInt
@@ -114,11 +114,11 @@ export default class SetupRaffle extends Command{
                             ' terimler kullanmanız gerekir. Bunu kullanırken önce süre daha sonra boşluk bırakarak veya bırakmadan süre cinsini yazmayı unutmayın. Sadece tek bir süre tipi' +
                             ' kullanabileceğini unutmayın.`'
                         ],
-                        validator: (message: Message) => {
+                        validator: async (message: Message) => {
                             const time = message.content.replace(/ /g, '')
                             const toSecond = detectTime(time)
                             if(!toSecond){
-                                message.channel.send('Lütfen geçerli bir süre giriniz. (Örn; **1s** - **1m** - **5m** - **1h** vb.)')
+                                await message.channel.send('Lütfen geçerli bir süre giriniz. (Örn; **1s** - **1m** - **5m** - **1h** vb.)')
                                 return {
                                     result: false,
                                     value: null
@@ -126,7 +126,7 @@ export default class SetupRaffle extends Command{
                             }
 
                             if(toSecond < RaffleLimits.MIN_TIME || toSecond > RaffleLimits.MAX_TIME){
-                                message.channel.send(':boom: Çekiliş süresi en az 1 dakika, en fazla 60 gün olabilir.')
+                                await message.channel.send(':boom: Çekiliş süresi en az 1 dakika, en fazla 60 gün olabilir.')
                                 return {
                                     result: false,
                                     value: null
@@ -134,7 +134,7 @@ export default class SetupRaffle extends Command{
                             }
 
                             const $secondsToTime = secondsToTime(toSecond)
-                            message.channel.send(`${Constants.CONFETTI_REACTION_EMOJI} Tebrikler! Çekiliş süresi **${$secondsToTime.toString()}** olarak belirlendi.`)
+                            await message.channel.send(`${Constants.CONFETTI_REACTION_EMOJI} Tebrikler! Çekiliş süresi **${$secondsToTime.toString()}** olarak belirlendi.`)
                             return {
                                 result: true,
                                 value: toSecond
@@ -146,17 +146,17 @@ export default class SetupRaffle extends Command{
                             '**Adım 4:** Son olarak çekilişin ödülünü belirleyelim (Aynı zamanda başlık olarak kullanılacak)\n',
                             '`Ödülün maksimum uzunluğunun 255 karakter olabileceğini unutmayın.`'
                         ],
-                        validator: (message: Message) => {
+                        validator: async (message: Message) => {
                             const prize = message.content
                             if(prize.length > 255){
-                                message.channel.send(':boom: Çekiliş başlığı maksimum 255 karakter uzunluğunda olmalıdır.')
+                                await message.channel.send(':boom: Çekiliş başlığı maksimum 255 karakter uzunluğunda olmalıdır.')
                                 return {
                                     result: false,
                                     value: null
                                 }
                             }
 
-                            message.channel.send(`${Constants.CONFETTI_REACTION_EMOJI} İşte bu kadar! Çekiliş başlığı ve ödülü **${prize}** olarak belirlendi.`)
+                            await message.channel.send(`${Constants.CONFETTI_REACTION_EMOJI} İşte bu kadar! Çekiliş başlığı ve ödülü **${prize}** olarak belirlendi.`)
                             return {
                                 result: true,
                                 value: prize

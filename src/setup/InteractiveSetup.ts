@@ -78,7 +78,7 @@ export default class InteractiveSetup extends EventEmitter{
                 if(!this.isItOver){
                     const content = message.content.trim()
                     if(Constants.SETUP_CANCEL_KEYWORDS.indexOf(content) === -1){
-                        const validator = phase.validator(message)
+                        const validator = await phase.validator(message)
                         if(validator.result){
                             this.dataStore.set(this.currentPhaseIndex, validator.value)
                             if(this.getLastPhaseIndex() !== this.currentPhaseIndex){
