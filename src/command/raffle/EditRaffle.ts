@@ -24,7 +24,19 @@ class EditRaffle extends Command{
 
         if(!key || !value) return false
 
-        let message_id: string | undefined = args[2]
+        let message_id: string | undefined
+        const matchContent = message.content.match(/(--raffle)[\x20\xA0]?(.*)/g)
+        if(matchContent && matchContent.length !== 0){
+            message_id = matchContent.shift().split(' ').pop().removeWhiteSpaces()
+            if(!/^\d{17,19}$/g.test(message_id)){
+                await message.channel.send({
+                    embed: this.getErrorEmbed(`Geçersiz ID biçimi. Lütfen geçerli bir çekiliş ID 'si yazın.`)
+                })
+
+                return true
+            }
+        }
+
         const raffle = await (message_id ? server.raffles.get(message_id) : server.raffles.getLastCreated())
         if(!raffle || !raffle.message_id){
             await message.channel.send({
@@ -55,25 +67,48 @@ class EditRaffle extends Command{
         switch(key){
             case 'renk':
             case 'color':
-                const validate = await validator.validate('color', value)
-                if(!validate.ok){
-                    await message.channel.send(`<:red_tick:737035767150411889> ${validate.message}`)
+                const validateColor = await validator.validate('color', value)
+                if(!validateColor.ok){
+                    await message.channel.send(`<:red_tick:737035767150411889> ${validateColor.message}`)
+
                     return true
                 }
 
-                const color = validate.result
+                const color = validateColor.result
+
                 await raffle.update({ color })
-                await fetch.edit({
-                    embed: raffle.getEmbed()
-                })
-
                 await message.channel.send(`<:green_tick:737035767301275770> Çekiliş rengi başarıyla **${color}** olarak değiştirildi.`)
+                break
 
-                return true
+            case 'ödül':
+            case 'title':
+            case 'prize':
+                args.shift()
+                let text = args.join(' ')
+                if(message_id){
+                    text = args.slice(0, args.length - 2).join(' ')
+                }
+
+                const validatePrize = await validator.validate('prize', text)
+                if(!validatePrize.ok){
+                    await message.channel.send(`<:red_tick:737035767150411889> ${validatePrize.message}`)
+
+                    return true
+                }
+
+                await raffle.update({ prize: text })
+                await message.channel.send(`<:green_tick:737035767301275770> Çekiliş ödülü/başlığı başarıyla **${text}** olarak değiştirildi.`)
+                break
 
             default:
                 return false
         }
+
+        await fetch.edit({
+            embed: raffle.getEmbed()
+        })
+
+        return true
     }
 
 }
