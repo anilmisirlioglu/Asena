@@ -61,6 +61,7 @@ export default class ReRollRaffle extends Command{
             await message.channel.send(`Yeterli katılım olmadığından dolayı çekiliş tekrar çekilemedi.\n**Çekiliş:** ${_message}`)
         }else{
             await message.channel.send(`${Constants.CONFETTI_EMOJI} Tebrikler ${winners.map(winner => `<@${winner}>`).join(', ')}! **${raffle.prize}** kazandınız (Kazananlar tekrar çekildi)\n**Çekiliş:** ${_message}`)
+            await raffle.sendMessageWinners(winners, client, message.guild.name)
         }
 
         if(message.guild.me.hasPermission('MANAGE_MESSAGES')){

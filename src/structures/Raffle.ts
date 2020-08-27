@@ -92,7 +92,7 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
                         break
 
                     case 1:
-                        description = `Kazanan: <@${winners.shift()}>`
+                        description = `Kazanan: <@${winners[0]}>`
                         content = `Tebrikler ${winnersOfMentions.join(', ')}! **${this.prize}** kazandınız`
                         break
 
@@ -113,6 +113,8 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
                     embed
                 })
                 await channel.send(`${content}\n**Çekiliş** ${_message}`)
+
+                await this.sendMessageWinners(winners, client, channel.guild.name)
             }
         }
     }
@@ -135,6 +137,26 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
         }
 
         return winners
+    }
+
+    public async sendMessageWinners(winners: string[], client: SuperClient, name: string){
+        const embed = new MessageEmbed()
+            .setTitle(':medal: Tebrikler, bir çekiliş kazandınız! <a:ablobangel:744194706795266138>')
+            .setDescription([
+                `:gift: **${this.prize}**`,
+                `:gem:  **${name}**`,
+                `:link: [Çekiliş Bağlantısı](${this.getMessageURL()})`,
+                `:rocket: [Bana Oy Ver](https://top.gg/bot/716259870910840832/vote)`
+            ])
+            .setFooter(client.user.username, client.user.avatarURL())
+            .setColor('GREEN')
+
+        for(const winner of winners){
+            const user = await client.users.fetch(winner)
+            if(user){
+                await user.send({ embed }).catch(_ => {})
+            }
+        }
     }
 
     public getMessageURL(): string{
