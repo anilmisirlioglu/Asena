@@ -129,7 +129,7 @@ export const Flags: FlagMap = {
         if(invites.length > RaffleLimits.MAX_SERVER_COUNT){
             return {
                 ok: false,
-                message: 'Maksimum 3 sunucuya katılım zorunluluğu koyabilirsiniz.'
+                message: `Maksimum ${RaffleLimits.MAX_SERVER_COUNT} sunucuya katılım zorunluluğu koyabilirsiniz.`
             }
         }
 
@@ -185,7 +185,7 @@ export const Flags: FlagMap = {
         if(allowedRoles.length > RaffleLimits.MAX_ALLOWED_ROLE_COUNT){
             return {
                 ok: false,
-                message: 'Katılım zorunluluğu olarak maksimum 10 rol belirleyebilirsiniz.'
+                message: `Katılım zorunluluğu olarak maksimum ${RaffleLimits.MAX_ALLOWED_ROLE_COUNT} rol belirleyebilirsiniz.`
             }
         }
 
@@ -235,14 +235,14 @@ export const Flags: FlagMap = {
         if(rewardRoles.checkIfDuplicateExists()){
             return {
                 ok: false,
-                message: 'Ödül olarak verilecek roller arasında geçersiz rol(ler) tespit edildi. Lütfen geçerli rol(ler) girip tekrar deneyin.'
+                message: 'Ödül olarak verilecek roller arasında etiketlediğiniz rollerin bazıları aynı. Girdiğiniz her rolün birbirinden benzersiz olması gerekmektedir. Lütfen tekrarlanmayan değerler ile tekrar deneyin.'
             }
         }
 
         if(rewardRoles.length > RaffleLimits.MAX_REWARD_ROLE_COUNT){
             return {
                 ok: false,
-                message: 'Ödül olarak maksimum 8 rol verebilirsiniz.'
+                message: `Ödül olarak maksimum ${RaffleLimits.MAX_REWARD_ROLE_COUNT} rol verebilirsiniz.`
             }
         }
 

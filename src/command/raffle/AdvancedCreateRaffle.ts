@@ -23,7 +23,7 @@ export default class AdvancedCreateRaffle extends Command{
 
     async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
         const regex = /(?<=[-{1,2}|/])(?<name>[a-zA-Z0-9]*)[ |:|"]*(?<value>[\w|.|?|=|<|>|ğüşöçİĞÜŞÖÇ|@|&|+| |:|/|#|,|\\]*)(?=[ |"]|$)/g
-        const matchFlags = message.content.match(regex).filter(find => find !== '')
+        const matchFlags = (message.content.match(regex) ?? []).filter(find => find !== '')
 
         if(matchFlags.length === 0) return false
 

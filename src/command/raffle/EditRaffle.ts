@@ -2,8 +2,9 @@ import Command from '../Command';
 import Premium from '../../decorators/Premium';
 import SuperClient from '../../SuperClient';
 import Server from '../../structures/Server';
-import { Invite, Message } from 'discord.js';
+import { Message } from 'discord.js';
 import FlagValidator from '../../utils/FlagValidator';
+import { RaffleLimits } from '../../Constants';
 
 @Premium
 class EditRaffle extends Command{
@@ -19,8 +20,8 @@ class EditRaffle extends Command{
     }
 
     async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
-        const key = args[0]
-        const value = args[1]
+        const key = args.shift()
+        const value = args[0]
 
         if(!key || !value) return false
 
@@ -98,6 +99,56 @@ class EditRaffle extends Command{
 
                 await raffle.update({ prize: text })
                 await message.channel.send(`<:green_tick:737035767301275770> Çekiliş ödülü/başlığı başarıyla **${text}** olarak değiştirildi.`)
+                break
+
+            case 'ödülrol':
+            case 'rewardRoles':
+                const mode = args.shift()
+                if(mode !== '+' && mode !== '-'){
+                    await message.channel.send(`<:red_tick:737035767150411889> Lütfen geçerli bir mod *(+ veya -)* girin. (**Örn:** ${server.prefix}edit allowedRoles + rol)`)
+
+                    return true
+                }
+
+                let roles = args.join(' ')
+                if(message_id){
+                    roles = args.slice(0, args.length - 2).join(' ')
+                }
+
+                const validateRoles = await validator.validate('rewardRoles', roles)
+                if(!validateRoles.ok){
+                    await message.channel.send(`<:red_tick:737035767150411889> ${validateRoles.message}`)
+
+                    return true
+                }
+
+                const validatedRoles: string[] = validateRoles.result
+                const rewardRoles = raffle.rewardRoles
+                const evaluate = eval(`${rewardRoles.length} ${mode} ${validatedRoles.length}`)
+                if((Number(evaluate) || 0) > RaffleLimits.MAX_REWARD_ROLE_COUNT){
+                    await message.channel.send(`<:red_tick:737035767150411889> Ödül olarak maksimum ${RaffleLimits.MAX_REWARD_ROLE_COUNT} rol verebilirsiniz.`)
+
+                    return true
+                }
+
+                const check = mode === '+'
+                for(const role of validatedRoles){
+                    const include = rewardRoles.includes(role)
+                    if(check ? include : !include){
+                        await message.channel.send(check ? `<:red_tick:737035767150411889> <@&${role}> zaten ödül olarak belirlenmiş bir rol.` : `<:red_tick:737035767150411889> Ödül olarak verilecek roller arasında <@&${role}> rolü bulunamadı.`)
+
+                        return true
+                    }
+                }
+
+                await raffle.update({
+                    [check ? '$push' : '$pull']: {
+                        rewardRoles: check ? validatedRoles : {
+                            $in: validatedRoles
+                        }
+                    }
+                })
+                await message.channel.send(`<:green_tick:737035767301275770> Ödül olarak verilecek roller tekrardan düzenlendi. (${check ? 'Eklenen Roller' : 'Çıkarılan Roller'}: ${validatedRoles.map(role => `<@&${role}>`).join(', ')})`)
                 break
 
             default:

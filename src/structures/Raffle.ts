@@ -28,9 +28,9 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
     public numberOfWinners: number
     public status: RaffleStatus
     public finishAt: Date
-    public servers?: Snowflake[]
-    public allowedRoles?: Snowflake[]
-    public rewardRoles?: Snowflake[]
+    public servers: Snowflake[]
+    public allowedRoles: Snowflake[]
+    public rewardRoles: Snowflake[]
     public color?: ColorResolvable
 
     constructor(data: SuperRaffle){
@@ -47,9 +47,9 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
         this.numberOfWinners = data.numberOfWinners
         this.status = data.status
         this.finishAt = data.finishAt
-        this.servers = data.servers
-        this.allowedRoles = data.allowedRoles
-        this.rewardRoles = data.rewardRoles
+        this.servers = data.servers ?? []
+        this.allowedRoles = data.allowedRoles ?? []
+        this.rewardRoles = data.rewardRoles ?? []
         this.color = data.color
     }
 
@@ -182,8 +182,9 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
                 `Çekilişe Katılmak İçin ${Constants.CONFETTI_REACTION_EMOJI} emojisine tıklayın!`,
                 `Süre: **${time}**`,
                 `Bitmesine: **${remaining}**`,
+                this.rewardRoles.length === 0 ? undefined : `Ödül Olarak Verilecek Roller: ${this.rewardRoles.map(role => `<@&${role}>`).join(', ')}`,
                 `Oluşturan: <@${this.constituent_id}>`
-            ].join('\n'))
+            ].filter(item => item))
             .setColor(alert ? 'RED' : this.color ?? '#bd087d')
             .setFooter(`${this.numberOfWinners} Kazanan | Bitiş`)
             .setTimestamp(finishAt)
