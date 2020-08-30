@@ -53,7 +53,9 @@ export default abstract class SuperClient extends Client{
     protected constructor(private opts: SuperClientBuilderOptions){
         super({
             partials: ['CHANNEL', 'MESSAGE', 'REACTION'],
-            fetchAllMembers: true
+            messageCacheMaxSize: 100,
+            messageCacheLifetime: 600,
+            messageSweepInterval: 300
         })
     }
 
