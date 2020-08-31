@@ -5,6 +5,7 @@ import Server from '../../structures/Server';
 import { Message } from 'discord.js';
 import FlagValidator from '../../utils/FlagValidator';
 import { RaffleLimits } from '../../Constants';
+import { secondsToTime } from '../../utils/DateTimeHelper';
 
 @Premium
 class EditRaffle extends Command{
@@ -149,6 +150,68 @@ class EditRaffle extends Command{
                     }
                 })
                 await message.channel.send(`<:green_tick:737035767301275770> Ödül olarak verilecek roller tekrardan düzenlendi. (${check ? 'Eklenen Roller' : 'Çıkarılan Roller'}: ${validatedRoles.map(role => `<@&${role}>`).join(', ')})`)
+                break
+
+            case 'time':
+            case 'zaman':
+                const timeMode = args.shift()
+                if(timeMode !== '+' && timeMode !== '-'){
+                    await message.channel.send(`<:red_tick:737035767150411889> Lütfen geçerli bir mod *(+, - veya =)* girin. (**Örn:** ${server.prefix}edit time + 1m)`)
+
+                    return true
+                }
+
+                if(Date.now() > +raffle.finishAt + (1000 * 60 * 2)){
+                    await message.channel.send(`<:red_tick:737035767150411889> Çekilişin bitmesine 2 dakikadan az süre kalmış. Çekiliş süresini düzenleyebilmeniz için daha daha uzun bir süre gerekiyor.`)
+
+                    return true
+                }
+
+                const time = args.shift()
+                if(!time){
+                    await message.channel.send('<:red_tick:737035767150411889> Lütfen geçerli bir zaman girin.')
+
+                    return true
+                }
+
+                const validateTime = await validator.validate('time', time)
+                if(!validateTime.ok){
+                    await message.channel.send(`<:red_tick:737035767150411889> ${validateTime.message}`)
+
+                    return true
+                }
+
+                let finishAt = +raffle.finishAt, successText
+                const result = validateTime.result * 1000 // second
+                switch(timeMode){
+                    case '-':
+                        if(1000 * 2 * 60 > (finishAt - result) - Date.now()){
+                            await message.channel.send(`<:red_tick:737035767150411889> Kısaltılan çekiliş süresi 2 dakikanın altına düşemez.`)
+
+                            return true
+                        }
+
+                        finishAt = finishAt - result
+                        successText = secondsToTime(result / 1000) + ' kısaltıldı.'
+                        break
+
+                    case '+':
+                        if(Date.now() - (finishAt + result) > RaffleLimits.MAX_TIME){
+                            await message.channel.send(`<:red_tick:737035767150411889> Uzatılan çekiliş süresi 60 günü geçemez.`)
+
+                            return true
+                        }
+
+                        finishAt = finishAt + result
+                        successText = secondsToTime(result / 1000) + ' uzatıldı.'
+                        break
+                }
+
+                await raffle.update({
+                    finishAt: new Date(finishAt)
+                })
+
+                await message.channel.send(`<:green_tick:737035767301275770> Çekiliş süresi başarıyla düzenlendi. **(Süre ${successText})**`)
                 break
 
             default:
