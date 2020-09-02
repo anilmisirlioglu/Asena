@@ -109,12 +109,13 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
                     .setTimestamp(new Date(this.finishAt))
                     .setColor('#36393F')
 
-                await message.edit(`${Constants.CONFETTI_REACTION_EMOJI} **ÇEKİLİŞ BİTTİ** ${Constants.CONFETTI_REACTION_EMOJI}`, {
-                    embed
-                })
-                await channel.send(`${content}\n**Çekiliş** ${_message}`)
-
-                await this.sendMessageWinners(winners, client, channel.guild.name)
+                await Promise.all([
+                    message.edit(`${Constants.CONFETTI_REACTION_EMOJI} **ÇEKİLİŞ BİTTİ** ${Constants.CONFETTI_REACTION_EMOJI}`, {
+                        embed
+                    }),
+                    channel.send(`${content}\n**Çekiliş** ${_message}`),
+                    this.sendMessageWinners(winners, client, channel.guild.name)
+                ])
             }
         }
     }
