@@ -21,11 +21,11 @@ export const Flags: FlagMap = {
         if(isNaN(number)){
             return {
                 ok: false,
-                message: 'Lütfen kazanan kişi sayısını, sayısal bir değer girin.'
+                message: 'Lütfen kazanan kişi sayısını sayısal bir değer girin.'
             }
         }
 
-        if(number > RaffleLimits.MAX_WINNER_COUNT || number === 0){
+        if(number > RaffleLimits.MAX_WINNER_COUNT || number < 1){
             return {
                 ok: false,
                 message: 'Çekilişi kazanan üye sayısı maksimum 20, minimum 1 kişi olabilir.'

@@ -7,6 +7,9 @@ import FlagValidator from '../../utils/FlagValidator';
 import { RaffleLimits } from '../../Constants';
 import { secondsToTime } from '../../utils/DateTimeHelper';
 
+const RED_TICK = '<:red_tick:737035767150411889>'
+const GREEN_TICK = '<:green_tick:737035767301275770>'
+
 @Premium
 class EditRaffle extends Command{
 
@@ -15,7 +18,7 @@ class EditRaffle extends Command{
             name: 'edit',
             aliases: ['düzenle', 'set'],
             description: 'Çekilişi düzenler.',
-            usage: 'TODO',
+            usage: '[numberOfWinner|color|prize|time|rewardRoles] [...args]',
             permission: 'ADMINISTRATOR'
         })
     }
@@ -66,26 +69,26 @@ class EditRaffle extends Command{
         }
 
         const validator = new FlagValidator(client, message)
+        let updateQuery, success: string
         switch(key){
             case 'renk':
             case 'color':
                 const validateColor = await validator.validate('color', value)
                 if(!validateColor.ok){
-                    await message.channel.send(`<:red_tick:737035767150411889> ${validateColor.message}`)
+                    await message.channel.send(RED_TICK + ' ' + validateColor.message)
 
                     return true
                 }
 
                 const color = validateColor.result
 
-                await raffle.update({ color })
-                await message.channel.send(`<:green_tick:737035767301275770> Çekiliş rengi başarıyla **${color}** olarak değiştirildi.`)
+                updateQuery = { color }
+                success = `Çekiliş rengi başarıyla **${color}** olarak değiştirildi.`
                 break
 
             case 'ödül':
             case 'title':
             case 'prize':
-                args.shift()
                 let text = args.join(' ')
                 if(message_id){
                     text = args.slice(0, args.length - 2).join(' ')
@@ -93,20 +96,23 @@ class EditRaffle extends Command{
 
                 const validatePrize = await validator.validate('prize', text)
                 if(!validatePrize.ok){
-                    await message.channel.send(`<:red_tick:737035767150411889> ${validatePrize.message}`)
+                    await message.channel.send(RED_TICK + ' ' + validatePrize.message)
 
                     return true
                 }
 
-                await raffle.update({ prize: text })
-                await message.channel.send(`<:green_tick:737035767301275770> Çekiliş ödülü/başlığı başarıyla **${text}** olarak değiştirildi.`)
+                updateQuery = {
+                    prize: text
+                }
+                success = `Çekiliş ödülü/başlığı başarıyla **${text}** olarak değiştirildi.`
                 break
 
             case 'ödülrol':
             case 'rewardRoles':
+            case 'rewardRole':
                 const mode = args.shift()
                 if(mode !== '+' && mode !== '-'){
-                    await message.channel.send(`<:red_tick:737035767150411889> Lütfen geçerli bir mod *(+ veya -)* girin. (**Örn:** ${server.prefix}edit allowedRoles + rol)`)
+                    await message.channel.send(`${RED_TICK} Lütfen geçerli bir mod *(+ veya -)* girin. (**Örn:** ${server.prefix}edit rewardRoles + rol)`)
 
                     return true
                 }
@@ -118,7 +124,7 @@ class EditRaffle extends Command{
 
                 const validateRoles = await validator.validate('rewardRoles', roles)
                 if(!validateRoles.ok){
-                    await message.channel.send(`<:red_tick:737035767150411889> ${validateRoles.message}`)
+                    await message.channel.send(RED_TICK + ' ' + validateRoles.message)
 
                     return true
                 }
@@ -127,7 +133,7 @@ class EditRaffle extends Command{
                 const rewardRoles = raffle.rewardRoles
                 const evaluate = eval(`${rewardRoles.length} ${mode} ${validatedRoles.length}`)
                 if((Number(evaluate) || 0) > RaffleLimits.MAX_REWARD_ROLE_COUNT){
-                    await message.channel.send(`<:red_tick:737035767150411889> Ödül olarak maksimum ${RaffleLimits.MAX_REWARD_ROLE_COUNT} rol verebilirsiniz.`)
+                    await message.channel.send(`${RED_TICK} Ödül olarak maksimum ${RaffleLimits.MAX_REWARD_ROLE_COUNT} rol verebilirsiniz.`)
 
                     return true
                 }
@@ -136,47 +142,47 @@ class EditRaffle extends Command{
                 for(const role of validatedRoles){
                     const include = rewardRoles.includes(role)
                     if(check ? include : !include){
-                        await message.channel.send(check ? `<:red_tick:737035767150411889> <@&${role}> zaten ödül olarak belirlenmiş bir rol.` : `<:red_tick:737035767150411889> Ödül olarak verilecek roller arasında <@&${role}> rolü bulunamadı.`)
+                        await message.channel.send(check ? `${RED_TICK} <@&${role}> zaten ödül olarak belirlenmiş bir rol.` : `${RED_TICK} Ödül olarak verilecek roller arasında <@&${role}> rolü bulunamadı.`)
 
                         return true
                     }
                 }
 
-                await raffle.update({
+                updateQuery = {
                     [check ? '$push' : '$pull']: {
                         rewardRoles: check ? validatedRoles : {
                             $in: validatedRoles
                         }
                     }
-                })
-                await message.channel.send(`<:green_tick:737035767301275770> Ödül olarak verilecek roller tekrardan düzenlendi. (${check ? 'Eklenen Roller' : 'Çıkarılan Roller'}: ${validatedRoles.map(role => `<@&${role}>`).join(', ')})`)
+                }
+                success = `Ödül olarak verilecek roller tekrardan düzenlendi. (${check ? 'Eklenen Roller' : 'Çıkarılan Roller'}: ${validatedRoles.map(role => `<@&${role}>`).join(', ')})`
                 break
 
             case 'time':
             case 'zaman':
                 const timeMode = args.shift()
                 if(timeMode !== '+' && timeMode !== '-'){
-                    await message.channel.send(`<:red_tick:737035767150411889> Lütfen geçerli bir mod *(+, - veya =)* girin. (**Örn:** ${server.prefix}edit time + 1m)`)
+                    await message.channel.send(`${RED_TICK} Lütfen geçerli bir mod *(+, - veya =)* girin. (**Örn:** ${server.prefix}edit time + 1m)`)
 
                     return true
                 }
 
                 if(Date.now() > +raffle.finishAt + (1000 * 60 * 2)){
-                    await message.channel.send(`<:red_tick:737035767150411889> Çekilişin bitmesine 2 dakikadan az süre kalmış. Çekiliş süresini düzenleyebilmeniz için daha daha uzun bir süre gerekiyor.`)
+                    await message.channel.send(`${RED_TICK} Çekilişin bitmesine 2 dakikadan az süre kalmış. Çekiliş süresini düzenleyebilmeniz için daha daha uzun bir süre gerekiyor.`)
 
                     return true
                 }
 
                 const time = args.shift()
                 if(!time){
-                    await message.channel.send('<:red_tick:737035767150411889> Lütfen geçerli bir zaman girin.')
+                    await message.channel.send(`${RED_TICK} Lütfen geçerli bir zaman girin.`)
 
                     return true
                 }
 
                 const validateTime = await validator.validate('time', time)
                 if(!validateTime.ok){
-                    await message.channel.send(`<:red_tick:737035767150411889> ${validateTime.message}`)
+                    await message.channel.send(RED_TICK + ' ' + validateTime.message)
 
                     return true
                 }
@@ -186,7 +192,7 @@ class EditRaffle extends Command{
                 switch(timeMode){
                     case '-':
                         if(1000 * 2 * 60 > (finishAt - result) - Date.now()){
-                            await message.channel.send(`<:red_tick:737035767150411889> Kısaltılan çekiliş süresi 2 dakikanın altına düşemez.`)
+                            await message.channel.send(`${RED_TICK} Kısaltılan çekiliş süresi 2 dakikanın altına düşemez.`)
 
                             return true
                         }
@@ -197,7 +203,7 @@ class EditRaffle extends Command{
 
                     case '+':
                         if(Date.now() - (finishAt + result) > RaffleLimits.MAX_TIME){
-                            await message.channel.send(`<:red_tick:737035767150411889> Uzatılan çekiliş süresi 60 günü geçemez.`)
+                            await message.channel.send(`${RED_TICK} Uzatılan çekiliş süresi 60 günü geçemez.`)
 
                             return true
                         }
@@ -207,20 +213,41 @@ class EditRaffle extends Command{
                         break
                 }
 
-                await raffle.update({
+                updateQuery = {
                     finishAt: new Date(finishAt)
-                })
+                }
+                success = `Çekiliş süresi başarıyla düzenlendi. **(Süre ${successText})**`
+                break
 
-                await message.channel.send(`<:green_tick:737035767301275770> Çekiliş süresi başarıyla düzenlendi. **(Süre ${successText})**`)
+            case 'kazanan':
+            case 'numberOfWinners':
+            case 'numberOfWinner':
+            case 'winners':
+                const validateNumber = await validator.validate('numberOfWinners', value)
+                if(!validateNumber.ok){
+                    await message.channel.send(RED_TICK + ' ' + validateNumber.message)
+
+                    return true
+                }
+
+                updateQuery = {
+                    numberOfWinners: validateNumber.result
+                }
+                success = `Kazanan sayısı başarıyla **${validateNumber.result}** olarak değiştirildi.`
                 break
 
             default:
                 return false
         }
 
-        await fetch.edit({
-            embed: raffle.getEmbed()
-        })
+        await Promise.all([
+            raffle.update(updateQuery).then(async () => {
+                await fetch.edit({
+                    embed: raffle.getEmbed()
+                })
+            }),
+            message.channel.send(GREEN_TICK + ' ' + success)
+        ])
 
         return true
     }

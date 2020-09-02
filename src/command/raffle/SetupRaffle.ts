@@ -114,7 +114,7 @@ export default class SetupRaffle extends Command{
                             '**Adım 3:** Şimdide insanların çekilişe katılımlarını alabilmek için süre belirleyelim\n',
                             '`Unutmayın süre en az 1 dakika, en fazla 60 gün olabilir. Süre belirlerken m (dakika), h (saat), d (gün) gibi süre belirten' +
                             ' terimler kullanmanız gerekir. Bunu kullanırken önce süre daha sonra boşluk bırakarak veya bırakmadan süre cinsini yazmayı unutmayın. Sadece tek bir süre tipi' +
-                            ' kullanabileceğini unutmayın.`'
+                            ' kullanabileceğinizi unutmayın.`'
                         ],
                         validator: async (message: Message) => {
                             const time = message.content.replace(/ /g, '')
