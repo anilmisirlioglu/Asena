@@ -179,7 +179,7 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
             promises,
             new Promise(async () => {
                 if(rewardRoles.length > 0){
-                    await this.update({ winners })
+                    await this.update({ winners }, false)
                     this.winners = winners
                 }
             })
