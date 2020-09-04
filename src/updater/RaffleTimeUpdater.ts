@@ -19,7 +19,7 @@ export default class RaffleTimeUpdater extends Factory{
                     if(this.getCooldownService().checkCooldown(reaction.message.id)){
                         const server = await this.client.servers.get(reaction.message.guild.id)
                         const raffle = await server.raffles.get(reaction.message.id)
-                        if(raffle.status === 'CONTINUES' || raffle.status === 'ALMOST_DONE'){
+                        if(raffle && (raffle.status === 'CONTINUES' || raffle.status === 'ALMOST_DONE')){
                             const remaining = Math.ceil((raffle.finishAt.getTime() - Date.now()) / 1000)
                             if(remaining > 12){
                                 this.getCooldownService().setCooldown(reaction.message.id)

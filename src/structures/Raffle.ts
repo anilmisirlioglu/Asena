@@ -1,9 +1,11 @@
 import {
     ColorResolvable,
+    Guild,
     GuildChannel,
     Message,
     MessageEmbed,
     MessageReaction,
+    Role,
     Snowflake,
     TextChannel
 } from 'discord.js';
@@ -32,12 +34,15 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
     public allowedRoles: Snowflake[]
     public rewardRoles: Snowflake[]
     public color?: ColorResolvable
+    public winners?: Snowflake[]
 
     constructor(data: SuperRaffle){
         super(RaffleModel, data)
     }
 
     protected patch(data: SuperRaffle){
+        data = data.toObject() // getting virtual props
+
         this.prize = data.prize
         this.server_id = data.server_id
         this.constituent_id = data.constituent_id
@@ -51,6 +56,7 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
         this.allowedRoles = data.allowedRoles ?? []
         this.rewardRoles = data.rewardRoles ?? []
         this.color = data.color
+        this.winners = data.winners ?? []
     }
 
     protected identifierKey(): string{
@@ -110,11 +116,9 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
                     .setColor('#36393F')
 
                 await Promise.all([
-                    message.edit(`${Constants.CONFETTI_REACTION_EMOJI} **ÇEKİLİŞ BİTTİ** ${Constants.CONFETTI_REACTION_EMOJI}`, {
-                        embed
-                    }),
+                    message.edit(`${Constants.CONFETTI_REACTION_EMOJI} **ÇEKİLİŞ BİTTİ** ${Constants.CONFETTI_REACTION_EMOJI}`, { embed }),
                     channel.send(`${content}\n**Çekiliş** ${_message}`),
-                    this.sendMessageWinners(winners, client, channel.guild.name)
+                    this.resolveWinners(client, channel.guild, winners),
                 ])
             }
         }
@@ -140,24 +144,46 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
         return winners
     }
 
-    public async sendMessageWinners(winners: string[], client: SuperClient, name: string){
+    public async resolveWinners(client: SuperClient, guild: Guild, winners: string[]){
+        const me = guild.me
         const embed = new MessageEmbed()
             .setTitle(':medal: Tebrikler, bir çekiliş kazandınız! <a:ablobangel:744194706795266138>')
             .setDescription([
                 `:gift: **${this.prize}**`,
-                `:gem:  **${name}**`,
+                `:gem:  **${guild.name}**`,
                 `:link: [Çekiliş Bağlantısı](${this.getMessageURL()})`,
                 `:rocket: [Bana Oy Ver](https://top.gg/bot/716259870910840832/vote)`
             ])
             .setFooter(client.user.username, client.user.avatarURL())
             .setColor('GREEN')
 
-        for(const winner of winners){
-            const user = await client.users.fetch(winner)
-            if(user){
-                await user.send({ embed }).catch(_ => {})
-            }
+        let rewardRoles: Role[] = []
+        if(this.rewardRoles.length > 0 && me.hasPermission('MANAGE_ROLES')){
+            const fetchRoles = await guild.roles.fetch()
+            rewardRoles = fetchRoles
+                .cache
+                .array()
+                .filter(role => this.rewardRoles.includes(role.id) && role.comparePositionTo(me.roles.highest) < 0)
         }
+
+        const promises: Promise<unknown>[] = winners.map(winner => new Promise(() => {
+            guild.members.fetch(winner).then(async user => {
+                await Promise.all([
+                    user.roles.add(rewardRoles),
+                    user.send({ embed }).catch(_ => {})
+                ])
+            })
+        }))
+
+        await Promise.all([
+            promises,
+            new Promise(async () => {
+                if(rewardRoles.length > 0){
+                    await this.update({ winners })
+                    this.winners = winners
+                }
+            })
+        ])
     }
 
     public getMessageURL(): string{

@@ -16,6 +16,7 @@ export interface IRaffle extends Document{
     allowedRoles?: Snowflake[]
     rewardRoles?: Snowflake[]
     color?: ColorResolvable
+    winners?: Snowflake[]
 }
 
 const RaffleSchema: Schema = new Schema<IRaffle>({
@@ -51,25 +52,11 @@ const RaffleSchema: Schema = new Schema<IRaffle>({
     finishAt: {
         type: Date,
         required: true
-    },
-    servers: {
-        type: Array,
-        required: false
-    },
-    allowedRoles: {
-        type: Array,
-        required: false
-    },
-    rewardRoles: {
-        type: Array,
-        required: false
-    },
-    color: {
-        type: String,
-        required: false
     }
 }, {
-    timestamps: true
+    timestamps: true,
+    strict: false,
+    strictQuery: true
 })
 
 export default mongoose.model<IRaffle>('Raffle', RaffleSchema)

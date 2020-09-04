@@ -60,8 +60,29 @@ export default class ReRollRaffle extends Command{
         if(winners.length === 0){
             await message.channel.send(`Yeterli katılım olmadığından dolayı çekiliş tekrar çekilemedi.\n**Çekiliş:** ${_message}`)
         }else{
-            await message.channel.send(`${Constants.CONFETTI_EMOJI} Tebrikler ${winners.map(winner => `<@${winner}>`).join(', ')}! **${raffle.prize}** kazandınız (Kazananlar tekrar çekildi)\n**Çekiliş:** ${_message}`)
-            await raffle.sendMessageWinners(winners, client, message.guild.name)
+            if(raffle.rewardRoles.length > 0 && !message.guild.me.hasPermission('MANAGE_ROLES')){
+                await message.channel.send('Lütfen kazananları tekrar çekmek için bota **Rolleri Yönet** yetkisi verin. Aksi takdirde bot ödül olarak verilecek rolleri kazananlara veremez.')
+
+                return true
+            }
+
+            await Promise.all([
+                message.channel.send(`${Constants.CONFETTI_EMOJI} Tebrikler ${winners.map(winner => `<@${winner}>`).join(', ')}! **${raffle.prize}** kazandınız (Kazananlar tekrar çekildi)\n**Çekiliş:** ${_message}`),
+                new Promise(async () => {
+                    if(raffle.winners.length > 0){
+                        const promises: Promise<unknown>[] = raffle.winners.map(winner => new Promise(() => {
+                            message.guild.members.fetch(winner).then(async user => {
+                                if(user){
+                                    await user.roles.remove(raffle.rewardRoles)
+                                }
+                            })
+                        }))
+
+                        await Promise.all(promises)
+                    }
+                }),
+                raffle.resolveWinners(client, message.guild, winners)
+            ])
         }
 
         if(message.guild.me.hasPermission('MANAGE_MESSAGES')){

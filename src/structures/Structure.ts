@@ -33,9 +33,9 @@ abstract class Structure<M extends Model<D>, D extends SuperDocument>{
 
     protected abstract patch(data: D)
 
-    async update(query: UpdateQuery<D>){
+    async update(query: UpdateQuery<D>, rePatch: boolean = true){
         const update = await this.model.findByIdAndUpdate(this.id, query, {
-            new: true
+            new: rePatch
         })
 
         this.patch(update)
