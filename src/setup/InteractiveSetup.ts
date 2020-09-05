@@ -50,7 +50,7 @@ export default class InteractiveSetup extends EventEmitter{
     }
 
     public start(): void{
-        this.client.getSetupManager().addSetup(this)
+        this.client.getSetupManager().new(this)
         this.setPhaseListener()
         this.setTimeoutTiming()
 
@@ -58,7 +58,7 @@ export default class InteractiveSetup extends EventEmitter{
     }
 
     public stop(reason){
-        this.client.getSetupManager().deleteSetup(this)
+        this.client.getSetupManager().delete(this)
         clearTimeout(this.timer)
 
         this.emit('stop', reason)
@@ -85,7 +85,7 @@ export default class InteractiveSetup extends EventEmitter{
                                 this.currentPhaseIndex++
                                 this.setPhaseListener()
                             }else{
-                                this.client.getSetupManager().deleteSetup(this)
+                                this.client.getSetupManager().delete(this)
                                 this.onFinishCallback(this.dataStore)
                             }
                         }else{
