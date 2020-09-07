@@ -41,7 +41,9 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
     }
 
     protected patch(data: SuperRaffle){
-        data = data.toObject() // getting virtual props
+        if(typeof data.toObject === 'function'){
+            data = data.toObject() // getting virtual props
+        }
 
         this.prize = data.prize
         this.server_id = data.server_id
