@@ -1,6 +1,6 @@
 import { Collection, Snowflake } from 'discord.js';
 import SuperClient from '../SuperClient';
-import InvalidArgumentException from '../exceptions/InvalidArgumentException';
+import InvalidArgumentException from '../utils/exceptions/InvalidArgumentException';
 import SetupPhase from './SetupPhase';
 import { EventEmitter } from 'events';
 import Constants from '../Constants';
