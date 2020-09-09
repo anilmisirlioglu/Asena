@@ -213,7 +213,7 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
                 `Bitmesine: **${remaining}**`,
                 this.rewardRoles.length === 0 ? undefined : `Ödül Olarak Verilecek Roller: ${this.rewardRoles.map(role => `<@&${role}>`).join(', ')}`,
                 `Oluşturan: <@${this.constituent_id}>`
-            ].filter(item => item))
+            ].filter(Boolean))
             .setColor(alert ? 'RED' : this.color ?? '#bd087d')
             .setFooter(`${this.numberOfWinners} Kazanan | Bitiş`)
             .setTimestamp(finishAt)
