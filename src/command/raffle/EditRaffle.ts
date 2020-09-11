@@ -243,7 +243,7 @@ class EditRaffle extends Command{
         await Promise.all([
             raffle.update(updateQuery).then(async () => {
                 await fetch.edit({
-                    embed: raffle.getEmbed()
+                    embed: raffle.buildEmbed()
                 })
             }),
             message.channel.send(GREEN_TICK + ' ' + success)

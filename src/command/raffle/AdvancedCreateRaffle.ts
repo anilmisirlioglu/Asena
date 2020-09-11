@@ -110,7 +110,7 @@ export default class AdvancedCreateRaffle extends Command{
             createdAt: new Date()
         }, raffleProps as IRaffle))
         message.channel.send(Raffle.getStartMessage(), {
-            embed: raffle.getEmbed()
+            embed: raffle.buildEmbed()
         }).then(async $message => {
             await $message.react(Constants.CONFETTI_REACTION_EMOJI)
 

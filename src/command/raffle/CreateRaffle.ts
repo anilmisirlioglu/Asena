@@ -75,13 +75,18 @@ export default class CreateRaffle extends Command{
         }, data as IRaffle))
 
         message.channel.send(Raffle.getStartMessage(), {
-            embed: raffle.getEmbed()
+            embed: raffle.buildEmbed()
         }).then(async $message => {
-            await $message.react(Constants.CONFETTI_REACTION_EMOJI)
+            await Promise.all([
+                $message.react(Constants.CONFETTI_REACTION_EMOJI),
+                server.raffles.create(Object.assign({
+                    message_id: $message.id
+                }, data) as IRaffle)
+            ])
 
-            await server.raffles.create(Object.assign({
-                message_id: $message.id
-            }, data) as IRaffle)
+            if(raffle.isParticipationConditional()){
+                await message.channel.send(raffle.buildTermOfParticipationText())
+            }
         }).catch(async () => {
             await message.channel.send(':boom: Botun yetkileri, bu kanalda çekiliş oluşturmak için yetersiz olduğu için çekiliş başlatılamadı.')
         })

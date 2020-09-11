@@ -34,7 +34,7 @@ export default class RaffleTask extends Task<Raffle>{
                     ) => {
                         if(!isRejected){
                             await result.edit(message, {
-                                embed: raffle.getEmbed(alert, customTime)
+                                embed: raffle.buildEmbed(alert, customTime)
                             }).catch(async (err: DiscordAPIError | HTTPError) => {
                                 const guild = result.guild
                                 if(guild){

@@ -200,7 +200,7 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
         return `${Constants.CONFETTI_EMOJI} **ÇEKİLİŞ İÇİN SON KATILIM** ${Constants.CONFETTI_EMOJI}`
     }
 
-    public getEmbed(alert: boolean = false, customRemainingTime: number = undefined): MessageEmbed{
+    public buildEmbed(alert: boolean = false, customRemainingTime: number = undefined): MessageEmbed{
         const finishAt: Date = this.finishAt
         const time = secondsToTime(Math.ceil((finishAt.getTime() - this.createdAt.getTime()) / 1000))
         const remaining = secondsToTime(customRemainingTime ?? Math.ceil((finishAt.getTime() - Date.now()) / 1000))
@@ -217,6 +217,14 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
             .setColor(alert ? 'RED' : this.color ?? '#bd087d')
             .setFooter(`${this.numberOfWinners} Kazanan | Bitiş`)
             .setTimestamp(finishAt)
+    }
+
+    public isParticipationConditional(): boolean{
+        return this.allowedRoles.length > 0 || this.servers.length > 0
+    }
+
+    public buildTermOfParticipationText(): string{
+        return "" // TODO::Implement method
     }
 
 }

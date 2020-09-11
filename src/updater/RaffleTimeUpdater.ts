@@ -56,7 +56,7 @@ export default class RaffleTimeUpdater extends Factory{
                         if(remaining > 12){
                             this.getCooldownService().setCooldown(reaction.message.id)
                             await reaction.message.edit(Raffle.getStartMessage(), {
-                                embed: raffle.getEmbed()
+                                embed: raffle.buildEmbed()
                             })
                         }
                     }else{
