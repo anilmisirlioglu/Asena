@@ -193,10 +193,6 @@ export default class SetupRaffle extends Command{
                                     message_id: $message.id
                                 }, data) as IRaffle)
                             ])
-
-                            if(raffle.isParticipationConditional()){
-                                await channel.send(raffle.buildTermOfParticipationText())
-                            }
                         }).catch(async () => {
                             await message.channel.send(':boom: Botun yetkileri, bu kanalda çekiliş oluşturmak için yetersiz olduğu için çekiliş başlatılamadı.')
                         })

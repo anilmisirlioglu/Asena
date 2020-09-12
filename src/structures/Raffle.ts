@@ -10,7 +10,7 @@ import {
     TextChannel
 } from 'discord.js';
 import Structure from './Structure';
-import RaffleModel, { IRaffle, RaffleStatus } from '../models/Raffle';
+import RaffleModel, { IPartialServer, IRaffle, RaffleStatus } from '../models/Raffle';
 import Timestamps from '../models/legacy/Timestamps';
 import { secondsToTime } from '../utils/DateTimeHelper';
 import Constants from '../Constants';
@@ -30,7 +30,7 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
     public numberOfWinners: number
     public status: RaffleStatus
     public finishAt: Date
-    public servers: Snowflake[]
+    public servers: IPartialServer[]
     public allowedRoles: Snowflake[]
     public rewardRoles: Snowflake[]
     public color?: ColorResolvable
@@ -204,27 +204,22 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
         const finishAt: Date = this.finishAt
         const time = secondsToTime(Math.ceil((finishAt.getTime() - this.createdAt.getTime()) / 1000))
         const remaining = secondsToTime(customRemainingTime ?? Math.ceil((finishAt.getTime() - Date.now()) / 1000))
+        const roleToString = roles => roles.map(role => `<@&${role}>`).join(', ') //this.rewardRoles.map(role => `<@&${role}>`).join(', ')
 
-        return new MessageEmbed()
+        return new MessageEmbed() // TODO::Daha ilgi çekici hale getir
             .setAuthor(this.prize)
             .setDescription([
                 `Çekilişe Katılmak İçin ${Constants.CONFETTI_REACTION_EMOJI} emojisine tıklayın!`,
                 `Süre: **${time}**`,
                 `Bitmesine: **${remaining}**`,
-                this.rewardRoles.length === 0 ? undefined : `Ödül Olarak Verilecek Roller: ${this.rewardRoles.map(role => `<@&${role}>`).join(', ')}`,
+                this.rewardRoles.length === 0 ? undefined : `Ödül olarak verilecek roller: ${roleToString(this.rewardRoles)}`,
+                this.servers.length === 0 ? undefined : `Şu sunuculara üye olmalısınız: **${this.servers.map(server => `[${server.name}](${server.invite})`).join(', ')}**`,
+                this.allowedRoles.length === 0 ? undefined : `Şu rollere sahip olmalısınız: ${roleToString(this.allowedRoles)}`,
                 `Oluşturan: <@${this.constituent_id}>`
             ].filter(Boolean))
             .setColor(alert ? 'RED' : this.color ?? '#bd087d')
             .setFooter(`${this.numberOfWinners} Kazanan | Bitiş`)
             .setTimestamp(finishAt)
-    }
-
-    public isParticipationConditional(): boolean{
-        return this.allowedRoles.length > 0 || this.servers.length > 0
-    }
-
-    public buildTermOfParticipationText(): string{
-        return "" // TODO::Implement method
     }
 
 }

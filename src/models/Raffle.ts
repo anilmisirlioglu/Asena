@@ -3,6 +3,12 @@ import { ColorResolvable, Snowflake } from 'discord.js';
 
 export type RaffleStatus = 'FINISHED' | 'ALMOST_DONE' | 'CONTINUES' | 'CANCELED'
 
+export interface IPartialServer{
+    id: Snowflake
+    invite: string
+    name: string
+}
+
 export interface IRaffle extends Document{
     prize: string
     server_id: Snowflake
@@ -12,7 +18,7 @@ export interface IRaffle extends Document{
     numberOfWinners: number
     status: RaffleStatus
     finishAt: Date
-    servers?: Snowflake[]
+    servers?: IPartialServer[]
     allowedRoles?: Snowflake[]
     rewardRoles?: Snowflake[]
     color?: ColorResolvable

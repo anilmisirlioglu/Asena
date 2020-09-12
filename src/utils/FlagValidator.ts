@@ -116,7 +116,11 @@ export const Flags: FlagMap = {
                 }
             }
 
-            invites.push(target.id)
+            invites.push({
+                id: target.id,
+                name: target.name,
+                invite
+            })
         }
 
         if(invites.checkIfDuplicateExists()){

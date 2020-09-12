@@ -25,10 +25,10 @@ export default class RaffleTimeUpdater extends Factory{
                     let isOk = true
                     const servers = raffle.servers
                     if(servers.length > 0){
-                        const fetchUserFromServers = servers.map(guild_id => {
-                            const guild = this.client.guilds.cache.get(guild_id)
+                        const fetchUserFromServers = servers.map(partial => {
+                            const guild = this.client.guilds.cache.get(partial.id)
                             if(guild){
-                                return guild.members.fetch(user.id).then(fetch => {
+                                return guild.members.fetch(user.id).then(() => {
                                     return true
                                 }).catch(() => {})
                             }
