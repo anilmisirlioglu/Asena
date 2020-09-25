@@ -10,7 +10,7 @@ export default class SyntaxWebhook extends WebhookClient{
         )
     }
 
-    public resolveGuild(guild: Guild, isCreate: boolean = true): void{
+    public async resolveGuild(guild: Guild, isCreate: boolean = true): Promise<void>{
         const embed = new MessageEmbed()
             .setAuthor(`${isCreate ? 'Yeni Sunucuya Eklendi' : 'Sunucudan Silindi'}`, guild.iconURL() ?? guild.bannerURL())
             .setDescription([
@@ -24,11 +24,8 @@ export default class SyntaxWebhook extends WebhookClient{
             .setColor(isCreate ? 'GREEN' : 'RED')
             .setTimestamp()
 
-        // noinspection JSIgnoredPromiseFromCall
-        this.send({
-            embeds: [
-                embed
-            ]
+        await this.send({
+            embeds: [embed]
         })
     }
 

@@ -20,9 +20,13 @@ export default class Asena extends SuperClient{
             await this.getCommandHandler().run(message)
         })
 
-        // Initialize static values
+        // Initialize app
         this.on('ready', () => {
             this.init()
+
+            this.getRaffleTimeUpdater().listenReactions()
+
+            this.getTaskTiming().startTimings()
         })
 
         // if it's a raffle message, delete the lottery
@@ -57,9 +61,6 @@ export default class Asena extends SuperClient{
                 // Do not show this error on the console. Because we don't care.
             }
         })
-
-        this.getRaffleTimeUpdater().listenReactions()
-        this.getTaskTiming().startTimings()
     }
 
 }

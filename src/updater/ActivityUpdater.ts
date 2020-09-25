@@ -11,18 +11,18 @@ export default class ActivityUpdater extends Factory{
         this.client.on('ready', async () => {
             const client: SuperClient = this.client
 
+            this.counter = client.guilds.cache.size
+
             await client.user.setStatus('online')
             await client.user.setActivity(this.getActivityString(), {
                 type: 'PLAYING'
             })
 
             client.logger.info(`Asena ${client.version.getFullVersion()} başlatılıyor...`)
-            client.logger.info(`${client.user.username} aktif, toplam ${client.guilds.cache.size} sunucuya hizmet veriliyor!`)
+            client.logger.info(`${client.user.username} aktif, toplam ${this.counter} sunucuya hizmet veriliyor!`)
         })
 
         this.setGuildCounterListeners()
-
-        this.setActivityUpdateInterval()
     }
 
     private getActivityString(): string{
@@ -30,35 +30,34 @@ export default class ActivityUpdater extends Factory{
     }
 
     private setGuildCounterListeners(): void{
-        const webhook = this.client.webhook
-        this.client.on('ready', () => {
-            this.counter = this.client.guilds.cache.size
-        })
-
-        this.client.on('guildCreate', guild => {
+        this.client.on('guildCreate', async guild => {
             this.counter += 1
 
-            webhook.resolveGuild(guild)
+            await Promise.all([
+                this.client.webhook.resolveGuild(guild),
+                this.updateStatus()
+            ])
         })
 
-        this.client.on('guildDelete', guild => {
+        this.client.on('guildDelete', async guild => {
             this.counter -= 1
 
-            webhook.resolveGuild(guild, false)
+            await Promise.all([
+                this.client.webhook.resolveGuild(guild, false),
+                this.updateStatus()
+            ])
         })
     }
 
-    private setActivityUpdateInterval(){
-        setInterval(async () => {
-            await this.client.user.setActivity(this.getActivityString(), {
-                type: 'PLAYING'
-            })
+    private async updateStatus(){
+        await this.client.user.setActivity(this.getActivityString(), {
+            type: 'PLAYING'
+        })
 
-            if(!this.client.isDevBuild){
-                this.updateTopGGStats()
-                this.updateDiscordBotsGGStats()
-            }
-        }, Constants.UPDATE_INTERVAL)
+        if(!this.client.isDevBuild){
+            this.updateTopGGStats()
+            this.updateDiscordBotsGGStats()
+        }
     }
 
     private updateTopGGStats(){
@@ -85,10 +84,6 @@ export default class ActivityUpdater extends Factory{
         }, {
             guildCount: this.counter
         })
-    }
-
-    public getCounter(): number{
-        return this.counter
     }
 
 }

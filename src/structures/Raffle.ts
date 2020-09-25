@@ -204,18 +204,27 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
         const finishAt: Date = this.finishAt
         const time = secondsToTime(Math.ceil((finishAt.getTime() - this.createdAt.getTime()) / 1000))
         const remaining = secondsToTime(customRemainingTime ?? Math.ceil((finishAt.getTime() - Date.now()) / 1000))
-        const roleToString = roles => roles.map(role => `<@&${role}>`).join(', ') //this.rewardRoles.map(role => `<@&${role}>`).join(', ')
+        const roleToString = roles => roles.map(role => `<@&${role}>`).join(', ')
 
-        return new MessageEmbed() // TODO::Daha ilgi çekici hale getir
+        // This is not over yet
+
+        const
+            checkOfRewardRoles = this.rewardRoles.length === 0,
+            checkOfServers = this.servers.length === 0,
+            checkOfAllowedRoles = this.allowedRoles.length === 0
+        return new MessageEmbed()
             .setAuthor(this.prize)
             .setDescription([
-                `Çekilişe Katılmak İçin ${Constants.CONFETTI_REACTION_EMOJI} emojisine tıklayın!`,
-                `Süre: **${time}**`,
-                `Bitmesine: **${remaining}**`,
-                this.rewardRoles.length === 0 ? undefined : `Ödül olarak verilecek roller: ${roleToString(this.rewardRoles)}`,
-                this.servers.length === 0 ? undefined : `Şu sunuculara üye olmalısınız: **${this.servers.map(server => `[${server.name}](${server.invite})`).join(', ')}**`,
-                this.allowedRoles.length === 0 ? undefined : `Şu rollere sahip olmalısınız: ${roleToString(this.allowedRoles)}`,
-                `Oluşturan: <@${this.constituent_id}>`
+                `<:join_arrow:746358699706024047> Çekilişe Katılmak İçin ${Constants.CONFETTI_REACTION_EMOJI} emojisine tıklayın!`,
+                ' ',
+                `:stopwatch: Süre: **${time}**`,
+                `:calendar: Bitmesine: **${remaining}**`,
+                checkOfRewardRoles || checkOfServers || checkOfAllowedRoles ? ' ' : undefined,
+                checkOfRewardRoles ? undefined : `:mega: Ödül olarak verilecek roller: ${roleToString(this.rewardRoles)}`,
+                checkOfServers ? undefined : `:mega: Şu sunuculara üye olmalısınız: **${this.servers.map(server => `[${server.name}](${server.invite})`).join(', ')}**`,
+                checkOfAllowedRoles ? undefined : `:mega: Şu rollere sahip olmalısınız: ${roleToString(this.allowedRoles)}`,
+                ' ',
+                `:round_pushpin: Oluşturan: <@${this.constituent_id}>`
             ].filter(Boolean))
             .setColor(alert ? 'RED' : this.color ?? '#bd087d')
             .setFooter(`${this.numberOfWinners} Kazanan | Bitiş`)

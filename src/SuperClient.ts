@@ -124,7 +124,7 @@ export default abstract class SuperClient extends Client{
                 `**Veri Yolu:** ${err.path}`,
                 `**Hata Kodu:** ${err.code}`,
                 `**Stack Trace:**\`\`\`${err.stack}\`\`\``
-            ].join('\n'))
+            ])
     }
 
 }
