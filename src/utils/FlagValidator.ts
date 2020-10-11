@@ -260,17 +260,17 @@ export const Flags: FlagMap = {
 export default class FlagValidator{
 
     private readonly client: SuperClient
-    private readonly message: Message
+    private readonly message?: Message
 
-    constructor(client: SuperClient, message: Message){
+    constructor(client: SuperClient, message?: Message){
         this.client = client
         this.message = message
     }
 
-    async validate(key: keyof typeof Flags, value: string): Promise<FlagValidatorReturnType>{
+    async validate(key: keyof typeof Flags, value: string, message?: Message): Promise<FlagValidatorReturnType>{
         const callback = Flags[key]
 
-        return callback(this.client, this.message, value)
+        return callback(this.client, message ?? this.message, value)
     }
 
 }

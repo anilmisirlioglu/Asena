@@ -29,9 +29,10 @@ export const RaffleLimits: IRaffleLimits = {
     MAX_REWARD_ROLE_COUNT: 8
 }
 
-abstract class Constants{
+export const SETUP_CANCEL_KEYWORDS: string[] = ['iptal', 'cancel', 'exit']
+export const PHASE_SKIP_KEYWORDS: string[] = ['pas', 'skip', 'geç', 'gec']
 
-    public static SETUP_CANCEL_KEYWORDS: string[] = ['iptal', 'cancel', 'exit']
+abstract class Constants{
 
     public static REQUIRED_PERMISSIONS: PermissionString[] = [
         'SEND_MESSAGES',
@@ -55,8 +56,6 @@ abstract class Constants{
     public static MAX_SURVEY_TIME: number = 60 * 60 * 24 * 15
 
     public static COOLDOWN_TIME: number = 5
-
-    public static UPDATE_INTERVAL: number = 1000 * 60 * 5
 
     public static ALLOWED_TIME_TYPES: string[] = ['m', 'h', 'd']
 

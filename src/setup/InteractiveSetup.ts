@@ -3,7 +3,7 @@ import SuperClient from '../SuperClient';
 import InvalidArgumentException from '../utils/exceptions/InvalidArgumentException';
 import SetupPhase from './SetupPhase';
 import { EventEmitter } from 'events';
-import Constants from '../Constants';
+import Constants, { SETUP_CANCEL_KEYWORDS, PHASE_SKIP_KEYWORDS } from '../Constants';
 
 type DataStoreType = Collection<number, any>
 
@@ -77,19 +77,29 @@ export default class InteractiveSetup extends EventEmitter{
             if(message.author.id === this.user_id && message.channel.id === this.channel_id){
                 if(!this.isItOver){
                     const content = message.content.trim()
-                    if(Constants.SETUP_CANCEL_KEYWORDS.indexOf(content) === -1){
-                        const validator = await phase.validator(message)
-                        if(validator.result){
-                            this.dataStore.set(this.currentPhaseIndex, validator.value)
-                            if(this.getLastPhaseIndex() !== this.currentPhaseIndex){
-                                this.currentPhaseIndex++
-                                this.setPhaseListener()
+                    if(SETUP_CANCEL_KEYWORDS.indexOf(content) === -1){
+                        if(PHASE_SKIP_KEYWORDS.indexOf(content) === -1){
+                            const validator = await phase.validator(message)
+                            if(validator.result){
+                                this.dataStore.set(this.currentPhaseIndex, validator.value)
+                                if(this.getLastPhaseIndex() !== this.currentPhaseIndex){
+                                    this.next()
+                                }else{
+                                    this.client.getSetupManager().delete(this)
+                                    this.onFinishCallback(this.dataStore)
+                                }
                             }else{
-                                this.client.getSetupManager().delete(this)
-                                this.onFinishCallback(this.dataStore)
+                                this.setPhaseListener(false)
                             }
                         }else{
-                            this.setPhaseListener(false)
+                            if(phase.skippable){
+                                this.emit('message', `${Constants.RUBY_EMOJI} **${this.currentPhaseIndex + 1}.** adım başarıyla **atlandı**. Sıradaki adıma geçildi.`)
+                                this.dataStore.set(this.currentPhaseIndex, null)
+                                this.next()
+                            }else{
+                                this.emit('message', ':boom: Bu adım atlanamaz.')
+                                this.setPhaseListener(false)
+                            }
                         }
                     }else{
                         this.stop('İnteraktif kurulum sihirbazı iptal edildi.')
@@ -99,6 +109,11 @@ export default class InteractiveSetup extends EventEmitter{
                 this.setPhaseListener(false)
             }
         })
+    }
+
+    private next(){
+        this.currentPhaseIndex++
+        this.setPhaseListener(true)
     }
 
     private setTimeoutTiming(){

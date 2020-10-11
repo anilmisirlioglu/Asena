@@ -12,6 +12,7 @@ interface ValidatorCallback{
 interface SetupPhaseOptions{
     readonly message: string | string[]
     readonly validator: ValidatorCallback
+    readonly skippable: boolean
 }
 
 export default class SetupPhase{
@@ -29,6 +30,10 @@ export default class SetupPhase{
 
     public get validator(): ValidatorCallback{
         return this.options.validator
+    }
+
+    public get skippable(): boolean{
+        return this.options.skippable
     }
 
 }

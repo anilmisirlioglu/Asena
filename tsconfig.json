@@ -6,7 +6,10 @@
     "outDir": "./build",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "rootDir": "src",
+    "rootDirs": [
+      "src",
+      "tests"
+    ],
     "target": "es6",
     "sourceMap": true,
     "downlevelIteration": true,
