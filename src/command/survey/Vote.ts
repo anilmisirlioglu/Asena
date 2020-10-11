@@ -45,8 +45,10 @@ export default class Vote extends Command{
             await message.channel
                 .send({ embed })
                 .then(async vote => {
-                    await vote.react(AGREE);
-                    await vote.react(DISAGREE);
+                    await Promise.all([
+                        vote.react(AGREE),
+                        vote.react(DISAGREE)
+                    ])
                 })
         }else{
             const time = detectTime(second)
@@ -87,13 +89,20 @@ export default class Vote extends Command{
                     title: args.filter(arg => arg !== undefined).join(' '),
                     finishAt: new Date(Date.now() + (time * 1000))
                 })
+                let promises
                 if(!survey){
-                    await $message.delete()
-                    await message.channel.send(':boom: Anket verisi veritabanına kaydedilemediği için iptal edildi.')
+                    promises = [
+                        $message.delete(),
+                        message.channel.send(':boom: Anket verisi veritabanına kaydedilemediği için iptal edildi.')
+                    ]
                 }else{
-                    await $message.react(AGREE)
-                    await $message.react(DISAGREE)
+                    promises = [
+                        $message.react(AGREE),
+                        $message.react(DISAGREE)
+                    ]
                 }
+
+                await Promise.all(promises)
             })
         }
 

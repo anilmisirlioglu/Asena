@@ -68,9 +68,10 @@ export default class SetCommandPermission extends Command{
             return true
         }
 
-        await (add ? server.addPublicCommand($command.name) : server.deletePublicCommand($command.name))
-        await message.channel.send(`🌈  '**${$command.name}**' komutunun izinleri başarıyla düzenlendi. Komut durumu: **Herkese ${add ? 'açık' : 'kapalı'}**`)
-
+        await Promise.all([
+            (add ? server.addPublicCommand($command.name) : server.deletePublicCommand($command.name)),
+            message.channel.send(`🌈  '**${$command.name}**' komutunun izinleri başarıyla düzenlendi. Komut durumu: **Herkese ${add ? 'açık' : 'kapalı'}**`)
+        ])
         return true
     }
 

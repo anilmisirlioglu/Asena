@@ -68,10 +68,12 @@ class Survey extends Structure<typeof SurveyModel, SuperSurvey>{
                     .addField(`<a:yes:${Emojis.AGREE_EMOJI_ID}> (Evet)`, agreeCount, true)
                     .addField(`<a:no:${Emojis.DISAGREE_EMOJI_ID}> (Hayır)`, disagreeCount, true)
 
-                await message.delete({ timeout: 0 })
-                await message.channel.send(`${Emojis.RUBY_EMOJI} **ANKET SONUÇLARI**`, {
-                    embed
-                })
+                await Promise.all([
+                    message.delete({ timeout: 0 }),
+                    message.channel.send(`${Emojis.RUBY_EMOJI} **ANKET SONUÇLARI**`, {
+                        embed
+                    })
+                ])
             }
         }
     }

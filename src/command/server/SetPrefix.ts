@@ -27,10 +27,10 @@ export default class SetPrefix extends Command{
             return true
         }
 
-        await server.setPrefix(prefix)
-
-        await message.channel.send(`:comet: Komut ön adı **${prefix}** olarak değiştirildi.`)
-
+        await Promise.all([
+            server.setPrefix(prefix),
+            message.channel.send(`:comet: Komut ön adı **${prefix}** olarak değiştirildi.`)
+        ])
         return true
     }
 
