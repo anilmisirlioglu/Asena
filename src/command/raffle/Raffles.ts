@@ -1,7 +1,7 @@
 import { Message, MessageEmbed } from 'discord.js'
 
 import Command from '../Command'
-import Constants from '../../Constants'
+import { Emojis } from '../../Constants'
 import { getDateTimeToString } from '../../utils/DateTimeHelper'
 import SuperClient from '../../SuperClient';
 import Server from '../../structures/Server';
@@ -27,7 +27,7 @@ export default class Raffles extends Command{
             .setTimestamp()
 
         if(raffles.length === 0){
-            embed.setDescription(`${Constants.CONFETTI_REACTION_EMOJI} Aktif devam eden herhangi bir çekiliş bulunmuyor.`)
+            embed.setDescription(`${Emojis.CONFETTI_REACTION_EMOJI} Aktif devam eden herhangi bir çekiliş bulunmuyor.`)
         }else{
             let i: number = 1;
             raffles.map(raffle => {
@@ -39,7 +39,7 @@ export default class Raffles extends Command{
                     `Bitiş Tarihi: **${getDateTimeToString(new Date(raffle.finishAt))}** (UTC)`
                 ].join('\n'))
             })
-            embed.setDescription(`${Constants.CONFETTI_REACTION_EMOJI} Toplam **${raffles.length}** aktif çekiliş var`)
+            embed.setDescription(`${Emojis.CONFETTI_REACTION_EMOJI} Toplam **${raffles.length}** aktif çekiliş var`)
         }
 
         await message.channel.send({ embed })

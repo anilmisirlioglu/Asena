@@ -1,7 +1,7 @@
 import { Message } from 'discord.js'
 
 import Command from '../Command'
-import Constants from '../../Constants'
+import { Emojis } from '../../Constants'
 import SuperClient from '../../SuperClient';
 import Server from '../../structures/Server';
 
@@ -67,7 +67,7 @@ export default class ReRollRaffle extends Command{
             }
 
             await Promise.all([
-                message.channel.send(`${Constants.CONFETTI_EMOJI} Tebrikler ${winners.map(winner => `<@${winner}>`).join(', ')}! **${raffle.prize}** kazandınız (Kazananlar tekrar çekildi)\n**Çekiliş:** ${_message}`),
+                message.channel.send(`${Emojis.CONFETTI_EMOJI} Tebrikler ${winners.map(winner => `<@${winner}>`).join(', ')}! **${raffle.prize}** kazandınız (Kazananlar tekrar çekildi)\n**Çekiliş:** ${_message}`),
                 new Promise(async () => {
                     if(raffle.winners.length > 0){
                         const promises: Promise<unknown>[] = raffle.winners.map(winner => new Promise(() => {

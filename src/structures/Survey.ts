@@ -11,7 +11,7 @@ import {
     Snowflake,
     TextChannel
 } from 'discord.js';
-import Constants from '../Constants';
+import { Emojis } from '../Constants';
 import SuperClient from '../SuperClient';
 
 type SuperSurvey = ISurvey & Timestamps & ID
@@ -46,7 +46,7 @@ class Survey extends Structure<typeof SurveyModel, SuperSurvey>{
             const message: Message | undefined = await channel.messages.fetch(this.message_id)
             if(message instanceof Message){
                 const reactions = await Promise.all(
-                    [Constants.AGREE_EMOJI_ID, Constants.DISAGREE_EMOJI_ID].map(async emoji => {
+                    [Emojis.AGREE_EMOJI_ID, Emojis.DISAGREE_EMOJI_ID].map(async emoji => {
                         const reaction: MessageReaction = await message.reactions.cache.get(emoji)
                         const fetch = await reaction.users.fetch()
 
@@ -65,11 +65,11 @@ class Survey extends Structure<typeof SurveyModel, SuperSurvey>{
                     .setFooter('Oylama sonuçları')
                     .setTimestamp()
                     .setTitle(this.title)
-                    .addField(`<a:yes:${Constants.AGREE_EMOJI_ID}> (Evet)`, agreeCount, true)
-                    .addField(`<a:no:${Constants.DISAGREE_EMOJI_ID}> (Hayır)`, disagreeCount, true)
+                    .addField(`<a:yes:${Emojis.AGREE_EMOJI_ID}> (Evet)`, agreeCount, true)
+                    .addField(`<a:no:${Emojis.DISAGREE_EMOJI_ID}> (Hayır)`, disagreeCount, true)
 
                 await message.delete({ timeout: 0 })
-                await message.channel.send(`${Constants.RUBY_EMOJI} **ANKET SONUÇLARI**`, {
+                await message.channel.send(`${Emojis.RUBY_EMOJI} **ANKET SONUÇLARI**`, {
                     embed
                 })
             }

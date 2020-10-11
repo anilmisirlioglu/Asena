@@ -1,7 +1,7 @@
 import { Message } from 'discord.js'
 
 import Command from '../Command'
-import Constants from '../../Constants'
+import { Emojis } from '../../Constants'
 import SuperClient from '../../SuperClient';
 import Server from '../../structures/Server';
 
@@ -44,7 +44,7 @@ export default class CancelRaffle extends Command{
             })
         }
 
-        await message.channel.send(`${Constants.CONFETTI_EMOJI} Çekiliş başarıyla iptal edildi.`)
+        await message.channel.send(`${Emojis.CONFETTI_EMOJI} Çekiliş başarıyla iptal edildi.`)
 
         if(message.guild.me.hasPermission('MANAGE_MESSAGES')){
             await message.delete({

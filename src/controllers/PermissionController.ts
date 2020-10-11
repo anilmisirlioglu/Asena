@@ -1,5 +1,5 @@
 import { Channel, Guild, PermissionString } from 'discord.js';
-import Constants from '../Constants';
+import { Bot } from '../Constants';
 
 interface PermissionState{
     has: Boolean
@@ -25,7 +25,7 @@ export default class PermissionController{
     }
 
     public getMissingPermissions(guild: Guild, channel: Channel): PermissionString[]{
-        return guild.me.permissionsIn(channel).missing(Constants.REQUIRED_PERMISSIONS)
+        return guild.me.permissionsIn(channel).missing(Bot.REQUIRED_PERMISSIONS)
     }
 
     public static humanizePermission(permission: PermissionString): string{

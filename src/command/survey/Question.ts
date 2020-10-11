@@ -1,7 +1,7 @@
 import Command from '../Command';
 import SuperClient from '../../SuperClient';
 import { Message, MessageEmbed } from 'discord.js';
-import Constants, { ILetter } from '../../Constants';
+import { LETTERS, ILetter, MAX_ANSWER_LENGTH } from '../../Constants';
 import regional from '../../utils/RegionalIndicator';
 import Server from '../../structures/Server';
 
@@ -40,9 +40,9 @@ export default class Question extends Command{
             return true
         }
 
-        if(answers.length > Constants.MAX_ANSWER_LENGTH){
+        if(answers.length > MAX_ANSWER_LENGTH){
             await message.channel.send({
-                embed: this.getErrorEmbed(`Sorunuza maksimum ${Constants.MAX_ANSWER_LENGTH} adet şık ekleyebilirsiniz.`)
+                embed: this.getErrorEmbed(`Sorunuza maksimum ${MAX_ANSWER_LENGTH} adet şık ekleyebilirsiniz.`)
             })
 
             return true
@@ -55,7 +55,7 @@ export default class Question extends Command{
             .setDescription(
                 answers
                     .map(answer => {
-                        const emoji = Constants.LETTERS[i++]
+                        const emoji = LETTERS[i++]
                         emojis.push(emoji)
 
                         return `${regional`${emoji.name}`} ${answer}`

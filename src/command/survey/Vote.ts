@@ -1,6 +1,6 @@
 import Command from '../Command';
 import { Message, MessageEmbed } from 'discord.js';
-import Constants from '../../Constants';
+import { Emojis, SurveyLimits } from '../../Constants';
 import SuperClient from '../../SuperClient';
 import Survey from '../../models/Survey';
 import { detectTime, secondsToTime } from '../../utils/DateTimeHelper';
@@ -19,8 +19,8 @@ export default class Vote extends Command{
     }
 
     async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
-        const AGREE = Constants.AGREE_EMOJI_ID;
-        const DISAGREE = Constants.DISAGREE_EMOJI_ID;
+        const AGREE = Emojis.AGREE_EMOJI_ID;
+        const DISAGREE = Emojis.DISAGREE_EMOJI_ID;
 
         if(args.length <= 1) return false
 
@@ -58,7 +58,7 @@ export default class Vote extends Command{
                 return true
             }
 
-            if(time < Constants.MIN_SURVEY_TIME || time > Constants.MAX_SURVEY_TIME){
+            if(time < SurveyLimits.MIN_TIME || time > SurveyLimits.MAX_TIME){
                 await message.channel.send({
                     embed: this.getErrorEmbed(`Anket süresi en az 1 dakika, maksimum 15 gün olabilir.`)
                 })

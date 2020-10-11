@@ -6,7 +6,7 @@ import Premium from '../../decorators/Premium';
 import FlagValidator, { Flags, RequiredFlags } from '../../utils/FlagValidator';
 import { IRaffle } from '../../models/Raffle';
 import Raffle from '../../structures/Raffle';
-import Constants, { RaffleLimits } from '../../Constants';
+import { Emojis, RaffleLimits } from '../../Constants';
 
 @Premium
 export default class AdvancedCreateRaffle extends Command{
@@ -113,7 +113,7 @@ export default class AdvancedCreateRaffle extends Command{
             embed: raffle.buildEmbed()
         }).then(async $message => {
             await Promise.all([
-                $message.react(Constants.CONFETTI_REACTION_EMOJI),
+                $message.react(Emojis.CONFETTI_REACTION_EMOJI),
                 server.raffles.create(Object.assign({
                     message_id: $message.id
                 }, raffleProps) as IRaffle)

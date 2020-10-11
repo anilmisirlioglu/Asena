@@ -1,7 +1,7 @@
 import Command from '../Command'
 import { secondsToTime, detectTime } from '../../utils/DateTimeHelper'
 import { Message, TextChannel } from 'discord.js'
-import Constants, { RaffleLimits } from '../../Constants'
+import { Emojis, RaffleLimits } from '../../Constants'
 import InteractiveSetup from '../../setup/InteractiveSetup'
 import SetupPhase from '../../setup/SetupPhase'
 import SuperClient from '../../SuperClient'
@@ -45,7 +45,7 @@ export default class SetupRaffle extends Command{
             const phases = [
                 new SetupPhase({
                     message: [
-                        `${Constants.CONFETTI_REACTION_EMOJI} ${client.user.username} interaktif kurulum sihirbazına **hoşgeldiniz**!`,
+                        `${Emojis.CONFETTI_REACTION_EMOJI} ${client.user.username} interaktif kurulum sihirbazına **hoşgeldiniz**!`,
                         'Eğer sihirbazdan **çıkmak** isterseniz lütfen sohbete `iptal`, `cancel` veya `exit` yazın. Hadi kuruluma geçelim.\n',
                         '**Adım 1:** Öncelikle çekilişin hangi metin kanalında yapılacağını belirleyelim\n',
                         '`Lütfen sunucuda var olan botun erişebileceği bir metin kanalını etiketlemeniz gerektiğini unutmayın.`'
@@ -69,7 +69,7 @@ export default class SetupRaffle extends Command{
                             }
                         }
 
-                        await message.channel.send(`${Constants.CONFETTI_REACTION_EMOJI} Başarılı! Çekiliş kanalı <#${channel.id}> olarak belirlendi. Hadi sıradaki aşamaya geçelim.`)
+                        await message.channel.send(`${Emojis.CONFETTI_REACTION_EMOJI} Başarılı! Çekiliş kanalı <#${channel.id}> olarak belirlendi. Hadi sıradaki aşamaya geçelim.`)
                         return {
                             result: true,
                             value: channel.id
@@ -100,7 +100,7 @@ export default class SetupRaffle extends Command{
                             }
                         }
 
-                        await message.channel.send(`${Constants.CONFETTI_REACTION_EMOJI} Çok iyi! Bu çekilişte toplam **${toInt}** kişinin yüzünü güldüreceksiniz :slight_smile:!`)
+                        await message.channel.send(`${Emojis.CONFETTI_REACTION_EMOJI} Çok iyi! Bu çekilişte toplam **${toInt}** kişinin yüzünü güldüreceksiniz :slight_smile:!`)
                         return {
                             result: true,
                             value: toInt
@@ -135,7 +135,7 @@ export default class SetupRaffle extends Command{
                         }
 
                         const $secondsToTime = secondsToTime(toSecond)
-                        await message.channel.send(`${Constants.CONFETTI_REACTION_EMOJI} Tebrikler! Çekiliş süresi **${$secondsToTime.toString()}** olarak belirlendi.`)
+                        await message.channel.send(`${Emojis.CONFETTI_REACTION_EMOJI} Tebrikler! Çekiliş süresi **${$secondsToTime.toString()}** olarak belirlendi.`)
                         return {
                             result: true,
                             value: toSecond
@@ -179,7 +179,7 @@ export default class SetupRaffle extends Command{
                             validatorSuccessMessage = 'Burada normalde bu mesaj yerine başka bir mesaj olması gerekirdi fakat bir şeyler ters gittiği için o mesajı göremiyorsun... *Dostum çok şanssızsın*'
                             break
                     }
-                    await message.channel.send(`${Constants.CONFETTI_REACTION_EMOJI} ${validatorSuccessMessage}`)
+                    await message.channel.send(`${Emojis.CONFETTI_REACTION_EMOJI} ${validatorSuccessMessage}`)
                     return {
                         result: true,
                         value: validate.result
@@ -298,7 +298,7 @@ export default class SetupRaffle extends Command{
                             embed: raffle.buildEmbed()
                         }).then(async $message => {
                             await Promise.all([
-                                $message.react(Constants.CONFETTI_REACTION_EMOJI),
+                                $message.react(Emojis.CONFETTI_REACTION_EMOJI),
                                 server.raffles.create(Object.assign({
                                     message_id: $message.id
                                 }, data) as IRaffle)
@@ -320,6 +320,7 @@ export default class SetupRaffle extends Command{
             setup.on('stop', async reason => {
                 await message.channel.send(`:boom: ${reason}`)
             })
+
             setup.on('message', async content => {
                 await message.channel.send(content)
             })

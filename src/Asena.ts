@@ -1,5 +1,5 @@
 import SuperClient from './SuperClient';
-import Constants from './Constants';
+import { Emojis } from './Constants';
 
 export default class Asena extends SuperClient{
 
@@ -52,7 +52,7 @@ export default class Asena extends SuperClient{
             try{
                 guild.owner?.createDM().then(channel => {
                     channel.send([
-                        `> ${Constants.RUBY_EMOJI} Botun kullanımı ile ilgili sorunlar mı yaşıyorsun? Lütfen bizimle iletişime geçmekten çekinme.\n`,
+                        `> ${Emojis.RUBY_EMOJI} Botun kullanımı ile ilgili sorunlar mı yaşıyorsun? Lütfen bizimle iletişime geçmekten çekinme.\n`,
                         `:earth_americas: Website: https://asena.xyz`,
                         ':sparkles: Destek Sunucusu: https://discord.gg/CRgXhfs'
                     ].join('\n'))

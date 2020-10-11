@@ -1,10 +1,9 @@
 import { Collection, Message, TextChannel } from 'discord.js';
 
-import CommandRunner from './CommandRunner';
 import Command from './Command';
 import { Colors } from '../utils/TextFormat';
 import SuperClient from '../SuperClient';
-import Constants from '../Constants';
+import { Bot } from '../Constants';
 import Factory from '../Factory';
 import { ICommandPremium } from '../decorators/Premium';
 import SetCommandPermission from './server/SetCommandPermission';
@@ -27,6 +26,10 @@ import EditRaffle from './raffle/EditRaffle';
 import AdvancedCreateRaffle from './raffle/AdvancedCreateRaffle';
 
 type CommandMap = Collection<string, Command>
+
+interface CommandRunner{
+    run(message: Message): void
+}
 
 export default class CommandHandler extends Factory implements CommandRunner{
 
@@ -102,7 +105,7 @@ export default class CommandHandler extends Factory implements CommandRunner{
 
         const prefix = (client.isDevBuild ? 'dev' : '') + (server.prefix || client.prefix)
         if(!message.content.startsWith(prefix)){
-            if(message.content === Constants.PREFIX_COMMAND){
+            if(message.content === Bot.PREFIX_COMMAND){
                 await channel.send(`🌈   Botun sunucu içerisinde ki komut ön adı(prefix): **${server.prefix}**`)
             }
 
@@ -135,7 +138,7 @@ export default class CommandHandler extends Factory implements CommandRunner{
 
         if(command){
             const authorized: boolean = command.hasPermission(message.member) || message.member.roles.cache.filter(role => {
-                return role.name.trim().toLowerCase() === Constants.PERMITTED_ROLE_NAME
+                return role.name.trim().toLowerCase() === Bot.PERMITTED_ROLE_NAME
             }).size !== 0 || server.isPublicCommand(command.name)
             if(authorized){
                 const checkPermissions = this.getPermissionController().checkSelfPermissions(

@@ -13,7 +13,7 @@ import Structure from './Structure';
 import RaffleModel, { IPartialServer, IRaffle, RaffleStatus } from '../models/Raffle';
 import Timestamps from '../models/legacy/Timestamps';
 import { secondsToTime } from '../utils/DateTimeHelper';
-import Constants from '../Constants';
+import { Emojis } from '../Constants';
 import ID from '../models/legacy/ID';
 import SuperClient from '../SuperClient';
 import RandomArray from '../utils/RandomArray';
@@ -118,7 +118,7 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
                     .setColor('#36393F')
 
                 await Promise.all([
-                    message.edit(`${Constants.CONFETTI_REACTION_EMOJI} **ÇEKİLİŞ BİTTİ** ${Constants.CONFETTI_REACTION_EMOJI}`, { embed }),
+                    message.edit(`${Emojis.CONFETTI_REACTION_EMOJI} **ÇEKİLİŞ BİTTİ** ${Emojis.CONFETTI_REACTION_EMOJI}`, { embed }),
                     channel.send(`${content}\n**Çekiliş** ${_message}`),
                     this.resolveWinners(client, channel.guild, winners),
                 ])
@@ -130,7 +130,7 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
         let winners = []
 
         if(message){
-            const reaction: MessageReaction | undefined = await message.reactions.cache.get(Constants.CONFETTI_REACTION_EMOJI)
+            const reaction: MessageReaction | undefined = await message.reactions.cache.get(Emojis.CONFETTI_REACTION_EMOJI)
             const [_, users] = (await reaction.users.fetch()).partition(user => user.bot)
             const userKeys = users.keyArray().filter(user_id => user_id !== this.constituent_id)
 
@@ -193,11 +193,11 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
     }
 
     public static getStartMessage(): string{
-        return `${Constants.CONFETTI_EMOJI} **ÇEKİLİŞ BAŞLADI** ${Constants.CONFETTI_EMOJI}`
+        return `${Emojis.CONFETTI_EMOJI} **ÇEKİLİŞ BAŞLADI** ${Emojis.CONFETTI_EMOJI}`
     }
 
     public static getAlertMessage(): string{
-        return `${Constants.CONFETTI_EMOJI} **ÇEKİLİŞ İÇİN SON KATILIM** ${Constants.CONFETTI_EMOJI}`
+        return `${Emojis.CONFETTI_EMOJI} **ÇEKİLİŞ İÇİN SON KATILIM** ${Emojis.CONFETTI_EMOJI}`
     }
 
     public buildEmbed(alert: boolean = false, customRemainingTime: number = undefined): MessageEmbed{
@@ -215,7 +215,7 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
         return new MessageEmbed()
             .setAuthor(this.prize)
             .setDescription([
-                `<:join_arrow:746358699706024047> Çekilişe Katılmak İçin ${Constants.CONFETTI_REACTION_EMOJI} emojisine tıklayın!`,
+                `<:join_arrow:746358699706024047> Çekilişe Katılmak İçin ${Emojis.CONFETTI_REACTION_EMOJI} emojisine tıklayın!`,
                 ' ',
                 `:stopwatch: Süre: **${time}**`,
                 `:calendar: Bitmesine: **${remaining}**`,

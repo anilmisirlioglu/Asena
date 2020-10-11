@@ -1,7 +1,7 @@
 import { Message } from 'discord.js'
 
 import Command from '../Command'
-import Constants, { RaffleLimits } from '../../Constants'
+import { RaffleLimits, Emojis } from '../../Constants'
 import SuperClient from '../../SuperClient';
 import { IRaffle } from '../../models/Raffle';
 import Server from '../../structures/Server';
@@ -78,7 +78,7 @@ export default class CreateRaffle extends Command{
             embed: raffle.buildEmbed()
         }).then(async $message => {
             await Promise.all([
-                $message.react(Constants.CONFETTI_REACTION_EMOJI),
+                $message.react(Emojis.CONFETTI_REACTION_EMOJI),
                 server.raffles.create(Object.assign({
                     message_id: $message.id
                 }, data) as IRaffle)

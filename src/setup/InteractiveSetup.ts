@@ -3,7 +3,7 @@ import SuperClient from '../SuperClient';
 import InvalidArgumentException from '../utils/exceptions/InvalidArgumentException';
 import SetupPhase from './SetupPhase';
 import { EventEmitter } from 'events';
-import Constants, { SETUP_CANCEL_KEYWORDS, PHASE_SKIP_KEYWORDS } from '../Constants';
+import { Emojis, Setup } from '../Constants';
 
 type DataStoreType = Collection<number, any>
 
@@ -77,8 +77,8 @@ export default class InteractiveSetup extends EventEmitter{
             if(message.author.id === this.user_id && message.channel.id === this.channel_id){
                 if(!this.isItOver){
                     const content = message.content.trim()
-                    if(SETUP_CANCEL_KEYWORDS.indexOf(content) === -1){
-                        if(PHASE_SKIP_KEYWORDS.indexOf(content) === -1){
+                    if(Setup.CANCEL_KEYWORDS.indexOf(content) === -1){
+                        if(Setup.PHASE_SKIP_KEYWORDS.indexOf(content) === -1){
                             const validator = await phase.validator(message)
                             if(validator.result){
                                 this.dataStore.set(this.currentPhaseIndex, validator.value)
@@ -93,7 +93,7 @@ export default class InteractiveSetup extends EventEmitter{
                             }
                         }else{
                             if(phase.skippable){
-                                this.emit('message', `${Constants.RUBY_EMOJI} **${this.currentPhaseIndex + 1}.** adım başarıyla **atlandı**. Sıradaki adıma geçildi.`)
+                                this.emit('message', `${Emojis.RUBY_EMOJI} **${this.currentPhaseIndex + 1}.** adım başarıyla **atlandı**. Sıradaki adıma geçildi.`)
                                 this.dataStore.set(this.currentPhaseIndex, null)
                                 this.next()
                             }else{

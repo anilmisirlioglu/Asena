@@ -1,12 +1,12 @@
 import Factory from '../Factory';
-import Constants from '../Constants';
+import { Bot, Emojis } from '../Constants';
 import { MessageReaction, PartialUser, User } from 'discord.js';
 import CooldownService from '../services/CooldownService';
 import Raffle from '../structures/Raffle';
 
 export default class RaffleTimeUpdater extends Factory{
 
-    private cooldownService: CooldownService = new CooldownService(Constants.COOLDOWN_TIME)
+    private cooldownService: CooldownService = new CooldownService(Bot.COOLDOWN_TIME)
 
     public listenReactions(){
         this.client.on('messageReactionAdd', async (reaction: MessageReaction, user: User | PartialUser) => {
@@ -16,7 +16,7 @@ export default class RaffleTimeUpdater extends Factory{
 
             if(
                 user.username !== this.client.user.username &&
-                reaction.emoji.name === Constants.CONFETTI_REACTION_EMOJI &&
+                reaction.emoji.name === Emojis.CONFETTI_REACTION_EMOJI &&
                 this.getCooldownService().checkCooldown(reaction.message.id)
             ){
                 const server = await this.client.servers.get(reaction.message.guild.id)

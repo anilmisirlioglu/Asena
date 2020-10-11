@@ -1,4 +1,4 @@
-import Constants from '../Constants'
+import { Emojis, TOP_GG_URL, DISCORD_BOTS_GG_URL } from '../Constants'
 import SuperClient from '../SuperClient';
 import Factory from '../Factory';
 import request from '../utils/Internet';
@@ -26,7 +26,7 @@ export default class ActivityUpdater extends Factory{
     }
 
     private getActivityString(): string{
-        return `${Constants.CONFETTI_REACTION_EMOJI} ${this.counter} Sunucu | ${process.env.PREFIX}help\nhttps://asena.xyz`
+        return `${Emojis.CONFETTI_REACTION_EMOJI} ${this.counter} Sunucu | ${process.env.PREFIX}help\nhttps://asena.xyz`
     }
 
     private setGuildCounterListeners(): void{
@@ -62,7 +62,7 @@ export default class ActivityUpdater extends Factory{
 
     private updateTopGGStats(){
         request({
-            host: Constants.TOP_GG_URL,
+            host: TOP_GG_URL,
             path: `/api/bots/${this.client.user.id}/stats`,
             method: 'POST',
             headers: {
@@ -75,7 +75,7 @@ export default class ActivityUpdater extends Factory{
 
     private updateDiscordBotsGGStats(){
         request({
-            host: Constants.DISCORD_BOTS_GG_URL,
+            host: DISCORD_BOTS_GG_URL,
             path: `/api/v1/bots/${this.client.user.id}/stats`,
             method: 'POST',
             headers: {

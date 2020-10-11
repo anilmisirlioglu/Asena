@@ -1,10 +1,33 @@
 import { EmojiResolvable, PermissionString } from 'discord.js';
 
-export type Letter = 'a' | 'b' | 'c' | 'd' | 'e'
+interface IBot{
+    readonly PREFIX_COMMAND: string
+    readonly PERMITTED_ROLE_NAME: string
+    readonly COOLDOWN_TIME: number
+    readonly REQUIRED_PERMISSIONS: PermissionString[]
+}
 
-export interface ILetter{
-    name: Letter,
-    emoji: EmojiResolvable
+export const Bot: IBot = {
+    PREFIX_COMMAND: '>>prefix',
+    PERMITTED_ROLE_NAME: 'asena', // if there is no permission, this role is checked
+    COOLDOWN_TIME: 5,
+    REQUIRED_PERMISSIONS: [
+        'SEND_MESSAGES',
+        'ADD_REACTIONS',
+        'VIEW_CHANNEL',
+        'EMBED_LINKS',
+        'READ_MESSAGE_HISTORY',
+        'USE_EXTERNAL_EMOJIS'
+    ]
+}
+
+export const Emojis = {
+    GRAPH_EMOJI: '<:graph:716972905841426453>',
+    CONFETTI_EMOJI: '<a:uwu:716956121289588736>', //<:confetti:713087026051940512>
+    CONFETTI_REACTION_EMOJI: '\uD83C\uDF89',
+    AGREE_EMOJI_ID: '721180088686870549',
+    DISAGREE_EMOJI_ID: '721179958378233887',
+    RUBY_EMOJI: '<a:ruby:721700215190454344>'
 }
 
 interface IRaffleLimits{
@@ -29,66 +52,52 @@ export const RaffleLimits: IRaffleLimits = {
     MAX_REWARD_ROLE_COUNT: 8
 }
 
-export const SETUP_CANCEL_KEYWORDS: string[] = ['iptal', 'cancel', 'exit']
-export const PHASE_SKIP_KEYWORDS: string[] = ['pas', 'skip', 'geç', 'gec']
-
-abstract class Constants{
-
-    public static REQUIRED_PERMISSIONS: PermissionString[] = [
-        'SEND_MESSAGES',
-        'ADD_REACTIONS',
-        'VIEW_CHANNEL',
-        'EMBED_LINKS',
-        'READ_MESSAGE_HISTORY',
-        'USE_EXTERNAL_EMOJIS'
-    ]
-
-    public static GRAPH_EMOJI: string = '<:graph:716972905841426453>'
-    public static CONFETTI_EMOJI: string = '<a:uwu:716956121289588736>' //<:confetti:713087026051940512>
-    public static CONFETTI_REACTION_EMOJI: string = '\uD83C\uDF89'
-    public static AGREE_EMOJI_ID: string = '721180088686870549'
-    public static DISAGREE_EMOJI_ID: string = '721179958378233887'
-    public static RUBY_EMOJI: string = '<a:ruby:721700215190454344>'
-
-    public static PERMITTED_ROLE_NAME: string = 'asena' // if there is no permission, this role is checked
-
-    public static MIN_SURVEY_TIME: number = 60
-    public static MAX_SURVEY_TIME: number = 60 * 60 * 24 * 15
-
-    public static COOLDOWN_TIME: number = 5
-
-    public static ALLOWED_TIME_TYPES: string[] = ['m', 'h', 'd']
-
-    public static MAX_ANSWER_LENGTH: number = 5
-
-    public static LETTERS: ILetter[] = [
-        {
-            name: 'a',
-            emoji: '🇦'
-        },
-        {
-            name: 'b',
-            emoji: '🇧'
-        },
-        {
-            name: 'c',
-            emoji: '🇨'
-        },
-        {
-            name: 'd',
-            emoji: '🇩'
-        },
-        {
-            name: 'e',
-            emoji: '🇪'
-        }
-    ] //allowed letters
-
-    public static PREFIX_COMMAND = '>>prefix'
-
-    public static TOP_GG_URL: string = 'top.gg'
-    public static DISCORD_BOTS_GG_URL: string = 'discord.bots.gg'
-
+interface ISurveyLimits{
+    readonly MIN_TIME: number
+    readonly MAX_TIME: number
 }
 
-export default Constants
+export const SurveyLimits: ISurveyLimits = {
+    MIN_TIME: 60,
+    MAX_TIME: 60 * 60 * 24 * 15
+}
+
+export const MAX_ANSWER_LENGTH = 5
+
+export type Letter = 'a' | 'b' | 'c' | 'd' | 'e'
+
+export interface ILetter{
+    name: Letter,
+    emoji: EmojiResolvable
+}
+
+export const Setup = {
+    CANCEL_KEYWORDS: ['iptal', 'cancel', 'exit'],
+    PHASE_SKIP_KEYWORDS: ['pas', 'skip', 'geç', 'gec']
+}
+
+export const LETTERS: ILetter[] = [
+    {
+        name: 'a',
+        emoji: '🇦'
+    },
+    {
+        name: 'b',
+        emoji: '🇧'
+    },
+    {
+        name: 'c',
+        emoji: '🇨'
+    },
+    {
+        name: 'd',
+        emoji: '🇩'
+    },
+    {
+        name: 'e',
+        emoji: '🇪'
+    }
+] //allowed letters
+
+export const TOP_GG_URL: string = 'top.gg'
+export const DISCORD_BOTS_GG_URL: string = 'discord.bots.gg'
