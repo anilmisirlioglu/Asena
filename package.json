@@ -29,6 +29,7 @@
     "test": "mocha -r ts-node/register tests/*.test.ts"
   },
   "dependencies": {
+    "amqplib": "^0.6.0",
     "child_process": "^1.0.2",
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
@@ -36,6 +37,7 @@
     "node-cron": "^2.0.3"
   },
   "devDependencies": {
+    "@types/amqplib": "^0.5.14",
     "@types/dotenv": "^8.2.0",
     "@types/mocha": "^8.0.2",
     "@types/mongoose": "^5.7.22",

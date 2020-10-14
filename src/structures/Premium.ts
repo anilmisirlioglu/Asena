@@ -1,27 +1,29 @@
-import { IPremium, PremiumType } from '../models/Server';
+import { IPremium, PremiumStatus, PremiumType } from '../models/Premium';
 
-class Premium implements IPremium{
+class Premium{
 
     public type: PremiumType
+    public status: PremiumStatus
     public finishAt: Date
     public startAt: Date
 
-    constructor(data){
+    constructor(data: IPremium){
         this.type = data.type
-        this.finishAt = data.finishAt
-        this.startAt = data.startAt
+        this.status = data.status
+        this.finishAt = new Date(data.finishAt)
+        this.startAt = new Date(data.startAt)
     }
 
     hasExpired(): boolean{
-        return +this.finishAt - Date.now() > 0
+        return Date.now() > +this.finishAt
     }
 
     humanizeType(): string{
         switch(this.type){
-            case 'LIMITED':
+            case PremiumType.LIMITED:
                 return 'Normal üyelik'
 
-            case 'PERMANENT':
+            case PremiumType.PERMANENT:
                 return 'Sınırsız Üyelik'
 
             default:

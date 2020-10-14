@@ -3,6 +3,7 @@ import SuperClient from '../../SuperClient';
 import Server from '../../structures/Server';
 import { Message, MessageEmbed } from 'discord.js';
 import { getDateTimeToString } from '../../utils/DateTimeHelper';
+import { PremiumType } from '../../models/Premium';
 
 export default class Premium extends Command{
 
@@ -22,7 +23,7 @@ export default class Premium extends Command{
             description = [
                 `Premium: **${server.premium.humanizeType()}**`,
                 `Başlangıç Tarihi: **${getDateTimeToString(server.premium.startAt)}**`,
-                `Bitiş Tarihi: **${server.premium.type === 'PERMANENT' ? 'Sınırsız ♾️' : getDateTimeToString(server.premium.finishAt)}**`
+                `Bitiş Tarihi: **${server.premium.type === PremiumType.PERMANENT ? 'Sınırsız ♾️' : getDateTimeToString(server.premium.finishAt)}**`
             ]
         }else{
             description = [

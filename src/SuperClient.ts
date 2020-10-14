@@ -18,6 +18,7 @@ import RaffleTimeUpdater from './updater/RaffleTimeUpdater';
 import ServerManager from './managers/ServerManager';
 import SetupManager from './setup/SetupManager';
 import SyntaxWebhook from './SyntaxWebhook';
+import PremiumUpdater from './updater/PremiumUpdater';
 
 interface SuperClientBuilderOptions{
     prefix: string
@@ -39,6 +40,7 @@ export default abstract class SuperClient extends Client{
 
     private readonly activityUpdater: ActivityUpdater = new ActivityUpdater(this)
     private readonly raffleTimeUpdater: RaffleTimeUpdater = new RaffleTimeUpdater(this)
+    private readonly premiumUpdater: PremiumUpdater = new PremiumUpdater(this)
 
     readonly servers: ServerManager = new ServerManager()
     private readonly setupManager: SetupManager = new SetupManager()
@@ -80,6 +82,10 @@ export default abstract class SuperClient extends Client{
 
     public getRaffleTimeUpdater(): RaffleTimeUpdater{
         return this.raffleTimeUpdater
+    }
+
+    public getPremiumUpdater(): PremiumUpdater{
+        return this.premiumUpdater
     }
 
     public getCommandHandler(): CommandHandler{

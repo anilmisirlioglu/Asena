@@ -21,6 +21,18 @@ export const Bot: IBot = {
     ]
 }
 
+interface IRabbitMQ{
+    channels: {
+        [key: string]: string
+    }
+}
+
+export const RabbitMQ: IRabbitMQ = {
+    channels: {
+        premium: 'premium'
+    }
+}
+
 export const Emojis = {
     GRAPH_EMOJI: '<:graph:716972905841426453>',
     CONFETTI_EMOJI: '<a:uwu:716956121289588736>', //<:confetti:713087026051940512>

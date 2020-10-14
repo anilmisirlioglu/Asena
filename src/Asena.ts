@@ -15,6 +15,9 @@ export default class Asena extends SuperClient{
         // Activity updater start
         this.getActivityUpdater().start()
 
+        // Start premium updater
+        this.getPremiumUpdater().start()
+
         // Command run
         this.on('message', async message => {
             await this.getCommandHandler().run(message)
