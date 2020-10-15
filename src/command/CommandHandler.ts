@@ -103,15 +103,6 @@ export default class CommandHandler extends Factory implements CommandRunner{
             } as any)
         }
 
-        const prefix = (client.isDevBuild ? 'dev' : '') + (server.prefix || client.prefix)
-        if(!message.content.startsWith(prefix)){
-            if(message.content === Bot.PREFIX_COMMAND){
-                await channel.send(`🌈   Botun sunucu içerisinde ki komut ön adı(prefix): **${server.prefix}**`)
-            }
-
-            return
-        }
-
         if(!message.member){
             return
         }
@@ -119,6 +110,23 @@ export default class CommandHandler extends Factory implements CommandRunner{
         const channel_id: string = this.client.getSetupManager().getSetupChannel(message.member.id)
         if(channel_id && channel_id === message.channel.id){ // check setup
             return
+        }
+
+        const prefix = (client.isDevBuild ? 'dev' : '') + (server.prefix || client.prefix)
+        if(!message.content.startsWith(prefix)){
+            if(channel.permissionsFor(client.user).has('SEND_MESSAGES')){
+                if(message.content === Bot.PREFIX_COMMAND){
+                    await channel.send(`🌈   Botun sunucu içerisinde ki komut ön adı(prefix): **${server.prefix}**`)
+
+                    return
+                }
+
+                if(message.mentions.has(client.user)){
+                    await message.channel.send(`🌈   **${SuperClient.NAME}** ve komutları hakkında daha fazla bilgi için: **${server.prefix}help**`)
+
+                    return
+                }
+            }
         }
 
         const args: string[] = message.content
