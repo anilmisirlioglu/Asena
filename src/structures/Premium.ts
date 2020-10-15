@@ -1,4 +1,5 @@
 import { IPremium, PremiumStatus, PremiumType } from '../models/Premium';
+import { parseObjectDate } from '../utils/DateTimeHelper';
 
 class Premium{
 
@@ -10,8 +11,8 @@ class Premium{
     constructor(data: IPremium){
         this.type = data.type
         this.status = data.status
-        this.finishAt = new Date(data.finishAt)
-        this.startAt = new Date(data.startAt)
+        this.startAt = typeof data.startAt === 'object' ? parseObjectDate(data.startAt) : new Date(data.startAt)
+        this.finishAt = typeof data.finishAt === 'object' ? parseObjectDate(data.finishAt) : new Date(data.finishAt)
     }
 
     hasExpired(): boolean{

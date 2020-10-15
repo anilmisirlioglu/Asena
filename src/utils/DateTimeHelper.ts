@@ -94,8 +94,21 @@ const detectTime = (time: string): number | undefined => {
     return toSecond
 }
 
+const parseObjectDate = object => {
+    return new Date(
+        object.year,
+        object.monthValue,
+        object.dayOfMonth,
+        object.hour,
+        object.minute,
+        object.second,
+        object.nano
+    )
+}
+
 export {
     secondsToTime,
     getDateTimeToString,
-    detectTime
+    detectTime,
+    parseObjectDate
 }
