@@ -3,6 +3,7 @@ import Factory from '../Factory';
 import { RabbitMQ } from '../Constants';
 import Premium from '../structures/Premium';
 import { PremiumStatus } from '../models/Premium';
+import { parseObjectDate } from '../utils/DateTimeHelper';
 
 export default class PremiumUpdater extends Factory{
 
@@ -27,8 +28,18 @@ export default class PremiumUpdater extends Factory{
                     const premium = JSON.parse(data.content.toString())
                     if(premium.server_id){
                         const server = await this.client.servers.get(premium.server_id)
-                        if(server)
-                            server.premium = premium.status === PremiumStatus.CONTINUES ? new Premium(premium) : null
+                        if(server){
+                            let object = null
+                            if(premium.status === PremiumStatus.CONTINUES){
+                                // LocalDateTime object to NodeJS Date object convert
+                                premium.startAt = parseObjectDate(premium.startAt)
+                                premium.finishAt = parseObjectDate(premium.finishAt)
+
+                                object = new Premium(premium)
+                            }
+
+                            server.premium = object
+                        }
                     }
                 }, {
                     noAck: true
