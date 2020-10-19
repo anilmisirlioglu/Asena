@@ -6,16 +6,14 @@
     "outDir": "./build",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "rootDirs": [
-      "src",
-      "tests"
-    ],
+    "rootDir": "src",
     "target": "es6",
     "sourceMap": true,
     "downlevelIteration": true,
     "declaration": false
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "tests"
   ]
 }
