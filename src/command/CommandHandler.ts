@@ -6,8 +6,8 @@ import SuperClient from '../SuperClient';
 import { Bot } from '../Constants';
 import Factory from '../Factory';
 import { ICommandPremium } from '../decorators/Premium';
+import PermissionController from './PermissionController';
 import SetCommandPermission from './server/SetCommandPermission';
-import PermissionController from '../controllers/PermissionController';
 
 import CancelRaffle from './raffle/CancelRaffle';
 import CreateRaffle from './raffle/CreateRaffle';

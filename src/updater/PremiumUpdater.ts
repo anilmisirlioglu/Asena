@@ -7,7 +7,7 @@ import { parseObjectDate } from '../utils/DateTimeHelper';
 
 export default class PremiumUpdater extends Factory{
 
-    start(){
+    public start(): void{
         amqp.connect(process.env.AMQP_CONN_URL, (err, connection) => {
             if(err){
                 this.client.logger.error(`RabbitMQ sunucusuna bağlanılamadı. Hata: ${err.message}`)
