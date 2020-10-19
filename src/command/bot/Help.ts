@@ -17,14 +17,14 @@ export default class Help extends Command{
     }
 
     async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
-        const command: undefined | string = args[0];
+        const command: undefined | string = args[0]
         const prefix = (await client.servers.get(message.guild.id)).prefix
-        if(args[0] === undefined){
+        if(!args[0]){
             const text = client.getCommandHandler().getCommandsArray().map(command => {
                 return command.permission === 'ADMINISTRATOR' ? (
                     message.member.hasPermission('ADMINISTRATOR') ? `\`${command.name}\`` : undefined
-                ) : `\`${command.name}\``;
-            }).filter(item => item !== undefined).join(', ');
+                ) : `\`${command.name}\``
+            }).filter(Boolean).join(', ')
 
             const embed = new MessageEmbed()
                 .setAuthor('📍 Komut Yardımı', message.author.displayAvatarURL() || message.author.defaultAvatarURL)
@@ -43,31 +43,23 @@ export default class Help extends Command{
                 }).catch(() => message.channel.send({ embed }))
             })
 
-            return true;
+            return true
         }else{
-            const searchCommand: Command | undefined = client.getCommandHandler().getCommandsMap().filter($command => $command.name === command.trim()).first();
-            if(searchCommand !== undefined){
-                const embed = new MessageEmbed()
+            const searchCommand: Command | undefined = client.getCommandHandler().getCommandsMap().filter($command => $command.name === command.trim()).first()
+            let embed
+            if(searchCommand){
+                embed = new MessageEmbed()
                     .setAuthor('📍 Komut Yardımı', message.author.displayAvatarURL() || message.author.defaultAvatarURL)
                     .addField('Komut', `${prefix}${searchCommand.name}`)
-                    .addField('Takma Adları (Alias)', searchCommand.aliases.map(alias => {
-                        return `${prefix}${alias}`
-                    }).join('\n'))
+                    .addField('Takma Adları (Alias)', searchCommand.aliases.map(alias => `${prefix}${alias}`))
                     .addField('Açıklaması', `${searchCommand.description}`)
                     .addField('Min. Yetki Seviyesi', `${searchCommand.permission === 'ADMINISTRATOR' ? 'Admin' : 'Üye'}`)
-                    .addField('Kullanımı', `${prefix}${searchCommand.name} ${searchCommand.usage === null ? '' : searchCommand.usage}`)
-                    .setColor('GREEN');
-
-                await message.channel.send({ embed });
-
-                return true;
-            }else{
-                await message.channel.send({
-                    embed: this.getErrorEmbed(`**${command}** adında komut bulunamadı.`)
-                });
-
-                return true;
+                    .addField('Kullanımı', `${prefix}${searchCommand.name} ${searchCommand.usage ? searchCommand.usage : ''}`)
+                    .setColor('GREEN')
             }
+
+            await message.channel.send({ embed: embed ?? this.getErrorEmbed(`**${command}** adında komut bulunamadı.`) })
+            return true
         }
     }
 }

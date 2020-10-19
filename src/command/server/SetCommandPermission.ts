@@ -1,7 +1,7 @@
-import Command from '../Command';
-import SuperClient from '../../SuperClient';
-import { Message } from 'discord.js';
-import Server from '../../structures/Server';
+import { Message } from 'discord.js'
+import Command from '../Command'
+import SuperClient from '../../SuperClient'
+import Server from '../../structures/Server'
 
 export default class SetCommandPermission extends Command{
 

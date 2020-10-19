@@ -14,7 +14,7 @@ export default class CancelRaffle extends Command{
             description: 'Var olan bir çekilişi bitirir.',
             usage: '[mesaj id]',
             permission: 'ADMINISTRATOR'
-        });
+        })
     }
 
     async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
@@ -52,7 +52,7 @@ export default class CancelRaffle extends Command{
             })
         }
 
-        return true;
+        return true
     }
 
 }

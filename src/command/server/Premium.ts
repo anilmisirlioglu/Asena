@@ -1,9 +1,9 @@
-import Command from '../Command';
-import SuperClient from '../../SuperClient';
-import Server from '../../structures/Server';
-import { Message, MessageEmbed } from 'discord.js';
-import { getDateTimeToString } from '../../utils/DateTimeHelper';
-import { PremiumType } from '../../models/Premium';
+import { Message, MessageEmbed } from 'discord.js'
+import Command from '../Command'
+import SuperClient from '../../SuperClient'
+import Server from '../../structures/Server'
+import { getDateTimeToString } from '../../utils/DateTimeHelper'
+import { PremiumType } from '../../models/Premium'
 
 export default class Premium extends Command{
 
@@ -14,7 +14,7 @@ export default class Premium extends Command{
             description: 'Premium durumunu görüntüler.',
             usage: null,
             permission: undefined
-        });
+        })
     }
 
     async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{

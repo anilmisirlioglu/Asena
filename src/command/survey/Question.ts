@@ -1,9 +1,9 @@
-import Command from '../Command';
-import SuperClient from '../../SuperClient';
-import { Message, MessageEmbed } from 'discord.js';
-import { LETTERS, ILetter, MAX_ANSWER_LENGTH } from '../../Constants';
-import regional from '../../utils/RegionalIndicator';
-import Server from '../../structures/Server';
+import Command from '../Command'
+import SuperClient from '../../SuperClient'
+import { Message, MessageEmbed } from 'discord.js'
+import { LETTERS, ILetter, MAX_ANSWER_LENGTH } from '../../Constants'
+import regional from '../../utils/RegionalIndicator'
+import Server from '../../structures/Server'
 
 export default class Question extends Command{
 

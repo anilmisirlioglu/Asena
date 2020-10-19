@@ -1,11 +1,11 @@
-import Command from '../Command';
-import { Message, MessageEmbed, version } from 'discord.js';
-import SuperClient from '../../SuperClient';
-import { secondsToTime } from '../../utils/DateTimeHelper';
-import * as os from 'os';
-import Byte from '../../utils/Byte';
-import MongoDB from '../../drivers/MongoDB';
-import Server from '../../structures/Server';
+import Command from '../Command'
+import { Message, MessageEmbed, version } from 'discord.js'
+import SuperClient from '../../SuperClient'
+import { secondsToTime } from '../../utils/DateTimeHelper'
+import * as os from 'os'
+import Byte from '../../utils/Byte'
+import MongoDB from '../../drivers/MongoDB'
+import Server from '../../structures/Server'
 
 export default class BotInfo extends Command{
 
@@ -16,16 +16,10 @@ export default class BotInfo extends Command{
             description: 'Bot hakkında teknik bilgi verir.',
             usage: null,
             permission: undefined
-        });
+        })
     }
 
     async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
-        const embed: MessageEmbed = new MessageEmbed()
-            .setAuthor('🤖 Bot Bilgisi', '')
-            .setFooter('Syntax Software tarafından ❤️ ile yapılmıştır')
-            .setTimestamp()
-            .setColor('#CD5C5C')
-
         const textArr: string[] = [
             `Çalışma Süresi (Uptime): **${secondsToTime(Math.floor(client.uptime / 1000))}**`,
             `NodeJS Sürümü: **${process.versions.node}**`,
@@ -44,7 +38,12 @@ export default class BotInfo extends Command{
             `Asena Tarafından Kullanılan Bellek: **${Byte.getSymbolByQuantity(process.memoryUsage().heapTotal)}**`
         ]
 
-        embed.addField('**Asena**', textArr.join('\n'))
+        const embed: MessageEmbed = new MessageEmbed()
+            .setAuthor('🤖 Bot Bilgisi', '')
+            .setFooter('Syntax Software tarafından ❤️ ile yapılmıştır')
+            .setTimestamp()
+            .setColor('#CD5C5C')
+            .addField('**Asena**', textArr)
 
         await message.channel.send({ embed })
         return true

@@ -1,10 +1,9 @@
 import { Message, MessageEmbed } from 'discord.js'
-
 import Command from '../Command'
 import { Emojis } from '../../Constants'
 import { getDateTimeToString } from '../../utils/DateTimeHelper'
-import SuperClient from '../../SuperClient';
-import Server from '../../structures/Server';
+import SuperClient from '../../SuperClient'
+import Server from '../../structures/Server'
 
 export default class Raffles extends Command{
 
@@ -15,7 +14,7 @@ export default class Raffles extends Command{
             description: 'Sunucudaki aktif  çekilişleri listeler',
             usage: null,
             permission: undefined
-        });
+        })
     }
 
     async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
@@ -37,7 +36,7 @@ export default class Raffles extends Command{
                     `Kazanan Sayısı: **${raffle.numberOfWinners} Kişi**`,
                     `Başlangıç Tarihi: **${getDateTimeToString(new Date(raffle.createdAt))}** (UTC)`,
                     `Bitiş Tarihi: **${getDateTimeToString(new Date(raffle.finishAt))}** (UTC)`
-                ].join('\n'))
+                ])
             })
             embed.setDescription(`${Emojis.CONFETTI_REACTION_EMOJI} Toplam **${raffles.length}** aktif çekiliş var`)
         }

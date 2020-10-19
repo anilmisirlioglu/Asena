@@ -35,7 +35,7 @@ export default class Vote extends Command{
                 .setColor('#E74C3C')
                 .setDescription('Oylama başladı!')
                 .setTimestamp()
-                .addField('Soru', args.filter(arg => arg !== undefined).join(' '), true)
+                .addField('Soru', args.filter(Boolean).join(' '), true)
 
             if(message.guild.me.hasPermission('MANAGE_MESSAGES')){
                 await message.delete({
@@ -74,7 +74,7 @@ export default class Vote extends Command{
                 .setDescription('Oylama başladı!')
                 .setFooter(`Süre: ${secondsToTime(time).toString()}`)
                 .setTimestamp()
-                .addField('Soru', args.filter(arg => arg !== undefined).join(' '), true)
+                .addField('Soru', args.filter(Boolean).join(' '), true)
 
             if(message.guild.me.hasPermission('MANAGE_MESSAGES')){
                 await message.delete({
@@ -86,7 +86,7 @@ export default class Vote extends Command{
                     server_id: $message.guild.id,
                     channel_id: $message.channel.id,
                     message_id: $message.id,
-                    title: args.filter(arg => arg !== undefined).join(' '),
+                    title: args.filter(Boolean).join(' '),
                     finishAt: new Date(Date.now() + (time * 1000))
                 })
                 let promises

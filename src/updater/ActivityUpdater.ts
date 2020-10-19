@@ -1,4 +1,4 @@
-import { Emojis, TOP_GG_URL, DISCORD_BOTS_GG_URL } from '../Constants'
+import { Emojis, TOP_GG_URL, DISCORD_BOTS_GG_URL, Bot } from '../Constants'
 import SuperClient from '../SuperClient';
 import Factory from '../Factory';
 import request from '../utils/Internet';
@@ -10,15 +10,17 @@ export default class ActivityUpdater extends Factory{
     public start(): void{
         this.client.on('ready', async () => {
             const client: SuperClient = this.client
+            client.logger.info(`Asena ${client.version.getFullVersion()} başlatılıyor...`)
 
             this.counter = client.guilds.cache.size
 
-            await client.user.setStatus('online')
-            await client.user.setActivity(this.getActivityString(), {
-                type: 'PLAYING'
-            })
+            await Promise.all([
+                client.user.setStatus('online'),
+                client.user.setActivity(this.getActivityString(), {
+                    type: 'PLAYING'
+                })
+            ])
 
-            client.logger.info(`Asena ${client.version.getFullVersion()} başlatılıyor...`)
             client.logger.info(`${client.user.username} aktif, toplam ${this.counter} sunucuya hizmet veriliyor!`)
         })
 
@@ -26,7 +28,7 @@ export default class ActivityUpdater extends Factory{
     }
 
     private getActivityString(): string{
-        return `${Emojis.CONFETTI_REACTION_EMOJI} ${this.counter} Sunucu | ${process.env.PREFIX}help\nhttps://asena.xyz`
+        return `${Emojis.CONFETTI_REACTION_EMOJI} ${this.counter} Sunucu | ${process.env.PREFIX}help\n${Bot.WEBSITE}`
     }
 
     private setGuildCounterListeners(): void{

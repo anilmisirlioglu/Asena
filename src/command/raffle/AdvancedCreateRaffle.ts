@@ -18,7 +18,7 @@ export default class AdvancedCreateRaffle extends Command{
             description: 'Gelişmiş çekiliş oluşturur.',
             usage: '--numberOfWinners "kazanan sayısı" --time "süre" --prize "ödül" --servers "sunucular" --color "renk" --allowedRoles "roller" --rewardRoles "ödül olarak verilecek roller"',
             permission: 'ADMINISTRATOR'
-        });
+        })
     }
 
     async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
@@ -82,7 +82,7 @@ export default class AdvancedCreateRaffle extends Command{
                 return true
             }
 
-            const validate = await validator.validate(key, value.join(' '));
+            const validate = await validator.validate(key, value.join(' '))
             if(!validate.ok){
                 await message.channel.send({
                     embed: this.getErrorEmbed(validate.message)
