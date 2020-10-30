@@ -29,18 +29,18 @@
   },
   "dependencies": {
     "child_process": "^1.0.2",
-    "discord.js": "^12.2.0",
+    "discord.js": "^12.4.1",
     "dotenv": "^8.2.0",
-    "mongoose": "^5.9.7",
+    "mongoose": "^5.10.11",
     "node-cron": "^2.0.3"
   },
   "devDependencies": {
     "@types/dotenv": "^8.2.0",
     "@types/mocha": "^8.0.2",
     "@types/mongoose": "^5.7.22",
-    "@types/node": "^14.0.13",
+    "@types/node": "^14.14.6",
     "mocha": "^8.1.1",
-    "nodemon": "^2.0.4",
+    "nodemon": "^2.0.6",
     "ts-node": "^8.10.2",
     "typescript": "^3.8.3"
   },
