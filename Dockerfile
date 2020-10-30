@@ -1,6 +1,6 @@
 FROM node:alpine
 
-RUN apk add ncurses
+RUN apk add git
 
 WORKDIR /usr/app
 
