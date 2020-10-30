@@ -1,0 +1,4 @@
+**/node_modules
+log.txt
+package-lock.json
+asena.service
