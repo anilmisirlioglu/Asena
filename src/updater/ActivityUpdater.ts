@@ -26,7 +26,7 @@ export default class ActivityUpdater extends Factory{
     }
 
     private getActivityString(): string{
-        return `${Constants.CONFETTI_REACTION_EMOJI} ${this.counter} Sunucu | ${process.env.PREFIX}help\nhttps://asena.xyz`
+        return `${Constants.CONFETTI_REACTION_EMOJI} ${this.counter} Sunucu | ${process.env.DEFAULT_PREFIX}help\nhttps://asena.xyz`
     }
 
     private setGuildCounterListeners(): void{
