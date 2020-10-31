@@ -31,21 +31,20 @@
   "dependencies": {
     "amqplib": "^0.6.0",
     "child_process": "^1.0.2",
-    "discord.js": "^12.2.0",
+    "discord.js": "^12.4.1",
     "dotenv": "^8.2.0",
-    "mongoose": "^5.9.7",
+    "mongoose": "^5.10.11",
     "node-cron": "^2.0.3"
   },
   "devDependencies": {
-    "@types/amqplib": "^0.5.14",
-    "@types/dotenv": "^8.2.0",
-    "@types/mocha": "^8.0.2",
-    "@types/mongoose": "^5.7.22",
-    "@types/node": "^14.0.13",
-    "mocha": "^8.1.1",
-    "nodemon": "^2.0.4",
+    "@types/amqplib": "^0.5.15",
+    "@types/mocha": "^8.0.3",
+    "@types/mongoose": "^5.7.36",
+    "@types/node": "^14.14.6",
+    "mocha": "^8.2.0",
+    "nodemon": "^2.0.6",
     "ts-node": "^8.10.2",
-    "typescript": "^3.8.3"
+    "typescript": "^3.9.7"
   },
   "engines": {
     "node": ">=12.0.0"

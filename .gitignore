@@ -1,5 +1,6 @@
 # Logs
 logs
+log.txt
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -43,6 +44,9 @@ build/Release
 # Dependency directories
 node_modules/
 jspm_packages/
+
+# TypeScript v1 declaration files
+typings/
 
 # TypeScript cache
 *.tsbuildinfo
@@ -105,3 +109,9 @@ dist
 
 # TypeScript build output
 ./build
+
+# Asena Daemon Linux Service
+asena.service
+
+# package lock file
+package-lock.json

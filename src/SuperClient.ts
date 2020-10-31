@@ -54,8 +54,17 @@ export default abstract class SuperClient extends Client{
 
     protected constructor(private opts: SuperClientBuilderOptions){
         super({
-            partials: ['CHANNEL', 'MESSAGE', 'REACTION'],
-            messageCacheMaxSize: 100,
+            partials: ['CHANNEL', 'MESSAGE', 'REACTION', 'GUILD_MEMBER'],
+            ws: {
+                intents: [
+                    'GUILDS',
+                    'GUILD_MESSAGES',
+                    'GUILD_MESSAGE_REACTIONS',
+                    'GUILD_EMOJIS',
+                    'GUILD_WEBHOOKS'
+                ]
+            },
+            messageCacheMaxSize: 1024,
             messageCacheLifetime: 600,
             messageSweepInterval: 300
         })

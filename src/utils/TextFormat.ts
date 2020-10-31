@@ -136,18 +136,16 @@ export default class TextFormat{
         this.formattingCodes = true; // TODO::Detect formatting code support
 
         switch(process.platform){
-            case 'linux':
             case 'freebsd':
             case 'openbsd':
             case 'netbsd':
             case 'darwin':
-                this.getEscapeCodes();
-                return
+                return this.getEscapeCodes()
 
+            case 'linux':
             case 'win32':
             case 'android':
-                this.getFallbackEscapeCodes();
-                return;
+                return this.getFallbackEscapeCodes()
         }
     }
 

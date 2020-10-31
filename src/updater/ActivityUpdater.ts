@@ -28,7 +28,7 @@ export default class ActivityUpdater extends Factory{
     }
 
     private getActivityString(): string{
-        return `${Emojis.CONFETTI_REACTION_EMOJI} ${this.counter} Sunucu | ${process.env.PREFIX}help\n${Bot.WEBSITE}`
+        return `${Emojis.CONFETTI_REACTION_EMOJI} ${this.counter} Sunucu | ${process.env.DEFAULT_PREFIX}help\n${Bot.WEBSITE}`
     }
 
     private setGuildCounterListeners(): void{

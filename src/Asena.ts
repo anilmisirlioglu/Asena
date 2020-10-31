@@ -5,7 +5,7 @@ export default class Asena extends SuperClient{
 
     constructor(){
         super({
-            prefix: process.env.PREFIX ?? '!a',
+            prefix: process.env.DEFAULT_PREFIX ?? '!a',
             isDevBuild: process.env.NODE_ENV !== 'production'
         })
 
