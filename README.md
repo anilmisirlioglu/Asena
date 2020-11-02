@@ -45,7 +45,4 @@ yardım sağlanmayacaktır.
 ## Destek Sunucusu
 [Buraya tıklayarak botun resmi discord sunucusuna katılabilirsiniz.](https://discord.gg/CRgXhfs)
 
-## Görseller 📷
 ![image](https://cdn.discordapp.com/attachments/712449369827180596/724982732513607710/asena.png)
--
-![image](https://cdn.discordapp.com/attachments/712449488471719976/720381037338820776/hello.PNG)
