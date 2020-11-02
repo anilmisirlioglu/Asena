@@ -6,10 +6,9 @@ Asena sürüm tablosu
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 1.3.2   | :white_check_mark: |
+| 2.0.0   | :white_check_mark: |
+| 1.3.3   | :white_check_mark: |
 | < 1.3   | :x:                |
-| 1.0.0   | :x:                |
-| < 1.0   | :x:                |
 
 ## Güvenlik Açığı, Hata Bildirme
 
