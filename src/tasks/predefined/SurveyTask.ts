@@ -11,10 +11,19 @@ export default class SurveyTask extends Task<Survey>{
             const finishAt: Date = new Date(survey.finishAt)
             const remaining: number = +finishAt - Date.now()
             if(remaining <= 60 * 1000){
-                this.setInterval(remaining - 2000, structure)
+                await this.setInterval(remaining - 2000, structure)
             }else if(Date.now() >= +finishAt){
-                this.setInterval(1000, structure)
+                await this.setInterval(1000, structure)
             }
+        }
+    }
+
+    protected async setInterval(timeout: number, survey: Survey){
+        const message = await this.client.fetchMessage(survey.server_id, survey.channel_id, survey.message_id)
+        if(message){
+            super.setInterval(timeout, survey)
+        }else{
+            await survey.delete()
         }
     }
 

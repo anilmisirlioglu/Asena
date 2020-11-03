@@ -21,15 +21,16 @@ export default class Help extends Command{
         const prefix = (await client.servers.get(message.guild.id)).prefix
         if(!args[0]){
             const text = client.getCommandHandler().getCommandsArray().map(command => {
+                const label = `\`${command.name}\`: ${command.description}`
                 return command.permission === 'ADMINISTRATOR' ? (
-                    message.member.hasPermission('ADMINISTRATOR') ? `\`${command.name}\`` : undefined
-                ) : `\`${command.name}\``
-            }).filter(Boolean).join(', ')
+                    message.member.hasPermission('ADMINISTRATOR') ? label : undefined
+                ) : label
+            }).filter(Boolean).join('\n')
 
             const embed = new MessageEmbed()
                 .setAuthor('📍 Komut Yardımı', message.author.displayAvatarURL() || message.author.defaultAvatarURL)
                 .addField('Komutlar', text)
-                .addField(`🌟 Daha Detaylı Yardım?`, `${prefix}help [komut]`)
+                .addField(`🌟 Daha Detaylı Yardım?`, `${prefix}help [komut-adı]`)
                 .addField(`🌐 Daha Fazla Bilgi?`, '**[Website](https://asena.xyz)**')
                 .setColor('RANDOM')
 

@@ -108,19 +108,22 @@ export default abstract class SuperClient extends Client{
     fetchChannel<T extends Snowflake>(guildId: T, channelId: T): GuildChannel | undefined{
         const guild: Guild = this.guilds.cache.get(guildId)
         if(guild){
-            return guild.channels.cache.get(channelId)
+            const channel = guild.channels.cache.get(channelId)
+            if(channel.viewable) return channel
         }
 
         return undefined
     }
 
-    fetchMessage<T extends Snowflake>(guildId: T, channelId: T, messageId: T): Promise<Message | undefined>{
-        const guild: Guild = this.guilds.cache.get(guildId)
-        if(guild){
-            const channel: GuildChannel = guild.channels.cache.get(channelId)
-            if(channel instanceof TextChannel){
-                return channel.messages.fetch(messageId)
-            }
+    async fetchMessage<T extends Snowflake>(guildId: T, channelId: T, messageId: T): Promise<Message | undefined>{
+        const channel: GuildChannel = this.fetchChannel(guildId, channelId)
+        if(channel instanceof TextChannel){
+            return new Promise(resolve => {
+                return channel.messages
+                    .fetch(messageId)
+                    .catch(() => resolve(undefined))
+                    .then((message: Message) => resolve(message))
+            })
         }
 
         return undefined
