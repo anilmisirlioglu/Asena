@@ -26,7 +26,9 @@ export default class RaffleTask extends Task<Raffle>{
             this.client
                 .fetchMessage(raffle.server_id, raffle.channel_id, raffle.message_id)
                 .then(async result => {
-                    let isRejected = false;
+                    if(!result) return reject()
+
+                    let isRejected = false
                     const updateCallback = async (
                         customTime: number,
                         message: string = Raffle.getAlertMessage(),
@@ -70,11 +72,10 @@ export default class RaffleTask extends Task<Raffle>{
                         await updateCallback(1)
 
                         if(!isRejected){
-                            resolve()
+                            return resolve()
                         }
                     }, timeout - (10 * 1000))
                 })
-                .catch(reject)
         }).catch(async () => {
             await raffle.setStatus('FINISHED')
         }).then(() => {
