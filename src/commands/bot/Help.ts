@@ -21,15 +21,16 @@ export default class Help extends Command{
         const prefix = (await client.servers.get(message.guild.id)).prefix
         if(args[0] === undefined){
             const text = client.getCommandHandler().getCommandsArray().map(command => {
+                const label = `\`${command.name}\`: ${command.description}`
                 return command.permission === 'ADMINISTRATOR' ? (
-                    message.member.hasPermission('ADMINISTRATOR') ? `\`${command.name}\`` : undefined
-                ) : `\`${command.name}\``;
-            }).filter(item => item !== undefined).join(', ');
+                    message.member.hasPermission('ADMINISTRATOR') ? label : undefined
+                ) : label
+            }).filter(Boolean).join('\n')
 
             const embed = new MessageEmbed()
                 .setAuthor('📍 Komut Yardımı', message.author.displayAvatarURL() || message.author.defaultAvatarURL)
                 .addField('Komutlar', text)
-                .addField(`🌟 Daha Detaylı Yardım?`, `${prefix}help [komut]`)
+                .addField(`🌟 Daha Detaylı Yardım?`, `${prefix}help [komut-adı]`)
                 .addField(`🌐 Daha Fazla Bilgi?`, '**[Website](https://asena.xyz)**')
                 .setColor('RANDOM')
 
@@ -56,17 +57,17 @@ export default class Help extends Command{
                     .addField('Açıklaması', `${searchCommand.description}`)
                     .addField('Min. Yetki Seviyesi', `${searchCommand.permission === 'ADMINISTRATOR' ? 'Admin' : 'Üye'}`)
                     .addField('Kullanımı', `${prefix}${searchCommand.name} ${searchCommand.usage === null ? '' : searchCommand.usage}`)
-                    .setColor('GREEN');
+                    .setColor('GREEN')
 
-                await message.channel.send({ embed });
+                await message.channel.send({ embed })
 
-                return true;
+                return true
             }else{
                 await message.channel.send({
                     embed: this.getErrorEmbed(`**${command}** adında komut bulunamadı.`)
-                });
+                })
 
-                return true;
+                return true
             }
         }
     }
