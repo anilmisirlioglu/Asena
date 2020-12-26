@@ -12,6 +12,7 @@ class Server extends Structure<typeof ServerModel, SuperServer>{
     public prefix?: string
     public server_id: Snowflake
     public publicCommands: string[]
+    public locale: string
 
     public raffles: RaffleManager = new RaffleManager(this)
 
@@ -23,6 +24,7 @@ class Server extends Structure<typeof ServerModel, SuperServer>{
         this.prefix = data.prefix
         this.server_id = data.server_id
         this.publicCommands = data.publicCommands
+        this.locale = data.locale
     }
 
     protected identifierKey(): string{
