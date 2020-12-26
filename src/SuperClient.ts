@@ -18,6 +18,7 @@ import RaffleTimeUpdater from './updater/RaffleTimeUpdater';
 import ServerManager from './managers/ServerManager';
 import SetupManager from './setup/SetupManager';
 import SyntaxWebhook from './SyntaxWebhook';
+import LanguageManager from './language/LanguageManager';
 
 interface SuperClientBuilderOptions{
     prefix: string
@@ -44,6 +45,8 @@ export default abstract class SuperClient extends Client{
     private readonly setupManager: SetupManager = new SetupManager()
 
     readonly webhook: SyntaxWebhook = new SyntaxWebhook()
+
+    private readonly languageManager: LanguageManager = new LanguageManager(this)
 
     static NAME: string
     static AVATAR: string
@@ -97,6 +100,10 @@ export default abstract class SuperClient extends Client{
 
     public getSetupManager(): SetupManager{
         return this.setupManager
+    }
+
+    public getLanguageManager(): LanguageManager{
+        return this.languageManager
     }
 
     fetchChannel<T extends Snowflake>(guildId: T, channelId: T): GuildChannel | undefined{

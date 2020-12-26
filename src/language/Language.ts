@@ -1,3 +1,5 @@
+import Version from '../utils/Version';
+
 type StringTree = {
     [key: string]: string | string[] | StringTree
 }
@@ -6,6 +8,7 @@ type Args = Array<string | number>
 
 /** Interface compatible with JSON structure */
 interface LanguageInfo{
+    version: string
     contributors: string[]
     translator: string
     aliases: string[]
@@ -16,6 +19,9 @@ interface LanguageInfo{
 }
 
 export default class Language{
+
+    /** Language version */
+    public version: Version
 
     /** List of contributors */
     public contributors: string[]
@@ -41,6 +47,7 @@ export default class Language{
     }
 
     constructor(info: LanguageInfo){
+        this.version = new Version(info.version)
         this.contributors = info.contributors ?? []
         this.translator = info.translator
         this.aliases = info.aliases ?? []
@@ -74,7 +81,7 @@ export default class Language{
         return null
     }
 
-    parseArgs(string: string, args: Args){
+    parseArgs(string: string, args: Args): string{
         let i = 0
         return string.replace(/%s/g, () => args[i++].toString())
     }

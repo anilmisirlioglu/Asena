@@ -9,6 +9,9 @@ export default class Asena extends SuperClient{
             isDevBuild: process.env.NODE_ENV !== 'production'
         })
 
+        // Load all languages
+        this.getLanguageManager().run()
+
         // Load all commands
         this.getCommandHandler().registerAllCommands()
 
