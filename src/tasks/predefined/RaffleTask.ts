@@ -8,7 +8,10 @@ export default class RaffleTask extends Task<Raffle>{
     async onRun(): Promise<void>{
         const cursor = await RaffleModel.find({ status: 'CONTINUES' }).cursor()
         for(let raffle = await cursor.next(); raffle !== null; raffle = await cursor.next()){
-            const structure = new Raffle(raffle)
+            const server = await this.client.servers.get(raffle.server_id)
+            if(!server) continue
+
+            const structure = await server.raffles.get(raffle.message_id)
             const finishAt: Date = new Date(raffle.finishAt)
             const remaining: number = +finishAt - Date.now()
             if(remaining <= 60 * 1000){
