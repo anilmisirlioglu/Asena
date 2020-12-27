@@ -10,7 +10,7 @@ export default class LanguageManager{
     private static languages: Collection<string, Language> = new Collection()
 
     private static LOCALE_PATH = `${process.cwd()}${sep}locales`
-    private static DEFAULT_LANGUAGE = 'tr_TR'
+    public static DEFAULT_LANGUAGE = 'tr_TR'
 
     constructor(private client: SuperClient){}
 
@@ -25,7 +25,7 @@ export default class LanguageManager{
             }
 
             const language = require(`${LanguageManager.LOCALE_PATH}${sep}${file}`)
-            this.client.logger.info(`Dil başarıyla yüklendi: ${TextFormat.COLOR_WHITE}${language.full}`)
+            this.client.logger.info(`Dil yüklendi: ${TextFormat.COLOR_WHITE}${language.full}`)
 
             const locale = new Language(language)
             LanguageManager.addLanguage(locale)
@@ -52,8 +52,16 @@ export default class LanguageManager{
         this.languages.set(locale.code, locale)
     }
 
+    public static findLanguage(code: string): Language | null{
+        return this.languages.find(lang => lang.code === code || lang.aliases.includes(code))
+    }
+
     public static getLanguage(code: string): Language{
-        return this.languages.find(lang => lang.code === code || lang.aliases.includes(code)) ?? this.languages.get(LanguageManager.DEFAULT_LANGUAGE)
+        return this.findLanguage(code) ?? this.languages.get(LanguageManager.DEFAULT_LANGUAGE)
+    }
+
+    public static getLanguages(): Language[]{
+        return Array.from(this.languages.values())
     }
 
     public static translate(code: string, key: string, args: Array<string | number>){

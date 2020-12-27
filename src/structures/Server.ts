@@ -4,6 +4,7 @@ import Timestamps from '../models/legacy/Timestamps';
 import ID from '../models/legacy/ID';
 import { Snowflake } from 'discord.js';
 import RaffleManager from '../managers/RaffleManager';
+import Language from '../language/Language';
 
 type SuperServer = IServer & Timestamps & ID
 
@@ -33,6 +34,12 @@ class Server extends Structure<typeof ServerModel, SuperServer>{
 
     async setPrefix(prefix: string){
         await this.update({ prefix })
+    }
+
+    async setLocale(language: Language){
+        await this.update({
+            locale: language.code
+        })
     }
 
     isPublicCommand(command: string){
