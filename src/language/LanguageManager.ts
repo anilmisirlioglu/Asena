@@ -7,7 +7,7 @@ import TextFormat from '../utils/TextFormat';
 
 export default class LanguageManager{
 
-    private static languages: Collection<string, Language>
+    private static languages: Collection<string, Language> = new Collection()
 
     private static LOCALE_PATH = `${process.cwd()}${sep}locales`
     private static DEFAULT_LANGUAGE = 'tr_TR'
@@ -30,7 +30,7 @@ export default class LanguageManager{
             const locale = new Language(language)
             LanguageManager.addLanguage(locale)
 
-            if(locale.version.compare(this.client.version) === -1){
+            if(this.client.version.compare(locale.version) === -1){
                 if(locale.code === LanguageManager.DEFAULT_LANGUAGE){
                     this.client.logger.warning(`Varsayılan dil (${LanguageManager.DEFAULT_LANGUAGE}) sürümü eski. Lütfen dil sürümünü güncelleyin.`)
                     process.exit(1)
@@ -52,7 +52,7 @@ export default class LanguageManager{
         this.languages.set(locale.code, locale)
     }
 
-    private static getLanguage(code: string): Language{
+    public static getLanguage(code: string): Language{
         return this.languages.find(lang => lang.code === code || lang.aliases.includes(code)) ?? this.languages.get(LanguageManager.DEFAULT_LANGUAGE)
     }
 
