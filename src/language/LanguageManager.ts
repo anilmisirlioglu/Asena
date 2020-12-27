@@ -45,7 +45,7 @@ export default class LanguageManager{
             process.exit(1)
         }
 
-        this.client.logger.info(`${TextFormat.COLOR_GREEN}Toplam ${TextFormat.COLOR_PURPLE}${LanguageManager.languages.size} ${TextFormat.COLOR_GREEN}dil başarıyla yüklendi!`)
+        this.client.logger.info(`Toplam ${TextFormat.COLOR_LIGHT_PURPLE}${LanguageManager.languages.size} ${TextFormat.COLOR_AQUA}dil başarıyla yüklendi!`)
     }
 
     private static addLanguage(locale: Language){
