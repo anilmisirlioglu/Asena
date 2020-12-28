@@ -5,6 +5,7 @@ import ID from '../models/legacy/ID';
 import { Snowflake } from 'discord.js';
 import RaffleManager from '../managers/RaffleManager';
 import Language from '../language/Language';
+import LanguageManager from '../language/LanguageManager';
 
 type SuperServer = IServer & Timestamps & ID
 
@@ -40,6 +41,10 @@ class Server extends Structure<typeof ServerModel, SuperServer>{
         await this.update({
             locale: language.code
         })
+    }
+
+    translate(key: string, args: Array<string | number> = []): string{
+        return LanguageManager.translate(this.locale, key, args)
     }
 
     isPublicCommand(command: string){
