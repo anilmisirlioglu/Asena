@@ -43,8 +43,8 @@ class Server extends Structure<typeof ServerModel, SuperServer>{
         })
     }
 
-    translate(key: string, args: Array<string | number> = []): string{
-        return LanguageManager.translate(this.locale, key, args)
+    translate(key: string, ...args: Array<string | number>): string{
+        return LanguageManager.translate(this.locale, key, ...args)
     }
 
     isPublicCommand(command: string){

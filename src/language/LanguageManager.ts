@@ -64,7 +64,7 @@ export default class LanguageManager{
         return Array.from(this.languages.values())
     }
 
-    public static translate(code: string, key: string, args: Array<string | number> = []){
+    public static translate(code: string, key: string, ...args: Array<string | number>){
         const translated = this.getLanguage(code).translate(key, args)
         if(!translated){
             return this.getLanguage(this.DEFAULT_LANGUAGE).translate(key, args)
