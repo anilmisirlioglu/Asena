@@ -18,12 +18,12 @@
           "description": "Botun varsayılan dilini değiştirir.",
           "default": "Botun sunucu içerisindeki iletişim dili",
           "available": "Kullanılabilir Diller",
-          "usage": "Kullanmak İçin: %slocale set [dil]",
+          "usage": "Kullanmak İçin: {0}locale set [dil]",
           "language": {
             "enter.code": "Lütfen bir dil kodu girin.",
-            "not.found": "Dil bulunamadı (%s). Lütfen geçerli bir dil kodu girin.",
+            "not.found": "Dil bulunamadı ({0}). Lütfen geçerli bir dil kodu girin.",
             "default": {
-              "successfully.changed": "Varsayılan diliniz **%s** olarak ayarlandı.",
+              "successfully.changed": "Varsayılan diliniz **{0}** olarak ayarlandı.",
               "already.using": "Zaten varsayılan dili kullanılıyorsunuz."
             }
           }
@@ -31,7 +31,7 @@
         "prefix": {
           "description": "Botun komut prefix 'ini değiştirir.",
           "too.long": "Komut prefix 'i en fazla 5 karakterden oluşabilir.",
-          "changed": "Komut ön adı **%s** olarak değiştirildi."
+          "changed": "Komut ön adı **{0}** olarak değiştirildi."
         },
         "permission": {
           "description": "Komutun izinlerini düzenler.",
@@ -40,8 +40,8 @@
               "found": "Komut bulunamadı.",
               "editable": "Bu komutun izinlerini düzenleyemezsin."
             },
-            "already": "Bu komut zaten herkese **%s**.",
-            "success": "**%s** komutunun izinleri başarıyla düzenlendi. Komut durumu: **Herkese %s**"
+            "already": "Bu komut zaten herkese **{0}**.",
+            "success": "**{0}** komutunun izinleri başarıyla düzenlendi. Komut durumu: **Herkese {1}**"
           }
         }
       }
