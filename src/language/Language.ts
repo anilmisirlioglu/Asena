@@ -72,9 +72,11 @@ export default class Language{
     translate(key: string, args: Args): string{
         let translated = this.strings[key]
 
-        if(translated && (Array.isArray(translated) || typeof translated === 'string')){
-            if(Array.isArray(translated)) translated = translated.join('\n')
+        if(Array.isArray(translated)){
+            translated = translated.join('\n')
+        }
 
+        if(translated && typeof translated === 'string'){
             return this.parseArgs(translated, args)
         }
 
