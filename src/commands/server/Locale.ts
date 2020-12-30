@@ -19,7 +19,7 @@ export default class Locale extends Command{
     async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
         if(args.length === 0){
             const language = LanguageManager.getLanguage(server.locale)
-            await message.channel.send(`🌎  Botun sunucu içerisindeki iletişim dili: ${language.flag} **${language.full}** - **${language.code} v${language.version}**`)
+            await message.channel.send(`🌎  ${server.translate('commands.server.locale.default')}: ${language.flag} **${language.full}** - **${language.code} v${language.version}**`)
             return true
         }
 
@@ -33,8 +33,8 @@ export default class Locale extends Command{
                 })
 
                 embed
-                    .setAuthor(`🗣️ Kullanılabilir Diller`)
-                    .setFooter(`Kullanmak İçin: ${server.prefix}locale set [dil]`)
+                    .setAuthor(`🗣️ ${server.translate('commands.server.locale.available')}`)
+                    .setFooter(server.translate('commands.server.locale.usage', server.prefix))
                     .setDescription(description)
 
                 await message.channel.send(embed)
@@ -43,7 +43,7 @@ export default class Locale extends Command{
             case 'set':
                 if(args.length < 2){
                     await message.channel.send({
-                        embed: this.getErrorEmbed('Lütfen bir dil kodu girin.')
+                        embed: this.getErrorEmbed(server.translate('commands.server.locale.language.enter.code'))
                     })
                     return true
                 }
@@ -52,12 +52,12 @@ export default class Locale extends Command{
                 const locale = LanguageManager.findLanguage(code)
                 if(!locale){
                     await message.channel.send({
-                        embed: this.getErrorEmbed(`Dil bulunamadı (${code}). Lütfen geçerli bir dil kodu girin.`)
+                        embed: this.getErrorEmbed(server.translate('commands.server.locale.language.not.found', code))
                     })
                 }else{
                     await Promise.all([
                         server.setLocale(locale),
-                        message.channel.send(`🌈  Varsayılan diliniz **${locale.flag} ${locale.full}** olarak ayarlandı.`)
+                        message.channel.send('🌈  ' + server.translate('commands.server.locale.language.default.successfully.changed', `${locale.flag} ${locale.full}`))
                     ])
                 }
                 break
@@ -65,13 +65,13 @@ export default class Locale extends Command{
             case 'reset':
                 if(server.locale == LanguageManager.DEFAULT_LANGUAGE){
                     await message.channel.send({
-                        embed: this.getErrorEmbed(`Zaten varsayılan dili kullanılıyorsunuz.`)
+                        embed: this.getErrorEmbed(server.translate('commands.server.locale.language.default.already.using'))
                     })
                 }else{
                     const locale = LanguageManager.getLanguage(LanguageManager.DEFAULT_LANGUAGE)
                     await Promise.all([
                         server.setLocale(locale),
-                        message.channel.send(`🌈  Varsayılan diliniz **${locale.flag} ${locale.full}** olarak ayarlandı.`)
+                        message.channel.send('🌈  ' + server.translate('commands.server.locale.language.default.successfully.changed', `${locale.flag} ${locale.full}`))
                     ])
                 }
                 break
