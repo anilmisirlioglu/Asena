@@ -81,9 +81,8 @@ export default class Language{
         return null
     }
 
-    parseArgs(string: string, args: Args): string{
-        let i = 0
-        return string.replace(/%s/g, () => args[i++].toString())
+    parseArgs(str: string, args: Args): string{
+        return str.replace(/{(\d)}/g, (_, i) => (args[parseInt(i)] ?? "error").toString())
     }
 
 }
