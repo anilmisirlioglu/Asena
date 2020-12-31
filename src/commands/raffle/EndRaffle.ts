@@ -22,20 +22,20 @@ export default class EndRaffle extends Command{
         const raffle = await (message_id ? server.raffles.get(message_id) : server.raffles.getLastCreated())
         if(!raffle || !raffle.message_id){
             await message.channel.send({
-                embed: this.getErrorEmbed(`Erken bitirilebilecek bir çekiliş bulunamadı.`)
+                embed: this.getErrorEmbed(server.translate('commands.raffle.end.not.found'))
             })
             return true
         }
 
         if(!raffle.isContinues()){
             await message.channel.send({
-                embed: this.getErrorEmbed('Anlaşılan bu çekiliş zaten bitmiş veya iptal edilmiş.')
+                embed: this.getErrorEmbed(server.translate('commands.raffle.end.not.continues'))
             })
             return true
         }
 
         await raffle.finish(client)
-        await message.channel.send(`**${raffle.prize}** çekilişi erken bitirildi. Sonuçlar <#${raffle.channel_id}> kanalına gönderildi.`)
+        await message.channel.send(server.translate('commands.raffle.end.success', raffle.prize, `<#${raffle.channel_id}>`))
         if(message.guild.me.hasPermission('MANAGE_MESSAGES')){
             await message.delete({
                 timeout: 100

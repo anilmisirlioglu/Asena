@@ -23,14 +23,14 @@ export default class CancelRaffle extends Command{
         const raffle = await (message_id ? server.raffles.get(message_id) : server.raffles.getLastCreated())
         if(!raffle || !raffle.message_id){
             await message.channel.send({
-                embed: this.getErrorEmbed(`İptal edilebilecek bir çekiliş bulunamadı.`)
+                embed: this.getErrorEmbed(server.translate('commands.raffle.cancel.not.found'))
             })
             return true
         }
 
         if(!raffle.isCancelable()){
             await message.channel.send({
-                embed: this.getErrorEmbed('Bu çekiliş devam eden bir çekiliş değil. Bu komut sadece devam eden çekilişlerde kullanılabilir.')
+                embed: this.getErrorEmbed(server.translate('commands.raffle.cancel.not.cancelable'))
             })
             return true
         }
@@ -44,7 +44,7 @@ export default class CancelRaffle extends Command{
             })
         }
 
-        await message.channel.send(`${Constants.CONFETTI_EMOJI} Çekiliş başarıyla iptal edildi.`)
+        await message.channel.send(`${Constants.CONFETTI_EMOJI} ${server.translate('commands.raffle.cancel.success')}`)
 
         if(message.guild.me.hasPermission('MANAGE_MESSAGES')){
             await message.delete({
