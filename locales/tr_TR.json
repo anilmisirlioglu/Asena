@@ -221,6 +221,29 @@
           "data.not.found": "Çekilişin katılımcı verileri bulunamadı.",
           "success": "Tebrikler {0}! **{1}** kazandınız (Kazananlar tekrar çekildi)\n**Çekiliş:** {2}"
         }
+      },
+      "survey": {
+        "question": {
+          "description": "Sunucuya bir soru sorarsınız.",
+          "too.many": "Birden fazla soru yazamazsınız. Lütfen tek bir soru yazarak tekrar deneyin.",
+          "max.answer": "Sorunuza maksimum {0} şık ekleyebilirsiniz.",
+          "error": "Soru sohbet kanalına bir sebepten dolayı gönderilemedi."
+        },
+        "vote": {
+          "description": "İki seçenekli oylama anketi oluşturur.",
+          "embed": {
+            "description": "Oylama Başladı!",
+            "fields": {
+              "question": "Soru"
+            },
+            "footer": "Süre"
+          },
+          "time": {
+            "exceeded": "Anket süresi en az 1 dakika, maksimum 15 gün olabilir.",
+            "invalid": "Lütfen geçerli bir süre giriniz. (Örn; **1s** - **1m** - **5m** - **1h** vb.)"
+          },
+          "error": "Anket verisi veritabanına kaydedilemediği için iptal edildi."
+        }
       }
     }
   }
