@@ -70,14 +70,28 @@ export default class Language{
     }
 
     translate(key: string, args: Args): string{
-        let translated = this.strings[key]
+        const translated = this.strings[key]
 
-        if(Array.isArray(translated)){
-            translated = translated.join('\n')
-        }
+        const isArray = Array.isArray(translated)
+        if(translated && (isArray || typeof translated === 'string')){
+            if(isArray){
+                let i = 0
+                const parsed = (translated as string[]).map(text => {
+                    const match = text.match(/{(\d)}/g)
+                    if(match){
+                        const slice = args.slice(i, i + match.length)
+                        i += match.length
 
-        if(translated && typeof translated === 'string'){
-            return this.parseArgs(translated, args)
+                        return this.parseArgs(text, slice)
+                    }
+
+                    return text
+                })
+
+                return parsed.join('\n')
+            }
+
+            return this.parseArgs(translated as string, args)
         }
 
         return null
