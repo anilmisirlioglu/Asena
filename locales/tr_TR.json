@@ -9,10 +9,70 @@
   "strings": {
     "global": {
       "open": "açık",
-      "close": "kapalı"
+      "close": "kapalı",
+      "connected": "Bağlı, stabil.",
+      "disconnected": "Bağlı değil.",
+      "admin": "Admin",
+      "member": "Üye"
     },
     "errors": {},
     "commands": {
+      "bot": {
+        "invitation": {
+          "description": "Botun davet linkini verir.",
+          "bot.url": "Botun Davet Linki",
+          "support.server": "Destek Sunucusu",
+          "website": "Websitemiz",
+          "click": {
+            "invite": "Tıkla Davet Et",
+            "join": "Tıkla ve Giriş Yap"
+          }
+        },
+        "help": {
+          "description": "Komutlar hakkında bilgi verir.",
+          "error": "**{0}** adında komut bulunamadı.",
+          "success": "{0} yardım menüsünü DM kutunuza gönderildi.",
+          "embed": {
+            "title": "Komut Yardımı",
+            "fields": {
+              "command": "Komut",
+              "commands": "Komutlar",
+              "more": {
+                "detailed": "Daha Detaylı Yardım?",
+                "info": "Daha Fazla Bilgi?"
+              },
+              "alias": "Takma Adları (Alias)",
+              "description": "Açıklama",
+              "permission": "Min. Yetki Seviyesi",
+              "usage": "Kullanımı"
+            }
+          }
+        },
+        "info": {
+          "description": "Bot hakkında teknik bilgi verir.",
+          "embed": {
+            "title": "Bot Bilgisi",
+            "footer": "Syntax Software tarafından ❤️ ile yapılmıştır",
+            "content": [
+              "Çalışma Süresi (Uptime): **{0}**",
+              "NodeJS Sürümü: **{0}**",
+              "DiscordJS Sürümü: **{0}**",
+              "Asena Sürümü: **{0}**",
+              "Asena Son Güncelleme: **{0}**",
+              "Platform (OS): **{0}**",
+              "Veritabanı Bağlantısı: {0}",
+              "CPU: **{0}**",
+              "CPU Hız: **{0} MHz**",
+              "CPU Çekirdek (Core): **{0} Core / {1} Thread**",
+              "CPU Çalışma Süresi (Uptime): **{0}**",
+              "Toplam Bellek: **{0}**",
+              "Kullanılan Bellek: **{0}**",
+              "Kullanılabilir Bellek: **{0}**",
+              "Asena Tarafından Kullanılan Bellek: **{0}**"
+            ]
+          }
+        }
+      },
       "server": {
         "locale": {
           "description": "Botun varsayılan dilini değiştirir.",
