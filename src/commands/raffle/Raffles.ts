@@ -12,7 +12,7 @@ export default class Raffles extends Command{
         super({
             name: 'raffles',
             aliases: ['çekilişler', 'aktifçekilişler', 'cekilisler', 'activeraffles', 'list'],
-            description: 'Sunucudaki aktif  çekilişleri listeler',
+            description: 'commands.raffle.list.description',
             usage: null,
             permission: undefined
         });

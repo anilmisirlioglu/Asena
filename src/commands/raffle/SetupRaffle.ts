@@ -17,7 +17,7 @@ export default class SetupRaffle extends Command{
         super({
             name: 'setup',
             aliases: ['sihirbaz'],
-            description: 'Çekiliş kurulum sihirbazını başlatır.',
+            description: 'commands.raffle.setup.description',
             usage: null,
             permission: 'ADMINISTRATOR'
         })

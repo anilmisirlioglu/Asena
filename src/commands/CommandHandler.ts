@@ -1,4 +1,4 @@
-import { Collection, Message, TextChannel } from 'discord.js';
+import { Collection, Message, MessageEmbed, TextChannel } from 'discord.js';
 
 import CommandRunner from './CommandRunner';
 import Command from './Command';
@@ -140,9 +140,12 @@ export default class CommandHandler extends Factory implements CommandRunner{
                 if(checkPermissions.has){
                     command.run(client, server, message, args).then(async (result: boolean) => {
                         if(!result){
-                            await channel.send({
-                                embed: command.getUsageEmbed()
-                            })
+                            const embed = new MessageEmbed()
+                                .setAuthor(SuperClient.NAME, SuperClient.AVATAR)
+                                .setDescription(`${server.translate('global.usage')}: **${command.name} ${server.translate(command.usage)}**`)
+                                .setColor('GOLD')
+
+                            await channel.send({ embed })
                         }
                     })
                 }else{

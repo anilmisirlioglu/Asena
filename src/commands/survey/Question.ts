@@ -11,8 +11,8 @@ export default class Question extends Command{
         super({
             name: 'question',
             aliases: ['sorusor', 'soru'],
-            description: 'Sunucuya bir soru sorarsınız.',
-            usage: '{soru} ...[şıklar]',
+            description: 'commands.survey.question.description',
+            usage: 'commands.survey.question.usage',
             permission: 'ADMINISTRATOR'
         });
     }

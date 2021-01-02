@@ -11,8 +11,8 @@ export default class ReRollRaffle extends Command{
         super({
             name: 'reroll',
             aliases: ['tekrarcek', 'tekrarçek'],
-            description: 'Çekilişin kazananlarını tekrar belirler.',
-            usage: '[mesaj id]',
+            description: 'commands.raffle.reroll.description',
+            usage: 'general.message-id',
             permission: 'ADMINISTRATOR'
         });
     }

@@ -13,7 +13,7 @@ export default class BotInfo extends Command{
         super({
             name: 'botinfo',
             aliases: ['teknikbilgi'],
-            description: 'Bot hakkında teknik bilgi verir.',
+            description: 'commands.bot.info.description',
             usage: null,
             permission: undefined
         });

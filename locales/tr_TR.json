@@ -13,7 +13,9 @@
       "connected": "Bağlı, stabil.",
       "disconnected": "Bağlı değil.",
       "admin": "Admin",
-      "member": "Üye"
+      "member": "Üye",
+      "usage": "Kullanımı",
+      "message-id": "[mesaj-id]"
     },
     "errors": {},
     "commands": {
@@ -76,9 +78,12 @@
       "server": {
         "locale": {
           "description": "Botun varsayılan dilini değiştirir.",
+          "usage": "[list | set | reset] <args>",
           "default": "Botun sunucu içerisindeki iletişim dili",
-          "available": "Kullanılabilir Diller",
-          "usage": "Kullanmak İçin: {0}locale set [dil]",
+          "embed": {
+            "title": "Kullanılabilir Diller",
+            "footer": "Kullanmak İçin: {0}locale set [dil]"
+          },
           "language": {
             "enter.code": "Lütfen bir dil kodu girin.",
             "not.found": "Dil bulunamadı ({0}). Lütfen geçerli bir dil kodu girin.",
@@ -90,11 +95,13 @@
         },
         "prefix": {
           "description": "Botun komut prefix 'ini değiştirir.",
+          "usage": "[prefix]",
           "too.long": "Komut prefix 'i en fazla 5 karakterden oluşabilir.",
           "changed": "Komut ön adı **{0}** olarak değiştirildi."
         },
         "permission": {
           "description": "Komutun izinlerini düzenler.",
+          "usage": "[everyone | admin] [komut]",
           "command": {
             "not": {
               "found": "Komut bulunamadı.",
@@ -108,6 +115,7 @@
       "raffle": {
         "create": {
           "description": "Yeni bir çekiliş oluşturur.",
+          "usage": "[kazanan sayısı<1 | 20>] [süre(1m | 5s) - [s(saniye) m(dakika) h(saat) d(gün)]] [ödül]",
           "limits": {
             "winner.count": "Çekilişi kazanan üye sayısı maksimum 20, minimum 1 kişi olabilir.",
             "title.length": "Çekiliş başlığı maksimum 255 karakter uzunluğunda olmalıdır.",
@@ -225,12 +233,14 @@
       "survey": {
         "question": {
           "description": "Sunucuya bir soru sorarsınız.",
+          "usage": "{soru} ...[şıklar]",
           "too.many": "Birden fazla soru yazamazsınız. Lütfen tek bir soru yazarak tekrar deneyin.",
           "max.answer": "Sorunuza maksimum {0} şık ekleyebilirsiniz.",
           "error": "Soru sohbet kanalına bir sebepten dolayı gönderilemedi."
         },
         "vote": {
           "description": "İki seçenekli oylama anketi oluşturur.",
+          "usage": "[süre(1m | 1h) | -1(süresiz)] [oylama metni]",
           "embed": {
             "description": "Oylama Başladı!",
             "fields": {

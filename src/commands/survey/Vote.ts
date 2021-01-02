@@ -12,8 +12,8 @@ export default class Vote extends Command{
         super({
             name: 'survey',
             aliases: ['anket', 'anketoluştur', 'startvote', 'voting', 'vote'],
-            description: 'İki seçenekli oylama anketi oluşturur.',
-            usage: '[süre(1m | 1h) | -1(süresiz)] [oylama metni]',
+            description: 'commands.survey.vote.description',
+            usage: 'commands.survey.vote.usage',
             permission: 'ADMINISTRATOR'
         });
     }

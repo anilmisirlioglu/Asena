@@ -13,7 +13,7 @@ export default class Invitation extends Command{
         super({
             name: 'davet',
             aliases: ['invite', 'party', 'davetiye', 'link'],
-            description: 'Botun davet linkini verir.',
+            description: 'commands.bot.invitation.description',
             usage: null,
             permission: undefined
         });

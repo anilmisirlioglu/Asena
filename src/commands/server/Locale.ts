@@ -10,8 +10,8 @@ export default class Locale extends Command{
         super({
             name: 'locale',
             aliases: ['lang', 'language', 'dil'],
-            description: 'Botun varsayılan dilini değiştirir.',
-            usage: '[list | set | reset] <args>',
+            description: 'commands.server.locale.description',
+            usage: 'commands.server.locale.usage',
             permission: 'ADMINISTRATOR'
         })
     }
@@ -33,8 +33,8 @@ export default class Locale extends Command{
                 })
 
                 embed
-                    .setAuthor(`🗣️ ${server.translate('commands.server.locale.available')}`)
-                    .setFooter(server.translate('commands.server.locale.usage', server.prefix))
+                    .setAuthor(`🗣️ ${server.translate('commands.server.locale.embed.title')}`)
+                    .setFooter(server.translate('commands.server.locale.embed.footer', server.prefix))
                     .setDescription(description)
 
                 await message.channel.send(embed)

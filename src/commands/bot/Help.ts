@@ -10,7 +10,7 @@ export default class Help extends Command{
         super({
             name: 'help',
             aliases: ['yardim', 'yardım'],
-            description: 'Komutlar hakkında bilgi verir.',
+            description: 'commands.bot.help.description',
             usage: null,
             permission: undefined
         })
@@ -21,7 +21,7 @@ export default class Help extends Command{
         const prefix = (await client.servers.get(message.guild.id)).prefix
         if(args[0] === undefined){
             const text = client.getCommandHandler().getCommandsArray().map(command => {
-                const label = `\`${command.name}\`: ${command.description}`
+                const label = `\`${command.name}\`: ${server.translate(command.description)}`
                 return command.permission === 'ADMINISTRATOR' ? (
                     message.member.hasPermission('ADMINISTRATOR') ? label : undefined
                 ) : label
@@ -52,9 +52,9 @@ export default class Help extends Command{
                     .setAuthor(`📍 ${server.translate('commands.bot.help.embed.title')}`, message.author.displayAvatarURL() || message.author.defaultAvatarURL)
                     .addField(server.translate('commands.bot.help.embed.fields.command'), `${prefix}${searchCommand.name}`)
                     .addField(server.translate('commands.bot.help.embed.fields.alias'), searchCommand.aliases.map(alias => `${prefix}${alias}`).join('\n'))
-                    .addField(server.translate('commands.bot.help.embed.fields.description'), `${searchCommand.description}`)
+                    .addField(server.translate('commands.bot.help.embed.fields.description'), `${server.translate(searchCommand.description)}`)
                     .addField(server.translate('commands.bot.help.embed.fields.permission'), `${searchCommand.permission === 'ADMINISTRATOR' ? server.translate('global.admin') : server.translate('global.member')}`)
-                    .addField(server.translate('commands.bot.help.embed.fields.usage'), `${prefix}${searchCommand.name} ${searchCommand.usage === null ? '' : searchCommand.usage}`)
+                    .addField(server.translate('commands.bot.help.embed.fields.usage'), `${prefix}${searchCommand.name} ${searchCommand.usage === null ? '' : server.translate(searchCommand.usage)}`)
                     .setColor('GREEN')
 
                 await message.channel.send({ embed })

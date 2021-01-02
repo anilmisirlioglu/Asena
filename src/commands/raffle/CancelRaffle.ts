@@ -11,8 +11,8 @@ export default class CancelRaffle extends Command{
         super({
             name: 'cancel',
             aliases: ['çekilişiptalet', 'çekilişiiptalet', 'cekilisiptal', 'çekilişiptal', 'cancelraffle'],
-            description: 'Var olan bir çekilişi bitirir.',
-            usage: '[mesaj id]',
+            description: 'commands.raffle.cancel.description',
+            usage: 'general.message-id',
             permission: 'ADMINISTRATOR'
         });
     }

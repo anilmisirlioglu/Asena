@@ -10,8 +10,8 @@ export default class EndRaffle extends Command{
         super({
             name: 'end',
             aliases: ['hemenbitir', 'finish', 'bitir', 'erkenbitir'],
-            description: 'Çekilişi erken bitirir.',
-            usage: '[mesaj id]',
+            description: 'commands.raffle.end.description',
+            usage: 'general.message-id',
             permission: 'ADMINISTRATOR'
         });
     }

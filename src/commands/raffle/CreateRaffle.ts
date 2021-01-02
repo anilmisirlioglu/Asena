@@ -1,4 +1,4 @@
-import { Message, TextChannel } from 'discord.js'
+import { Message } from 'discord.js'
 
 import Command from '../Command'
 import Constants from '../../Constants'
@@ -14,8 +14,8 @@ export default class CreateRaffle extends Command{
         super({
             name: 'create',
             aliases: ['çekilişoluştur', 'çekilişbaşlat', 'cekilisbaslat', 'createraffle'],
-            description: 'Çekiliş oluşturur.',
-            usage: '[kazanan sayısı<1 | 20>] [süre(1m | 5s) - [s(saniye) m(dakika) h(saat) d(gün)]] [ödül]',
+            description: 'commands.raffle.create.description',
+            usage: 'commands.raffle.create.usage',
             permission: 'ADMINISTRATOR'
         });
     }

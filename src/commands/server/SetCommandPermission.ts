@@ -9,8 +9,8 @@ export default class SetCommandPermission extends Command{
         super({
             name: 'scperm',
             aliases: ['setcommmandpermission', 'setcommandperm'],
-            description: 'Komutu izinlerini düzenler.',
-            usage: '[everyone | admin] [komut]',
+            description: 'commands.server.permission.description',
+            usage: 'commands.server.permission.usage',
             permission: 'ADMINISTRATOR'
         });
     }

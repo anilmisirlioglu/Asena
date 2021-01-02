@@ -9,8 +9,8 @@ export default class SetPrefix extends Command{
         super({
             name: 'setprefix',
             aliases: ['prefixdeğiştir'],
-            description: 'Botun komut prefix \'ini değiştirir.',
-            usage: '[prefix]',
+            description: 'commands.server.prefix.description',
+            usage: 'commands.server.prefix.usage',
             permission: 'ADMINISTRATOR'
         });
     }
