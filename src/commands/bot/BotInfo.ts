@@ -21,7 +21,7 @@ export default class BotInfo extends Command{
 
     async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
         const argsOfTranslate = [
-            secondsToTime(Math.floor(client.uptime / 1000)).toString(),
+            secondsToTime(Math.floor(client.uptime / 1000), server.locale).toString(),
             process.versions.node,
             version,
             client.version.getFullVersion(),
@@ -32,7 +32,7 @@ export default class BotInfo extends Command{
             os.cpus().shift().speed,
             os.cpus().length / 2,
             os.cpus().length,
-            secondsToTime(os.uptime()).toString(),
+            secondsToTime(os.uptime(), server.locale).toString(),
             Byte.getSymbolByQuantity(os.totalmem()),
             Byte.getSymbolByQuantity(os.totalmem() - os.freemem()),
             Byte.getSymbolByQuantity(os.freemem()),

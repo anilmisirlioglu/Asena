@@ -35,8 +35,8 @@ export default class Raffles extends Command{
                     creator: `<@${raffle.constituent_id}>`,
                     channel: `<#${raffle.channel_id}>`,
                     'winner.count': `**${raffle.numbersOfWinner}**`,
-                    start: `**${getDateTimeToString(new Date(raffle.createdAt))}** (UTC)`,
-                    finish: `**${getDateTimeToString(new Date(raffle.finishAt))}** (UTC)`
+                    start: `**${getDateTimeToString(new Date(raffle.createdAt), server.locale)}** (UTC)`,
+                    finish: `**${getDateTimeToString(new Date(raffle.finishAt), server.locale)}** (UTC)`
                 }
 
                 embed.addField(`${i++}. ${raffle.prize}`, Object.entries(data).map(([key, value]) => {

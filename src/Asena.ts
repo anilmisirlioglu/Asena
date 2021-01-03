@@ -1,5 +1,4 @@
 import SuperClient from './SuperClient';
-import Constants from './Constants';
 
 export default class Asena extends SuperClient{
 
@@ -46,15 +45,12 @@ export default class Asena extends SuperClient{
 
         // Delete server data from db
         this.on('guildDelete', async guild => {
-            await (await this.servers.get(guild.id)).delete()
+            const server = await this.servers.get(guild.id)
+            await server.delete()
 
             try{
                 guild.owner?.createDM().then(channel => {
-                    channel.send([
-                        `> ${Constants.RUBY_EMOJI} Botun kullanımı ile ilgili sorunlar mı yaşıyorsun? Lütfen bizimle iletişime geçmekten çekinme.\n`,
-                        `:earth_americas: Website: https://asena.xyz`,
-                        ':sparkles: Destek Sunucusu: https://discord.gg/CRgXhfs'
-                    ].join('\n'))
+                    channel.send(server.translate('events.guildDelete'))
                 })
             }catch(e){
                 // Do not show this error on the console. Because we don't care.

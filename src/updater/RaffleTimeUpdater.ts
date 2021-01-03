@@ -23,8 +23,8 @@ export default class RaffleTimeUpdater extends Factory{
                             const remaining = Math.ceil((raffle.finishAt.getTime() - Date.now()) / 1000)
                             if(remaining > 12){
                                 this.getCooldownService().setCooldown(reaction.message.id)
-                                await reaction.message.edit(Raffle.getStartMessage(), {
-                                    embed: raffle.getEmbed()
+                                await reaction.message.edit(Raffle.getStartMessage(server), {
+                                    embed: raffle.getEmbed(server)
                                 })
                             }
                         }

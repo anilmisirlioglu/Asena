@@ -27,6 +27,7 @@
 | setprefix | Komut ön adını değiştirir. |
 | scperm | Komutun yetkisini düzenler. |
 | invite | Botun davet URLsini sohbete gönderir. |
+| locale | Botun varsayılan dilini değiştirir. |
 
 ## Davet 🔗
 

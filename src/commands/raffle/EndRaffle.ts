@@ -34,7 +34,7 @@ export default class EndRaffle extends Command{
             return true
         }
 
-        await raffle.finish(client)
+        await raffle.finish(client, server)
         await message.channel.send(server.translate('commands.raffle.end.success', raffle.prize, `<#${raffle.channel_id}>`))
         if(message.guild.me.hasPermission('MANAGE_MESSAGES')){
             await message.delete({

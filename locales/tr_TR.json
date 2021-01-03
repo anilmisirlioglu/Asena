@@ -1,5 +1,5 @@
 {
-  "version": "1.4.0-rc1",
+  "version": "1.4.0",
   "contributors": [],
   "translator": "",
   "aliases": ["tr", "tr-tr", "turkish", "türkçe", "tur"],
@@ -8,6 +8,8 @@
   "full": "Türkçe (TR)",
   "strings": {
     "global": {
+      "yes": "Evet",
+      "no": "Hayır",
       "open": "açık",
       "close": "kapalı",
       "connected": "Bağlı, stabil.",
@@ -32,11 +34,12 @@
           "Aralık"
         ],
         "units": {
-          "day": "Gün",
-          "hour": "Saat",
-          "minute": "Dakika",
-          "second": "Saniye"
-        }
+          "day": "gün",
+          "hour": "saat",
+          "minute": "dakika",
+          "second": "saniye"
+        },
+        "time": "Süre"
       },
       "permissions": {
         "send-message": "Mesaj Gönder",
@@ -48,7 +51,69 @@
         "unsupported": "Desteklenmeyen Yetki"
       }
     },
-    "errors": {},
+    "errors": {
+      "reporter": {
+        "title": "Hata Raporlayıcı",
+        "description": [
+          "**Hata:** {0}",
+          "**Hata Mesajı:** {0}",
+          "**Yöntem:** {0}",
+          "**Veri Yolu:** {0}",
+          "**Hata Kodu:** {0}",
+          "**Stack Trace:**```{0}```"
+        ]
+      },
+      "message": [
+        "<:down:744193243805384704> Sunucunuzda bulunan çekiliş bir **hatadan** dolayı sonuçlandırılamadı.",
+        "Lütfen çekilişinizi kurtarabilmemiz için bu mesajın **ekran görüntüsü** ile birlikte bizimle iletişime geçin.\n",
+        "> **Destek-İletişim:** https://discord.gg/CRgXhfs\n"
+      ]
+    },
+    "events": {
+      "guildDelete": [
+        "> ${Constants.RUBY_EMOJI} Botun kullanımı ile ilgili sorunlar mı yaşıyorsun? Lütfen bizimle iletişime geçmekten çekinme.\n",
+        ":earth_americas: Website: https://asena.xyz",
+        ":sparkles: Destek Sunucusu: https://discord.gg/CRgXhfs"
+      ]
+    },
+    "structures": {
+      "survey": {
+        "results": {
+          "survey": "ANKET SONUÇLARI",
+          "vote": "Oylama sonuçları"
+        }
+      },
+      "raffle": {
+        "winners": {
+          "none": {
+            "description": "Yetersiz katılım. Kazanan olmadı.",
+            "content": "Yeterli katılım olmadığından dolayı çekilişin kazananı olmadı."
+          },
+          "single": {
+            "description": "Kazanan",
+            "content": "Tebrikler {0}! **{1}** kazandınız."
+          },
+          "plural": {
+            "description": "Kazananlar",
+            "content": "Tebrikler {0}! **{1}** kazandınız."
+          }
+        },
+        "footer": {
+          "text": "{0} Kazanan",
+          "finish": "Sona Erdi",
+          "continues": "Bitiş"
+        },
+        "join": "Çekilişe katılmak için {0} emojisine tıklayın!",
+        "giveaway": "Çekiliş",
+        "creator": "Oluşturan",
+        "to.end": "Bitmesine",
+        "messages": {
+          "finish": "ÇEKİLİŞ BİTTİ",
+          "start": "ÇEKİLİŞ BAŞLADI",
+          "alert": "ÇEKİLİŞ İÇİN SON KATILIM"
+        }
+      }
+    },
     "commands": {
       "handler": {
         "prefix": "Botun sunucu içerisinde ki komut ön adı(prefix): **{0}**",

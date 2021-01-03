@@ -1,6 +1,5 @@
 import {
-    DiscordAPIError,
-    GuildChannel, HTTPError,
+    GuildChannel,
     Message,
     MessageEmbed,
     MessageReaction,
@@ -15,9 +14,11 @@ import Constants from '../Constants';
 import ArrayRandom from '../array/ArrayRandom';
 import ID from '../models/legacy/ID';
 import SuperClient from '../SuperClient';
+import Server from './Server';
 
 type SuperRaffle = IRaffle & Timestamps & ID
 
+// TODO::keep server model in cache
 class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
 
     public prize: string
@@ -65,7 +66,7 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
         await this.setStatus('CANCELED')
     }
 
-    public async finish(client: SuperClient){
+    public async finish(client: SuperClient, server: Server){
         await this.setStatus('FINISHED')
 
         const channel: GuildChannel | undefined = await client.fetchChannel(this.server_id, this.channel_id)
@@ -79,32 +80,32 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
                 let description, content
                 switch(winners.length){
                     case 0:
-                        description = 'Yetersiz katılım. Kazanan olmadı.'
-                        content = 'Yeterli katılım olmadığından dolayı çekilişin kazananı olmadı.'
+                        description = server.translate('structures.raffle.winners.none.description')
+                        content = server.translate('structures.raffle.winners.none.content')
                         break
 
                     case 1:
-                        description = `Kazanan: <@${winners.shift()}>`
-                        content = `Tebrikler ${winnersOfMentions.join(', ')}! **${this.prize}** kazandınız`
+                        description = `${server.translate('structures.raffle.winners.single.description')}: <@${winners.shift()}>`
+                        content = server.translate('structures.raffle.winners.single.content', winnersOfMentions.join(', '), this.prize)
                         break
 
                     default:
-                        description = `Kazananlar:\n${winnersOfMentions.join('\n')}`
-                        content = `Tebrikler ${winnersOfMentions.join(', ')}! **${this.prize}** kazandınız`
+                        description = `${server.translate('structures.raffle.winners.plural.description')}:\n${winnersOfMentions.join('\n')}`
+                        content = server.translate('structures.raffle.winners.plural.content', winnersOfMentions.join(', '), this.prize)
                         break
                 }
 
                 const embed: MessageEmbed = new MessageEmbed()
                     .setAuthor(this.prize)
-                    .setDescription(`${description}\nOluşturan: <@${this.constituent_id}>`)
-                    .setFooter(`${this.numbersOfWinner} Kazanan | Sona Erdi`)
+                    .setDescription(`${description}\n${server.translate('structures.raffle.creator')}: <@${this.constituent_id}>`)
+                    .setFooter(`${server.translate('structures.raffle.footer.text', this.numbersOfWinner)} | ${server.translate('structures.raffle.footer.finish')}`)
                     .setTimestamp(new Date(this.finishAt))
                     .setColor('#36393F')
 
-                await message.edit(`${Constants.CONFETTI_REACTION_EMOJI} **ÇEKİLİŞ BİTTİ** ${Constants.CONFETTI_REACTION_EMOJI}`, {
+                await message.edit(`${Constants.CONFETTI_REACTION_EMOJI} **${server.translate('structures.raffle.messages.finish')}** ${Constants.CONFETTI_REACTION_EMOJI}`, {
                     embed
                 })
-                await channel.send(`${content}\n**Çekiliş** ${_message}`)
+                await channel.send(`${content}\n**${server.translate('structures.raffle.giveaway')}** ${_message}`)
             }
         }
     }
@@ -133,29 +134,29 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
         return `https://discordapp.com/channels/${this.server_id}/${this.channel_id}/${this.message_id}`
     }
 
-    public static getStartMessage(): string{
-        return `${Constants.CONFETTI_EMOJI} **ÇEKİLİŞ BAŞLADI** ${Constants.CONFETTI_EMOJI}`
+    public static getStartMessage(server: Server): string{
+        return `${Constants.CONFETTI_EMOJI} **${server.translate('structures.raffle.messages.start')}** ${Constants.CONFETTI_EMOJI}`
     }
 
-    public static getAlertMessage(): string{
-        return `${Constants.CONFETTI_EMOJI} **ÇEKİLİŞ İÇİN SON KATILIM** ${Constants.CONFETTI_EMOJI}`
+    public static getAlertMessage(server: Server): string{
+        return `${Constants.CONFETTI_EMOJI} **${server.translate('structures.raffle.messages.alert')}** ${Constants.CONFETTI_EMOJI}`
     }
 
-    public getEmbed(alert: boolean = false, customRemainingTime: number = undefined): MessageEmbed{
+    public getEmbed(server: Server, alert: boolean = false, customRemainingTime: number = undefined): MessageEmbed{
         const finishAt: Date = this.finishAt
-        const time = secondsToTime(Math.ceil((finishAt.getTime() - this.createdAt.getTime()) / 1000))
-        const remaining = secondsToTime(customRemainingTime ?? Math.ceil((finishAt.getTime() - Date.now()) / 1000))
+        const time = secondsToTime(Math.ceil((finishAt.getTime() - this.createdAt.getTime()) / 1000), server.locale)
+        const remaining = secondsToTime(customRemainingTime ?? Math.ceil((finishAt.getTime() - Date.now()) / 1000), server.locale)
 
         return new MessageEmbed()
             .setAuthor(this.prize)
             .setDescription([
-                `Çekilişe Katılmak İçin ${Constants.CONFETTI_REACTION_EMOJI} emojisine tıklayın!`,
-                `Süre: **${time}**`,
-                `Bitmesine: **${remaining}**`,
-                `Oluşturan: <@${this.constituent_id}>`
-            ].join('\n'))
+                server.translate('structures.raffle.join', Constants.CONFETTI_REACTION_EMOJI),
+                `${server.translate('global.date-time.time')}: **${time}**`,
+                `${server.translate('structures.raffle.to.end')}: **${remaining}**`,
+                `${server.translate('structures.raffle.creator')}: <@${this.constituent_id}>`
+            ])
             .setColor(alert ? 'RED' : '#bd087d')
-            .setFooter(`${this.numbersOfWinner} Kazanan | Bitiş`)
+            .setFooter(`${server.translate('structures.raffle.footer.text', this.numbersOfWinner)} | ${server.translate('structures.raffle.footer.finish')}`)
             .setTimestamp(finishAt)
     }
 

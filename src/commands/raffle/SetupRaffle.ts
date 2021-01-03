@@ -121,7 +121,7 @@ export default class SetupRaffle extends Command{
                                 }
                             }
 
-                            const $secondsToTime = secondsToTime(toSecond)
+                            const $secondsToTime = secondsToTime(toSecond, server.locale)
                             message.channel.send(Constants.CONFETTI_REACTION_EMOJI + ' ' + server.translate('commands.raffle.setup.phases.time.validator.success', $secondsToTime.toString()))
                             return {
                                 result: true,
@@ -167,8 +167,8 @@ export default class SetupRaffle extends Command{
                             createdAt: new Date()
                         }, data as IRaffle))
 
-                        channel.send(Raffle.getStartMessage(), {
-                            embed: raffle.getEmbed()
+                        channel.send(Raffle.getStartMessage(server), {
+                            embed: raffle.getEmbed(server)
                         }).then(async $message => {
                             await $message.react(Constants.CONFETTI_REACTION_EMOJI)
 

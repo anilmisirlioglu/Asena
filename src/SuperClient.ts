@@ -130,20 +130,20 @@ export default abstract class SuperClient extends Client{
         return undefined
     }
 
-    buildErrorReporterEmbed(guild: Guild, err: DiscordAPIError | HTTPError): MessageEmbed{
+    buildErrorReporterEmbed(lang: string, guild: Guild, err: DiscordAPIError | HTTPError): MessageEmbed{
         return new MessageEmbed()
-            .setAuthor(`${this.user.username} | Hata Raporlayıcı`, this.user.avatarURL())
+            .setAuthor(`${this.user.username} | ${LanguageManager.translate(lang, "errors.reporter.title")}`, this.user.avatarURL())
             .setColor('DARK_RED')
             .setFooter(guild.name, guild.iconURL())
             .setTimestamp()
-            .setDescription([
-                `**Hata:** ${err.name}`,
-                `**Hata Mesajı:** ${err.message}`,
-                `**Yöntem:** ${err.method}`,
-                `**Veri Yolu:** ${err.path}`,
-                `**Hata Kodu:** ${err.code}`,
-                `**Stack Trace:**\`\`\`${err.stack}\`\`\``
-            ].join('\n'))
+            .setDescription(LanguageManager.translate(lang, "errors.reporter.description", ...[
+                err.name,
+                err.message,
+                err.method,
+                err.path,
+                err.code,
+                err.path
+            ]))
     }
 
 }

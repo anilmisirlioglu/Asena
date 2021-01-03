@@ -70,7 +70,7 @@ export default class Vote extends Command{
                 .setAuthor(message.author.username, message.author.displayAvatarURL() || message.author.defaultAvatarURL)
                 .setColor('#ffd1dc')
                 .setDescription(server.translate('commands.survey.vote.embed.description'))
-                .setFooter(`${server.translate('commands.survey.vote.embed.footer')}: ${secondsToTime(time).toString()}`)
+                .setFooter(`${server.translate('commands.survey.vote.embed.footer')}: ${secondsToTime(time, server.locale).toString()}`)
                 .setTimestamp()
                 .addField(server.translate('commands.survey.vote.embed.fields.question'), args.filter(arg => arg !== undefined).join(' '), true)
 
