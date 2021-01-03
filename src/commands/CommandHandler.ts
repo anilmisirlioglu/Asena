@@ -98,7 +98,7 @@ export default class CommandHandler extends Factory implements CommandRunner{
         const prefix = (client.isDevBuild ? 'dev' : '') + (server.prefix || client.prefix)
         if(!message.content.startsWith(prefix)){
             if(message.content === Constants.PREFIX_COMMAND){
-                await channel.send(`🌈   Botun sunucu içerisinde ki komut ön adı(prefix): **${server.prefix}**`)
+                await channel.send(`🌈   ${server.translate('commands.handler.prefix', server.prefix)}`)
             }
 
             return
@@ -152,20 +152,22 @@ export default class CommandHandler extends Factory implements CommandRunner{
                     if(checkPermissions.missing.includes('SEND_MESSAGES') || checkPermissions.missing.includes('VIEW_CHANNEL')){
                         try{
                             message.author.createDM().then(dmChannel => {
-                                dmChannel.send(`Botun çalışabilmesi için '**${channel.name}**' kanalında bota '**Mesaj Gönder**' yetkisini sağlamanız/vermeniz gerekiyor. Aksi takdirde bot bu kanala mesaj gönderemez ve işlevini yerine getiremez/çalışamaz.`)
+                                dmChannel.send(server.translate('commands.handler.permission.missing.message', channel.name))
                             })
                         }catch(e){}
                     }else{
-                        await channel.send([
-                            'Botun çalışabilmesi için gerekli olan **izinler** eksik. Lütfen aşağıda ki listede bulunan izinleri bota sağlayıp/verip tekrar deneyin.',
-                            `\n${checkPermissions}\n`,
-                            'Eğer daha detaylı yardıma ihtiyacınız varsa bizle iletişime geçmekten çekinmeyin.'
-                        ].join('\n'))
+                        let i = 1
+                        const missingToString = checkPermissions
+                            .missing
+                            .map(permission => `**${i++}.** ${server.translate(`global.permissions.${PermissionController.humanizePermission(permission)}`)}`)
+                            .join('\n')
+
+                        await channel.send(server.translate('commands.handler.permission.missing.others', missingToString))
                     }
                 }
             }else{
                 await channel.send({
-                    embed: command.getErrorEmbed('Bu komutu kullanmak için **yetkiniz** yok.')
+                    embed: command.getErrorEmbed(server.translate('commands.handler.unauthorized'))
                 })
             }
         }

@@ -15,10 +15,55 @@
       "admin": "Admin",
       "member": "Üye",
       "usage": "Kullanımı",
-      "message-id": "[mesaj-id]"
+      "message-id": "[mesaj-id]",
+      "date-time": {
+        "months": [
+          "Ocak",
+          "Şubat",
+          "Mart",
+          "Nisan",
+          "Mayıs",
+          "Haziran",
+          "Temmuz",
+          "Ağustos",
+          "Eylül",
+          "Ekim",
+          "Kasım",
+          "Aralık"
+        ],
+        "units": {
+          "day": "Gün",
+          "hour": "Saat",
+          "minute": "Dakika",
+          "second": "Saniye"
+        }
+      },
+      "permissions": {
+        "send-message": "Mesaj Gönder",
+        "add-reactions": "Tepki Ekle",
+        "view-channel": "Kanalı Görüntüle",
+        "embed-links": "Bağlantı Yerleştir",
+        "read-message-history": "Mesaj Geçmişini Oku",
+        "use-external-emojis": "Harici Emojiler Kullan",
+        "unsupported": "Desteklenmeyen Yetki"
+      }
     },
     "errors": {},
     "commands": {
+      "handler": {
+        "prefix": "Botun sunucu içerisinde ki komut ön adı(prefix): **{0}**",
+        "unauthorized": "Bu komutu kullanmak için **yetkiniz** yok.",
+        "permission": {
+          "missing": {
+            "message": "Botun çalışabilmesi için '**{0}**' kanalında bota '**Mesaj Gönder**' yetkisini sağlamanız/vermeniz gerekiyor. Aksi takdirde bot bu kanala mesaj gönderemez ve işlevini yerine getiremez/çalışamaz.",
+            "others": [
+              "Botun çalışabilmesi için gerekli olan **izinler** eksik. Lütfen aşağıda ki listede bulunan izinleri bota sağlayıp/verip tekrar deneyin.",
+              "\n{0}\n",
+              "Eğer daha detaylı yardıma ihtiyacınız varsa bizle iletişime geçmekten çekinmeyin."
+            ]
+          }
+        }
+      },
       "bot": {
         "invitation": {
           "description": "Botun davet linkini verir.",

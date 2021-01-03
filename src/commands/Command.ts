@@ -51,11 +51,4 @@ export default abstract class Command{
             .setColor('RED')
     }
 
-    public getUsageEmbed(): MessageEmbed{
-        return new MessageEmbed()
-            .setAuthor(SuperClient.NAME, SuperClient.AVATAR)
-            .setDescription(`Kullanımı: **${this.name} ${this.usage}**`)
-            .setColor('GOLD');
-    }
-
 }
