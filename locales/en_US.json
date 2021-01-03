@@ -16,8 +16,8 @@
       "disconnected": "Bağlı değil.",
       "admin": "Admin",
       "member": "Üye",
-      "usage": "Kullanımı",
-      "message-id": "[mesaj-id]",
+      "usage": "Usage",
+      "message-id": "[message-id]",
       "date-time": {
         "months": [
           "Ocak",
@@ -34,10 +34,10 @@
           "Aralık"
         ],
         "units": {
-          "day": "gün",
-          "hour": "saat",
-          "minute": "dakika",
-          "second": "saniye"
+          "day": "day",
+          "hour": "hour",
+          "minute": "minute",
+          "second": "second"
         },
         "time": "Süre"
       },
