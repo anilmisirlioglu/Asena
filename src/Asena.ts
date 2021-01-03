@@ -1,4 +1,5 @@
 import SuperClient from './SuperClient';
+import Constants from './Constants';
 
 export default class Asena extends SuperClient{
 
@@ -50,7 +51,7 @@ export default class Asena extends SuperClient{
 
             try{
                 guild.owner?.createDM().then(channel => {
-                    channel.send(server.translate('events.guildDelete'))
+                    channel.send(`> ${Constants.RUBY_EMOJI} ${server.translate('events.guildDelete')}`)
                 })
             }catch(e){
                 // Do not show this error on the console. Because we don't care.

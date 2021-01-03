@@ -71,7 +71,7 @@
     },
     "events": {
       "guildDelete": [
-        "> ${Constants.RUBY_EMOJI} Botun kullanımı ile ilgili sorunlar mı yaşıyorsun? Lütfen bizimle iletişime geçmekten çekinme.\n",
+        "Botun kullanımı ile ilgili sorunlar mı yaşıyorsun? Lütfen bizimle iletişime geçmekten çekinme.\n",
         ":earth_americas: Website: https://asena.xyz",
         ":sparkles: Destek Sunucusu: https://discord.gg/CRgXhfs"
       ]
