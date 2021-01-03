@@ -8,8 +8,8 @@
   "full": "English (US)",
   "strings": {
     "global": {
-      "yes": "Evet",
-      "no": "Hayır",
+      "yes": "Yes",
+      "no": "No",
       "open": "açık",
       "close": "kapalı",
       "connected": "Bağlı, stabil.",
