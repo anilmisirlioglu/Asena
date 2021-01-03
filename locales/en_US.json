@@ -1,0 +1,25 @@
+{
+  "version": "1.4.0-rc1",
+  "contributors": [],
+  "translator": "",
+  "aliases": ["en", "en-us", "english", "ingilizce", "eng"],
+  "code": "en_US",
+  "flag": ":flag_us:",
+  "full": "English (US)",
+  "strings": {
+    "commands": {
+      "bot": {
+        "invitation": {
+          "description": "Gives the bot's invitation link.",
+          "bot.url": "Bot Invitation Link",
+          "support.server": "Support Server",
+          "website": "Website",
+          "click": {
+            "invite": "Click to Invite",
+            "join": "Click and Join"
+          }
+        }
+      }
+    }
+  }
+}
