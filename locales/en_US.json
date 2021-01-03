@@ -12,10 +12,10 @@
       "no": "No",
       "open": "open",
       "close": "close",
-      "connected": "Bağlı, stabil.",
-      "disconnected": "Bağlı değil.",
+      "connected": "Connected, stable.",
+      "disconnected": "Not connected.",
       "admin": "Admin",
-      "member": "Üye",
+      "member": "Member",
       "usage": "Usage",
       "message-id": "[message-id]",
       "date-time": {
@@ -23,15 +23,15 @@
           "January",
           "February",
           "March",
-          "Nisan",
-          "Mayıs",
-          "Haziran",
-          "Temmuz",
-          "Ağustos",
-          "Eylül",
-          "Ekim",
-          "Kasım",
-          "Aralık"
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December"
         ],
         "units": {
           "day": "day",
@@ -39,16 +39,16 @@
           "minute": "minute",
           "second": "second"
         },
-        "time": "Süre"
+        "time": "Time"
       },
       "permissions": {
-        "send-message": "Mesaj Gönder",
-        "add-reactions": "Tepki Ekle",
-        "view-channel": "Kanalı Görüntüle",
-        "embed-links": "Bağlantı Yerleştir",
-        "read-message-history": "Mesaj Geçmişini Oku",
-        "use-external-emojis": "Harici Emojiler Kullan",
-        "unsupported": "Desteklenmeyen Yetki"
+        "send-message": "Send Messages",
+        "add-reactions": "Add Reactions",
+        "view-channel": "View Channel",
+        "embed-links": "Embed Links",
+        "read-message-history": "Read Message History",
+        "use-external-emojis": "Use External Emojis",
+        "unsupported": "Unsupported Permission"
       }
     },
     "errors": {
