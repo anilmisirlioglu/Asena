@@ -10,8 +10,8 @@
     "global": {
       "yes": "Yes",
       "no": "No",
-      "open": "açık",
-      "close": "kapalı",
+      "open": "open",
+      "close": "close",
       "connected": "Bağlı, stabil.",
       "disconnected": "Bağlı değil.",
       "admin": "Admin",
