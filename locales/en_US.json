@@ -7,7 +7,128 @@
   "flag": ":flag_us:",
   "full": "English (US)",
   "strings": {
+    "global": {
+      "yes": "Evet",
+      "no": "Hayır",
+      "open": "açık",
+      "close": "kapalı",
+      "connected": "Bağlı, stabil.",
+      "disconnected": "Bağlı değil.",
+      "admin": "Admin",
+      "member": "Üye",
+      "usage": "Kullanımı",
+      "message-id": "[mesaj-id]",
+      "date-time": {
+        "months": [
+          "Ocak",
+          "Şubat",
+          "Mart",
+          "Nisan",
+          "Mayıs",
+          "Haziran",
+          "Temmuz",
+          "Ağustos",
+          "Eylül",
+          "Ekim",
+          "Kasım",
+          "Aralık"
+        ],
+        "units": {
+          "day": "gün",
+          "hour": "saat",
+          "minute": "dakika",
+          "second": "saniye"
+        },
+        "time": "Süre"
+      },
+      "permissions": {
+        "send-message": "Mesaj Gönder",
+        "add-reactions": "Tepki Ekle",
+        "view-channel": "Kanalı Görüntüle",
+        "embed-links": "Bağlantı Yerleştir",
+        "read-message-history": "Mesaj Geçmişini Oku",
+        "use-external-emojis": "Harici Emojiler Kullan",
+        "unsupported": "Desteklenmeyen Yetki"
+      }
+    },
+    "errors": {
+      "reporter": {
+        "title": "Hata Raporlayıcı",
+        "description": [
+          "**Hata:** {0}",
+          "**Hata Mesajı:** {0}",
+          "**Yöntem:** {0}",
+          "**Veri Yolu:** {0}",
+          "**Hata Kodu:** {0}",
+          "**Stack Trace:**```{0}```"
+        ]
+      },
+      "message": [
+        "<:down:744193243805384704> Sunucunuzda bulunan çekiliş bir **hatadan** dolayı sonuçlandırılamadı.",
+        "Lütfen çekilişinizi kurtarabilmemiz için bu mesajın **ekran görüntüsü** ile birlikte bizimle iletişime geçin.\n",
+        "> **Destek-İletişim:** https://discord.gg/CRgXhfs\n"
+      ]
+    },
+    "events": {
+      "guildDelete": [
+        "> ${Constants.RUBY_EMOJI} Botun kullanımı ile ilgili sorunlar mı yaşıyorsun? Lütfen bizimle iletişime geçmekten çekinme.\n",
+        ":earth_americas: Website: https://asena.xyz",
+        ":sparkles: Destek Sunucusu: https://discord.gg/CRgXhfs"
+      ]
+    },
+    "structures": {
+      "survey": {
+        "results": {
+          "survey": "ANKET SONUÇLARI",
+          "vote": "Oylama sonuçları"
+        }
+      },
+      "raffle": {
+        "winners": {
+          "none": {
+            "description": "Yetersiz katılım. Kazanan olmadı.",
+            "content": "Yeterli katılım olmadığından dolayı çekilişin kazananı olmadı."
+          },
+          "single": {
+            "description": "Kazanan",
+            "content": "Tebrikler {0}! **{1}** kazandınız."
+          },
+          "plural": {
+            "description": "Kazananlar",
+            "content": "Tebrikler {0}! **{1}** kazandınız."
+          }
+        },
+        "footer": {
+          "text": "{0} Kazanan",
+          "finish": "Sona Erdi",
+          "continues": "Bitiş"
+        },
+        "join": "Çekilişe katılmak için {0} emojisine tıklayın!",
+        "giveaway": "Çekiliş",
+        "creator": "Oluşturan",
+        "to.end": "Bitmesine",
+        "messages": {
+          "finish": "ÇEKİLİŞ BİTTİ",
+          "start": "ÇEKİLİŞ BAŞLADI",
+          "alert": "ÇEKİLİŞ İÇİN SON KATILIM"
+        }
+      }
+    },
     "commands": {
+      "handler": {
+        "prefix": "Botun sunucu içerisinde ki komut ön adı(prefix): **{0}**",
+        "unauthorized": "Bu komutu kullanmak için **yetkiniz** yok.",
+        "permission": {
+          "missing": {
+            "message": "Botun çalışabilmesi için '**{0}**' kanalında bota '**Mesaj Gönder**' yetkisini sağlamanız/vermeniz gerekiyor. Aksi takdirde bot bu kanala mesaj gönderemez ve işlevini yerine getiremez/çalışamaz.",
+            "others": [
+              "Botun çalışabilmesi için gerekli olan **izinler** eksik. Lütfen aşağıda ki listede bulunan izinleri bota sağlayıp/verip tekrar deneyin.",
+              "\n{0}\n",
+              "Eğer daha detaylı yardıma ihtiyacınız varsa bizle iletişime geçmekten çekinmeyin."
+            ]
+          }
+        }
+      },
       "bot": {
         "invitation": {
           "description": "Gives the bot's invitation link.",
@@ -18,6 +139,230 @@
             "invite": "Click to Invite",
             "join": "Click and Join"
           }
+        },
+        "help": {
+          "description": "Komutlar hakkında bilgi verir.",
+          "error": "**{0}** adında komut bulunamadı.",
+          "success": "{0} yardım menüsünü DM kutunuza gönderildi.",
+          "embed": {
+            "title": "Komut Yardımı",
+            "fields": {
+              "command": "Komut",
+              "commands": "Komutlar",
+              "more": {
+                "detailed": "Daha Detaylı Yardım?",
+                "info": "Daha Fazla Bilgi?"
+              },
+              "alias": "Takma Adları (Alias)",
+              "description": "Açıklama",
+              "permission": "Min. Yetki Seviyesi",
+              "usage": "Kullanımı"
+            }
+          }
+        },
+        "info": {
+          "description": "Bot hakkında teknik bilgi verir.",
+          "embed": {
+            "title": "Bot Bilgisi",
+            "footer": "Syntax Software tarafından ❤️ ile yapılmıştır",
+            "content": [
+              "Çalışma Süresi (Uptime): **{0}**",
+              "NodeJS Sürümü: **{0}**",
+              "DiscordJS Sürümü: **{0}**",
+              "Asena Sürümü: **{0}**",
+              "Asena Son Güncelleme: **{0}**",
+              "Platform (OS): **{0}**",
+              "Veritabanı Bağlantısı: {0}",
+              "CPU: **{0}**",
+              "CPU Hız: **{0} MHz**",
+              "CPU Çekirdek (Core): **{0} Core / {1} Thread**",
+              "CPU Çalışma Süresi (Uptime): **{0}**",
+              "Toplam Bellek: **{0}**",
+              "Kullanılan Bellek: **{0}**",
+              "Kullanılabilir Bellek: **{0}**",
+              "Asena Tarafından Kullanılan Bellek: **{0}**"
+            ]
+          }
+        }
+      },
+      "server": {
+        "locale": {
+          "description": "Botun varsayılan dilini değiştirir.",
+          "usage": "[list | set | reset] <args>",
+          "default": "Botun sunucu içerisindeki iletişim dili",
+          "embed": {
+            "title": "Kullanılabilir Diller",
+            "footer": "Kullanmak İçin: {0}locale set [dil]"
+          },
+          "language": {
+            "enter.code": "Lütfen bir dil kodu girin.",
+            "not.found": "Dil bulunamadı ({0}). Lütfen geçerli bir dil kodu girin.",
+            "default": {
+              "successfully.changed": "Varsayılan diliniz **{0}** olarak ayarlandı.",
+              "already.using": "Zaten varsayılan dili kullanılıyorsunuz."
+            }
+          }
+        },
+        "prefix": {
+          "description": "Botun komut prefix 'ini değiştirir.",
+          "usage": "[prefix]",
+          "too.long": "Komut prefix 'i en fazla 5 karakterden oluşabilir.",
+          "changed": "Komut ön adı **{0}** olarak değiştirildi."
+        },
+        "permission": {
+          "description": "Komutun izinlerini düzenler.",
+          "usage": "[everyone | admin] [komut]",
+          "command": {
+            "not": {
+              "found": "Komut bulunamadı.",
+              "editable": "Bu komutun izinlerini düzenleyemezsin."
+            },
+            "already": "Bu komut zaten herkese **{0}**.",
+            "success": "**{0}** komutunun izinleri başarıyla düzenlendi. Komut durumu: **Herkese {1}**"
+          }
+        }
+      },
+      "raffle": {
+        "create": {
+          "description": "Yeni bir çekiliş oluşturur.",
+          "usage": "[kazanan sayısı<1 | 20>] [süre(1m | 5s) - [s(saniye) m(dakika) h(saat) d(gün)]] [ödül]",
+          "limits": {
+            "winner.count": "Çekilişi kazanan üye sayısı maksimum 20, minimum 1 kişi olabilir.",
+            "title.length": "Çekiliş başlığı maksimum 255 karakter uzunluğunda olmalıdır.",
+            "time": {
+              "invalid": "Lütfen geçerli bir süre giriniz. (Örn; **1s** - **1m** - **5m** - **1h** vb.)",
+              "exceeded": "Çekiliş süresi en az 1 dakika, en fazla 60 gün olabilir."
+            },
+            "max.created": "Maksimum çekiliş oluşturma sınırına ulaşmışsınız. (Max: 5)"
+          },
+          "unauthorized": "Botun yetkileri, bu kanalda çekiliş oluşturmak için yetersiz olduğu için çekiliş başlatılamadı."
+        },
+        "setup": {
+          "description": "Çekiliş kurulum sihirbazını başlatır.",
+          "already": "Zaten bir kurulum sihirbazı içindesin. Lütfen önce başlattığınız kurulumu bitirin veya iptal edin.",
+          "unauthorized": "Botun yetkileri, bu kanalda çekiliş oluşturmak için yetersiz olduğu için çekiliş başlatılamadı.",
+          "channel.gone": "Çekiliş oluşturulamadı. Girdiğiniz kanal sunucunuzda bulunamadı. Birden bire yok olmuş...",
+          "canceled": "İnteraktif kurulum sihirbazı iptal edildi.",
+          "timeout": "İnteraktif kurulum sihirbazı zaman aşımına uğradı ve kapandı.",
+          "success": "Çekiliş başarıyla oluşturuldu! Oluşturduğun çekiliş {0} kanalında yayınlandı...",
+          "phases": {
+            "channel": {
+              "message": [
+                "{0} interaktif kurulum sihirbazına **hoşgeldiniz**!",
+                "Eğer sihirbazdan **çıkmak** isterseniz lütfen sohbete `iptal`, `cancel` veya `exit` yazın. Hadi kuruluma geçelim.\n",
+                "**Adım 1:** Öncelikle çekilişin hangi metin kanalında yapılacağını belirleyelim\n",
+                "`Lütfen sunucuda var olan botun erişebileceği bir metin kanalını etiketlemeniz gerektiğini unutmayın.`"
+              ],
+              "validator": {
+                "channel": {
+                  "none": "Lütfen bir metin kanalı etiketleyin.",
+                  "invalid": "Lütfen geçerli bir metin kanalı etiketleyin."
+                },
+                "success": "Başarılı! Çekiliş kanalı {0} olarak belirlendi. Hadi sıradaki aşamaya geçelim."
+              }
+            },
+            "winners": {
+              "message": [
+                "**Adım 2:** Kaç kazanan olucağını belirleyelim\n",
+                "`Lütfen sayısal ve 1 ila 20 aralığında bir sayı girmeniz gerektiğini unutmayın.`"
+              ],
+              "validator": {
+                "non.integer": "Lütfen sayısal bir değer giriniz.",
+                "success": "Çok iyi! Bu çekilişte toplam **{0}** kişinin yüzünü güldüreceksiniz :slight_smile:!"
+              }
+            },
+            "time": {
+              "message": [
+                "**Adım 3:** Şimdide insanların çekilişe katılımlarını alabilmek için süre belirleyelim\n",
+                "`Unutmayın süre en az 1 dakika, en fazla 60 gün olabilir. Süre belirlerken m (dakika), h (saat), d (gün) gibi süre belirten terimler kullanmanız gerekir. Bunu kullanırken önce süre daha sonra boşluk bırakarak veya bırakmadan süre cinsini yazmayı unutmayın. Sadece tek bir süre tipi kullanabileceğini unutmayın.`"
+              ],
+              "validator": {
+                "success": "Tebrikler! Çekiliş süresi **{0}** olarak belirlendi."
+              }
+            },
+            "prize": {
+              "message": [
+                "**Adım 4:** Son olarak çekilişin ödülünü belirleyelim (Aynı zamanda başlık olarak kullanılacak)\n",
+                "`Ödülün maksimum uzunluğunun 255 karakter olabileceğini unutmayın.`"
+              ],
+              "validator": {
+                "success": "İşte bu kadar! Çekiliş başlığı ve ödülü **{0}** olarak belirlendi."
+              }
+            }
+          }
+        },
+        "list": {
+          "description": "Sunucudaki aktif çekilişleri listeler.",
+          "embed": {
+            "title": "Aktif Çekilişler",
+            "footer": "Çekilişler",
+            "description": {
+              "active": {
+                "not.found": "Aktif devam eden herhangi bir çekiliş bulunmuyor.",
+                "found": "Toplam **{0}** aktif çekiliş var"
+              }
+            },
+            "fields": {
+              "creator": "Oluşturan",
+              "channel": "Kanal",
+              "winner.count": "Kazanan Sayısı",
+              "start": "Başlangıç Tarihi",
+              "finish": "Bitiş Tarihi"
+            }
+          }
+        },
+        "cancel": {
+          "description": "Var olan bir çekilişi bitirir.",
+          "not": {
+            "found": "İptal edilebilecek bir çekiliş bulunamadı.",
+            "cancelable": "Bu çekiliş devam eden bir çekiliş değil. Bu komut sadece devam eden çekilişlerde kullanılabilir."
+          },
+          "success": "Çekiliş başarıyla iptal edildi."
+        },
+        "end": {
+          "description": "Çekilişi erken bitirir.",
+          "not": {
+            "found": "Erken bitirilebilecek bir çekiliş bulunamadı.",
+            "continues": "Anlaşılan bu çekiliş zaten bitmiş veya iptal edilmiş."
+          },
+          "success": "**{0}** çekilişi erken bitirildi. Sonuçlar {1} kanalına gönderildi."
+        },
+        "reroll": {
+          "description": "Çekilişin kazananlarını tekrar belirler.",
+          "not": {
+            "found": "Tekrar çekilebilecek bir çekiliş bulunamadı.",
+            "finish": "Bu çekiliş daha sonuçlanmamış. Lütfen çekilişin bitmesini bekleyin.",
+            "enough": "Yeterli katılım olmadığından dolayı çekiliş tekrar çekilemedi.\n**Çekiliş:** {0}"
+          },
+          "canceled": "Bu çekiliş iptal edilmiş. İptal edilmiş bir çekilişin sonucu tekrar çekilemez.",
+          "timeout": "Anlaşılan bu çekiliş mesajı silinmiş veya zaman aşımına uğramış.",
+          "data.not.found": "Çekilişin katılımcı verileri bulunamadı.",
+          "success": "Tebrikler {0}! **{1}** kazandınız (Kazananlar tekrar çekildi)\n**Çekiliş:** {2}"
+        }
+      },
+      "survey": {
+        "question": {
+          "description": "Sunucuya bir soru sorarsınız.",
+          "usage": "{soru} ...[şıklar]",
+          "too.many": "Birden fazla soru yazamazsınız. Lütfen tek bir soru yazarak tekrar deneyin.",
+          "max.answer": "Sorunuza maksimum {0} şık ekleyebilirsiniz.",
+          "error": "Soru sohbet kanalına bir sebepten dolayı gönderilemedi."
+        },
+        "vote": {
+          "description": "İki seçenekli oylama anketi oluşturur.",
+          "usage": "[süre(1m | 1h) | -1(süresiz)] [oylama metni]",
+          "embed": {
+            "description": "Oylama Başladı!",
+            "fields": {
+              "question": "Soru"
+            },
+            "footer": "Süre"
+          },
+          "time": {
+            "exceeded": "Anket süresi en az 1 dakika, maksimum 15 gün olabilir.",
+            "invalid": "Lütfen geçerli bir süre giriniz. (Örn; **1s** - **1m** - **5m** - **1h** vb.)"
+          },
+          "error": "Anket verisi veritabanına kaydedilemediği için iptal edildi."
         }
       }
     }
