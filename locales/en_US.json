@@ -1,6 +1,12 @@
 {
   "version": "1.4.0-rc1",
-  "contributors": [],
+  "contributors": [
+    {
+      "name": "Juni-dev",
+      "website": "https://github.com/Juni-dev/",
+      "mail": "yusufvsaglam@gmail.com"
+    }
+  ],
   "translator": "",
   "aliases": ["en", "en-us", "english", "ingilizce", "eng"],
   "code": "en_US",
@@ -224,120 +230,122 @@
       },
       "raffle": {
         "create": {
-          "description": "Yeni bir çekiliş oluşturur.",
-          "usage": "[kazanan sayısı<1 | 20>] [süre(1m | 5s) - [s(saniye) m(dakika) h(saat) d(gün)]] [ödül]",
+          "description": "Creates a new giveaway.",
+          "usage": "[number of winners<1 | 20>] [time(1m | 5s) - [s(second) m(minute) h(hour) d(day)]] [prize]",
           "limits": {
-            "winner.count": "Çekilişi kazanan üye sayısı maksimum 20, minimum 1 kişi olabilir.",
-            "title.length": "Çekiliş başlığı maksimum 255 karakter uzunluğunda olmalıdır.",
+            "winner.count": "The winners of the giveaway must be maximum 20, minimum 1.",
+            "title.length": "The giveaway title must be maximum 256 character length.",
             "time": {
-              "invalid": "Lütfen geçerli bir süre giriniz. (Örn; **1s** - **1m** - **5m** - **1h** vb.)",
-              "exceeded": "Çekiliş süresi en az 1 dakika, en fazla 60 gün olabilir."
+              "invalid": "Please specify a valid time. (Eg; **1s** - **1m** - **5m** - **1h** etc.)",
+              "exceeded": "The giveaway time must be minimum 1 minute, maximum 60 day."
             },
-            "max.created": "Maksimum çekiliş oluşturma sınırına ulaşmışsınız. (Max: 5)"
+            "max.created": "You have reached the maximum raffle create limit. (Max: 5)"
           },
-          "unauthorized": "Botun yetkileri, bu kanalda çekiliş oluşturmak için yetersiz olduğu için çekiliş başlatılamadı."
+          "unauthorized": "The raffle could not be started because the bot's permissions were insufficient to create a raffle on this channel."
         },
         "setup": {
-          "description": "Çekiliş kurulum sihirbazını başlatır.",
-          "already": "Zaten bir kurulum sihirbazı içindesin. Lütfen önce başlattığınız kurulumu bitirin veya iptal edin.",
-          "unauthorized": "Botun yetkileri, bu kanalda çekiliş oluşturmak için yetersiz olduğu için çekiliş başlatılamadı.",
-          "channel.gone": "Çekiliş oluşturulamadı. Girdiğiniz kanal sunucunuzda bulunamadı. Birden bire yok olmuş...",
-          "canceled": "İnteraktif kurulum sihirbazı iptal edildi.",
-          "timeout": "İnteraktif kurulum sihirbazı zaman aşımına uğradı ve kapandı.",
-          "success": "Çekiliş başarıyla oluşturuldu! Oluşturduğun çekiliş {0} kanalında yayınlandı...",
+          "description": "Starts the setup wizard.",
+          "already": "You have started setup wizard already. Please finish or cancel the setup you started first.",
+          "unauthorized": "The giveaway could not be started because the bot's permissions were insufficient to create a raffle on this channel.",
+          "channel.gone": "The giveaway couldn't created. Couldn't find the specified channel. Suddenly disappeared...",
+          "canceled": "The setup wizard has cancelled.",
+          "timeout": "The setup wizard has timed out and closed.",
+          "success": "The giveaway has created successfully! The giveaway you started has published in the {0} channel...",
           "phases": {
             "channel": {
               "message": [
-                "{0} interaktif kurulum sihirbazına **hoşgeldiniz**!",
-                "Eğer sihirbazdan **çıkmak** isterseniz lütfen sohbete `iptal`, `cancel` veya `exit` yazın. Hadi kuruluma geçelim.\n",
-                "**Adım 1:** Öncelikle çekilişin hangi metin kanalında yapılacağını belirleyelim\n",
-                "`Lütfen sunucuda var olan botun erişebileceği bir metin kanalını etiketlemeniz gerektiğini unutmayın.`"
+                "**Welcome** to the {0} setup wizard!", 
+                "If you want to **exit** from wizard, you can write `iptal`, `cancel` or `exit` to chat. Let's move on to the setup.\n",
+                "**Step 1:** Firstly let's determine in which channel the giveaway going to be.\n",
+
+                "`Please do not forget to mention a text channel on the server that the bot can access.`"
               ],
               "validator": {
                 "channel": {
-                  "none": "Lütfen bir metin kanalı etiketleyin.",
-                  "invalid": "Lütfen geçerli bir metin kanalı etiketleyin."
+                  "none": "Please mention a text channel.",
+                  "invalid": "Please mention a valid text channel."
                 },
-                "success": "Başarılı! Çekiliş kanalı {0} olarak belirlendi. Hadi sıradaki aşamaya geçelim."
+                "success": "Successfull! The giveaway channel has determined as {0}. Let's move on the next stage."
               }
             },
             "winners": {
               "message": [
-                "**Adım 2:** Kaç kazanan olucağını belirleyelim\n",
-                "`Lütfen sayısal ve 1 ila 20 aralığında bir sayı girmeniz gerektiğini unutmayın.`"
+                "**Step 2:** Let's determine how many winners going to be.\n",
+                "`Please do not forget that you must specify a numeric and a number between 1 and 20.`"
               ],
               "validator": {
-                "non.integer": "Lütfen sayısal bir değer giriniz.",
-                "success": "Çok iyi! Bu çekilişte toplam **{0}** kişinin yüzünü güldüreceksiniz :slight_smile:!"
+                "non.integer": "Please specify a numeric value.",
+                "success": "Very good! In this giveaway, you are going to make a total of **{0}** people smile :slight_smile:!"
               }
             },
             "time": {
               "message": [
-                "**Adım 3:** Şimdide insanların çekilişe katılımlarını alabilmek için süre belirleyelim\n",
+                "**Step 3:** Now, let's determine a time to the giveaway.\n",
                 "`Unutmayın süre en az 1 dakika, en fazla 60 gün olabilir. Süre belirlerken m (dakika), h (saat), d (gün) gibi süre belirten terimler kullanmanız gerekir. Bunu kullanırken önce süre daha sonra boşluk bırakarak veya bırakmadan süre cinsini yazmayı unutmayın. Sadece tek bir süre tipi kullanabileceğini unutmayın.`"
+                "`Do not forget, the time must be minimum 1 minute, maximum 60 day. While determining the time, you must use specifies time term like m (minute), h (hour), d (day). While using this you can write the time with or without whitespaces. Do not forget to, only one type of time can be used.`"
               ],
               "validator": {
-                "success": "Tebrikler! Çekiliş süresi **{0}** olarak belirlendi."
+                "success": "Congratulations! The giveaway time has determined to **{0}**."
               }
             },
             "prize": {
               "message": [
-                "**Adım 4:** Son olarak çekilişin ödülünü belirleyelim (Aynı zamanda başlık olarak kullanılacak)\n",
-                "`Ödülün maksimum uzunluğunun 255 karakter olabileceğini unutmayın.`"
+                "**Step 4:** Finally, let's determine the giveaway's prize (At the same time it going to use as title)\n",
+                "`Do not forget to the prize's maximum length can be 255 character.`"
               ],
               "validator": {
-                "success": "İşte bu kadar! Çekiliş başlığı ve ödülü **{0}** olarak belirlendi."
+                "success": "That's it! The giveaway title and prize has determined to {0}."
               }
             }
           }
         },
         "list": {
-          "description": "Sunucudaki aktif çekilişleri listeler.",
+          "description": "Lists active giveaways on the server.",
           "embed": {
-            "title": "Aktif Çekilişler",
-            "footer": "Çekilişler",
+            "title": "Active giveaways",
+            "footer": "Giveaways",
             "description": {
               "active": {
-                "not.found": "Aktif devam eden herhangi bir çekiliş bulunmuyor.",
-                "found": "Toplam **{0}** aktif çekiliş var"
+                "not.found": "There isn't any active giveaway.",
+                "found": "There is total **{0}** active giveaway"
               }
             },
             "fields": {
-              "creator": "Oluşturan",
-              "channel": "Kanal",
-              "winner.count": "Kazanan Sayısı",
-              "start": "Başlangıç Tarihi",
-              "finish": "Bitiş Tarihi"
+              "creator": "Creator",
+              "channel": "Channel",
+              "winner.count": "Number of Winners",
+              "start": "Start Date",
+              "finish": "Finish Date"
             }
           }
         },
         "cancel": {
-          "description": "Var olan bir çekilişi bitirir.",
+          "description": "Ends one existed giveaway.",
           "not": {
-            "found": "İptal edilebilecek bir çekiliş bulunamadı.",
-            "cancelable": "Bu çekiliş devam eden bir çekiliş değil. Bu komut sadece devam eden çekilişlerde kullanılabilir."
+            "found": "There was no giveaway that could be canceled.",
+            "cancelable": "This giveaway is not an ongoing one. This command can be used on only ongoing giveaways."
           },
-          "success": "Çekiliş başarıyla iptal edildi."
+          "success": "The giveaway has canceled successfully."
         },
         "end": {
-          "description": "Çekilişi erken bitirir.",
+          "description": "Ends the giveaway early.",
           "not": {
-            "found": "Erken bitirilebilecek bir çekiliş bulunamadı.",
-            "continues": "Anlaşılan bu çekiliş zaten bitmiş veya iptal edilmiş."
+            "found": "There was no giveaway that could be ended.",
+            "continues": "Apparently, this giveaway has already ended or has been canceled." 
           },
-          "success": "**{0}** çekilişi erken bitirildi. Sonuçlar {1} kanalına gönderildi."
+          "success": "The **{0}** giveaway has been finished early. The results have sent to the {1} channel." 
         },
         "reroll": {
-          "description": "Çekilişin kazananlarını tekrar belirler.",
+          "description": "Determines the winners of the giveaway again.", 
           "not": {
-            "found": "Tekrar çekilebilecek bir çekiliş bulunamadı.",
-            "finish": "Bu çekiliş daha sonuçlanmamış. Lütfen çekilişin bitmesini bekleyin.",
-            "enough": "Yeterli katılım olmadığından dolayı çekiliş tekrar çekilemedi.\n**Çekiliş:** {0}"
+            "found": "Couldn't find a rerollable giveaway.",
+            "finish": "This lottery has not been ended yet. Please wait for the giveaway ending.",
+            "enough": "The raffle could not be rerolled again for insufficient participation.\n**Giveaway:** {0}"
           },
-          "canceled": "Bu çekiliş iptal edilmiş. İptal edilmiş bir çekilişin sonucu tekrar çekilemez.",
-          "timeout": "Anlaşılan bu çekiliş mesajı silinmiş veya zaman aşımına uğramış.",
-          "data.not.found": "Çekilişin katılımcı verileri bulunamadı.",
-          "success": "Tebrikler {0}! **{1}** kazandınız (Kazananlar tekrar çekildi)\n**Çekiliş:** {2}"
+          "canceled": "This giveaway has cancelled. Can not reroll a cancelled giveaway result.",
+          "timeout": "Apparently this giveaway message has been deleted or has timed out.",
+          "data.not.found": "Couldn't find the giveaway's participant data.",
+          "success": "Congratulations {0}! You have won **{1}** (The winners has rerolled.)\n**Giveaway:** {2}"
         }
       },
       "survey": {
