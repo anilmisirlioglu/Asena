@@ -9,13 +9,19 @@ type Args = Array<string | number>
 /** Interface compatible with JSON structure */
 interface LanguageInfo{
     version: string
-    contributors: string[]
-    translator: string
+    contributors: Translator[]
+    translator: Translator
     aliases: string[]
     code: string
     flag: string
     full: string
     strings: StringTree
+}
+
+interface Translator{
+    name: string
+    website: string
+    mail: string
 }
 
 export default class Language{
@@ -24,10 +30,10 @@ export default class Language{
     public version: Version
 
     /** List of contributors */
-    public contributors: string[]
+    public contributors: Translator[]
 
     /** The translator */
-    public translator: string
+    public translator: Translator
 
     /** Other nicknames for the language */
     public aliases: string[]
