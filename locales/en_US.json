@@ -53,64 +53,64 @@
     },
     "errors": {
       "reporter": {
-        "title": "Hata Raporlayıcı",
+        "title": "Error Reporting",
         "description": [
-          "**Hata:** {0}",
-          "**Hata Mesajı:** {0}",
-          "**Yöntem:** {0}",
+          "**Error:** {0}",
+          "**Error Message:** {0}",
+          "**Method:** {0}",
           "**Veri Yolu:** {0}",
-          "**Hata Kodu:** {0}",
+          "**Error Code:** {0}",
           "**Stack Trace:**```{0}```"
         ]
       },
       "message": [
-        "<:down:744193243805384704> Sunucunuzda bulunan çekiliş bir **hatadan** dolayı sonuçlandırılamadı.",
-        "Lütfen çekilişinizi kurtarabilmemiz için bu mesajın **ekran görüntüsü** ile birlikte bizimle iletişime geçin.\n",
-        "> **Destek-İletişim:** https://discord.gg/CRgXhfs\n"
+        "<:down:744193243805384704> The draw on your server could not be concluded due to an **error**.",
+        "Please contact us with a **screenshot** of this message so that we can save your raffle.\n",
+        "> **Support&Contact:** https://discord.gg/CRgXhfs\n"
       ]
     },
     "events": {
       "guildDelete": [
-        "Botun kullanımı ile ilgili sorunlar mı yaşıyorsun? Lütfen bizimle iletişime geçmekten çekinme.\n",
-        ":earth_americas: Website: https://asena.xyz",
-        ":sparkles: Destek Sunucusu: https://discord.gg/CRgXhfs"
+        "Are you having problems using the bot? Please feel free to contact us.\n",
+        ":earth_americas: Web: https://asena.xyz",
+        ":sparkles: Support Server: https://discord.gg/CRgXhfs"
       ]
     },
     "structures": {
       "survey": {
         "results": {
-          "survey": "ANKET SONUÇLARI",
-          "vote": "Oylama sonuçları"
+          "survey": "SURVEY RESULTS",
+          "vote": "Voting results"
         }
       },
       "raffle": {
         "winners": {
           "none": {
-            "description": "Yetersiz katılım. Kazanan olmadı.",
-            "content": "Yeterli katılım olmadığından dolayı çekilişin kazananı olmadı."
+            "description": "Insufficient attendance. There was no winner.",
+            "content": "Because there was not enough participation, there was no winner of the draw."
           },
           "single": {
-            "description": "Kazanan",
-            "content": "Tebrikler {0}! **{1}** kazandınız."
+            "description": "Winner",
+            "content": "Congratulations {0}! You've won a **{1}**."
           },
           "plural": {
-            "description": "Kazananlar",
-            "content": "Tebrikler {0}! **{1}** kazandınız."
+            "description": "Winners",
+            "content": "Congratulations {0}! You've won a **{1}**."
           }
         },
         "footer": {
-          "text": "{0} Kazanan",
-          "finish": "Sona Erdi",
-          "continues": "Bitiş"
+          "text": "{0} Winner",
+          "finish": "Ended",
+          "continues": "Finish"
         },
-        "join": "Çekilişe katılmak için {0} emojisine tıklayın!",
-        "giveaway": "Çekiliş",
-        "creator": "Oluşturan",
-        "to.end": "Bitmesine",
+        "join": "Click on the {0} emoji to join the draw!",
+        "giveaway": "Draw",
+        "creator": "Constituent",
+        "to.end": "End",
         "messages": {
-          "finish": "ÇEKİLİŞ BİTTİ",
-          "start": "ÇEKİLİŞ BAŞLADI",
-          "alert": "ÇEKİLİŞ İÇİN SON KATILIM"
+          "finish": "THE DRAW İS FİNİSHED",
+          "start": "THE DRAW İS STARTED",
+          "alert": "FINAL PARTICIPATION FOR THE DRAW"
         }
       }
     },
@@ -355,6 +355,7 @@
             "description": "Oylama Başladı!",
             "fields": {
               "question": "Soru"
+
             },
             "footer": "Süre"
           },
