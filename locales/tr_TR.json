@@ -1,7 +1,11 @@
 {
   "version": "1.4.0",
   "contributors": [],
-  "translator": "Anıl Mısırlıoğlu",
+  "translator": {
+    "name": "Anıl Mısırlıoğlu",
+    "website": "https://anil.tools",
+    "mail": "misirlioglianil@gmail.com"
+  },
   "aliases": ["tr", "tr-tr", "turkish", "türkçe", "tur"],
   "code": "tr_TR",
   "flag": ":flag_tr:",
