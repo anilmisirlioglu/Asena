@@ -193,38 +193,38 @@
       },
       "server": {
         "locale": {
-          "description": "Botun varsayılan dilini değiştirir.",
+          "description": "Changes the bot's default language.",
           "usage": "[list | set | reset] <args>",
-          "default": "Botun sunucu içerisindeki iletişim dili",
+          "default": "Communication language of the bot in the server.",
           "embed": {
-            "title": "Kullanılabilir Diller",
-            "footer": "Kullanmak İçin: {0}locale set [dil]"
+            "title": "Available Languages",
+            "footer": "To use: {0}locale set [language]"
           },
           "language": {
-            "enter.code": "Lütfen bir dil kodu girin.",
-            "not.found": "Dil bulunamadı ({0}). Lütfen geçerli bir dil kodu girin.",
+            "enter.code": "Please specify a language code.",
+            "not.found": "Couldn't found the language ({0}). Please specify a valid language code.",
             "default": {
-              "successfully.changed": "Varsayılan diliniz **{0}** olarak ayarlandı.",
-              "already.using": "Zaten varsayılan dili kullanılıyorsunuz."
+              "successfully.changed": "Your default language has set to **{0}**.",
+              "already.using": "You have been using default language already."
             }
           }
         },
         "prefix": {
-          "description": "Botun komut prefix 'ini değiştirir.",
+          "description": "Changes the bot's command prefix.",
           "usage": "[prefix]",
-          "too.long": "Komut prefix 'i en fazla 5 karakterden oluşabilir.",
-          "changed": "Komut ön adı **{0}** olarak değiştirildi."
+          "too.long": "The command prefix must be maximum 5 character.", 
+          "changed": "The command prefix has set to **{0}**."
         },
         "permission": {
-          "description": "Komutun izinlerini düzenler.",
-          "usage": "[everyone | admin] [komut]",
+          "description": "Edits command's permissions.",
+          "usage": "[everyone | admin] [command]",
           "command": {
             "not": {
-              "found": "Komut bulunamadı.",
-              "editable": "Bu komutun izinlerini düzenleyemezsin."
+              "found": "The command was not found.",
+              "editable": "You can't edit this command's permissions."
             },
-            "already": "Bu komut zaten herkese **{0}**.",
-            "success": "**{0}** komutunun izinleri başarıyla düzenlendi. Komut durumu: **Herkese {1}**"
+            "already": "This command has already **{0}** to everyone.",
+            "success": "The **{0}** command's permissions has editted successfully. Command status: **To Everyone {1}**"
           }
         }
       },
