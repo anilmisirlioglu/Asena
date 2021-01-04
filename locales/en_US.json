@@ -127,15 +127,15 @@
     },
     "commands": {
       "handler": {
-        "prefix": "Botun sunucu içerisinde ki komut ön adı(prefix): **{0}**",
-        "unauthorized": "Bu komutu kullanmak için **yetkiniz** yok.",
+        "prefix": "The bot's command front name in the server(prefix): **{0}**",
+        "unauthorized": "To use this command **your auth** absent.",
         "permission": {
           "missing": {
-            "message": "Botun çalışabilmesi için '**{0}**' kanalında bota '**Mesaj Gönder**' yetkisini sağlamanız/vermeniz gerekiyor. Aksi takdirde bot bu kanala mesaj gönderemez ve işlevini yerine getiremez/çalışamaz.",
+            "message": "In order for the bot to work, '**{0}**' you must authorize **Send Message** on the channel. Otherwise, the bot will not be able to send a message to this channel and will not be able to work.",
             "others": [
-              "Botun çalışabilmesi için gerekli olan **izinler** eksik. Lütfen aşağıda ki listede bulunan izinleri bota sağlayıp/verip tekrar deneyin.",
+              "The **permissions** required for the bot to run are missing. Please provide the permissions in the list below to the bot and try again.",
               "\n{0}\n",
-              "Eğer daha detaylı yardıma ihtiyacınız varsa bizle iletişime geçmekten çekinmeyin."
+              "If you need more detailed assistance, feel free to contact us."
             ]
           }
         }
