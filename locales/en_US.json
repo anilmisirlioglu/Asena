@@ -2,8 +2,8 @@
   "version": "1.4.0-rc1",
   "contributors": [
     {
-      "name": "Juni-dev",
-      "website": "https://github.com/Juni-dev/",
+      "name": "yusfsm",
+      "website": "https://github.com/yusfsm/",
       "mail": "yusufvsaglam@gmail.com"
     }
   ],
@@ -148,7 +148,7 @@
         },
         "help": {
           "description": "Gives information about the commands.",
-          "error": "The command named **{0} could not be found.",
+          "error": "The command named **{0}** could not be found.",
           "success": "{0} help menu has sent to your DM box.",
           "embed": {
             "title": "Command Help",
