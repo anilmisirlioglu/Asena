@@ -170,7 +170,7 @@
           "description": "Gives technical information about the bot.",
           "embed": {
             "title": "Bot Information",
-            "footer": "Made with ❤ by Syntax Software",
+            "footer": "Made with ❤️ by Syntax Software",
             "content": [
               "Working Time (Uptime): **{0}**",
               "NodeJS Version: **{0}**",
@@ -254,7 +254,7 @@
           "phases": {
             "channel": {
               "message": [
-                "**Welcome** to the {0} setup wizard!", 
+                "**Welcome** to the {0} setup wizard!",
                 "If you want to **exit** from wizard, you can write `iptal`, `cancel` or `exit` to chat. Let's move on to the setup.\n",
                 "**Step 1:** Firstly let's determine in which channel the giveaway going to be.\n",
 
@@ -281,7 +281,6 @@
             "time": {
               "message": [
                 "**Step 3:** Now, let's determine a time to the giveaway.\n",
-                "`Unutmayın süre en az 1 dakika, en fazla 60 gün olabilir. Süre belirlerken m (dakika), h (saat), d (gün) gibi süre belirten terimler kullanmanız gerekir. Bunu kullanırken önce süre daha sonra boşluk bırakarak veya bırakmadan süre cinsini yazmayı unutmayın. Sadece tek bir süre tipi kullanabileceğini unutmayın.`"
                 "`Do not forget, the time must be minimum 1 minute, maximum 60 day. While determining the time, you must use specifies time term like m (minute), h (hour), d (day). While using this you can write the time with or without whitespaces. Do not forget to, only one type of time can be used.`"
               ],
               "validator": {
@@ -331,12 +330,12 @@
           "description": "Ends the giveaway early.",
           "not": {
             "found": "There was no giveaway that could be ended.",
-            "continues": "Apparently, this giveaway has already ended or has been canceled." 
+            "continues": "Apparently, this giveaway has already ended or has been canceled."
           },
-          "success": "The **{0}** giveaway has been finished early. The results have sent to the {1} channel." 
+          "success": "The **{0}** giveaway has been finished early. The results have sent to the {1} channel."
         },
         "reroll": {
-          "description": "Determines the winners of the giveaway again.", 
+          "description": "Determines the winners of the giveaway again.",
           "not": {
             "found": "Couldn't find a rerollable giveaway.",
             "finish": "This lottery has not been ended yet. Please wait for the giveaway ending.",
