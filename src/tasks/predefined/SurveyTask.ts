@@ -30,7 +30,7 @@ export default class SurveyTask extends Task<Survey>{
     protected intervalCallback(survey: Survey): () => void{
         return async () => {
             await Promise.all([
-                survey.finishSurvey(this.client),
+                survey.finish(this.client),
                 survey.delete()
             ])
         }

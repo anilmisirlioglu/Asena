@@ -43,7 +43,7 @@ export default class BotInfo extends Command{
             .setFooter('Syntax Software tarafından ❤️ ile yapılmıştır')
             .setTimestamp()
             .setColor('#CD5C5C')
-            .addField('**Asena**', textArr)
+            .addField(`**${client.user.username}**`, textArr)
 
         await message.channel.send({ embed })
         return true

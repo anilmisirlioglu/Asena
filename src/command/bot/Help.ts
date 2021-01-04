@@ -30,7 +30,7 @@ export default class Help extends Command{
             const embed = new MessageEmbed()
                 .setAuthor('📍 Komut Yardımı', message.author.displayAvatarURL() || message.author.defaultAvatarURL)
                 .addField('Komutlar', text)
-                .addField(`🌟 Daha Detaylı Yardım?`, `${prefix}help [komut-adı]`)
+                .addField(`🌟 Daha Detaylı Yardım?`, `${prefix}${this.name} [komut-adı]`)
                 .addField(`🌐 Daha Fazla Bilgi?`, '**[Website](https://asena.xyz)**')
                 .setColor('RANDOM')
 

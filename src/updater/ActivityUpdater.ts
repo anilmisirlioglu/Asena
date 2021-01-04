@@ -10,18 +10,20 @@ export default class ActivityUpdater extends Factory{
     public start(): void{
         this.client.on('ready', async () => {
             const client: SuperClient = this.client
-            client.logger.info(`Asena ${client.version.getFullVersion()} başlatılıyor...`)
+            const user = client.user
+
+            client.logger.info(`${user.username} ${client.version.getFullVersion()} başlatılıyor...`)
 
             this.counter = client.guilds.cache.size
 
             await Promise.all([
-                client.user.setStatus('online'),
-                client.user.setActivity(this.getActivityString(), {
+                user.setStatus('online'),
+                user.setActivity(this.getActivityString(), {
                     type: 'PLAYING'
                 })
             ])
 
-            client.logger.info(`${client.user.username} aktif, toplam ${this.counter} sunucuya hizmet veriliyor!`)
+            client.logger.info(`${user.username} aktif, toplam ${this.counter} sunucuya hizmet veriliyor!`)
         })
 
         this.setGuildCounterListeners()

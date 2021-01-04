@@ -40,7 +40,7 @@ class Survey extends Structure<typeof SurveyModel, SuperSurvey>{
         this.finishAt = data.finishAt
     }
 
-    public async finishSurvey(client: SuperClient){
+    public async finish(client: SuperClient){
         const channel: GuildChannel | undefined = await client.fetchChannel(this.server_id, this.channel_id)
         if(channel instanceof TextChannel){
             const message: Message | undefined = await channel.messages.fetch(this.message_id)
