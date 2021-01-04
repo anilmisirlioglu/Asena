@@ -342,27 +342,27 @@
       },
       "survey": {
         "question": {
-          "description": "Sunucuya bir soru sorarsınız.",
-          "usage": "{soru} ...[şıklar]",
-          "too.many": "Birden fazla soru yazamazsınız. Lütfen tek bir soru yazarak tekrar deneyin.",
-          "max.answer": "Sorunuza maksimum {0} şık ekleyebilirsiniz.",
-          "error": "Soru sohbet kanalına bir sebepten dolayı gönderilemedi."
+          "description": "You can ask questions to the server.",
+          "usage": "{question} ...[options]",
+          "too.many": "You can't write more than one question. Please try again with writing one question.",
+          "max.answer": "You can add maximum {0} option to your question.",
+          "error": "The question could not be sended on the chat channel for some reason."
         },
         "vote": {
-          "description": "İki seçenekli oylama anketi oluşturur.",
-          "usage": "[süre(1m | 1h) | -1(süresiz)] [oylama metni]",
+          "description": "Creates a two-option voting poll.",
+          "usage": "[time(1m | 1h) | -1(indefinite)] [voting text]",
           "embed": {
-            "description": "Oylama Başladı!",
+            "description": "The voting has started!",
             "fields": {
-              "question": "Soru"
+              "question": "Question"
             },
-            "footer": "Süre"
+            "footer": "Time"
           },
           "time": {
-            "exceeded": "Anket süresi en az 1 dakika, maksimum 15 gün olabilir.",
-            "invalid": "Lütfen geçerli bir süre giriniz. (Örn; **1s** - **1m** - **5m** - **1h** vb.)"
+            "exceeded": "The survey time should be minimum 1 minute, maximum 15 day.",
+            "invalid": "Please specify a valid time. (Eg; **1s** - **1m** - **5m** - **1h** etc.)"
           },
-          "error": "Anket verisi veritabanına kaydedilemediği için iptal edildi."
+          "error": "Survey data has canceled because it could not be saved in the database."
         }
       }
     }
