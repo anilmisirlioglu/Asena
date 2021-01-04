@@ -59,64 +59,64 @@
     },
     "errors": {
       "reporter": {
-        "title": "Hata Raporlayıcı",
+        "title": "Error Reporter",
         "description": [
-          "**Hata:** {0}",
-          "**Hata Mesajı:** {0}",
-          "**Yöntem:** {0}",
-          "**Veri Yolu:** {0}",
-          "**Hata Kodu:** {0}",
+          "**Error:** {0}",
+          "**Error Message:** {0}",
+          "**Method:** {0}",
+          "**Path:** {0}",
+          "**Error Code:** {0}",
           "**Stack Trace:**```{0}```"
         ]
       },
       "message": [
-        "<:down:744193243805384704> Sunucunuzda bulunan çekiliş bir **hatadan** dolayı sonuçlandırılamadı.",
-        "Lütfen çekilişinizi kurtarabilmemiz için bu mesajın **ekran görüntüsü** ile birlikte bizimle iletişime geçin.\n",
-        "> **Destek-İletişim:** https://discord.gg/CRgXhfs\n"
+        "<:down:744193243805384704> The giveaway on your server could not be finalized due to an **error**.",
+        "Please contact us with the **screenshot** of this message so that we can save your giveaway.\n",
+        "> **Support-Contact:** https://discord.gg/CRgXhfs\n"
       ]
     },
     "events": {
       "guildDelete": [
-        "Botun kullanımı ile ilgili sorunlar mı yaşıyorsun? Lütfen bizimle iletişime geçmekten çekinme.\n",
+        "Are you having a problem with using the bot? Please contact with us.\n",
         ":earth_americas: Website: https://asena.xyz",
-        ":sparkles: Destek Sunucusu: https://discord.gg/CRgXhfs"
+        ":sparkles: Support Server: https://discord.gg/CRgXhfs"
       ]
     },
     "structures": {
       "survey": {
         "results": {
-          "survey": "ANKET SONUÇLARI",
-          "vote": "Oylama sonuçları"
+          "survey": "SURVEY RESULTS",
+          "vote": "Vote results"
         }
       },
       "raffle": {
         "winners": {
           "none": {
-            "description": "Yetersiz katılım. Kazanan olmadı.",
-            "content": "Yeterli katılım olmadığından dolayı çekilişin kazananı olmadı."
+            "description": "Insufficient participation. There is no winner.",
+            "content": "There is no winners of the giveaway due to insufficient participation."
           },
           "single": {
-            "description": "Kazanan",
-            "content": "Tebrikler {0}! **{1}** kazandınız."
+            "description": "Winner",
+            "content": "Congratulations {0}! You won **{1}**."
           },
           "plural": {
-            "description": "Kazananlar",
-            "content": "Tebrikler {0}! **{1}** kazandınız."
+            "description": "Winners",
+            "content": "Congratulations {0}! You won **{1}**."
           }
         },
         "footer": {
-          "text": "{0} Kazanan",
-          "finish": "Sona Erdi",
-          "continues": "Bitiş"
+          "text": "{0} Winners",
+          "finish": "Ended",
+          "continues": "Ends at"
         },
-        "join": "Çekilişe katılmak için {0} emojisine tıklayın!",
-        "giveaway": "Çekiliş",
-        "creator": "Oluşturan",
-        "to.end": "Bitmesine",
+        "join": "Click on the {0} emoji to enter the giveaway!",
+        "giveaway": "Giveaway",
+        "creator": "Hosted by",
+        "to.end": "Time remaining",
         "messages": {
-          "finish": "ÇEKİLİŞ BİTTİ",
-          "start": "ÇEKİLİŞ BAŞLADI",
-          "alert": "ÇEKİLİŞ İÇİN SON KATILIM"
+          "finish": "GIVEAWAY ENDED",
+          "start": "GIVEAWAY STARTED",
+          "alert": "LAST PARTICIPATION FOR THE GIVEAWAY"
         }
       }
     },
