@@ -5,6 +5,11 @@
       "name": "yusfsm",
       "website": "https://github.com/yusfsm/",
       "mail": "yusufvsaglam@gmail.com"
+    },
+    {
+      "name": "Anıl Mısırlıoğlu",
+      "website": "https://anil.tools",
+      "mail": "misirlioglianil@gmail.com"
     }
   ],
   "translator": "",
@@ -193,7 +198,7 @@
       },
       "server": {
         "locale": {
-          "description": "Changes the bot's default language.",
+          "description": "Changes the bots default language.",
           "usage": "[list | set | reset] <args>",
           "default": "Communication language of the bot in the server.",
           "embed": {
@@ -212,7 +217,7 @@
         "prefix": {
           "description": "Changes the bot's command prefix.",
           "usage": "[prefix]",
-          "too.long": "The command prefix must be maximum 5 character.", 
+          "too.long": "The command prefix must be maximum 5 character.",
           "changed": "The command prefix has set to **{0}**."
         },
         "permission": {
