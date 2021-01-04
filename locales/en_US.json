@@ -141,46 +141,46 @@
           }
         },
         "help": {
-          "description": "Komutlar hakkında bilgi verir.",
-          "error": "**{0}** adında komut bulunamadı.",
-          "success": "{0} yardım menüsünü DM kutunuza gönderildi.",
+          "description": "Gives information about the commands.",
+          "error": "The command named **{0} could not be found.",
+          "success": "{0} help menu has sent to your DM box.",
           "embed": {
-            "title": "Komut Yardımı",
+            "title": "Command Help",
             "fields": {
-              "command": "Komut",
-              "commands": "Komutlar",
+              "command": "Command",
+              "commands": "Commands",
               "more": {
-                "detailed": "Daha Detaylı Yardım?",
-                "info": "Daha Fazla Bilgi?"
+                "detailed": "More Detailed Help?",
+                "info": "More Information?"
               },
-              "alias": "Takma Adları (Alias)",
-              "description": "Açıklama",
-              "permission": "Min. Yetki Seviyesi",
-              "usage": "Kullanımı"
+              "alias": "Alias",
+              "description": "Description",
+              "permission": "Minimum Permission Level",
+              "usage": "Usage"
             }
           }
         },
         "info": {
-          "description": "Bot hakkında teknik bilgi verir.",
+          "description": "Gives technical information about the bot.",
           "embed": {
-            "title": "Bot Bilgisi",
-            "footer": "Syntax Software tarafından ❤️ ile yapılmıştır",
+            "title": "Bot Information",
+            "footer": "Made with ❤ by Syntax Software",
             "content": [
-              "Çalışma Süresi (Uptime): **{0}**",
-              "NodeJS Sürümü: **{0}**",
-              "DiscordJS Sürümü: **{0}**",
-              "Asena Sürümü: **{0}**",
-              "Asena Son Güncelleme: **{0}**",
+              "Working Time (Uptime): **{0}**",
+              "NodeJS Version: **{0}**",
+              "DiscordJS Version: **{0}**",
+              "Asena Version: **{0}**",
+              "Asena Last Update: **{0}**",
               "Platform (OS): **{0}**",
-              "Veritabanı Bağlantısı: {0}",
+              "Database Connection: {0}",
               "CPU: **{0}**",
-              "CPU Hız: **{0} MHz**",
-              "CPU Çekirdek (Core): **{0} Core / {1} Thread**",
-              "CPU Çalışma Süresi (Uptime): **{0}**",
-              "Toplam Bellek: **{0}**",
-              "Kullanılan Bellek: **{0}**",
-              "Kullanılabilir Bellek: **{0}**",
-              "Asena Tarafından Kullanılan Bellek: **{0}**"
+              "CPU Speed: **{0} MHz**",
+              "CPU Core: **{0} Core / {1} Thread**",
+              "CPU Working Time (Uptime): **{0}**",
+              "Total Memory: **{0}**",
+              "Memory Used: **{0}**",
+              "Available Memory: **{0}**",
+              "Memory Used By Asena: **{0}**"
             ]
           }
         }
