@@ -2,14 +2,19 @@
   "version": "1.4.0-rc1",
   "contributors": [
     {
-      "name": "Muhammed Ikbal",
-      "website": "https://github.com/Luciendew",
-      "mail": "m.ikbal0302l@gmail.com"
+      "name": "yusfsm",
+      "website": "https://github.com/yusfsm/",
+      "mail": "yusufvsaglam@gmail.com"
     },
     {
       "name": "Anıl Mısırlıoğlu",
       "website": "https://anil.tools",
       "mail": "misirlioglianil@gmail.com"
+    },
+    {
+      "name": "Muhammed Ikbal",
+      "website": "https://github.com/Luciendew",
+      "mail": "m.ikbal0302l@gmail.com"
     }
   ],
   "translator": "",
