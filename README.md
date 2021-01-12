@@ -7,17 +7,17 @@
 [![Discord](https://discordapp.com/api/guilds/701790578874253363/widget.png?style=shield)](https://discord.gg/CRgXhfs)
 [![Version](https://img.shields.io/github/package-json/v/anilmisirlioglu/Asena?color=blue)](https://github.com/anilmisirlioglu/Asena)
 
-> stable, fast, easy and surrounded by new generation technologies Discord giveaway & survey bot!
+stable, fast, easy and surrounded by new generation technologies Discord giveaway, survey & poll bot!
 
-## Language Support
+## Multi Language Support
 
-**[EN] NOTE:** Due to the high usage of the bot on Turkish servers, the default language of the bot is set to *Turkish*.
+**[EN]** Due to the high usage of the bot on Turkish servers, the default language of the bot is set to *Turkish*.
 You can change the language of the bot in the server with the command `!alocale set <language-code>`
 
-**[TR] NOT:** Botun yüksek oranda Türk sunucularında kullanılmasından dolayı botun varsıyılan dili *Türkçe* olarak
+**[TR]** Botun yüksek oranda Türk sunucularında kullanılmasından dolayı botun varsıyılan dili *Türkçe* olarak
 ayarlanmıştır. Botun sunucu içerisinde ki dilini `!alocale set <dil-kodu>` komutu ile değiştirebilirsiniz.
 
-> Example to make the bot's default language English:
+Example to make the bot's default language English:
 ```sh
 !asetlocale set en
 ```
