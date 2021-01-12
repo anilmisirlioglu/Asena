@@ -7,7 +7,7 @@
 [![Discord](https://discordapp.com/api/guilds/701790578874253363/widget.png?style=shield)](https://discord.gg/CRgXhfs)
 [![Version](https://img.shields.io/github/package-json/v/anilmisirlioglu/Asena?color=blue)](https://github.com/anilmisirlioglu/Asena)
 
-stable, fast, easy and surrounded by new generation technologies Discord giveaway, survey & poll bot!
+> stable, fast, easy and surrounded by new generation technologies Discord giveaway, survey & poll bot!
 
 ## Multi Language Support
 
