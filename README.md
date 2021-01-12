@@ -12,8 +12,14 @@ Discord giveaway & survey bot!
 
 **[EN] NOTE:** Due to the high usage of the bot on Turkish servers, the default language of the bot is set to *Turkish*.
 You can change the language of the bot in the server with the command `!alocale set <language-code>`
+
 **[TR] NOT:** Botun yüksek oranda Türk sunucularında kullanılmasından dolayı botun varsıyılan dili *Türkçe* olarak
 ayarlanmıştır. Botun sunucu içerisinde ki dilini `!alocale set <dil-kodu>` komutu ile değiştirebilirsiniz.
+
+**->** Example to make the bot's default language English:
+```sh
+!asetlocale set en
+```
 
 ## Command List 🦾
 
