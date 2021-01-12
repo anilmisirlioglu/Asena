@@ -34,7 +34,12 @@ abstract class Manager<K, V extends Structure<M, D>, M extends Model<D>, D exten
     }
 
     async create(data: D): Promise<V>{
-        const create = await this.model.create(data as any)
+        const create = await this.model.findOneAndUpdate({
+            [this.key()]: data[this.key()]
+        } as any, data, {
+            upsert: true,
+            new: true
+        })
         const structure = this.new(create)
 
         this.set(structure.identifier_id, structure)
