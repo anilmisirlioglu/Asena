@@ -7,14 +7,19 @@
 [![Discord](https://discordapp.com/api/guilds/701790578874253363/widget.png?style=shield)](https://discord.gg/CRgXhfs)
 [![Version](https://img.shields.io/github/package-json/v/anilmisirlioglu/Asena?color=blue)](https://github.com/anilmisirlioglu/Asena)
 
-> Completely Turkish, stable, fast, easy and surrounded by new generation technologies!
-Discord raffle & survey bot!
+> stable, fast, easy and surrounded by new generation technologies!
+Discord giveaway & survey bot!
+
+**[EN] NOTE:** Due to the high usage of the bot on Turkish servers, the default language of the bot is set to *Turkish*.
+You can change the language of the bot in the server with the command `!alocale set <language-code>`
+**[TR] NOT:** Botun yüksek oranda Türk sunucularında kullanılmasından dolayı botun varsıyılan dili *Türkçe* olarak
+ayarlanmıştır. Botun sunucu içerisinde ki dilini `!alocale set <dil-kodu>` komutu ile değiştirebilirsiniz.
 
 ## Command List 🦾
 
 > Prefix: !a (Default)
 
-| Komut | Açıklama |
+| Command | Description |
 |:-----------:|:----------:|
 | cancel | Cancels the giveaway. |
 | create | Starts new giveaway in one line. |
@@ -23,12 +28,12 @@ Discord raffle & survey bot!
 | end | Finish the giveaway early. |
 | raffles | List active giveaways on the server. |
 | vote |  Starts a simple 2-option poll on the server. |
-| question | Asks a quesiton. |
+| question | Asks a question. |
 | help | Sends the help menu to your inbox via a private message. |
 | setprefix | The command changes its prefix. |
-| scperm | It regualetes the authority of the command. |
-| invite | Sends the bot's invite URL to the chat. |
-| locale | Changes the bot's default language. |
+| scperm | It regulates the authority of the command. |
+| invite | Sends the bots invite URL to the chat. |
+| locale | Changes the bots default language. |
 
 ## Invitation 🔗
 
@@ -46,5 +51,3 @@ Otherwise, no assistance will be provided to edit, compile or generate any code 
 
 ## Images 📷
 ![image](https://cdn.discordapp.com/attachments/712449369827180596/724982732513607710/asena.png)
--
-![image](https://cdn.discordapp.com/attachments/712449488471719976/720381037338820776/hello.PNG)
