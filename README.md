@@ -19,7 +19,7 @@ ayarlanmıştır. Botun sunucu içerisinde ki dilini `!alocale set <dil-kodu>` k
 
 Example to make the bot's default language English:
 ```sh
-!asetlocale set en
+!alocale set en
 ```
 
 ## Command List 🦾
