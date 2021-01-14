@@ -18,6 +18,7 @@ import RaffleTimeUpdater from './updater/RaffleTimeUpdater';
 import ServerManager from './managers/ServerManager';
 import SetupManager from './setup/SetupManager';
 import SyntaxWebhook from './SyntaxWebhook';
+import LanguageManager from './language/LanguageManager';
 
 interface SuperClientBuilderOptions{
     prefix: string
@@ -44,6 +45,8 @@ export default abstract class SuperClient extends Client{
     private readonly setupManager: SetupManager = new SetupManager()
 
     readonly webhook: SyntaxWebhook = new SyntaxWebhook()
+
+    private readonly languageManager: LanguageManager = new LanguageManager(this)
 
     static NAME: string
     static AVATAR: string
@@ -99,6 +102,10 @@ export default abstract class SuperClient extends Client{
         return this.setupManager
     }
 
+    public getLanguageManager(): LanguageManager{
+        return this.languageManager
+    }
+
     fetchChannel<T extends Snowflake>(guildId: T, channelId: T): GuildChannel | undefined{
         const guild: Guild = this.guilds.cache.get(guildId)
         if(guild){
@@ -123,20 +130,20 @@ export default abstract class SuperClient extends Client{
         return undefined
     }
 
-    buildErrorReporterEmbed(guild: Guild, err: DiscordAPIError | HTTPError): MessageEmbed{
+    buildErrorReporterEmbed(lang: string, guild: Guild, err: DiscordAPIError | HTTPError): MessageEmbed{
         return new MessageEmbed()
-            .setAuthor(`${this.user.username} | Hata Raporlayıcı`, this.user.avatarURL())
+            .setAuthor(`${this.user.username} | ${LanguageManager.translate(lang, "errors.reporter.title")}`, this.user.avatarURL())
             .setColor('DARK_RED')
             .setFooter(guild.name, guild.iconURL())
             .setTimestamp()
-            .setDescription([
-                `**Hata:** ${err.name}`,
-                `**Hata Mesajı:** ${err.message}`,
-                `**Yöntem:** ${err.method}`,
-                `**Veri Yolu:** ${err.path}`,
-                `**Hata Kodu:** ${err.code}`,
-                `**Stack Trace:**\`\`\`${err.stack}\`\`\``
-            ].join('\n'))
+            .setDescription(LanguageManager.translate(lang, "errors.reporter.description", ...[
+                err.name,
+                err.message,
+                err.method,
+                err.path,
+                err.code,
+                err.path
+            ]))
     }
 
 }

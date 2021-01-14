@@ -3,6 +3,7 @@ import { Message, MessageEmbed } from 'discord.js'
 import Command from '../Command'
 import SuperClient from '../../SuperClient';
 import Server from '../../structures/Server';
+import Constants from '../../Constants';
 
 export default class Help extends Command{
 
@@ -10,7 +11,7 @@ export default class Help extends Command{
         super({
             name: 'help',
             aliases: ['yardim', 'yardım'],
-            description: 'Komutlar hakkında bilgi verir.',
+            description: 'commands.bot.help.description',
             usage: null,
             permission: undefined
         })
@@ -21,22 +22,25 @@ export default class Help extends Command{
         const prefix = (await client.servers.get(message.guild.id)).prefix
         if(args[0] === undefined){
             const text = client.getCommandHandler().getCommandsArray().map(command => {
-                const label = `\`${command.name}\`: ${command.description}`
+                const label = `\`${command.name}\`: ${server.translate(command.description)}`
                 return command.permission === 'ADMINISTRATOR' ? (
-                    message.member.hasPermission('ADMINISTRATOR') ? label : undefined
+                    (
+                        message.member.hasPermission('ADMINISTRATOR') ||
+                        message.member.roles.cache.find(role => role.name.trim().toLowerCase() === Constants.PERMITTED_ROLE_NAME)
+                    ) ? label : undefined
                 ) : label
             }).filter(Boolean).join('\n')
 
             const embed = new MessageEmbed()
-                .setAuthor('📍 Komut Yardımı', message.author.displayAvatarURL() || message.author.defaultAvatarURL)
-                .addField('Komutlar', text)
-                .addField(`🌟 Daha Detaylı Yardım?`, `${prefix}help [komut-adı]`)
-                .addField(`🌐 Daha Fazla Bilgi?`, '**[Website](https://asena.xyz)**')
+                .setAuthor(`📍 ${server.translate('commands.bot.help.embed.title')}`, message.author.displayAvatarURL() || message.author.defaultAvatarURL)
+                .addField(server.translate('commands.bot.help.embed.fields.commands'), text)
+                .addField(`🌟 ${server.translate('commands.bot.help.embed.fields.more.detailed')}`, `${prefix}${this.name} [${server.translate('commands.bot.help.embed.fields.command')}]`)
+                .addField(`🌐 ${server.translate('commands.bot.help.embed.fields.more.info')}`, '**[Website](https://asena.xyz)**')
                 .setColor('RANDOM')
 
             message.author.createDM().then(channel => {
                 channel.send({ embed }).then(() => {
-                    message.channel.send(`<@${message.author.id}> yardım menüsünü DM kutunuza gönderildi.`).then($message => {
+                    message.channel.send(server.translate('commands.bot.help.success', `<@${message.author.id}>`)).then($message => {
                         $message.delete({ timeout: 2000 }).then(() => {
                             message.delete();
                         })
@@ -49,14 +53,12 @@ export default class Help extends Command{
             const searchCommand: Command | undefined = client.getCommandHandler().getCommandsMap().filter($command => $command.name === command.trim()).first();
             if(searchCommand !== undefined){
                 const embed = new MessageEmbed()
-                    .setAuthor('📍 Komut Yardımı', message.author.displayAvatarURL() || message.author.defaultAvatarURL)
-                    .addField('Komut', `${prefix}${searchCommand.name}`)
-                    .addField('Takma Adları (Alias)', searchCommand.aliases.map(alias => {
-                        return `${prefix}${alias}`
-                    }).join('\n'))
-                    .addField('Açıklaması', `${searchCommand.description}`)
-                    .addField('Min. Yetki Seviyesi', `${searchCommand.permission === 'ADMINISTRATOR' ? 'Admin' : 'Üye'}`)
-                    .addField('Kullanımı', `${prefix}${searchCommand.name} ${searchCommand.usage === null ? '' : searchCommand.usage}`)
+                    .setAuthor(`📍 ${server.translate('commands.bot.help.embed.title')}`, message.author.displayAvatarURL() || message.author.defaultAvatarURL)
+                    .addField(server.translate('commands.bot.help.embed.fields.command'), `${prefix}${searchCommand.name}`)
+                    .addField(server.translate('commands.bot.help.embed.fields.alias'), searchCommand.aliases.map(alias => `${prefix}${alias}`).join('\n'))
+                    .addField(server.translate('commands.bot.help.embed.fields.description'), `${server.translate(searchCommand.description)}`)
+                    .addField(server.translate('commands.bot.help.embed.fields.permission'), `${searchCommand.permission === 'ADMINISTRATOR' ? server.translate('global.admin') : server.translate('global.member')}`)
+                    .addField(server.translate('commands.bot.help.embed.fields.usage'), `${prefix}${searchCommand.name} ${searchCommand.usage === null ? '' : server.translate(searchCommand.usage)}`)
                     .setColor('GREEN')
 
                 await message.channel.send({ embed })
@@ -64,7 +66,7 @@ export default class Help extends Command{
                 return true
             }else{
                 await message.channel.send({
-                    embed: this.getErrorEmbed(`**${command}** adında komut bulunamadı.`)
+                    embed: this.getErrorEmbed(server.translate('commands.bot.help.error', command))
                 })
 
                 return true

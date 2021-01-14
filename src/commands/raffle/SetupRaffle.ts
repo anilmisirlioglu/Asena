@@ -9,13 +9,15 @@ import { IRaffle } from '../../models/Raffle';
 import Server from '../../structures/Server';
 import Raffle from '../../structures/Raffle';
 
+const PREFIX = ':boom: '
+
 export default class SetupRaffle extends Command{
 
     constructor(){
         super({
             name: 'setup',
             aliases: ['sihirbaz'],
-            description: 'Çekiliş kurulum sihirbazını başlatır.',
+            description: 'commands.raffle.setup.description',
             usage: null,
             permission: 'ADMINISTRATOR'
         })
@@ -25,16 +27,15 @@ export default class SetupRaffle extends Command{
         if(message.channel instanceof TextChannel){
             if(client.getSetupManager().inSetup(message.author.id)){
                 await message.channel.send({
-                    embed: this.getErrorEmbed('Zaten bir kurulum sihirbazı içindesin. Lütfen önce başlattığınız kurulumu bitirin veya iptal edin.')
+                    embed: this.getErrorEmbed(server.translate('commands.raffle.setup.already'))
                 })
                 return true
             }
 
-            const server = await client.servers.get(message.guild.id)
             const result = await server.raffles.getContinues()
             if(result.length >= 5){
                 await message.channel.send({
-                    embed: this.getErrorEmbed('Maksimum çekiliş oluşturma sınırı aşıyorsunuz. (Maks 5)')
+                    embed: this.getErrorEmbed(server.translate('commands.raffle.create.limits.max.created'))
                 })
                 return true
             }
@@ -45,16 +46,11 @@ export default class SetupRaffle extends Command{
                 client,
                 phases: [
                     new SetupPhase({
-                        message: [
-                            `${Constants.CONFETTI_REACTION_EMOJI} ${client.user.username} interaktif kurulum sihirbazına **hoşgeldiniz**!`,
-                            'Eğer sihirbazdan **çıkmak** isterseniz lütfen sohbete `iptal`, `cancel` veya `exit` yazın. Hadi kuruluma geçelim.\n',
-                            '**Adım 1:** Öncelikle çekilişin hangi metin kanalında yapılacağını belirleyelim\n',
-                            '`Lütfen sunucuda var olan botun erişebileceği bir metin kanalını etiketlemeniz gerektiğini unutmayın.`'
-                        ],
+                        message: Constants.CONFETTI_REACTION_EMOJI + ' ' + server.translate('commands.raffle.setup.phases.channel.message', client.user.username),
                         validator: (message: Message) => {
                             const channels = message.mentions.channels
                             if(channels.size === 0){
-                                message.channel.send(':boom: Lütfen bir metin kanalı etiketleyin.')
+                                message.channel.send(PREFIX + server.translate('commands.raffle.setup.phases.channel.validator.channel.none'))
                                 return {
                                     result: false,
                                     value: null
@@ -63,14 +59,14 @@ export default class SetupRaffle extends Command{
 
                             const channel = channels.first()
                             if(!(channel instanceof TextChannel)){
-                                message.channel.send(':boom: Lütfen geçerli bir metin kanalı etiketleyin.')
+                                message.channel.send(PREFIX + server.translate('commands.raffle.setup.phases.channel.validator.channel.invalid'))
                                 return {
                                     result: false,
                                     value: null
                                 }
                             }
 
-                            message.channel.send(`${Constants.CONFETTI_REACTION_EMOJI} Başarılı! Çekiliş kanalı <#${channel.id}> olarak belirlendi. Hadi sıradaki aşamaya geçelim.`)
+                            message.channel.send(Constants.CONFETTI_REACTION_EMOJI + ' ' + server.translate('commands.raffle.setup.phases.channel.validator.success', `<#${channel.id}>`))
                             return {
                                 result: true,
                                 value: channel.id
@@ -78,14 +74,11 @@ export default class SetupRaffle extends Command{
                         }
                     }),
                     new SetupPhase({
-                        message: [
-                            '**Adım 2:** Kaç kazanan olucağını belirleyelim\n',
-                            '`Lütfen sayısal ve 1 ila 20 aralığında bir sayı girmeniz gerektiğini unutmayın.`'
-                        ],
+                        message: server.translate('commands.raffle.setup.phases.winners.message'),
                         validator: (message: Message) => {
                             const toInt: number = Number(message.content.trim())
                             if(isNaN(toInt)){
-                                message.channel.send(':boom: Lütfen sayısal bir değer giriniz.')
+                                message.channel.send(PREFIX + server.translate('commands.raffle.setup.phases.winners.validator.non.integer'))
                                 return {
                                     result: false,
                                     value: null
@@ -93,14 +86,14 @@ export default class SetupRaffle extends Command{
                             }
 
                             if(toInt < 1 || toInt > 20){
-                                message.channel.send(':boom: Çekiliş kazanan sayısı 1 ila 20 arasında olmalıdır.')
+                                message.channel.send(PREFIX + server.translate('commands.raffle.create.limits.winner.count'))
                                 return {
                                     result: false,
                                     value: null
                                 }
                             }
 
-                            message.channel.send(`${Constants.CONFETTI_REACTION_EMOJI} Çok iyi! Bu çekilişte toplam **${toInt}** kişinin yüzünü güldüreceksiniz :slight_smile:!`)
+                            message.channel.send(Constants.CONFETTI_REACTION_EMOJI + ' ' + server.translate('commands.raffle.setup.phases.winners.validator.success', toInt))
                             return {
                                 result: true,
                                 value: toInt
@@ -108,17 +101,12 @@ export default class SetupRaffle extends Command{
                         }
                     }),
                     new SetupPhase({
-                        message: [
-                            '**Adım 3:** Şimdide insanların çekilişe katılımlarını alabilmek için süre belirleyelim\n',
-                            '`Unutmayın süre en az 1 dakika, en fazla 60 gün olabilir. Süre belirlerken m (dakika), h (saat), d (gün) gibi süre belirten' +
-                            ' terimler kullanmanız gerekir. Bunu kullanırken önce süre daha sonra boşluk bırakarak veya bırakmadan süre cinsini yazmayı unutmayın. Sadece tek bir süre tipi' +
-                            ' kullanabileceğini unutmayın.`'
-                        ],
+                        message: server.translate('commands.raffle.setup.phases.time.message'),
                         validator: (message: Message) => {
                             const time = message.content.replace(/ /g, '')
                             const toSecond = detectTime(time)
                             if(!toSecond){
-                                message.channel.send('Lütfen geçerli bir süre giriniz. (Örn; **1s** - **1m** - **5m** - **1h** vb.)')
+                                message.channel.send(PREFIX + server.translate('commands.raffle.create.limits.time.invalid'))
                                 return {
                                     result: false,
                                     value: null
@@ -126,15 +114,15 @@ export default class SetupRaffle extends Command{
                             }
 
                             if(toSecond < Constants.MIN_RAFFLE_TIME || toSecond > Constants.MAX_RAFFLE_TIME){
-                                message.channel.send(':boom: Çekiliş süresi en az 1 dakika, en fazla 60 gün olabilir.')
+                                message.channel.send(PREFIX + server.translate('commands.raffle.create.limits.time.exceeded'))
                                 return {
                                     result: false,
                                     value: null
                                 }
                             }
 
-                            const $secondsToTime = secondsToTime(toSecond)
-                            message.channel.send(`${Constants.CONFETTI_REACTION_EMOJI} Tebrikler! Çekiliş süresi **${$secondsToTime.toString()}** olarak belirlendi.`)
+                            const $secondsToTime = secondsToTime(toSecond, server.locale)
+                            message.channel.send(Constants.CONFETTI_REACTION_EMOJI + ' ' + server.translate('commands.raffle.setup.phases.time.validator.success', $secondsToTime.toString()))
                             return {
                                 result: true,
                                 value: toSecond
@@ -142,21 +130,18 @@ export default class SetupRaffle extends Command{
                         }
                     }),
                     new SetupPhase({
-                        message: [
-                            '**Adım 4:** Son olarak çekilişin ödülünü belirleyelim (Aynı zamanda başlık olarak kullanılacak)\n',
-                            '`Ödülün maksimum uzunluğunun 255 karakter olabileceğini unutmayın.`'
-                        ],
+                        message: server.translate('commands.raffle.setup.phases.prize.message'),
                         validator: (message: Message) => {
                             const prize = message.content
                             if(prize.length > 255){
-                                message.channel.send(':boom: Çekiliş başlığı maksimum 255 karakter uzunluğunda olmalıdır.')
+                                message.channel.send(PREFIX + server.translate('commands.raffle.create.limits.title.length'))
                                 return {
                                     result: false,
                                     value: null
                                 }
                             }
 
-                            message.channel.send(`${Constants.CONFETTI_REACTION_EMOJI} İşte bu kadar! Çekiliş başlığı ve ödülü **${prize}** olarak belirlendi.`)
+                            message.channel.send(Constants.CONFETTI_REACTION_EMOJI + ' ' + server.translate('commands.raffle.setup.phases.prize.validator.success', prize))
                             return {
                                 result: true,
                                 value: prize
@@ -182,8 +167,8 @@ export default class SetupRaffle extends Command{
                             createdAt: new Date()
                         }, data as IRaffle))
 
-                        channel.send(Raffle.getStartMessage(), {
-                            embed: raffle.getEmbed()
+                        channel.send(Raffle.getStartMessage(server), {
+                            embed: raffle.getEmbed(server)
                         }).then(async $message => {
                             await $message.react(Constants.CONFETTI_REACTION_EMOJI)
 
@@ -191,12 +176,12 @@ export default class SetupRaffle extends Command{
                                 message_id: $message.id
                             }, data) as IRaffle)
                         }).catch(async () => {
-                            await message.channel.send(':boom: Botun yetkileri, bu kanalda çekiliş oluşturmak için yetersiz olduğu için çekiliş başlatılamadı.')
+                            await message.channel.send(PREFIX + server.translate('commands.raffle.setup.unauthorized'))
                         })
 
-                        message.channel.send(`:star2: Çekiliş başarıyla oluşturuldu! Oluşturduğun çekiliş <#${store.get(0)}> kanalında yayınlandı...`)
+                        message.channel.send(':star2: ' + server.translate('commands.raffle.setup.success', `<#${store.get(0)}>`))
                     }else{
-                        message.channel.send(`:boom: Çekiliş oluşturulamadı. Girdiğiniz kanal sunucunuzda bulunamadı. Birden bire yok olmuş...`)
+                        message.channel.send(PREFIX + server.translate('commands.raffle.setup.channel.gone'))
                     }
 
                     return true
@@ -205,7 +190,7 @@ export default class SetupRaffle extends Command{
             })
 
             setup.on('stop', async reason => {
-                await message.channel.send(`:boom: ${reason}`)
+                await message.channel.send(PREFIX + server.translate(reason))
             })
             setup.on('message', async content => {
                 await message.channel.send(content)

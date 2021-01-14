@@ -7,45 +7,54 @@
 [![Discord](https://discordapp.com/api/guilds/701790578874253363/widget.png?style=shield)](https://discord.gg/CRgXhfs)
 [![Version](https://img.shields.io/github/package-json/v/anilmisirlioglu/Asena?color=blue)](https://github.com/anilmisirlioglu/Asena)
 
-> Tamamen Türkçe, stabil, hızlı, kolay ve yeni nesil teknolojilerle kuşatılmış Discord çekiliş & anket botu!
+> stable, fast, easy and surrounded by new generation technologies Discord giveaway, survey & poll bot!
 
-## Komut Listesi 🦾
+## Multi Language Support
+
+**[EN]** Due to the high usage of the bot on Turkish servers, the default language of the bot is set to *Turkish*.
+You can change the language of the bot in the server with the command `!alocale set <language-code>`
+
+**[TR]** Botun yüksek oranda Türk sunucularında kullanılmasından dolayı botun varsıyılan dili *Türkçe* olarak
+ayarlanmıştır. Botun sunucu içerisinde ki dilini `!alocale set <dil-kodu>` komutu ile değiştirebilirsiniz.
+
+Example to make the bot's default language English:
+```sh
+!alocale set en
+```
+
+## Command List 🦾
 
 > Prefix: !a (Default)
 
-| Komut | Açıklama |
+| Command | Description |
 |:-----------:|:----------:|
-| cancel | Oluşturulan çekilişi iptal eder. |
-| create | Tek satırda yeni çekiliş başlatır. |
-| reroll | Çekiliş sonuçlarını tekrar çeker. |
-| setup | Interaktif kurulum sihirbazını başlatır. |
-| end | Oluşturulan çekiliş erken bitirir. |
-| raffles | Sunucudaki aktif çekilişleri listeler. |
-| vote | Sunucuda 2 seçenekli basit anket başlatır. |
-| question | Bir soru sorar. |
-| help | Yardım menüsünü özel mesaj aracılığı ile mesaj kutunuza gönderir. |
-| setprefix | Komut ön adını değiştirir. |
-| scperm | Komutun yetkisini düzenler. |
-| invite | Botun davet URLsini sohbete gönderir. |
+| cancel | Cancels the giveaway. |
+| create | Starts new giveaway in one line. |
+| reroll | Repeat the results of the giveaway. |
+| setup | Starts the interactive setup wizard. |
+| end | Finish the giveaway early. |
+| raffles | List active giveaways on the server. |
+| vote |  Starts a simple 2-option poll on the server. |
+| question | Asks a question. |
+| help | Sends the help menu to your inbox via a private message. |
+| setprefix | The command changes its prefix. |
+| scperm | It regulates the authority of the command. |
+| invite | Sends the bots invite URL to the chat. |
+| locale | Changes the bots default language. |
 
-## Davet 🔗
+## Invitation 🔗
 
-Siz de bu özelliklerden yararlanıp, kolay ve hızlı şekilde çekilişler oluşturmak istiyorsanız
-buradan Asena 'yı sunucunuza ekleyebilirsiniz: **[Asena Davet](https://discord.com/oauth2/authorize?permissions=347200&scope=bot&client_id=716259870910840832&redirect_uri=https%3A%2F%2Fdiscord.gg%2FCRgXhfs&response_type=code)**
+If you want to take advantage of these features and create lotteries easily and quickly,
+you can add Asena to your server here: **[Asena Invitation](https://discord.com/oauth2/authorize?permissions=347200&scope=bot&client_id=716259870910840832&redirect_uri=https%3A%2F%2Fdiscord.gg%2FCRgXhfs&response_type=code)**
 
 ## Self-Hosting ‍‼️
 
-Asena herhangi bir gelir amacı gütmeyen bir yazılımdır. Tüm özellikleri ücretsiz olarak sunulmaktadır.
-Fakat ısrarla kendi hostlamak isteyenler için; Botun kodlarının açık kaynak olmasının sebebi, bot kodlamak
-isteyen diğer geliştiricilere yardım etmesi, çalışma prensibini görebilmesi ve botun yazılımsal sorunlarını düzeltmek isteyenlerin
-katkıda bulunabilmeleri içindir. Onun dışında herhangi bir şekilde botu kendiniz host edemezsiniz. Bu hak
-ihlalidir. Aksi takdirde bu depodaki herhangi bir kodu düzenlemek, derlemek veya oluşturmak için herhangi bir
-yardım sağlanmayacaktır.
+Asena is any software that does not generate revenue. All features are offered for free.
+But for those who insist on hosting their own; The reason bot codes are open source is to help other developers who want to code the bot, to see the working principle and to contribute to those who want to solve the bot's software problems. Other than that, you cannot host the bot yourself in any way. This is a violation of rights.
+Otherwise, no assistance will be provided to edit, compile or generate any code in this repository.
 
-## Destek Sunucusu
-[Buraya tıklayarak botun resmi discord sunucusuna katılabilirsiniz.](https://discord.gg/CRgXhfs)
+## Support Server
+[Click here to join the bot's official discord server..](https://discord.gg/CRgXhfs)
 
-## Görseller 📷
+## Images 📷
 ![image](https://cdn.discordapp.com/attachments/712449369827180596/724982732513607710/asena.png)
--
-![image](https://cdn.discordapp.com/attachments/712449488471719976/720381037338820776/hello.PNG)

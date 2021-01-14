@@ -5,6 +5,7 @@ export interface IServer extends Document{
     prefix?: string,
     server_id: Snowflake,
     publicCommands: string[]
+    locale: string
 }
 
 const ServerSchema: Schema = new Schema<IServer>({
@@ -14,11 +15,16 @@ const ServerSchema: Schema = new Schema<IServer>({
     },
     server_id: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     publicCommands: {
         type: Array,
         default: []
+    },
+    locale: {
+        type: String,
+        default: 'tr_TR'
     }
 }, {
     timestamps: true

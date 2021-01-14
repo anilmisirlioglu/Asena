@@ -22,7 +22,7 @@ export default class Version{
         this.build = buildNumber;
 
         const match = baseVersion.match(/(\d+)\.(\d+)\.(\d+)(?:-(.*))?$/);
-        if(match !== null && match.filter(item => item !== undefined).length < 4){
+        if(match === null || match.filter(Boolean).length < 4){
             throw new InvalidArgumentException('Geçersiz temel sürüm, en az 3 sürüm basamağı (x.y.z) içermelidir.');
         }
 

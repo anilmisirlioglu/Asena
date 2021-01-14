@@ -20,7 +20,7 @@ export default class SyntaxWebhook extends WebhookClient{
                 `Sunucu Sahibi ID: **${guild.ownerID}**`,
                 `Üye Sayısı: **${guild.members.cache.size}**`,
                 `Sunucu Kurulma Tarihi: **${getDateTimeToString(guild.createdAt)}**`
-            ].join('\n'))
+            ])
             .setColor(isCreate ? 'GREEN' : 'RED')
             .setTimestamp()
 

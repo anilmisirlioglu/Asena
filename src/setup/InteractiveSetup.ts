@@ -92,7 +92,7 @@ export default class InteractiveSetup extends EventEmitter{
                             this.setPhaseListener(false)
                         }
                     }else{
-                        this.stop('İnteraktif kurulum sihirbazı iptal edildi.')
+                        this.stop('commands.raffle.setup.canceled')
                     }
                 }
             }else{
@@ -104,7 +104,7 @@ export default class InteractiveSetup extends EventEmitter{
     private setTimeoutTiming(){
         this.timer = setTimeout(async () => {
             if(!this.isItOver){
-                this.stop('İnteraktif kurulum sihirbazı zaman aşımına uğradı ve kapandı.')
+                this.stop('commands.raffle.setup.timeout')
             }
         }, this.timeout * 1000)
     }

@@ -11,8 +11,8 @@ export default class ReRollRaffle extends Command{
         super({
             name: 'reroll',
             aliases: ['tekrarcek', 'tekrarçek'],
-            description: 'Çekilişin kazananlarını tekrar belirler.',
-            usage: '[mesaj id]',
+            description: 'commands.raffle.reroll.description',
+            usage: 'general.message-id',
             permission: 'ADMINISTRATOR'
         });
     }
@@ -23,14 +23,14 @@ export default class ReRollRaffle extends Command{
         const raffle = await (message_id ? server.raffles.get(message_id) : server.raffles.getLastCreated())
         if(!raffle || !raffle.message_id){
             await message.channel.send({
-                embed: this.getErrorEmbed(`Tekrar çekilebilecek bir çekiliş bulunamadı.`)
+                embed: this.getErrorEmbed(server.translate('commands.raffle.reroll.not.found'))
             })
             return true
         }
 
         if(raffle.status !== 'FINISHED'){
             await message.channel.send({
-                embed: this.getErrorEmbed((raffle.status === 'CONTINUES' ? 'Bu çekiliş daha sonuçlanmamış. Lütfen çekilişin bitmesini bekleyin.' : 'Bu çekiliş iptal edilmiş. İptal edilmiş bir çekilişin sonucu tekrar çekilemez.'))
+                embed: this.getErrorEmbed((raffle.status === 'CONTINUES' ? server.translate('commands.raffle.reroll.not.finish') : server.translate('commands.raffle.reroll.canceled')))
             })
             return true
         }
@@ -38,7 +38,7 @@ export default class ReRollRaffle extends Command{
         let fetch: Message | undefined = await client.fetchMessage(raffle.server_id, raffle.channel_id, raffle.message_id)
         if(!fetch){
             await message.channel.send({
-                embed: this.getErrorEmbed('Anlaşılan bu çekiliş mesajı silinmiş veya zaman aşımına uğramış.')
+                embed: this.getErrorEmbed(server.translate('commands.raffle.reroll.timeout'))
             })
 
             return true
@@ -48,7 +48,7 @@ export default class ReRollRaffle extends Command{
            fetch = await message.fetch()
             if(!fetch){
                 await message.channel.send({
-                    embed: this.getErrorEmbed('Çekilişin katılımcı verileri bulunamadı.')
+                    embed: this.getErrorEmbed(server.translate('commands.raffle.reroll.data.not.found'))
                 })
 
                 return true
@@ -58,9 +58,9 @@ export default class ReRollRaffle extends Command{
         const winners = await raffle.identifyWinners(fetch)
         const _message = raffle.getMessageURL()
         if(winners.length === 0){
-            await message.channel.send(`Yeterli katılım olmadığından dolayı çekiliş tekrar çekilemedi.\n**Çekiliş:** ${_message}`)
+            await message.channel.send(server.translate('commands.raffle.reroll.not.enough', _message))
         }else{
-            await message.channel.send(`${Constants.CONFETTI_EMOJI} Tebrikler ${winners.map(winner => `<@${winner}>`).join(', ')}! **${raffle.prize}** kazandınız (Kazananlar tekrar çekildi)\n**Çekiliş:** ${_message}`)
+            await message.channel.send(Constants.CONFETTI_EMOJI + ' ' + server.translate('commands.raffle.reroll.success', winners.map(winner => `<@${winner}>`).join(', '), raffle.prize, _message))
         }
 
         if(message.guild.me.hasPermission('MANAGE_MESSAGES')){

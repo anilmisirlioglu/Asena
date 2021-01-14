@@ -13,6 +13,7 @@ import {
 } from 'discord.js';
 import Constants from '../Constants';
 import SuperClient from '../SuperClient';
+import Server from './Server';
 
 type SuperSurvey = ISurvey & Timestamps & ID
 
@@ -40,7 +41,7 @@ class Survey extends Structure<typeof SurveyModel, SuperSurvey>{
         this.finishAt = data.finishAt
     }
 
-    public async finishSurvey(client: SuperClient){
+    public async finish(client: SuperClient, server: Server){
         const channel: GuildChannel | undefined = await client.fetchChannel(this.server_id, this.channel_id)
         if(channel instanceof TextChannel){
             const message: Message | undefined = await channel.messages.fetch(this.message_id)
@@ -62,14 +63,14 @@ class Survey extends Structure<typeof SurveyModel, SuperSurvey>{
                 const embed = new MessageEmbed()
                     .setColor(this.detectColor(agreeCount, disagreeCount))
                     .setAuthor(message.author.username, message.author.displayAvatarURL() || message.author.defaultAvatarURL)
-                    .setFooter('Oylama sonuçları')
+                    .setFooter(server.translate('structures.survey.results.vote'))
                     .setTimestamp()
                     .setTitle(this.title)
-                    .addField(`<a:yes:${Constants.AGREE_EMOJI_ID}> (Evet)`, agreeCount, true)
-                    .addField(`<a:no:${Constants.DISAGREE_EMOJI_ID}> (Hayır)`, disagreeCount, true)
+                    .addField(`<a:yes:${Constants.AGREE_EMOJI_ID}> (${server.translate('global.yes')})`, agreeCount, true)
+                    .addField(`<a:no:${Constants.DISAGREE_EMOJI_ID}> (${server.translate('global.no')})`, disagreeCount, true)
 
                 await message.delete({ timeout: 0 })
-                await message.channel.send(`${Constants.RUBY_EMOJI} **ANKET SONUÇLARI**`, {
+                await message.channel.send(`${Constants.RUBY_EMOJI} **${server.translate('structures.survey.results.survey')}**`, {
                     embed
                 })
             }

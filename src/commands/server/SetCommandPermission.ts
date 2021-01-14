@@ -9,8 +9,8 @@ export default class SetCommandPermission extends Command{
         super({
             name: 'scperm',
             aliases: ['setcommmandpermission', 'setcommandperm'],
-            description: 'Komutu izinlerini düzenler.',
-            usage: '[everyone | admin] [komut]',
+            description: 'commands.server.permission.description',
+            usage: 'commands.server.permission.usage',
             permission: 'ADMINISTRATOR'
         });
     }
@@ -27,7 +27,7 @@ export default class SetCommandPermission extends Command{
         const commandAuth: Command[] = commands.filter($command => $command.name === command)
         if(commandAuth.length === 0){
             await message.channel.send({
-                embed: this.getErrorEmbed('Komut bulunamadı.')
+                embed: this.getErrorEmbed(server.translate('commands.server.permission.command.not.found'))
             })
             return true
         }
@@ -35,7 +35,7 @@ export default class SetCommandPermission extends Command{
         const $command: Command = commandAuth.shift()
         if(!$command.permission || this.name === $command.name){
             await message.channel.send({
-                embed: this.getErrorEmbed('Bu komutun izinlerini düzenleyemezsin.')
+                embed: this.getErrorEmbed(server.translate('commands.server.permission.command.not.editable'))
             })
             return true
         }
@@ -45,7 +45,7 @@ export default class SetCommandPermission extends Command{
             case 'everyone':
                 if(server.isPublicCommand(command)){
                     err = true
-                    opcl = 'açık'
+                    opcl = server.translate('global.open')
                 }
 
                 add = true
@@ -54,7 +54,7 @@ export default class SetCommandPermission extends Command{
             default:
                 if(!server.isPublicCommand(command)){
                     err = true
-                    opcl = 'kapalı'
+                    opcl = server.translate('global.close')
                 }
 
                 add = false
@@ -63,13 +63,13 @@ export default class SetCommandPermission extends Command{
 
         if(err){
             await message.channel.send({
-                embed: this.getErrorEmbed(`Bu komut zaten herkese **${opcl}**.`)
+                embed: this.getErrorEmbed(server.translate('commands.server.permission.command.already', opcl))
             })
             return true
         }
 
         await (add ? server.addPublicCommand($command.name) : server.deletePublicCommand($command.name))
-        await message.channel.send(`🌈  '**${$command.name}**' komutunun izinleri başarıyla düzenlendi. Komut durumu: **Herkese ${add ? 'açık' : 'kapalı'}**`)
+        await message.channel.send('🌈  ' + server.translate('commands.server.permission.command.success', $command.name, (add ? 'açık' : 'kapalı')))
 
         return true
     }

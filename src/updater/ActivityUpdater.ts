@@ -10,14 +10,15 @@ export default class ActivityUpdater extends Factory{
     public start(): void{
         this.client.on('ready', async () => {
             const client: SuperClient = this.client
+            const user = client.user
 
-            await client.user.setStatus('online')
-            await client.user.setActivity(this.getActivityString(), {
+            await user.setStatus('online')
+            await user.setActivity(this.getActivityString(), {
                 type: 'PLAYING'
             })
 
-            client.logger.info(`Asena ${client.version.getFullVersion()} başlatılıyor...`)
-            client.logger.info(`${client.user.username} aktif, toplam ${client.guilds.cache.size} sunucuya hizmet veriliyor!`)
+            client.logger.info(`${user.username} ${client.version.getFullVersion()} başlatılıyor...`)
+            client.logger.info(`${user.username} aktif, toplam ${client.guilds.cache.size} sunucuya hizmet veriliyor!`)
         })
 
         this.setGuildCounterListeners()
@@ -26,7 +27,7 @@ export default class ActivityUpdater extends Factory{
     }
 
     private getActivityString(): string{
-        return `${Constants.CONFETTI_REACTION_EMOJI} ${this.counter} Sunucu | ${process.env.DEFAULT_PREFIX}help\nhttps://asena.xyz`
+        return `${Constants.CONFETTI_REACTION_EMOJI} ${this.counter} servers | ${process.env.DEFAULT_PREFIX}help - asena.xyz`
     }
 
     private setGuildCounterListeners(): void{

@@ -12,7 +12,7 @@ export default class Raffles extends Command{
         super({
             name: 'raffles',
             aliases: ['çekilişler', 'aktifçekilişler', 'cekilisler', 'activeraffles', 'list'],
-            description: 'Sunucudaki aktif  çekilişleri listeler',
+            description: 'commands.raffle.list.description',
             usage: null,
             permission: undefined
         });
@@ -21,25 +21,30 @@ export default class Raffles extends Command{
     async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
         const raffles = await server.raffles.getContinues()
         const embed: MessageEmbed = new MessageEmbed()
-            .setAuthor(`${message.guild.name} | Aktif Çekilişler`)
+            .setAuthor(`${message.guild.name} | ${server.translate('commands.raffle.list.embed.title')}`)
             .setColor('#DDA0DD')
-            .setFooter(`${message.guild.name} Çekilişler`)
+            .setFooter(`${message.guild.name} ${server.translate('commands.raffle.list.embed.footer')}`)
             .setTimestamp()
 
         if(raffles.length === 0){
-            embed.setDescription(`${Constants.CONFETTI_REACTION_EMOJI} Aktif devam eden herhangi bir çekiliş bulunmuyor.`)
+            embed.setDescription(`${Constants.CONFETTI_REACTION_EMOJI} ${server.translate('commands.raffle.list.embed.description.active.not.found')}`)
         }else{
             let i: number = 1;
             raffles.map(raffle => {
-                embed.addField(`${i++}. ${raffle.prize}`, [
-                    `Oluşturan: <@${raffle.constituent_id}>`,
-                    `Kanal: <#${raffle.channel_id}>`,
-                    `Kazanan Sayısı: **${raffle.numbersOfWinner} Kişi**`,
-                    `Başlangıç Tarihi: **${getDateTimeToString(new Date(raffle.createdAt))}** (UTC)`,
-                    `Bitiş Tarihi: **${getDateTimeToString(new Date(raffle.finishAt))}** (UTC)`
-                ].join('\n'))
+                const data = {
+                    creator: `<@${raffle.constituent_id}>`,
+                    channel: `<#${raffle.channel_id}>`,
+                    'winner.count': `**${raffle.numbersOfWinner}**`,
+                    start: `**${getDateTimeToString(new Date(raffle.createdAt), server.locale)}** (UTC)`,
+                    finish: `**${getDateTimeToString(new Date(raffle.finishAt), server.locale)}** (UTC)`
+                }
+
+                embed.addField(`${i++}. ${raffle.prize}`, Object.entries(data).map(([key, value]) => {
+                    return `${server.translate(`commands.raffle.list.embed.fields.${key}`)}: ${value}`
+                }))
             })
-            embed.setDescription(`${Constants.CONFETTI_REACTION_EMOJI} Toplam **${raffles.length}** aktif çekiliş var`)
+
+            embed.setDescription(`${Constants.CONFETTI_REACTION_EMOJI} ${server.translate('commands.raffle.list.embed.description.active.found', raffles.length)}`)
         }
 
         await message.channel.send({ embed })
