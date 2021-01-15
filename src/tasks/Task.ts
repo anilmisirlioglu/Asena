@@ -4,7 +4,7 @@ import Server from '../structures/Server';
 
 export default abstract class Task<S extends StructureType>{
 
-    public abstract async onRun(): Promise<void>
+    public abstract onRun(): Promise<void>
 
     protected abstract intervalCallback(structure: S, server: Server): () => void
 

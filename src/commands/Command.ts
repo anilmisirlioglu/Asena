@@ -42,7 +42,7 @@ export default abstract class Command{
         return true
     }
 
-    public async abstract run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>
+    public abstract run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>
 
     public getErrorEmbed(error: string): MessageEmbed{
         return new MessageEmbed()

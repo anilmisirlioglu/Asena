@@ -7,7 +7,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "rootDir": "src",
-    "target": "ES2020",
+    "target": "es6",
     "resolveJsonModule": true,
     "sourceMap": true,
     "downlevelIteration": true

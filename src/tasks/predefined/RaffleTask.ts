@@ -70,7 +70,7 @@ export default class RaffleTask extends Task<Raffle>{
                         await updateCallback(1)
 
                         if(!isRejected){
-                            return resolve()
+                            return resolve(null)
                         }
                     }, timeout - (10 * 1000))
                 })
