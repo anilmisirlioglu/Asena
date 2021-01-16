@@ -16,8 +16,6 @@ export default class Logger{
     constructor(){
         TextFormat.init();
 
-        console.clear()
-
         if(!fs.existsSync(Logger.LOG)){
             fs.closeSync(fs.openSync(Logger.LOG, 'w+'))
         }
