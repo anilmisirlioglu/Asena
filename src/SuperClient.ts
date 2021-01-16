@@ -32,7 +32,7 @@ export default abstract class SuperClient extends Client{
 
     readonly version: Version = new Version(process.env.npm_package_version || '1.0.0', this.opts.isDevBuild)
 
-    readonly logger: Logger = new Logger()
+    readonly logger: Logger = new Logger('shard')
 
     private readonly taskTiming: TaskTiming = new TaskTiming()
 

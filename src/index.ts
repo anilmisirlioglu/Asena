@@ -1,10 +1,17 @@
 import dotenv from 'dotenv';
 import Logger from './utils/Logger';
 import { ShardingManager } from 'discord.js';
+import { parseAsenaASCIIArt } from './utils/ASCII';
+import TextFormat from './utils/TextFormat';
 
 dotenv.config({
     path: `${__dirname}/../.env`
 })
+
+TextFormat.init()
+
+console.clear()
+console.log(TextFormat.toANSI(parseAsenaASCIIArt()))
 
 const isDevBuild = process.env.NODE_ENV !== 'production'
 const manager = new ShardingManager('./build/shard.js', {
@@ -13,7 +20,7 @@ const manager = new ShardingManager('./build/shard.js', {
     shardArgs: [`--production=${isDevBuild}`]
 })
 
-const logger = new Logger()
+const logger = new Logger('main')
 
 manager.on('shardCreate', shard => {
     logger.info(`Shard ${shard.id} yaratıldı.`)

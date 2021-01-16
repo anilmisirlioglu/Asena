@@ -3,7 +3,7 @@ import Language from './Language';
 import { readdirSync } from 'fs';
 import { sep } from 'path';
 import SuperClient from '../SuperClient';
-import TextFormat from '../utils/TextFormat';
+import { Colors } from '../utils/TextFormat';
 
 export default class LanguageManager{
 
@@ -25,7 +25,7 @@ export default class LanguageManager{
             }
 
             const language = require(`${LanguageManager.LOCALE_PATH}${sep}${file}`)
-            this.client.logger.info(`Dil yüklendi: ${TextFormat.COLOR_WHITE}${language.full}`)
+            this.client.logger.info(`Dil yüklendi: ${Colors.LIGHT_PURPLE + language.full}`)
 
             const locale = new Language(language)
             LanguageManager.addLanguage(locale)
@@ -45,7 +45,7 @@ export default class LanguageManager{
             process.exit(1)
         }
 
-        this.client.logger.info(`Toplam ${TextFormat.COLOR_LIGHT_PURPLE}${LanguageManager.languages.size} ${TextFormat.COLOR_AQUA}dil başarıyla yüklendi!`)
+        this.client.logger.info(`Toplam ${LanguageManager.languages.size} dil başarıyla yüklendi!`)
     }
 
     private static addLanguage(locale: Language){

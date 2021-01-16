@@ -55,7 +55,7 @@ export default class CommandHandler extends Factory implements CommandRunner{
             this.registerCommand(command)
         })
 
-        this.client.logger.info(`Toplam ${Colors.LIGHT_PURPLE}${this.commands.keyArray().length} ${Colors.AQUA}komut başarıyla yüklendi.`)
+        this.client.logger.info(`Toplam ${this.commands.keyArray().length} komut başarıyla yüklendi.`)
     }
 
     public registerCommand(command: Command){

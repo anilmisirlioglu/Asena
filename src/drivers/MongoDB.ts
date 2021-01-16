@@ -6,7 +6,7 @@ export default class MongoDB{
     private readonly options: ConnectionOptions
     private static _isConnected: boolean = false
 
-    private logger: Logger = new Logger()
+    private logger: Logger = new Logger(MongoDB.name.toLowerCase())
 
     public constructor(options: ConnectionOptions = {
         useNewUrlParser: true,
