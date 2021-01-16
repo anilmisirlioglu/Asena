@@ -19,9 +19,6 @@ export default class Vote extends Command{
     }
 
     async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
-        const AGREE = Constants.AGREE_EMOJI_ID;
-        const DISAGREE = Constants.DISAGREE_EMOJI_ID;
-
         if(args.length <= 1) return false
 
         const second = args[0]
@@ -45,8 +42,10 @@ export default class Vote extends Command{
             await message.channel
                 .send({ embed })
                 .then(async vote => {
-                    await vote.react(AGREE);
-                    await vote.react(DISAGREE);
+                    await Promise.all([
+                        vote.react(Constants.AGREE_EMOJI),
+                        vote.react(Constants.DISAGREE_EMOJI)
+                    ])
                 })
         }else{
             const time = detectTime(second)
@@ -88,11 +87,15 @@ export default class Vote extends Command{
                     finishAt: new Date(Date.now() + (time * 1000))
                 })
                 if(!survey){
-                    await $message.delete()
-                    await message.channel.send(':boom: ' + server.translate('commands.survey.vote.error'))
+                    await Promise.all([
+                        $message.delete(),
+                        message.channel.send(':boom: ' + server.translate('commands.survey.vote.error'))
+                    ])
                 }else{
-                    await $message.react(AGREE)
-                    await $message.react(DISAGREE)
+                    await Promise.all([
+                        $message.react(Constants.AGREE_EMOJI),
+                        $message.react(Constants.DISAGREE_EMOJI)
+                    ])
                 }
             })
         }

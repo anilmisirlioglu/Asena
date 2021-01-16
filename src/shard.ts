@@ -18,7 +18,7 @@ if(find){
 const mongo = new MongoDB()
 const client = new Asena(isDevBuild)
 
-process.on('unhandledRejection', (rej, promise) => {
+process.on('unhandledRejection', (rej) => {
     client.logger.error(rej?.toString() ?? 'Unknown Error')
 })
 
