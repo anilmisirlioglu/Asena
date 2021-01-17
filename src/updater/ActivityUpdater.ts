@@ -2,32 +2,39 @@ import Constants from '../Constants'
 import SuperClient from '../SuperClient';
 import Factory from '../Factory';
 import request from '../utils/Internet';
+import ActivityUpdatePacket from '../protocol/ActivityUpdatePacket';
 
 export default class ActivityUpdater extends Factory{
 
-    private counter: number = 0
+    private counter: number = 0 // planned for later use elsewhere
+    private servers: number = 0
+    private shards: number = 0
 
     public start(): void{
         this.client.on('ready', async () => {
             const client: SuperClient = this.client
-            const user = client.user
 
-            await user.setStatus('online')
-            await user.setActivity(this.getActivityString(), {
-                type: 'PLAYING'
-            })
+            await client.user.setStatus('online')
 
-            client.logger.info(`${user.username} ${client.version.getFullVersion()} başlatılıyor...`)
-            client.logger.info(`${user.username} aktif, toplam ${client.guilds.cache.size} sunucuya hizmet veriliyor!`)
+            client.logger.info(`${client.user.username} ${client.version.getFullVersion()} başlatılıyor...`)
+            client.logger.info(`${client.user.username} aktif, toplam ${client.guilds.cache.size} sunucuya hizmet veriliyor!`)
         })
 
         this.setGuildCounterListeners()
-
-        this.setActivityUpdateInterval()
     }
 
-    private getActivityString(): string{
-        return `${Constants.CONFETTI_REACTION_EMOJI} ${this.counter} servers | ${process.env.DEFAULT_PREFIX}help - asena.xyz`
+    async updateActivity(packet: ActivityUpdatePacket){
+        this.servers = packet.serverCount
+        this.shards = packet.shardCount
+
+        await this.client.user.setActivity(`${Constants.CONFETTI_REACTION_EMOJI} ${packet.serverCount} servers | ${process.env.DEFAULT_PREFIX}help - asena.xyz`, {
+            type: 'PLAYING'
+        })
+
+        if(!this.client.isDevBuild){
+            this.updateTopGGStats()
+            this.updateDiscordBotsGGStats()
+        }
     }
 
     private setGuildCounterListeners(): void{
@@ -49,19 +56,6 @@ export default class ActivityUpdater extends Factory{
         })
     }
 
-    private setActivityUpdateInterval(){
-        setInterval(async () => {
-            await this.client.user.setActivity(this.getActivityString(), {
-                type: 'PLAYING'
-            })
-
-            if(!this.client.isDevBuild){
-                this.updateTopGGStats()
-                this.updateDiscordBotsGGStats()
-            }
-        }, Constants.UPDATE_INTERVAL)
-    }
-
     private updateTopGGStats(){
         request({
             host: Constants.TOP_GG_URL,
@@ -71,7 +65,8 @@ export default class ActivityUpdater extends Factory{
                 Authorization: process.env.TOP_GG_API_KEY
             }
         }, {
-            server_count: this.counter
+            server_count: this.servers,
+            shard_count: this.shards
         })
     }
 
@@ -84,12 +79,9 @@ export default class ActivityUpdater extends Factory{
                 Authorization: process.env.DISCORD_BOTS_GG_API_KEY
             }
         }, {
-            guildCount: this.counter
+            guildCount: this.servers,
+            shardCount: this.shards
         })
-    }
-
-    public getCounter(): number{
-        return this.counter
     }
 
 }

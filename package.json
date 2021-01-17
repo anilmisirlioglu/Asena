@@ -23,8 +23,8 @@
   },
   "scripts": {
     "build": "tsc",
-    "start:dev": "nodemon --ext ts-node src/index.ts",
-    "start": "NODE_ENV=production node build/index.js",
+    "start:dev": "nodemon --ext ts-node src/index.ts --",
+    "start": "NODE_ENV=production node build/index.js --",
     "test": "mocha -r ts-node/register tests/unit/*.test.ts"
   },
   "dependencies": {

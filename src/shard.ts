@@ -1,19 +1,10 @@
 import Asena from './Asena';
 import MongoDB from './drivers/MongoDB';
+import ProcessPacket, { ProcessPacketType } from './protocol/ProcessPacket';
+import ActivityUpdatePacket from './protocol/ActivityUpdatePacket';
+import { findFlagValue } from './utils/FlagParser';
 
-const flag = '--production'
-const find = process.argv.find(argv => argv
-    .slice(0, flag.length)
-    .trim() === flag
-)
-
-let isDevBuild = false
-if(find){
-    const split = find.split('=')
-    if(split.length > 1){
-        isDevBuild = Boolean(split.pop())
-    }
-}
+let isDevBuild: boolean = findFlagValue('--production') ?? false
 
 const mongo = new MongoDB()
 const client = new Asena(isDevBuild)
@@ -30,6 +21,15 @@ process.on('SIGTERM', async () => {
     }
 
     process.exit(0)
+})
+
+process.on('message', async (packet: ProcessPacket) => {
+    switch(packet.type){
+        case ProcessPacketType.ACTIVITY_UPDATE:
+            // noinspection ES6MissingAwait
+            client.getActivityUpdater().updateActivity(packet as ActivityUpdatePacket)
+            break
+    }
 })
 
 const handler = async () => {
