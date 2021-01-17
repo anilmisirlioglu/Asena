@@ -42,8 +42,6 @@ const sendUpdateActivityPacket = async () => {
     const shards = manager.shards
     const fetch = await manager.fetchClientValues('guilds.cache.size')
     if(fetch.length > 0 && shards.first()){
-        const fetch = await manager.fetchClientValues('guilds.cache.size')
-
         const packet = new ActivityUpdatePacket({
             shardCount: shards.keyArray().length,
             serverCount: fetch.reduce((p, n) => p + n, 0)
@@ -56,7 +54,7 @@ const sendUpdateActivityPacket = async () => {
 const handler = async () => {
     await manager.spawn()
 
-    logger.debug('Tüm shardlar konuçlandırıldı.')
+    logger.debug('Tüm shardlar konuşlandırıldı.')
 
     await sendUpdateActivityPacket()
 
