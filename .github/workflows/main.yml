@@ -25,10 +25,8 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: |
-          npm uninstall typescript --no-save
-          npm install && npm install -g tsc
-      - run: npm run build --if-present
+      - run: npm install
+    # - run: npm run build --if-present # This step will be skipped for a while
       - run: npm run test
         env:
           CI: true
