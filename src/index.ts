@@ -21,7 +21,7 @@ const isDevBuild = process.env.NODE_ENV !== 'production'
 const manager = new ShardingManager('./build/shard.js', {
     totalShards: shards,
     token: process.env[isDevBuild ? 'TOKEN_DEV' : 'TOKEN'],
-    shardArgs: [`--production=${isDevBuild}`]
+    shardArgs: [`--production=${!isDevBuild}`]
 })
 
 const logger = new Logger('main')

@@ -4,10 +4,10 @@ import ProcessPacket, { ProcessPacketType } from './protocol/ProcessPacket';
 import ActivityUpdatePacket from './protocol/ActivityUpdatePacket';
 import { findFlagValue } from './utils/FlagParser';
 
-let isDevBuild: boolean = findFlagValue('--production') ?? false
+let isProduction: boolean = findFlagValue('--production') ?? false
 
 const mongo = new MongoDB()
-const client = new Asena(isDevBuild)
+const client = new Asena(!isProduction)
 
 process.on('unhandledRejection', (rej) => {
     client.logger.error(rej?.toString() ?? 'Unknown Error')
@@ -35,7 +35,7 @@ process.on('message', async (packet: ProcessPacket) => {
 const handler = async () => {
     await mongo.connect()
 
-    await client.login(process.env[isDevBuild ? 'TOKEN_DEV' : 'TOKEN'])
+    await client.login(process.env[isProduction ? 'TOKEN' : 'TOKEN_DEV'])
 }
 
 setTimeout(handler)

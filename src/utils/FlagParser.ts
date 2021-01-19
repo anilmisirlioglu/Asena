@@ -51,8 +51,12 @@ const findFlagValue = <T extends FlagValue>(flag: string): T => {
 }
 
 const castValue = (value): FlagValue => {
-    if(value === 'true' || value === 'false'){
-        return Boolean(value)
+    if(value === 'true'){
+        return true
+    }
+
+    if(value === 'false'){
+        return false
     }
 
     if(!isNaN(value) && !isNaN(parseFloat(value))){
