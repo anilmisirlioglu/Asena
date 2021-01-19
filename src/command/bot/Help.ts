@@ -3,6 +3,7 @@ import { Message, MessageEmbed } from 'discord.js'
 import Command from '../Command'
 import SuperClient from '../../SuperClient';
 import Server from '../../structures/Server';
+import { Bot } from '../../Constants';
 
 export default class Help extends Command{
 
@@ -23,7 +24,10 @@ export default class Help extends Command{
             const text = client.getCommandHandler().getCommandsArray().map(command => {
                 const label = `\`${command.name}\`: ${command.description}`
                 return command.permission === 'ADMINISTRATOR' ? (
-                    message.member.hasPermission('ADMINISTRATOR') ? label : undefined
+                    (
+                        message.member.hasPermission('ADMINISTRATOR') ||
+                        message.member.roles.cache.find(role => role.name.trim().toLowerCase() == Bot.PERMITTED_ROLE_NAME)
+                    ) ? label : undefined
                 ) : label
             }).filter(Boolean).join('\n')
 
