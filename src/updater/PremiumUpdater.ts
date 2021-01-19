@@ -11,6 +11,7 @@ export default class PremiumUpdater extends Factory{
         amqp.connect(process.env.AMQP_CONN_URL, (err, connection) => {
             if(err){
                 this.client.logger.error(`RabbitMQ sunucusuna bağlanılamadı. Hata: ${err.message}`)
+                process.exit(0)
             }
 
             this.client.logger.info('RabbitMQ sunucusuna başarıyla bağlanıldı.')
