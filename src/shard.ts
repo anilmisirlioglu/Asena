@@ -1,7 +1,7 @@
 import Asena from './Asena';
 import MongoDB from './drivers/MongoDB';
 import ProcessPacket, { ProcessPacketType } from './protocol/ProcessPacket';
-import ActivityUpdatePacket from './protocol/ActivityUpdatePacket';
+import ServerStatsPacket from './protocol/ServerStatsPacket';
 import { findFlagValue } from './utils/FlagParser';
 
 let isProduction: boolean = findFlagValue('--production') ?? false
@@ -25,9 +25,9 @@ process.on('SIGTERM', async () => {
 
 process.on('message', async (packet: ProcessPacket) => {
     switch(packet.type){
-        case ProcessPacketType.ACTIVITY_UPDATE:
+        case ProcessPacketType.SERVER_STATS:
             // noinspection ES6MissingAwait
-            client.getActivityUpdater().updateActivity(packet as ActivityUpdatePacket)
+            client.getActivityUpdater().updateActivity(packet as ServerStatsPacket)
             break
     }
 })

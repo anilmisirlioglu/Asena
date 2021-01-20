@@ -1,5 +1,5 @@
 export enum ProcessPacketType{
-    ACTIVITY_UPDATE
+    SERVER_STATS
 }
 
 interface ProcessPacketData{

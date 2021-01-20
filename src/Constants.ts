@@ -9,6 +9,8 @@ export interface ILetter{
 
 abstract class Constants{
 
+    public static ASENA_CLIENT_ID: string = '716259870910840832' // Asena Discord ID
+
     public static SETUP_CANCEL_KEYWORDS: string[] = ['iptal', 'cancel', 'exit']
 
     public static REQUIRED_PERMISSIONS: PermissionString[] = [

@@ -3,8 +3,9 @@ import Logger from './utils/Logger';
 import { ShardingManager } from 'discord.js';
 import { parseAsenaASCIIArt } from './utils/ASCII';
 import TextFormat from './utils/TextFormat';
-import ActivityUpdatePacket from './protocol/ActivityUpdatePacket';
+import ServerStatsPacket from './protocol/ServerStatsPacket';
 import { findFlagValue } from './utils/FlagParser';
+import { updateDiscordBotsGGStats, updateTopGGStats } from './updater/StatsUpdater';
 
 dotenv.config({
     path: `${__dirname}/../.env`
@@ -15,7 +16,7 @@ TextFormat.init()
 console.clear()
 console.log(TextFormat.toANSI(parseAsenaASCIIArt()))
 
-const shards: "auto" | number = findFlagValue('shards') ?? "auto"
+const shards: "auto" | number = findFlagValue('shard') ?? "auto"
 
 const isDevBuild = process.env.NODE_ENV !== 'production'
 const manager = new ShardingManager('./build/shard.js', {
@@ -41,13 +42,18 @@ manager.on('shardCreate', async shard => {
 const sendUpdateActivityPacket = async () => {
     const shards = manager.shards
     const fetch = await manager.fetchClientValues('guilds.cache.size')
-    if(fetch.length > 0 && shards.first()){
-        const packet = new ActivityUpdatePacket({
+    if(fetch.length > 0){
+        const packet = new ServerStatsPacket({
             shardCount: shards.keyArray().length,
             serverCount: fetch.reduce((p, n) => p + n, 0)
         })
 
-        await shards.first().send(packet)
+        shards.map(shard => shard.send(packet))
+
+        if(!isDevBuild){
+            updateTopGGStats(packet)
+            updateDiscordBotsGGStats(packet)
+        }
     }
 }
 
