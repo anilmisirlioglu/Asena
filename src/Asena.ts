@@ -3,11 +3,14 @@ import { Emojis } from './Constants';
 
 export default class Asena extends SuperClient{
 
-    constructor(){
+    constructor(isDevBuild: boolean){
         super({
             prefix: process.env.DEFAULT_PREFIX ?? '!a',
-            isDevBuild: process.env.NODE_ENV !== 'production'
+            isDevBuild
         })
+
+        // Load all languages
+        this.getLanguageManager().run()
 
         // Load all commands
         this.getCommandHandler().registerAllCommands()

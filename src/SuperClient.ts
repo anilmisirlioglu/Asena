@@ -19,6 +19,7 @@ import ServerManager from './managers/ServerManager';
 import SetupManager from './setup/SetupManager';
 import SyntaxWebhook from './SyntaxWebhook';
 import PremiumUpdater from './updater/PremiumUpdater';
+import LanguageManager from './language/LanguageManager';
 
 interface SuperClientBuilderOptions{
     prefix: string
@@ -32,7 +33,7 @@ export default abstract class SuperClient extends Client{
 
     readonly version: Version = new Version(process.env.npm_package_version || '1.0.0', this.opts.isDevBuild)
 
-    readonly logger: Logger = new Logger()
+    readonly logger: Logger = new Logger('shard')
 
     private readonly taskTiming: TaskTiming = new TaskTiming()
 
@@ -43,7 +44,9 @@ export default abstract class SuperClient extends Client{
     private readonly premiumUpdater: PremiumUpdater = new PremiumUpdater(this)
 
     readonly servers: ServerManager = new ServerManager()
+
     private readonly setupManager: SetupManager = new SetupManager()
+    private readonly languageManager: LanguageManager = new LanguageManager(this)
 
     readonly webhook: SyntaxWebhook = new SyntaxWebhook()
 
@@ -105,11 +108,15 @@ export default abstract class SuperClient extends Client{
         return this.setupManager
     }
 
+    public getLanguageManager(): LanguageManager{
+        return this.languageManager
+    }
+
     fetchChannel<T extends Snowflake>(guildId: T, channelId: T): GuildChannel | undefined{
         const guild: Guild = this.guilds.cache.get(guildId)
         if(guild){
             const channel = guild.channels.cache.get(channelId)
-            if(channel.viewable) return channel
+            if(channel && channel.viewable) return channel
         }
 
         return undefined
