@@ -54,7 +54,9 @@ But for those who insist on hosting their own; The reason bot codes are open sou
 Otherwise, no assistance will be provided to edit, compile or generate any code in this repository.
 
 ## Support Server
-[Click here to join the bot's official discord server..](https://discord.gg/CRgXhfs)
+[Click here to join the bots official discord server..](https://discord.gg/CRgXhfs)
 
 ## Images 📷
 ![image](https://cdn.discordapp.com/attachments/712449369827180596/724982732513607710/asena.png)
+-
+![image](https://cdn.discordapp.com/attachments/729930836857716747/801470232597889045/unknown.png)
