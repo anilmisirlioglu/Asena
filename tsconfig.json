@@ -10,7 +10,8 @@
     "target": "es6",
     "sourceMap": true,
     "downlevelIteration": true,
-    "declaration": false
+    "declaration": false,
+    "resolveJsonModule": true
   },
   "exclude": [
     "node_modules",
