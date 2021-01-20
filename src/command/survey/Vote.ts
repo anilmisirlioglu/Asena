@@ -19,8 +19,8 @@ export default class Vote extends Command{
     }
 
     async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
-        const AGREE = Emojis.AGREE_EMOJI_ID;
-        const DISAGREE = Emojis.DISAGREE_EMOJI_ID;
+        const AGREE = `<a:yes:${Emojis.AGREE_EMOJI_ID}>`;
+        const DISAGREE = `<a:no:${Emojis.DISAGREE_EMOJI_ID}>`;
 
         if(args.length <= 1) return false
 
