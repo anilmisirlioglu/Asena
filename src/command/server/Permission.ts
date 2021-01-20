@@ -3,12 +3,12 @@ import Command from '../Command'
 import SuperClient from '../../SuperClient'
 import Server from '../../structures/Server'
 
-export default class SetCommandPermission extends Command{
+export default class Permission extends Command{
 
     constructor(){
         super({
             name: 'scperm',
-            aliases: ['setcommmandpermission', 'setcommandperm'],
+            aliases: ['setcommmandpermission', 'setcommandperm', 'perm', 'permission'],
             description: 'Komutu izinlerini düzenler.',
             usage: '[everyone | admin] [komut]',
             permission: 'ADMINISTRATOR'

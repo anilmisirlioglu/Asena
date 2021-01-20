@@ -3,7 +3,7 @@ import Command from '../Command'
 import SuperClient from '../../SuperClient'
 import Server from '../../structures/Server'
 
-export default class SetPrefix extends Command{
+export default class Prefix extends Command{
 
     constructor(){
         super({

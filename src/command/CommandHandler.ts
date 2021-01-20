@@ -7,7 +7,7 @@ import { Bot } from '../Constants';
 import Factory from '../Factory';
 import { ICommandPremium } from '../decorators/Premium';
 import PermissionController from './PermissionController';
-import SetCommandPermission from './server/SetCommandPermission';
+import Permission from './server/Permission';
 
 import CancelRaffle from './raffle/CancelRaffle';
 import CreateRaffle from './raffle/CreateRaffle';
@@ -19,11 +19,12 @@ import Vote from './survey/Vote';
 import Question from './survey/Question';
 import Help from './bot/Help';
 import BotInfo from './bot/BotInfo';
-import SetPrefix from './server/SetPrefix';
+import Prefix from './server/Prefix';
 import Invitation from './bot/Invitation';
 import Premium from './server/Premium';
 import EditRaffle from './raffle/EditRaffle';
 import AdvancedCreateRaffle from './raffle/AdvancedCreateRaffle';
+import Locale from './server/Locale';
 
 type CommandMap = Collection<string, Command>
 
@@ -47,8 +48,9 @@ export default class CommandHandler extends Factory implements CommandRunner{
         new Help(),
         new BotInfo(),
         new Invitation(),
-        new SetPrefix(),
-        new SetCommandPermission(),
+        new Prefix(),
+        new Permission(),
+        new Locale(),
         new Premium()
     ]
 
@@ -58,10 +60,7 @@ export default class CommandHandler extends Factory implements CommandRunner{
     private aliases: Collection<string, string> = new Collection<string, string>()
 
     public registerAllCommands(): void{
-        // TODO::Auto Loader
-        CommandHandler.COMMANDS.forEach(command => {
-            this.registerCommand(command)
-        })
+        CommandHandler.COMMANDS.forEach(command => this.registerCommand(command))
 
         this.client.logger.info(`Toplam ${Colors.LIGHT_PURPLE}${this.commands.keyArray().length} ${Colors.AQUA}komut başarıyla yüklendi.`)
     }
