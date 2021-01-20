@@ -12,7 +12,7 @@ const updateTopGGStats = (packet: ServerStatsPacket) => {
         }
     }, {
         server_count: packet.serverCount,
-        shard_count: packet.serverCount
+        shard_count: packet.shardCount
     })
 }
 
