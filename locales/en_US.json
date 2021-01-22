@@ -410,7 +410,7 @@
             "roles": {
               "allowed": {
                 "message": [
-                  "**Adım 6:** Eğer çekilişinize katılmak için insanların belli bir role sahip olması gerekiyorsa bu kısımda hangi roller olduğunu belirleyebilirsiniz. *Seçkin üyeleriniz için seçkin çekilişler*\n",
+                  "**Step 6:** Eğer çekilişinize katılmak için insanların belli bir role sahip olması gerekiyorsa bu kısımda hangi roller olduğunu belirleyebilirsiniz. *Seçkin üyeleriniz için seçkin çekilişler*\n",
                   ":loudspeaker: Eğer bu adımı **atlamak** isterseniz lütfen sohbete `pas`, `skip` veya `geç` yazın.\n",
                   "`Katılım zorunluluğu olan rolleri belirlemek için rollerin adını veya etiketini aralarına virgül koyarak sohbete yazın. Unutmayın maksimum {0} rol yazabilirsiniz ve çekilişe katılmak isteyen herkeste belirlediğiniz rollerin hepsinin olması gerekir.`"
                 ],
