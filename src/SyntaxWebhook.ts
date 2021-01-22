@@ -1,4 +1,4 @@
-import { Guild, MessageEmbed, WebhookClient } from "discord.js";
+import { Guild, MessageEmbed, WebhookClient } from 'discord.js';
 import { getDateTimeToString } from './utils/DateTimeHelper';
 
 export default class SyntaxWebhook extends WebhookClient{

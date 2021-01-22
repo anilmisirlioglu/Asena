@@ -23,7 +23,7 @@ export default class RaffleManager extends Manager<Snowflake, Raffle, typeof Raf
     }
 
     protected new(data: IRaffle): Raffle{
-        return new Raffle(data)
+        return new Raffle(data, this.server.locale)
     }
 
     public async getLastCreated(): Promise<Raffle | undefined>{

@@ -14,13 +14,7 @@ export default class PermissionController{
 
         return {
             has: missingPermissions.length === 0,
-            missing: missingPermissions,
-            toString(){
-                let i = 1;
-                return missingPermissions.map(permission => {
-                    return `**${i++}.** ${PermissionController.humanizePermission(permission)}`
-                }).join('\n')
-            }
+            missing: missingPermissions
         }
     }
 
@@ -31,25 +25,25 @@ export default class PermissionController{
     public static humanizePermission(permission: PermissionString): string{
         switch(permission){
             case 'SEND_MESSAGES':
-                return 'Mesaj Gönder'
+                return 'send-message'
 
             case 'ADD_REACTIONS':
-                return 'Tepki Ekle'
+                return 'add-reactions'
 
             case 'VIEW_CHANNEL':
-                return 'Kanalı Görüntüle'
+                return 'view-channels'
 
             case 'EMBED_LINKS':
-                return 'Bağlantı Yerleştir'
+                return 'embed-links'
 
             case 'READ_MESSAGE_HISTORY':
-                return 'Mesaj Geçmişini Oku'
+                return 'read-message-history'
 
             case 'USE_EXTERNAL_EMOJIS':
-                return 'Harici Emojiler Kullan'
+                return 'use-external-emojis'
 
             default:
-                return 'Unsupported permission'
+                return 'unsupported'
         }
     }
 

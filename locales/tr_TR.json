@@ -22,6 +22,7 @@
       "member": "Üye",
       "usage": "Kullanımı",
       "message-id": "[mesaj-id]",
+      "unlimited": "Sınırsız",
       "date-time": {
         "months": [
           "Ocak",
@@ -53,6 +54,15 @@
         "read-message-history": "Mesaj Geçmişini Oku",
         "use-external-emojis": "Harici Emojiler Kullan",
         "unsupported": "Desteklenmeyen Yetki"
+      },
+      "premium": {
+        "normal": "Normal Üyelik",
+        "permanent": "Sınırsız Üyelik",
+        "unknown": "Unknown"
+      },
+      "roles": {
+        "added": "Eklenen Roller",
+        "removed": "Çıkarılan Roller"
       }
     },
     "errors": {
@@ -79,6 +89,45 @@
         ":earth_americas: Website: https://asena.xyz",
         ":sparkles: Destek Sunucusu: https://discord.gg/CRgXhfs"
       ]
+    },
+    "validator": {
+      "winners": {
+        "nan": "Lütfen kazanan kişi sayısını sayısal bir değer girin.",
+        "limit": "Çekilişi kazanan üye sayısı maksimum 20, minimum 1 kişi olabilir."
+      },
+      "time": {
+        "invalid": "Lütfen geçerli bir süre giriniz. (Örn; **1s** - **1m** - **5m** - **1h** vb.)",
+        "limit": "Çekiliş süresi en az 1 dakika, en fazla 60 gün olabilir."
+      },
+      "prize": {
+        "length": "Çekiliş başlığı maksimum 255 karakter uzunluğunda olabilir."
+      },
+      "servers": {
+        "invalid": {
+          "invites": "Geçersiz davet bağlantısı tespit edildi. Lütfen geçerli davet bağlantısı/bağlantıları girin.",
+          "invite": "Geçersiz davet bağlantısı: **{0}**"
+        },
+        "self": "Çekilişi başlattığınız sunucuyu katılım zorunluluğu olan sunucu olarak belirleyemezsiniz.",
+        "duplicate": "Davet bağlantılarınızın bazıları aynı sunucuya işaret ediyor. Girdiğiniz her bağlantının farklı sunucuya göstermesi gerekmektedir. Lütfen tekrarlanmayan değerler ile tekrar deneyin.",
+        "not.found": "**Asena** katılım zorunluluğu olan tüm sunucularda bulunmak zorundadır. Lütfen davet bağlantısını girdiğiniz sunucuya **Asena** 'yı ekleyin.",
+        "limit": "Maksimum **{0}** sunucuya katılım zorunluluğu koyabilirsiniz."
+      },
+      "color": {
+        "invalid": "Lütfen geçerli bir renk girin. (Hexadecimal renk kodu veya renk.)"
+      },
+      "roles": {
+        "invalid": "Geçersiz rol tespit edildi, tespit edilen rol: **{0}**",
+        "unauthorized": "Kazanan kişilere ödül olarak rol verebilmek için bota **Rolleri Yönet** yetkisi vermeniz gerekmektedir.",
+        "compare": "**{0}** rolü, **{1}** rolünün altında. Botun rolü ödül olarak verilecek rollerin üzerinde olmalıdır. Aksi takdirde ödül olarak rolü kullanıcıya veremez.",
+        "allowed": {
+          "duplicate": "Çekilişe katılabilecek roller arasında etiketlediğiniz rollerin bazıları aynı. Girdiğiniz her rolün birbirinden benzersiz olması gerekmektedir. Lütfen tekrarlanmayan değerler ile tekrar deneyin.",
+          "limit": "Katılım zorunluluğu olarak maksimum {0} rol belirleyebilirsiniz."
+        },
+        "reward": {
+          "duplicate": "Ödül olarak verilecek roller arasında etiketlediğiniz rollerin bazıları aynı. Girdiğiniz her rolün birbirinden benzersiz olması gerekmektedir. Lütfen tekrarlanmayan değerler ile tekrar deneyin.",
+          "limit": "Ödül olarak maksimum {0} rol verebilirsiniz."
+        }
+      }
     },
     "structures": {
       "survey": {
@@ -111,17 +160,28 @@
         "giveaway": "Çekiliş",
         "creator": "Oluşturan",
         "to.end": "Bitmesine",
+        "prize": {
+          "roles": "Ödül olarak verilecek roller"
+        },
+        "should": {
+          "servers": "Şu sunuculara üye olmalısınız",
+          "roles": "Şu rollere sahip olmalısınız"
+        },
         "messages": {
           "finish": "ÇEKİLİŞ BİTTİ",
           "start": "ÇEKİLİŞ BAŞLADI",
           "alert": "ÇEKİLİŞ İÇİN SON KATILIM"
-        }
+        },
+        "won": "Tebrikler, bir çekiliş kazandınız!",
+        "link": "Çekiliş Bağlantısı",
+        "vote": "Bana Oy Ver"
       }
     },
     "commands": {
       "handler": {
         "prefix": "Botun sunucu içerisinde ki komut ön adı(prefix): **{0}**",
         "unauthorized": "Bu komutu kullanmak için **yetkiniz** yok.",
+        "mention": "**{0}** ve komutları hakkında daha fazla bilgi için: **{1}help**",
         "permission": {
           "missing": {
             "message": "Botun çalışabilmesi için '**{0}**' kanalında bota '**Mesaj Gönder**' yetkisini sağlamanız/vermeniz gerekiyor. Aksi takdirde bot bu kanala mesaj gönderemez ve işlevini yerine getiremez/çalışamaz.",
@@ -131,6 +191,10 @@
               "Eğer daha detaylı yardıma ihtiyacınız varsa bizle iletişime geçmekten çekinmeyin."
             ]
           }
+        },
+        "premium": {
+          "only": "Bu özellik sadece **Asena Premium** kullanıcıları içindir.",
+          "try": "Premium 'u Denemeye Ne Dersin?"
         }
       },
       "bot": {
@@ -224,6 +288,18 @@
             "already": "Bu komut zaten herkese **{0}**.",
             "success": "**{0}** komutunun izinleri başarıyla düzenlendi. Komut durumu: **Herkese {1}**"
           }
+        },
+        "premium": {
+          "description": "Premium durumunu görüntüler.",
+          "try": [
+            "Henüz bir **Premium** üyeliğin bulunmuyor.",
+            ":star2:  [Premium 'u Denemeye Ne Dersin?](https://asena.xyz)"
+          ],
+          "info": [
+            "Premium: **{0}**",
+            "Başlangıç Tarihi: **{0}**",
+            "Bitiş Tarihi: **{0}**"
+          ]
         }
       },
       "raffle": {
@@ -237,9 +313,19 @@
               "invalid": "Lütfen geçerli bir süre giriniz. (Örn; **1s** - **1m** - **5m** - **1h** vb.)",
               "exceeded": "Çekiliş süresi en az 1 dakika, en fazla 60 gün olabilir."
             },
-            "max.created": "Maksimum çekiliş oluşturma sınırına ulaşmışsınız. (Max: 5)"
+            "max.created": "Maksimum çekiliş oluşturma sınırına ulaşmışsınız. (Max: {0})"
           },
           "unauthorized": "Botun yetkileri, bu kanalda çekiliş oluşturmak için yetersiz olduğu için çekiliş başlatılamadı."
+        },
+        "advanced": {
+          "description": "Gelişmiş çekiliş oluşturur.",
+          "usage": "--numberOfWinners \"kazanan sayısı\" --time \"süre\" --prize \"ödül\" --servers \"sunucular\" --color \"renk\" --allowedRoles \"roller\" --rewardRoles \"ödül olarak verilecek roller\"",
+          "parameter": {
+            "duplicate": "Lütfen aynı parametreyi birden fazla kez kullanmayın.",
+            "missing": "Lütfen yazılması zorunlu olan parametreleri eksiksiz yazın. Gerekli parametreler:",
+            "invalid": "Geçersiz parametre tespit edildi. Lütfen geçerli parametreler dışında bir parametre girmeden tekrar deneyin. Tespit edilen parametre: **--{0}**",
+            "empty": "Lütfen parametre değerlerini boş bırakmayın. Tespit edilen parametre: **--{0}**"
+          }
         },
         "setup": {
           "description": "Çekiliş kurulum sihirbazını başlatır.",
@@ -250,6 +336,10 @@
           "timeout": "İnteraktif kurulum sihirbazı zaman aşımına uğradı ve kapandı.",
           "success": "Çekiliş başarıyla oluşturuldu! Oluşturduğun çekiliş {0} kanalında yayınlandı...",
           "phases": {
+            "skip": {
+              "error": "Bu adım atlanamaz.",
+              "success": "**{0}.** adım başarıyla **atlandı**. Sıradaki adıma geçildi."
+            },
             "channel": {
               "message": [
                 "{0} interaktif kurulum sihirbazına **hoşgeldiniz**!",
@@ -284,15 +374,94 @@
                 "success": "Tebrikler! Çekiliş süresi **{0}** olarak belirlendi."
               }
             },
+            "color": {
+              "message": [
+                "**Adım 4:** Hadi bir çekiliş rengi belirleyelim.\n",
+                ":loudspeaker: Eğer bu adımı **atlamak** isterseniz lütfen sohbete `pas`, `skip` veya `geç` yazın.\n",
+                "`Unutmayın yalnızca bir rengin ingilizce adını veya hexadecimal kodunu yazabilirsiniz.`"
+              ],
+              "validator": {
+                "success": "Güzel seçim! Çekiliş rengi **{0}** olarak belirlendi."
+              }
+            },
+            "servers": {
+              "message": [
+                "**Adım 5:** Eğer çekilişinize katılmak için insanların belli bir sunucuya katılması gerekiyorsa bu kısımda hangi sunucular olduğunu belirleyebilirsiniz. Hadi işe koyulalım.\n",
+                ":loudspeaker: Eğer bu adımı **atlamak** isterseniz lütfen sohbete `pas`, `skip` veya `geç` yazın.\n",
+                "`Katılım zorunluluğu olan sunucuları belirlemek için sunucuların davet bağlantılarını aralarına virgül koyarak sohbete yazın. Unutmayın maksimum {0} sunucu yazabilirsiniz ve {1} belirlediğiniz tüm sunucular içerisinde bulunmalıdır.`"
+              ],
+              "validator": {
+                "success": "Tamamdır! Toplam **{0}** sunucuya katılım zorunluluğu eklendi."
+              }
+            },
+            "roles": {
+              "allowed": {
+                "message": [
+                  "**Adım 6:** Eğer çekilişinize katılmak için insanların belli bir role sahip olması gerekiyorsa bu kısımda hangi roller olduğunu belirleyebilirsiniz. *Seçkin üyeleriniz için seçkin çekilişler*\n",
+                  ":loudspeaker: Eğer bu adımı **atlamak** isterseniz lütfen sohbete `pas`, `skip` veya `geç` yazın.\n",
+                  "`Katılım zorunluluğu olan rolleri belirlemek için rollerin adını veya etiketini aralarına virgül koyarak sohbete yazın. Unutmayın maksimum {0} rol yazabilirsiniz ve çekilişe katılmak isteyen herkeste belirlediğiniz rollerin hepsinin olması gerekir.`"
+                ],
+                "validator": {
+                  "success": "Başarılı! Çekilişe katılmak isteyenlerin **{0}**  rollerinin hepsine sahip olmalı."
+                }
+              },
+              "reward": {
+                "message": [
+                  "**Adım 7:** Çekiliş ödülünüzü büyütmeye ne dersiniz? Çekilişi kazanan kişiyi onu diğerlerinden ayırması için rol verebilirsiniz. *Dostum bu çok havalı*\n",
+                  ":loudspeaker: Eğer bu adımı **atlamak** isterseniz lütfen sohbete `pas`, `skip` veya `geç` yazın.\n",
+                  "`Ödül olarak verilecek rolleri belirlemek için rollerin adını veya etiketini aralarına virgül koyarak sohbete yazın. Unutmayın maksimum {0} rol yazabilirsiniz. Çekiliş kazananlarına belirlediğiniz tüm roller verilir.`"
+                ],
+                "validator": {
+                  "success": "Büyüleyici! Çekilişi kazananlara **{0}** rolleri ödül olarak verilecek."
+                }
+              }
+            },
             "prize": {
               "message": [
-                "**Adım 4:** Son olarak çekilişin ödülünü belirleyelim (Aynı zamanda başlık olarak kullanılacak)\n",
+                "**Adım {0}:** Son olarak çekilişin ödülünü belirleyelim (Aynı zamanda başlık olarak kullanılacak)\n",
                 "`Ödülün maksimum uzunluğunun 255 karakter olabileceğini unutmayın.`"
               ],
               "validator": {
                 "success": "İşte bu kadar! Çekiliş başlığı ve ödülü **{0}** olarak belirlendi."
               }
             }
+          }
+        },
+        "edit": {
+          "description": "Çekilişi düzenler.",
+          "usage": "[numberOfWinner|color|prize|time|rewardRoles] [...args]",
+          "deleted": "Anlaşılan bu çekiliş mesajı silinmiş veya zaman aşımına uğramış.",
+          "invalid": {
+            "id": "Geçersiz ID biçimi. Lütfen geçerli bir çekiliş ID 'si yazın.",
+            "mode": "Lütfen geçerli bir mod *(+ veya -)* girin. (**Örn:** {0})",
+            "time": "Lütfen geçerli bir zaman girin."
+          },
+          "not": {
+            "found": "Düzenlenebilecek bir çekiliş bulunamadı.",
+            "continues": "Anlaşılan bu çekiliş zaten bitmiş veya iptal edilmiş. (Yalnızca devam eden çekilişleri düzenleyebilirsiniz.)"
+          },
+          "role": {
+            "max": "Ödül olarak maksimum {0} rol verebilirsiniz.",
+            "already": "{0} zaten ödül olarak belirlenmiş bir rol.",
+            "not.found": "Ödül olarak verilecek roller arasında {0} rolü bulunamadı."
+          },
+          "time": {
+            "little.left": "Çekilişin bitmesine 2 dakikadan az süre kalmış. Çekiliş süresini düzenleyebilmeniz için daha daha uzun bir süre gerekiyor.",
+            "down": {
+              "error": "Kısaltılan çekiliş süresi 2 dakikanın altına düşemez.",
+              "success": "{0} kısaltıldı."
+            },
+            "up": {
+              "error": "Uzatılan çekiliş süresi 60 günü geçemez.",
+              "success": "{0} uzatıldı."
+            }
+          },
+          "success": {
+            "color": "Çekiliş rengi başarıyla **{0}** olarak değiştirildi.",
+            "prize": "Çekiliş ödülü/başlığı başarıyla **{0}** olarak değiştirildi.",
+            "roles": "Ödül olarak verilecek roller tekrardan düzenlendi. ({0}: {1})",
+            "time": "Çekiliş süresi başarıyla düzenlendi. **(Süre {0})**",
+            "winners": "Kazanan sayısı başarıyla **{0}** olarak değiştirildi."
           }
         },
         "list": {
@@ -338,6 +507,7 @@
             "finish": "Bu çekiliş daha sonuçlanmamış. Lütfen çekilişin bitmesini bekleyin.",
             "enough": "Yeterli katılım olmadığından dolayı çekiliş tekrar çekilemedi.\n**Çekiliş:** {0}"
           },
+          "unauthorized": "Lütfen kazananları tekrar çekmek için bota **Rolleri Yönet** yetkisi verin. Aksi takdirde bot ödül olarak verilecek rolleri kazananlara veremez.",
           "canceled": "Bu çekiliş iptal edilmiş. İptal edilmiş bir çekilişin sonucu tekrar çekilemez.",
           "timeout": "Anlaşılan bu çekiliş mesajı silinmiş veya zaman aşımına uğramış.",
           "data.not.found": "Çekilişin katılımcı verileri bulunamadı.",

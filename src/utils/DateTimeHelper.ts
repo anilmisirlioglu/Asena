@@ -1,3 +1,5 @@
+import LanguageManager from '../language/LanguageManager';
+
 declare interface SecondsToTime{
     readonly d: number
     readonly h: number
@@ -6,14 +8,7 @@ declare interface SecondsToTime{
     toString(): string
 }
 
-const MONTH_ARRAY: string[] = [
-    'Ocak', 'Şubat', 'Mart',
-    'Nisan', 'Mayıs', 'Haziran',
-    'Temmuz', 'Ağustos', 'Eylül',
-    'Ekim', 'Kasım', 'Aralık'
-]
-
-const secondsToTime = ($seconds: number): SecondsToTime => {
+const secondsToTime = ($seconds: number, locale = LanguageManager.DEFAULT_LANGUAGE): SecondsToTime => {
     const secondsInAMinute = 60;
     const secondsInAnHour = 60 * secondsInAMinute;
     const secondsInADay = 24 * secondsInAnHour;
@@ -37,19 +32,19 @@ const secondsToTime = ($seconds: number): SecondsToTime => {
         toString(): string{
             let arr = [];
             if(days !== 0){
-                arr.push(`${days} gün`)
+                arr.push(`${days} ${LanguageManager.translate(locale, 'global.date-time.units.day')}`)
             }
 
             if(hours !== 0){
-                arr.push(`${hours} saat`)
+                arr.push(`${hours} ${LanguageManager.translate(locale, 'global.date-time.units.hour')}`)
             }
 
             if(minutes !== 0){
-                arr.push(`${minutes} dakika`)
+                arr.push(`${minutes} ${LanguageManager.translate(locale, 'global.date-time.units.minute')}`)
             }
 
             if(seconds !== 0){
-                arr.push(`${seconds} saniye`)
+                arr.push(`${seconds} ${LanguageManager.translate(locale, 'global.date-time.units.second')}`)
             }
 
             return arr.join(', ')
@@ -57,7 +52,9 @@ const secondsToTime = ($seconds: number): SecondsToTime => {
     }
 }
 
-const getDateTimeToString = (date: Date): string => {
+const getDateTimeToString = (date: Date, locale = LanguageManager.DEFAULT_LANGUAGE): string => {
+    const MONTH_ARRAY = LanguageManager.translate(locale, 'global.date-time.months')
+
     const hours = date.getUTCHours()
     const minutes = date.getUTCMinutes()
     const seconds = date.getUTCSeconds()

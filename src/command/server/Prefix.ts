@@ -9,8 +9,8 @@ export default class Prefix extends Command{
         super({
             name: 'setprefix',
             aliases: ['prefixdeğiştir'],
-            description: 'Botun komut prefix \'ini değiştirir.',
-            usage: '[prefix]',
+            description: 'commands.server.prefix.description',
+            usage: 'commands.server.prefix.usage',
             permission: 'ADMINISTRATOR'
         });
     }
@@ -21,7 +21,7 @@ export default class Prefix extends Command{
 
         if(prefix.length > 5){
             await message.channel.send({
-                embed: this.getErrorEmbed('Komut prefix \'i en fazla 5 karakterden oluşabilir.')
+                embed: this.getErrorEmbed(server.translate('commands.server.prefix.too.long'))
             })
 
             return true
@@ -29,7 +29,7 @@ export default class Prefix extends Command{
 
         await Promise.all([
             server.setPrefix(prefix),
-            message.channel.send(`:comet: Komut ön adı **${prefix}** olarak değiştirildi.`)
+            message.channel.send(`:comet: ${server.translate('commands.server.prefix.changed', prefix)}`)
         ])
         return true
     }

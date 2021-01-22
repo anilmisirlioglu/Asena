@@ -1,3 +1,5 @@
+/// <reference path='../typings/index.d.ts'/>
+
 import Asena from './Asena';
 import MongoDB from './drivers/MongoDB';
 import ProcessPacket, { ProcessPacketType } from './protocol/ProcessPacket';
@@ -39,3 +41,11 @@ const handler = async () => {
 }
 
 setTimeout(handler)
+
+String.prototype.removeWhiteSpaces = function(){
+    return this.replace(/\s|\x00|\x0B/g,'')
+}
+
+Array.prototype.checkIfDuplicateExists = function(){
+    return new Set(this).size !== this.length
+}

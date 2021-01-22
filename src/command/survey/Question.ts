@@ -11,8 +11,8 @@ export default class Question extends Command{
         super({
             name: 'question',
             aliases: ['sorusor', 'soru'],
-            description: 'Sunucuya bir soru sorarsınız.',
-            usage: '{soru} ...[şıklar]',
+            description: 'commands.survey.question.description',
+            usage: 'commands.survey.question.usage',
             permission: 'ADMINISTRATOR'
         });
     }
@@ -34,7 +34,7 @@ export default class Question extends Command{
 
         if(questions.length !== 0){
              await message.channel.send({
-                embed: this.getErrorEmbed('Birden fazla soru yazamazsınız. Lütfen tek bir soru yazarak tekrar deneyin.')
+                 embed: this.getErrorEmbed(server.translate('commands.survey.question.too.many'))
             })
 
             return true
@@ -42,7 +42,7 @@ export default class Question extends Command{
 
         if(answers.length > MAX_ANSWER_LENGTH){
             await message.channel.send({
-                embed: this.getErrorEmbed(`Sorunuza maksimum ${MAX_ANSWER_LENGTH} adet şık ekleyebilirsiniz.`)
+                embed: this.getErrorEmbed(server.translate('commands.survey.question.max.answer', MAX_ANSWER_LENGTH))
             })
 
             return true
@@ -69,7 +69,7 @@ export default class Question extends Command{
         }).then(vote => {
             emojis.map(item => vote.react(item.emoji))
         }).catch(async () => {
-            await message.channel.send(':boom: Soru sohbet kanalına bir sebepten dolayı gönderilemedi.')
+            await message.channel.send(':boom: ' + server.translate('commands.survey.question.error'))
         })
 
         if(message.guild.me.hasPermission('MANAGE_MESSAGES')){
