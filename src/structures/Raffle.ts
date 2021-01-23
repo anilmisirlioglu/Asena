@@ -251,7 +251,7 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
             .setDescription(description)
             .setColor(alert ? 'RED' : this.color ?? '#bd087d')
             .setTimestamp(finishAt)
-            .setFooter(`${this.translate('structures.raffle.footer.text', this.numberOfWinners)} | ${this.translate('structures.raffle.footer.finish')}`)
+            .setFooter(`${this.translate('structures.raffle.footer.text', this.numberOfWinners)} | ${this.translate('structures.raffle.footer.continues')}`)
     }
 
     private get isNewEmbed(): boolean{
