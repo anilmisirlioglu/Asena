@@ -158,7 +158,7 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
                 `${server.translate('structures.raffle.creator')}: <@${this.constituent_id}>`
             ])
             .setColor(alert ? 'RED' : '#bd087d')
-            .setFooter(`${server.translate('structures.raffle.footer.text', this.numbersOfWinner)} | ${server.translate('structures.raffle.footer.finish')}`)
+            .setFooter(`${server.translate('structures.raffle.footer.text', this.numbersOfWinner)} | ${server.translate('structures.raffle.footer.continues')}`)
             .setTimestamp(finishAt)
     }
 
