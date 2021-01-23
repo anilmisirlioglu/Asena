@@ -2,7 +2,7 @@
   "version": "2.0.0",
   "contributors": [
     {
-      "name": "yusfsm",
+      "name": "Yusuf S.",
       "website": "https://github.com/yusfsm/",
       "mail": "yusufvsaglam@gmail.com"
     },
@@ -34,7 +34,7 @@
       "member": "Member",
       "usage": "Usage",
       "message-id": "[message-id]",
-      "unlimited": "Sınırsız",
+      "unlimited": "Unlimited",
       "date-time": {
         "months": [
           "January",
@@ -108,11 +108,11 @@
         "limit": "The maximum number of members who win the giveaway 20, minimum 1 can be."
       },
       "time": {
-        "invalid": "Please enter a valid time. (Örn; **1s** - **1m** - **5m** - **1h** vb.)",
+        "invalid": "Please enter a valid time. (Eg; **1s** - **1m** - **5m** - **1h** vb.)",
         "limit": "The duration of the giveaway can be a minimum of 1 minute, and a maximum of 60 days."
       },
       "prize": {
-        "length": "The giveaway title can be up to 255 characters long."
+        "length": "The giveaway title can be up to 255 characters length."
       },
       "servers": {
         "invalid": {
@@ -122,7 +122,7 @@
         "self": "You cannot specify the server on which you started the giveaway as the server that has to participate.",
         "duplicate": "Some of your invite links point to the same server. Each link you enter must point to a different server. Please try again with non-duplicate values.",
         "not.found": "**Asena** all participation imperative servers must also be present. Please add **Asena** to the server you enter the invitation link.",
-        "limit": "Maksimum **{0}** to the server participation imperative you can put."
+        "limit": "Maximum **{0}** to the server participation imperative you can put."
       },
       "color": {
         "invalid": "Please enter a valid color. (Hexadecimal color code or color.)"
@@ -206,7 +206,7 @@
         },
         "premium": {
           "only": "This feature is only for **Asena Premium** users.",
-          "try": "What do you say trying Premium?"
+          "try": "What do you say to trying Premium?"
         }
       },
       "bot": {
@@ -365,7 +365,7 @@
                   "none": "Please mention a text channel.",
                   "invalid": "Please mention a valid text channel."
                 },
-                "success": "Successfull! The giveaway channel has determined as {0}. Let's move on the next stage."
+                "success": "Successful! The giveaway channel has determined as {0}. Let's move on the next stage."
               }
             },
             "winners": {
@@ -410,22 +410,22 @@
             "roles": {
               "allowed": {
                 "message": [
-                  "**Step 6:** Eğer çekilişinize katılmak için insanların belli bir role sahip olması gerekiyorsa bu kısımda hangi roller olduğunu belirleyebilirsiniz. *Seçkin üyeleriniz için seçkin çekilişler*\n",
-                  ":loudspeaker: Eğer bu adımı **atlamak** isterseniz lütfen sohbete `pas`, `skip` veya `geç` yazın.\n",
-                  "`Katılım zorunluluğu olan rolleri belirlemek için rollerin adını veya etiketini aralarına virgül koyarak sohbete yazın. Unutmayın maksimum {0} rol yazabilirsiniz ve çekilişe katılmak isteyen herkeste belirlediğiniz rollerin hepsinin olması gerekir.`"
+                  "**Step 6:** If people should have a specified role to attend to the giveaway, you can choose the roles that people should have. *Elite giveaways for your elite members*\n",
+                  ":loudspeaker: If you want to **skip** this step,  please write `pas`, `skip` or `geç` to the chat.\n",
+                  "`Write the name of the roles or mentions, with commas between them in the chat to decide the obligatory roles. Do not forget you can write maximum {0} role and people that will join, should have all of the roles.`"
                 ],
                 "validator": {
-                  "success": "Başarılı! Çekilişe katılmak isteyenlerin **{0}**  rollerinin hepsine sahip olmalı."
+                  "success": "Successful! People that want to join the giveaway must have all of the **{0}** roles."
                 }
               },
               "reward": {
                 "message": [
-                  "**Step 7:** Çekiliş ödülünüzü büyütmeye ne dersiniz? Çekilişi kazanan kişiyi onu diğerlerinden ayırması için rol verebilirsiniz. *Dostum bu çok havalı*\n",
-                  ":loudspeaker: Eğer bu adımı **atlamak** isterseniz lütfen sohbete `pas`, `skip` veya `geç` yazın.\n",
-                  "`Ödül olarak verilecek rolleri belirlemek için rollerin adını veya etiketini aralarına virgül koyarak sohbete yazın. Unutmayın maksimum {0} rol yazabilirsiniz. Çekiliş kazananlarına belirlediğiniz tüm roller verilir.`"
+                  "**Step 7:** What about to make the prize bigger? To make the person that won the giveaway, different from others, you can give role. *Buddy this is so cool!*\n",
+                  ":loudspeaker: If you want to **skip** this step,  please write `pas`, `skip` or `geç` to the chat.\n",
+                  "`Write the name of the roles or mentions, with commas between them in the chat to decide the roles that will be given as prize. Do not forget you can write maximum {0} role. The giveaway winners are given all of the roles that you set.`"
                 ],
                 "validator": {
-                  "success": "Büyüleyici! Çekilişi kazananlara **{0}** rolleri ödül olarak verilecek."
+                  "success": "Fascinating! The **{0}** roles will be given to the winner of the giveaway as prize."
                 }
               }
             },
@@ -441,40 +441,40 @@
           }
         },
         "edit": {
-          "description": "Çekilişi düzenler.",
+          "description": "Edits the giveaway.",
           "usage": "[numberOfWinner|color|prize|time|rewardRoles] [...args]",
-          "deleted": "Anlaşılan bu çekiliş mesajı silinmiş veya zaman aşımına uğramış.",
+          "deleted": "Apperantly this giveaway message has been deleted or timed out.",
           "invalid": {
-            "id": "Geçersiz ID biçimi. Lütfen geçerli bir çekiliş ID 'si yazın.",
-            "mode": "Lütfen geçerli bir mod *(+ veya -)* girin. (**Örn:** {0})",
-            "time": "Lütfen geçerli bir zaman girin."
+            "id": "Invalid ID. Please write a valid giveaway ID.",
+            "mode": "Please specify a valid mode *(+ or -)*. (**Eg:** {0})",
+            "time": "Please specify a valid time."
           },
           "not": {
-            "found": "Düzenlenebilecek bir çekiliş bulunamadı.",
-            "continues": "Anlaşılan bu çekiliş zaten bitmiş veya iptal edilmiş. (Yalnızca devam eden çekilişleri düzenleyebilirsiniz.)"
+            "found": "Couldn't find a can be edited giveaway.",
+            "continues": "Apperantly this giveaway already ended or cancelled. (You can edit only continuing giveaways.)"
           },
           "role": {
-            "max": "Ödül olarak maksimum {0} rol verebilirsiniz.",
-            "already": "{0} zaten ödül olarak belirlenmiş bir rol.",
-            "not.found": "Ödül olarak verilecek roller arasında {0} rolü bulunamadı."
+            "max": "You can give maximum {0} role as prize.",
+            "already": "This {0} is already decided as a prize role.",
+            "not.found": "The {0} role could not be found among the roles to be gived."
           },
           "time": {
-            "little.left": "Çekilişin bitmesine 2 dakikadan az süre kalmış. Çekiliş süresini düzenleyebilmeniz için daha daha uzun bir süre gerekiyor.",
+            "little.left": "There are less than 2 minutes to giveaway ending. It must be much longer time to edit the giveaway.",
             "down": {
-              "error": "Kısaltılan çekiliş süresi 2 dakikanın altına düşemez.",
-              "success": "{0} kısaltıldı."
+              "error": "Extended giveaway time can't fell below 2 minutes.",
+              "success": "It was shortened by {0}."
             },
             "up": {
-              "error": "Uzatılan çekiliş süresi 60 günü geçemez.",
-              "success": "{0} uzatıldı."
+              "error": "Extended giveaway time can't exceed 60 day.",
+              "success": "It was extended by {0}."
             }
           },
           "success": {
-            "color": "Çekiliş rengi başarıyla **{0}** olarak değiştirildi.",
-            "prize": "Çekiliş ödülü/başlığı başarıyla **{0}** olarak değiştirildi.",
-            "roles": "Ödül olarak verilecek roller tekrardan düzenlendi. ({0}: {1})",
-            "time": "Çekiliş süresi başarıyla düzenlendi. **(Süre {0})**",
-            "winners": "Kazanan sayısı başarıyla **{0}** olarak değiştirildi."
+            "color": "The giveaway color has been changed to **{0}**.",
+            "prize": "The giveaway prize/title has been successfully changed to **{0}**.",
+            "roles": "The will be given roles as prize has been edited again. ({0}: {1})",
+            "time": "The giveaway time has been edited successfully. **(Süre {0})**",
+            "winners": "The number of winner is has been successfully changed to **{0}**."
           }
         },
         "list": {
@@ -520,7 +520,7 @@
             "finish": "This lottery has not been ended yet. Please wait for the giveaway ending.",
             "enough": "The raffle could not be rerolled again for insufficient participation.\n**Giveaway:** {0}"
           },
-          "unauthorized": "Lütfen kazananları tekrar çekmek için bota **Rolleri Yönet** yetkisi verin. Aksi takdirde bot ödül olarak verilecek rolleri kazananlara veremez.",
+          "unauthorized": "Please give to the bot **Manage Roles* permission to reroll the winners. Otherwise bot can't give the will be given roles as prize to the winners.",
           "canceled": "This giveaway has cancelled. Can not reroll a cancelled giveaway result.",
           "timeout": "Apparently this giveaway message has been deleted or has timed out.",
           "data.not.found": "Couldn't find the giveaway's participant data.",
