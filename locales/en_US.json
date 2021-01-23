@@ -420,7 +420,7 @@
               },
               "reward": {
                 "message": [
-                  "**Adım 7:** Çekiliş ödülünüzü büyütmeye ne dersiniz? Çekilişi kazanan kişiyi onu diğerlerinden ayırması için rol verebilirsiniz. *Dostum bu çok havalı*\n",
+                  "**Step 7:** Çekiliş ödülünüzü büyütmeye ne dersiniz? Çekilişi kazanan kişiyi onu diğerlerinden ayırması için rol verebilirsiniz. *Dostum bu çok havalı*\n",
                   ":loudspeaker: Eğer bu adımı **atlamak** isterseniz lütfen sohbete `pas`, `skip` veya `geç` yazın.\n",
                   "`Ödül olarak verilecek rolleri belirlemek için rollerin adını veya etiketini aralarına virgül koyarak sohbete yazın. Unutmayın maksimum {0} rol yazabilirsiniz. Çekiliş kazananlarına belirlediğiniz tüm roller verilir.`"
                 ],
