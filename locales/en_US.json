@@ -68,13 +68,13 @@
         "unsupported": "Unsupported Permission"
       },
       "premium": {
-        "normal": "normal membership",
-        "permanent": "unlimited membership",
+        "normal": "Normal Membership",
+        "permanent": "Unlimited Membership",
         "unknown": "Unknown"
       },
       "roles": {
-        "added": "added roles",
-        "removed": "removed roles"
+        "added": "Added Roles",
+        "removed": "Removed Roles"
       }
     },
     "errors": {
@@ -185,15 +185,15 @@
           "alert": "LAST PARTICIPATION FOR THE GIVEAWAY"
         },
         "won": "Congratulations, you won a giveaway!",
-        "link": "Giveaway link",
-        "vote": "Vote for me"
+        "link": "Giveaway Link",
+        "vote": "Vote For Me"
       }
     },
     "commands": {
       "handler": {
         "prefix": "The bot's command front name in the server(prefix): **{0}**",
         "unauthorized": "To use this command **your auth** absent.",
-        "mention": "**{0}** For more information about and its commands: **{1}help**",
+        "mention": "**{0}** for more information about and its commands: **{1}help**",
         "permission": {
           "missing": {
             "message": "In order for the bot to work, '**{0}**' you must authorize **Send Message** on the channel. Otherwise, the bot will not be able to send a message to this channel and will not be able to work.",
@@ -206,7 +206,7 @@
         },
         "premium": {
           "only": "This feature is only for **Asena Premium** users.",
-          "try": "What do you say Trying Premium?"
+          "try": "What do you say trying Premium?"
         }
       },
       "bot": {
@@ -305,7 +305,7 @@
           "description": "Displays the premium status.",
           "try": [
             "yet a **Premium** your membership does not exist.",
-            ":star2:  [What do you say Trying Premium?](https://asena.xyz)"
+            ":star2:  [What do you say trying Premium?](https://asena.xyz)"
           ],
           "info": [
             "Premium: **{0}**",
