@@ -68,13 +68,13 @@
         "unsupported": "Unsupported Permission"
       },
       "premium": {
-        "normal": "Normal Üyelik",
-        "permanent": "Sınırsız Üyelik",
+        "normal": "Normal Membership",
+        "permanent": "Unlimited Membership",
         "unknown": "Unknown"
       },
       "roles": {
-        "added": "Eklenen Roller",
-        "removed": "Çıkarılan Roller"
+        "added": "Added Roles",
+        "removed": "Removed Roles"
       }
     },
     "errors": {
@@ -104,40 +104,40 @@
     },
     "validator": {
       "winners": {
-        "nan": "Lütfen kazanan kişi sayısını sayısal bir değer girin.",
-        "limit": "Çekilişi kazanan üye sayısı maksimum 20, minimum 1 kişi olabilir."
+        "nan": "Please enter the number of winners in a numerical value.",
+        "limit": "The maximum number of members who win the giveaway 20, minimum 1 can be."
       },
       "time": {
-        "invalid": "Lütfen geçerli bir süre giriniz. (Örn; **1s** - **1m** - **5m** - **1h** vb.)",
-        "limit": "Çekiliş süresi en az 1 dakika, en fazla 60 gün olabilir."
+        "invalid": "Please enter a valid time. (Örn; **1s** - **1m** - **5m** - **1h** vb.)",
+        "limit": "The duration of the giveaway can be a minimum of 1 minute, and a maximum of 60 days."
       },
       "prize": {
-        "length": "Çekiliş başlığı maksimum 255 karakter uzunluğunda olabilir."
+        "length": "The giveaway title can be up to 255 characters long."
       },
       "servers": {
         "invalid": {
-          "invites": "Geçersiz davet bağlantısı tespit edildi. Lütfen geçerli davet bağlantısı/bağlantıları girin.",
-          "invite": "Geçersiz davet bağlantısı: **{0}**"
+          "invites": "Invalid invite link detected. Please enter valid invite link / links.",
+          "invite": "Invalid invite link: **{0}**"
         },
-        "self": "Çekilişi başlattığınız sunucuyu katılım zorunluluğu olan sunucu olarak belirleyemezsiniz.",
-        "duplicate": "Davet bağlantılarınızın bazıları aynı sunucuya işaret ediyor. Girdiğiniz her bağlantının farklı sunucuya göstermesi gerekmektedir. Lütfen tekrarlanmayan değerler ile tekrar deneyin.",
-        "not.found": "**Asena** katılım zorunluluğu olan tüm sunucularda bulunmak zorundadır. Lütfen davet bağlantısını girdiğiniz sunucuya **Asena** 'yı ekleyin.",
-        "limit": "Maksimum **{0}** sunucuya katılım zorunluluğu koyabilirsiniz."
+        "self": "You cannot specify the server on which you started the giveaway as the server that has to participate.",
+        "duplicate": "Some of your invite links point to the same server. Each link you enter must point to a different server. Please try again with non-duplicate values.",
+        "not.found": "**Asena** all participation imperative servers must also be present. Please add **Asena** to the server you enter the invitation link.",
+        "limit": "Maksimum **{0}** to the server participation imperative you can put."
       },
       "color": {
-        "invalid": "Lütfen geçerli bir renk girin. (Hexadecimal renk kodu veya renk.)"
+        "invalid": "Please enter a valid color. (Hexadecimal color code or color.)"
       },
       "roles": {
-        "invalid": "Geçersiz rol tespit edildi, tespit edilen rol: **{0}**",
-        "unauthorized": "Kazanan kişilere ödül olarak rol verebilmek için bota **Rolleri Yönet** yetkisi vermeniz gerekmektedir.",
-        "compare": "**{0}** rolü, **{1}** rolünün altında. Botun rolü ödül olarak verilecek rollerin üzerinde olmalıdır. Aksi takdirde ödül olarak rolü kullanıcıya veremez.",
+        "invalid": "Invalid role detected, detected role: **{0}**",
+        "unauthorized": "To winners role as a reward in order to give You must give the bot **Manage Roles** authority.",
+        "compare": "The **{0}** role is under the **{1}** role. The role of the bot should as a reward be above the roles that will be awarded. Otherwise, it cannot award the role to the user as a reward.",
         "allowed": {
-          "duplicate": "Çekilişe katılabilecek roller arasında etiketlediğiniz rollerin bazıları aynı. Girdiğiniz her rolün birbirinden benzersiz olması gerekmektedir. Lütfen tekrarlanmayan değerler ile tekrar deneyin.",
-          "limit": "Katılım zorunluluğu olarak maksimum {0} rol belirleyebilirsiniz."
+          "duplicate": "As a reward Among the roles that will be awarded, some of the roles you tagged are the same. Each role you enter from each other must be unique. Please try again with non-repeatable values.",
+          "limit": "You can specify a maximum {0} rol as a participation imperative."
         },
         "reward": {
-          "duplicate": "Ödül olarak verilecek roller arasında etiketlediğiniz rollerin bazıları aynı. Girdiğiniz her rolün birbirinden benzersiz olması gerekmektedir. Lütfen tekrarlanmayan değerler ile tekrar deneyin.",
-          "limit": "Ödül olarak maksimum {0} rol verebilirsiniz."
+          "duplicate": "As a reward Among the roles that will be awarded, some of the roles you tagged are the same. Each role you enter from each other must be unique. Please try again with non-repeatable values.",
+          "limit": "You can give a maximum of {0} roles as a reward."
         }
       }
     },
@@ -173,27 +173,27 @@
         "creator": "Hosted by",
         "to.end": "Time remaining",
         "prize": {
-          "roles": "Ödül olarak verilecek roller"
+          "roles": "As a reward roles to be given"
         },
         "should": {
-          "servers": "Şu sunuculara üye olmalısınız",
-          "roles": "Şu rollere sahip olmalısınız"
+          "servers": "You must join these servers",
+          "roles": "You must have these roles"
         },
         "messages": {
           "finish": "GIVEAWAY ENDED",
           "start": "GIVEAWAY STARTED",
           "alert": "LAST PARTICIPATION FOR THE GIVEAWAY"
         },
-        "won": "Tebrikler, bir çekiliş kazandınız!",
-        "link": "Çekiliş Bağlantısı",
-        "vote": "Bana Oy Ver"
+        "won": "Congratulations, you won a giveaway!",
+        "link": "Giveaway Link",
+        "vote": "Vote For Me"
       }
     },
     "commands": {
       "handler": {
         "prefix": "The bot's command front name in the server(prefix): **{0}**",
         "unauthorized": "To use this command **your auth** absent.",
-        "mention": "**{0}** ve komutları hakkında daha fazla bilgi için: **{1}help**",
+        "mention": "**{0}** for more information about and its commands: **{1}help**",
         "permission": {
           "missing": {
             "message": "In order for the bot to work, '**{0}**' you must authorize **Send Message** on the channel. Otherwise, the bot will not be able to send a message to this channel and will not be able to work.",
@@ -205,8 +205,8 @@
           }
         },
         "premium": {
-          "only": "Bu özellik sadece **Asena Premium** kullanıcıları içindir.",
-          "try": "Premium 'u Denemeye Ne Dersin?"
+          "only": "This feature is only for **Asena Premium** users.",
+          "try": "What do you say trying Premium?"
         }
       },
       "bot": {
@@ -302,15 +302,15 @@
           }
         },
         "premium": {
-          "description": "Premium durumunu görüntüler.",
+          "description": "Displays the premium status.",
           "try": [
-            "Henüz bir **Premium** üyeliğin bulunmuyor.",
-            ":star2:  [Premium 'u Denemeye Ne Dersin?](https://asena.xyz)"
+            "yet a **Premium** your membership does not exist.",
+            ":star2:  [What do you say trying Premium?](https://asena.xyz)"
           ],
           "info": [
             "Premium: **{0}**",
-            "Başlangıç Tarihi: **{0}**",
-            "Bitiş Tarihi: **{0}**"
+            "Starting date: **{0}**",
+            "End date: **{0}**"
           ]
         }
       },
@@ -330,13 +330,13 @@
           "unauthorized": "The raffle could not be started because the bot's permissions were insufficient to create a raffle on this channel."
         },
         "advanced": {
-          "description": "Gelişmiş çekiliş oluşturur.",
-          "usage": "--numberOfWinners \"kazanan sayısı\" --time \"süre\" --prize \"ödül\" --servers \"sunucular\" --color \"renk\" --allowedRoles \"roller\" --rewardRoles \"ödül olarak verilecek roller\"",
+          "description": "Advanced giveaway creates.",
+          "usage": "--numberOfWinners \"number of winners\" --time \"time\" --prize \"prize\" --servers \"servers\" --color \"color\" --allowedRoles \"roler\" --rewardRoles \"roles to be given as a reward\"",
           "parameter": {
-            "duplicate": "Lütfen aynı parametreyi birden fazla kez kullanmayın.",
-            "missing": "Lütfen yazılması zorunlu olan parametreleri eksiksiz yazın. Gerekli parametreler:",
-            "invalid": "Geçersiz parametre tespit edildi. Lütfen geçerli parametreler dışında bir parametre girmeden tekrar deneyin. Tespit edilen parametre: **--{0}**",
-            "empty": "Lütfen parametre değerlerini boş bırakmayın. Tespit edilen parametre: **--{0}**"
+            "duplicate": "Please do not use the same parameter times more than once.",
+            "missing": "Please, write all necessary parameters. Required parameters:",
+            "invalid": "Invalid parameter detected. Please try again without entering any parameters other than valid parameters. Detected parameter: **--{0}**",
+            "empty": "Please do not leave the parameter values blank. Detected parameter: **--{0}**"
           }
         },
         "setup": {
@@ -349,8 +349,8 @@
           "success": "The giveaway has created successfully! The giveaway you started has published in the {0} channel...",
           "phases": {
             "skip": {
-              "error": "Bu adım atlanamaz.",
-              "success": "**{0}.** adım başarıyla **atlandı**. Sıradaki adıma geçildi."
+              "error": "This step cannot be skipped.",
+              "success": "** {0}. ** step successfully ** skipped **. The next step has been taken."
             },
             "channel": {
               "message": [
@@ -389,28 +389,28 @@
             },
             "color": {
               "message": [
-                "**Adım 4:** Hadi bir çekiliş rengi belirleyelim.\n",
-                ":loudspeaker: Eğer bu adımı **atlamak** isterseniz lütfen sohbete `pas`, `skip` veya `geç` yazın.\n",
-                "`Unutmayın yalnızca bir rengin ingilizce adını veya hexadecimal kodunu yazabilirsiniz.`"
+                "**Step 4:** let's set a giveaways color.\n",
+                ":loudspeaker: If you want to **skip** this step, please write `pas`, `skip` to the chat.\n",
+                "`Remember only, only can write the English name or hexadecimal code of a color.`"
               ],
               "validator": {
-                "success": "Güzel seçim! Çekiliş rengi **{0}** olarak belirlendi."
+                "success": "Good choice! The giveaway color is set to **{0}**."
               }
             },
             "servers": {
               "message": [
-                "**Adım 5:** Eğer çekilişinize katılmak için insanların belli bir sunucuya katılması gerekiyorsa bu kısımda hangi sunucular olduğunu belirleyebilirsiniz. Hadi işe koyulalım.\n",
-                ":loudspeaker: Eğer bu adımı **atlamak** isterseniz lütfen sohbete `pas`, `skip` veya `geç` yazın.\n",
-                "`Katılım zorunluluğu olan sunucuları belirlemek için sunucuların davet bağlantılarını aralarına virgül koyarak sohbete yazın. Unutmayın maksimum {0} sunucu yazabilirsiniz ve {1} belirlediğiniz tüm sunucular içerisinde bulunmalıdır.`"
+                "**Step 5:** If people need to join a certain server to participate in your raffle, you can determine which servers are in this section. Let's get to work.\n",
+                ":loudspeaker: If you want to **skip** this step, please write `pas`, `skip` to the chat.\n",
+                "`necessarily To specify the servers to enter, type the invite links of the servers, separating them with a comma. Remember, you can write maximum {0} servers and {1} must be in all the servers you specify.`"
               ],
               "validator": {
-                "success": "Tamamdır! Toplam **{0}** sunucuya katılım zorunluluğu eklendi."
+                "success": "All right! Total **{0}** join the server imperative added."
               }
             },
             "roles": {
               "allowed": {
                 "message": [
-                  "**Adım 6:** Eğer çekilişinize katılmak için insanların belli bir role sahip olması gerekiyorsa bu kısımda hangi roller olduğunu belirleyebilirsiniz. *Seçkin üyeleriniz için seçkin çekilişler*\n",
+                  "**Step 6:** Eğer çekilişinize katılmak için insanların belli bir role sahip olması gerekiyorsa bu kısımda hangi roller olduğunu belirleyebilirsiniz. *Seçkin üyeleriniz için seçkin çekilişler*\n",
                   ":loudspeaker: Eğer bu adımı **atlamak** isterseniz lütfen sohbete `pas`, `skip` veya `geç` yazın.\n",
                   "`Katılım zorunluluğu olan rolleri belirlemek için rollerin adını veya etiketini aralarına virgül koyarak sohbete yazın. Unutmayın maksimum {0} rol yazabilirsiniz ve çekilişe katılmak isteyen herkeste belirlediğiniz rollerin hepsinin olması gerekir.`"
                 ],
@@ -420,7 +420,7 @@
               },
               "reward": {
                 "message": [
-                  "**Adım 7:** Çekiliş ödülünüzü büyütmeye ne dersiniz? Çekilişi kazanan kişiyi onu diğerlerinden ayırması için rol verebilirsiniz. *Dostum bu çok havalı*\n",
+                  "**Step 7:** Çekiliş ödülünüzü büyütmeye ne dersiniz? Çekilişi kazanan kişiyi onu diğerlerinden ayırması için rol verebilirsiniz. *Dostum bu çok havalı*\n",
                   ":loudspeaker: Eğer bu adımı **atlamak** isterseniz lütfen sohbete `pas`, `skip` veya `geç` yazın.\n",
                   "`Ödül olarak verilecek rolleri belirlemek için rollerin adını veya etiketini aralarına virgül koyarak sohbete yazın. Unutmayın maksimum {0} rol yazabilirsiniz. Çekiliş kazananlarına belirlediğiniz tüm roller verilir.`"
                 ],
