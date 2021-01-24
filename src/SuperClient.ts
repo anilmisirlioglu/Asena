@@ -110,7 +110,7 @@ export default abstract class SuperClient extends Client{
         const guild: Guild = this.guilds.cache.get(guildId)
         if(guild){
             const channel = guild.channels.cache.get(channelId)
-            if(channel.viewable) return channel
+            if(channel instanceof TextChannel && channel.viewable) return channel
         }
 
         return undefined
