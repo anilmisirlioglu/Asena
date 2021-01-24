@@ -53,12 +53,12 @@ const secondsToTime = ($seconds: number, locale = LanguageManager.DEFAULT_LANGUA
 }
 
 const getDateTimeToString = (date: Date, locale = LanguageManager.DEFAULT_LANGUAGE): string => {
-    const MONTH_ARRAY = LanguageManager.translate(locale, 'global.date-time.months')
+    const month = LanguageManager.translate(locale, `global.date-time.months.${(date.getUTCMonth() + 1).toString()}`)
 
     const hours = date.getUTCHours()
     const minutes = date.getUTCMinutes()
     const seconds = date.getUTCSeconds()
-    return `${date.getUTCDate()} ${MONTH_ARRAY[date.getUTCMonth()]} ${date.getUTCFullYear()} ${String(hours).length === 1 ? `0${hours}` : hours}:${String(minutes).length === 1 ? `0${minutes}` : minutes}:${String(seconds).length === 1 ? `0${seconds}` : seconds}`
+    return `${date.getUTCDate()} ${month} ${date.getUTCFullYear()} ${String(hours).length === 1 ? `0${hours}` : hours}:${String(minutes).length === 1 ? `0${minutes}` : minutes}:${String(seconds).length === 1 ? `0${seconds}` : seconds}`
 }
 
 const detectTime = (time: string): number | undefined => {
