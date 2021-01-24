@@ -112,22 +112,67 @@ export default abstract class SuperClient extends Client{
         return this.languageManager
     }
 
-    fetchChannel<T extends Snowflake>(guildId: T, channelId: T): GuildChannel | undefined{
-        const guild: Guild = this.guilds.cache.get(guildId)
+    private resolveEval = <T>(value: any[]): T | undefined => value.find(res => !!res)
+
+    /**
+     * Finds the server on the whole client.
+     *
+     * @param guildID {Snowflake}
+     */
+    async fetchGuild(guildID: Snowflake): Promise<Guild | undefined>{
+        const fetch = await this.shard.broadcastEval(`this.guilds.cache.get("${guildID}")`)
+
+        return this.resolveEval(fetch)
+    }
+
+    /**
+     * Finds the guild member on the whole client.
+     *
+     * @param guildID
+     * @param memberID
+     */
+    async fetchMember(guildID: Snowflake, memberID: Snowflake){
+        const fetch = await this.shard.broadcastEval(`(async () => {
+            const guild = this.guilds.cache.get("${guildID}")
+            if(guild) return guild.members.fetch("${memberID}").then(user => user).catch(() => {
+                return undefined
+            })
+            
+            return undefined
+        })()`)
+
+        return this.resolveEval(fetch)
+    }
+
+    /**
+     * It only finds channels on servers in the shard.
+     *
+     * @param guildID   {Snowflake}
+     * @param channelID {Snowflake}
+     */
+    fetchChannel<T extends Snowflake>(guildID: T, channelID: T): GuildChannel | undefined{
+        const guild: Guild = this.guilds.cache.get(guildID)
         if(guild){
-            const channel = guild.channels.cache.get(channelId)
+            const channel = guild.channels.cache.get(channelID)
             if(channel && channel.viewable) return channel
         }
 
         return undefined
     }
 
-    async fetchMessage<T extends Snowflake>(guildId: T, channelId: T, messageId: T): Promise<Message | undefined>{
-        const channel: GuildChannel = this.fetchChannel(guildId, channelId)
+    /**
+     * It only finds channels on servers in the shard.
+     *
+     * @param guildID
+     * @param channelID
+     * @param messageID
+     */
+    async fetchMessage<T extends Snowflake>(guildID: T, channelID: T, messageID: T): Promise<Message | undefined>{
+        const channel: GuildChannel = this.fetchChannel(guildID, channelID)
         if(channel instanceof TextChannel){
             return new Promise(resolve => {
                 return channel.messages
-                    .fetch(messageId)
+                    .fetch(messageID)
                     .catch(() => resolve(undefined))
                     .then((message: Message) => resolve(message))
             })

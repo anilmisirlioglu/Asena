@@ -119,7 +119,7 @@ export default class CommandHandler extends Factory implements CommandRunner{
                     return
                 }
 
-                if(message.mentions.has(client.user)){
+                if(message.mentions.has(client.user) && !message.mentions.everyone){
                     await message.channel.send('🌈  ' + server.translate('commands.handler.mention', SuperClient.NAME, server.prefix))
 
                     return

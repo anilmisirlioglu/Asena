@@ -110,7 +110,7 @@ export const Flags: FlagMap = {
                 }
             }
 
-            const target = client.guilds.cache.get(fetchInvite.guild.id)
+            const target = await client.fetchGuild(fetchInvite.guild.id)
             if(!target){
                 return {
                     ok: false,
