@@ -26,7 +26,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm install
-    # - run: npm run build --if-present # This step will be skipped for a while
+      - run: npm run build --if-present
       - run: npm run test
         env:
           CI: true
