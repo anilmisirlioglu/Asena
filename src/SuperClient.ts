@@ -11,7 +11,6 @@ import {
 } from "discord.js";
 import Version from './utils/Version';
 import Logger from './utils/Logger';
-import TaskTiming from './tasks/TaskTiming';
 import CommandHandler from './command/CommandHandler';
 import ActivityUpdater from './updater/ActivityUpdater';
 import RaffleTimeUpdater from './updater/RaffleTimeUpdater';
@@ -19,6 +18,8 @@ import ServerManager from './managers/ServerManager';
 import SetupManager from './setup/SetupManager';
 import SyntaxWebhook from './SyntaxWebhook';
 import PremiumUpdater from './updater/PremiumUpdater';
+import LanguageManager from './language/LanguageManager';
+import ClientTaskManager from './scheduler/ClientTaskManager';
 
 interface SuperClientBuilderOptions{
     prefix: string
@@ -32,9 +33,9 @@ export default abstract class SuperClient extends Client{
 
     readonly version: Version = new Version(process.env.npm_package_version || '1.0.0', this.opts.isDevBuild)
 
-    readonly logger: Logger = new Logger()
+    readonly logger: Logger = new Logger('shard')
 
-    private readonly taskTiming: TaskTiming = new TaskTiming()
+    private readonly taskManager: ClientTaskManager = new ClientTaskManager()
 
     private readonly commandHandler: CommandHandler = new CommandHandler(this)
 
@@ -43,7 +44,9 @@ export default abstract class SuperClient extends Client{
     private readonly premiumUpdater: PremiumUpdater = new PremiumUpdater(this)
 
     readonly servers: ServerManager = new ServerManager()
+
     private readonly setupManager: SetupManager = new SetupManager()
+    private readonly languageManager: LanguageManager = new LanguageManager(this)
 
     readonly webhook: SyntaxWebhook = new SyntaxWebhook()
 
@@ -81,8 +84,8 @@ export default abstract class SuperClient extends Client{
         return this.self
     }
 
-    public getTaskTiming(): TaskTiming{
-        return this.taskTiming
+    public getTaskManager(): ClientTaskManager{
+        return this.taskManager
     }
 
     public getActivityUpdater(): ActivityUpdater{
@@ -105,22 +108,71 @@ export default abstract class SuperClient extends Client{
         return this.setupManager
     }
 
-    fetchChannel<T extends Snowflake>(guildId: T, channelId: T): GuildChannel | undefined{
-        const guild: Guild = this.guilds.cache.get(guildId)
+    public getLanguageManager(): LanguageManager{
+        return this.languageManager
+    }
+
+    private resolveEval = <T>(value: any[]): T | undefined => value.find(res => !!res)
+
+    /**
+     * Finds the server on the whole client.
+     *
+     * @param guildID {Snowflake}
+     */
+    async fetchGuild(guildID: Snowflake): Promise<Guild | undefined>{
+        const fetch = await this.shard.broadcastEval(`this.guilds.cache.get("${guildID}")`)
+
+        return this.resolveEval(fetch)
+    }
+
+    /**
+     * Finds the guild member on the whole client.
+     *
+     * @param guildID
+     * @param memberID
+     */
+    async fetchMember(guildID: Snowflake, memberID: Snowflake){
+        const fetch = await this.shard.broadcastEval(`(async () => {
+            const guild = this.guilds.cache.get("${guildID}")
+            if(guild) return guild.members.fetch("${memberID}").then(user => user).catch(() => {
+                return undefined
+            })
+            
+            return undefined
+        })()`)
+
+        return this.resolveEval(fetch)
+    }
+
+    /**
+     * It only finds channels on servers in the shard.
+     *
+     * @param guildID   {Snowflake}
+     * @param channelID {Snowflake}
+     */
+    fetchChannel<T extends Snowflake>(guildID: T, channelID: T): GuildChannel | undefined{
+        const guild: Guild = this.guilds.cache.get(guildID)
         if(guild){
-            const channel = guild.channels.cache.get(channelId)
-            if(channel.viewable) return channel
+            const channel = guild.channels.cache.get(channelID)
+            if(channel && channel.viewable) return channel
         }
 
         return undefined
     }
 
-    async fetchMessage<T extends Snowflake>(guildId: T, channelId: T, messageId: T): Promise<Message | undefined>{
-        const channel: GuildChannel = this.fetchChannel(guildId, channelId)
+    /**
+     * It only finds channels on servers in the shard.
+     *
+     * @param guildID
+     * @param channelID
+     * @param messageID
+     */
+    async fetchMessage<T extends Snowflake>(guildID: T, channelID: T, messageID: T): Promise<Message | undefined>{
+        const channel: GuildChannel = this.fetchChannel(guildID, channelID)
         if(channel instanceof TextChannel){
             return new Promise(resolve => {
                 return channel.messages
-                    .fetch(messageId)
+                    .fetch(messageID)
                     .catch(() => resolve(undefined))
                     .then((message: Message) => resolve(message))
             })
@@ -129,20 +181,20 @@ export default abstract class SuperClient extends Client{
         return undefined
     }
 
-    buildErrorReporterEmbed(guild: Guild, err: DiscordAPIError | HTTPError): MessageEmbed{
+    buildErrorReporterEmbed(lang: string, guild: Guild, err: DiscordAPIError | HTTPError): MessageEmbed{
         return new MessageEmbed()
-            .setAuthor(`${this.user.username} | Hata Raporlayıcı`, this.user.avatarURL())
+            .setAuthor(`${this.user.username} | ${LanguageManager.translate(lang, "errors.reporter.title")}`, this.user.avatarURL())
             .setColor('DARK_RED')
             .setFooter(guild.name, guild.iconURL())
             .setTimestamp()
-            .setDescription([
-                `**Hata:** ${err.name}`,
-                `**Hata Mesajı:** ${err.message}`,
-                `**Yöntem:** ${err.method}`,
-                `**Veri Yolu:** ${err.path}`,
-                `**Hata Kodu:** ${err.code}`,
-                `**Stack Trace:**\`\`\`${err.stack}\`\`\``
-            ])
+            .setDescription(LanguageManager.translate(lang, "errors.reporter.description", ...[
+                err.name,
+                err.message,
+                err.method,
+                err.path,
+                err.code,
+                err.path
+            ]))
     }
 
 }

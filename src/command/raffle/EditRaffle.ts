@@ -17,8 +17,8 @@ class EditRaffle extends Command{
         super({
             name: 'edit',
             aliases: ['düzenle', 'set'],
-            description: 'Çekilişi düzenler.',
-            usage: '[numberOfWinner|color|prize|time|rewardRoles] [...args]',
+            description: 'commands.raffle.edit.description',
+            usage: 'commands.raffle.edit.usage',
             permission: 'ADMINISTRATOR'
         })
     }
@@ -35,7 +35,7 @@ class EditRaffle extends Command{
             message_id = matchContent.shift().split(' ').pop().removeWhiteSpaces()
             if(!/^\d{17,19}$/g.test(message_id)){
                 await message.channel.send({
-                    embed: this.getErrorEmbed(`Geçersiz ID biçimi. Lütfen geçerli bir çekiliş ID 'si yazın.`)
+                    embed: this.getErrorEmbed(server.translate('commands.raffle.edit.invalid.id'))
                 })
 
                 return true
@@ -45,7 +45,7 @@ class EditRaffle extends Command{
         const raffle = await (message_id ? server.raffles.get(message_id) : server.raffles.getLastCreated())
         if(!raffle || !raffle.message_id){
             await message.channel.send({
-                embed: this.getErrorEmbed(`Düzenlenebilecek bir çekiliş bulunamadı.`)
+                embed: this.getErrorEmbed(server.translate('commands.raffle.edit.not.found'))
             })
 
             return true
@@ -53,7 +53,7 @@ class EditRaffle extends Command{
 
         if(!raffle.isContinues()){
             await message.channel.send({
-                embed: this.getErrorEmbed('Anlaşılan bu çekiliş zaten bitmiş veya iptal edilmiş. (Yalnızca devam eden çekilişleri düzenleyebilirsiniz.)')
+                embed: this.getErrorEmbed(server.translate('commands.raffle.edit.not.continues'))
             })
 
             return true
@@ -62,20 +62,20 @@ class EditRaffle extends Command{
         const fetch = await client.fetchMessage(raffle.server_id, raffle.channel_id, raffle.message_id)
         if(!fetch){
             await message.channel.send({
-                embed: this.getErrorEmbed('Anlaşılan bu çekiliş mesajı silinmiş veya zaman aşımına uğramış.')
+                embed: this.getErrorEmbed(server.translate('commands.raffle.edit.deleted'))
             })
 
             return true
         }
 
         const validator = new FlagValidator(client, message)
-        let updateQuery, success: string
+        let updateQuery, success: string, vars: Array<number | string>
         switch(key){
             case 'renk':
             case 'color':
                 const validateColor = await validator.validate('color', value)
                 if(!validateColor.ok){
-                    await message.channel.send(RED_TICK + ' ' + validateColor.message)
+                    await message.channel.send(RED_TICK + ' ' + server.translate(validateColor.message))
 
                     return true
                 }
@@ -83,7 +83,8 @@ class EditRaffle extends Command{
                 const color = validateColor.result
 
                 updateQuery = { color }
-                success = `Çekiliş rengi başarıyla **${color}** olarak değiştirildi.`
+                success = 'color'
+                vars = [color]
                 break
 
             case 'ödül':
@@ -96,7 +97,7 @@ class EditRaffle extends Command{
 
                 const validatePrize = await validator.validate('prize', text)
                 if(!validatePrize.ok){
-                    await message.channel.send(RED_TICK + ' ' + validatePrize.message)
+                    await message.channel.send(RED_TICK + ' ' + server.translate(validatePrize.message))
 
                     return true
                 }
@@ -104,7 +105,8 @@ class EditRaffle extends Command{
                 updateQuery = {
                     prize: text
                 }
-                success = `Çekiliş ödülü/başlığı başarıyla **${text}** olarak değiştirildi.`
+                success = 'prize'
+                vars = [text]
                 break
 
             case 'ödülrol':
@@ -112,7 +114,7 @@ class EditRaffle extends Command{
             case 'rewardRole':
                 const mode = args.shift()
                 if(mode !== '+' && mode !== '-'){
-                    await message.channel.send(`${RED_TICK} Lütfen geçerli bir mod *(+ veya -)* girin. (**Örn:** ${server.prefix}edit rewardRoles + rol)`)
+                    await message.channel.send(RED_TICK + ' ' + server.translate('commands.raffle.edit.invalid.mode', `${server.prefix}edit rewardRoles + rol`))
 
                     return true
                 }
@@ -124,7 +126,7 @@ class EditRaffle extends Command{
 
                 const validateRoles = await validator.validate('rewardRoles', roles)
                 if(!validateRoles.ok){
-                    await message.channel.send(RED_TICK + ' ' + validateRoles.message)
+                    await message.channel.send(RED_TICK + ' ' + server.translate(validateRoles.message, ...validateRoles.args))
 
                     return true
                 }
@@ -133,7 +135,7 @@ class EditRaffle extends Command{
                 const rewardRoles = raffle.rewardRoles
                 const evaluate = eval(`${rewardRoles.length} ${mode} ${validatedRoles.length}`)
                 if((Number(evaluate) || 0) > RaffleLimits.MAX_REWARD_ROLE_COUNT){
-                    await message.channel.send(`${RED_TICK} Ödül olarak maksimum ${RaffleLimits.MAX_REWARD_ROLE_COUNT} rol verebilirsiniz.`)
+                    await message.channel.send(RED_TICK + ' ' + server.translate('commands.raffle.edit.role.max', RaffleLimits.MAX_REWARD_ROLE_COUNT))
 
                     return true
                 }
@@ -142,7 +144,7 @@ class EditRaffle extends Command{
                 for(const role of validatedRoles){
                     const include = rewardRoles.includes(role)
                     if(check ? include : !include){
-                        await message.channel.send(check ? `${RED_TICK} <@&${role}> zaten ödül olarak belirlenmiş bir rol.` : `${RED_TICK} Ödül olarak verilecek roller arasında <@&${role}> rolü bulunamadı.`)
+                        await message.channel.send(RED_TICK + ' ' + server.translate('commands.raffle.edit.role.' + (check ? 'already' : 'not.found'), `<@&${role}>`))
 
                         return true
                     }
@@ -155,34 +157,38 @@ class EditRaffle extends Command{
                         }
                     }
                 }
-                success = `Ödül olarak verilecek roller tekrardan düzenlendi. (${check ? 'Eklenen Roller' : 'Çıkarılan Roller'}: ${validatedRoles.map(role => `<@&${role}>`).join(', ')})`
+                success = 'roles'
+                vars = [
+                    server.translate('global.roles' + (check ? 'added' : 'removed')),
+                    validatedRoles.map(role => `<@&${role}>`).join(', ')
+                ]
                 break
 
             case 'time':
             case 'zaman':
                 const timeMode = args.shift()
                 if(timeMode !== '+' && timeMode !== '-'){
-                    await message.channel.send(`${RED_TICK} Lütfen geçerli bir mod *(+, - veya =)* girin. (**Örn:** ${server.prefix}edit time + 1m)`)
+                    await message.channel.send(RED_TICK + ' ' + server.translate('commands.raffle.edit.invalid.mode', `${server.prefix}edit time + 1m`))
 
                     return true
                 }
 
                 if(Date.now() > +raffle.finishAt + (1000 * 60 * 2)){
-                    await message.channel.send(`${RED_TICK} Çekilişin bitmesine 2 dakikadan az süre kalmış. Çekiliş süresini düzenleyebilmeniz için daha daha uzun bir süre gerekiyor.`)
+                    await message.channel.send(RED_TICK + ' ' + server.translate('commands.raffle.edit.time.little.left'))
 
                     return true
                 }
 
                 const time = args.shift()
                 if(!time){
-                    await message.channel.send(`${RED_TICK} Lütfen geçerli bir zaman girin.`)
+                    await message.channel.send(RED_TICK + ' ' + server.translate('commands.raffle.edit.invalid.time'))
 
                     return true
                 }
 
                 const validateTime = await validator.validate('time', time)
                 if(!validateTime.ok){
-                    await message.channel.send(RED_TICK + ' ' + validateTime.message)
+                    await message.channel.send(RED_TICK + ' ' + server.translate(validateTime.message))
 
                     return true
                 }
@@ -192,31 +198,32 @@ class EditRaffle extends Command{
                 switch(timeMode){
                     case '-':
                         if(1000 * 2 * 60 > (finishAt - result) - Date.now()){
-                            await message.channel.send(`${RED_TICK} Kısaltılan çekiliş süresi 2 dakikanın altına düşemez.`)
+                            await message.channel.send(RED_TICK + ' ' + server.translate('commands.raffle.edit.time.down.error'))
 
                             return true
                         }
 
                         finishAt = finishAt - result
-                        successText = secondsToTime(result / 1000) + ' kısaltıldı.'
+                        successText = server.translate('commands.raffle.edit.time.down.success', secondsToTime(result / 1000, server.locale).toString())
                         break
 
                     case '+':
                         if(Date.now() - (finishAt + result) > RaffleLimits.MAX_TIME){
-                            await message.channel.send(`${RED_TICK} Uzatılan çekiliş süresi 60 günü geçemez.`)
+                            await message.channel.send(RED_TICK + ' ' + server.translate('commands.raffle.edit.time.up.error'))
 
                             return true
                         }
 
                         finishAt = finishAt + result
-                        successText = secondsToTime(result / 1000) + ' uzatıldı.'
+                        successText = server.translate('commands.raffle.edit.time.up.success', secondsToTime(result / 1000, server.locale).toString())
                         break
                 }
 
                 updateQuery = {
                     finishAt: new Date(finishAt)
                 }
-                success = `Çekiliş süresi başarıyla düzenlendi. **(Süre ${successText})**`
+                success = 'time'
+                vars = [successText]
                 break
 
             case 'kazanan':
@@ -225,7 +232,7 @@ class EditRaffle extends Command{
             case 'winners':
                 const validateNumber = await validator.validate('numberOfWinners', value)
                 if(!validateNumber.ok){
-                    await message.channel.send(RED_TICK + ' ' + validateNumber.message)
+                    await message.channel.send(RED_TICK + ' ' + server.translate(validateNumber.message))
 
                     return true
                 }
@@ -233,7 +240,8 @@ class EditRaffle extends Command{
                 updateQuery = {
                     numberOfWinners: validateNumber.result
                 }
-                success = `Kazanan sayısı başarıyla **${validateNumber.result}** olarak değiştirildi.`
+                success = 'winners'
+                vars = [validateNumber.result]
                 break
 
             default:
@@ -246,7 +254,7 @@ class EditRaffle extends Command{
                     embed: raffle.buildEmbed()
                 })
             }),
-            message.channel.send(GREEN_TICK + ' ' + success)
+            message.channel.send(GREEN_TICK + ' ' + server.translate('commands.raffle.edit.success.' + success, ...vars))
         ])
 
         return true

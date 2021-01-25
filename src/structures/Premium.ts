@@ -21,13 +21,13 @@ class Premium{
     humanizeType(): string{
         switch(this.type){
             case PremiumType.LIMITED:
-                return 'Normal üyelik'
+                return 'normal'
 
             case PremiumType.PERMANENT:
-                return 'Sınırsız Üyelik'
+                return 'permanent'
 
             default:
-                return 'Unknown'
+                return 'unknown'
         }
     }
 

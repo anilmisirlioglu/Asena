@@ -6,6 +6,7 @@ import { detectTime } from './DateTimeHelper';
 interface FlagValidatorReturnType{
     readonly ok: boolean,
     readonly message?: string,
+    args?: Array<number | string>
     readonly result?: any
 }
 
@@ -21,14 +22,14 @@ export const Flags: FlagMap = {
         if(isNaN(number)){
             return {
                 ok: false,
-                message: 'Lütfen kazanan kişi sayısını sayısal bir değer girin.'
+                message: 'validator.winners.nan'
             }
         }
 
         if(number > RaffleLimits.MAX_WINNER_COUNT || number < 1){
             return {
                 ok: false,
-                message: 'Çekilişi kazanan üye sayısı maksimum 20, minimum 1 kişi olabilir.'
+                message: 'validator.winners.limit'
             }
         }
 
@@ -42,14 +43,14 @@ export const Flags: FlagMap = {
         if(!toSecond){
             return {
                 ok: false,
-                message: 'Lütfen geçerli bir süre giriniz. (Örn; **1s** - **1m** - **5m** - **1h** vb.)'
+                message: 'validator.time.invalid'
             }
         }
 
         if(toSecond < RaffleLimits.MIN_TIME || toSecond > RaffleLimits.MAX_TIME){
             return {
                 ok: false,
-                message: 'Çekiliş süresi en az 1 dakika, en fazla 60 gün olabilir.'
+                message: 'validator.time.limit'
             }
         }
 
@@ -62,7 +63,7 @@ export const Flags: FlagMap = {
         if(value.length === 0 || value.length > 255){
             return {
                 ok: false,
-                message: 'Çekiliş başlığı maksimum 255 karakter uzunluğunda olabilir.'
+                message: 'validator.prize.length'
             }
         }
 
@@ -82,7 +83,7 @@ export const Flags: FlagMap = {
         if(filterServers.length !== servers.length){
             return {
                 ok: false,
-                message: 'Geçersiz davet bağlantısı tespit edildi. Lütfen geçerli davet bağlantısı/bağlantıları girin.'
+                message: 'validator.servers.invalid.invites'
             }
         }
 
@@ -97,22 +98,23 @@ export const Flags: FlagMap = {
             if(!fetchInvite || !fetchInvite.guild){
                 return {
                     ok: false,
-                    message: `Geçersiz davet bağlantısı: **${invite}**`
+                    message: 'validator.servers.invalid.invite',
+                    args: [invite]
                 }
             }
 
             if(fetchInvite.guild.id === message.guild.id){
                 return {
                     ok: false,
-                    message: 'Çekilişi başlattığınız sunucuyu katılım zorunluluğu olan sunucu olarak belirleyemezsiniz.'
+                    message: 'validator.servers.self'
                 }
             }
 
-            const target = client.guilds.cache.get(fetchInvite.guild.id)
+            const target = await client.fetchGuild(fetchInvite.guild.id)
             if(!target){
                 return {
                     ok: false,
-                    message: `**${client.user.username}** katılım zorunluluğu olan tüm sunucularda bulunmak zorundadır. Lütfen davet bağlantısını girdiğiniz sunucuya **${client.user.username}** \'yı ekleyin.`
+                    message: 'validator.servers.not.found'
                 }
             }
 
@@ -126,14 +128,15 @@ export const Flags: FlagMap = {
         if(invites.checkIfDuplicateExists()){
             return {
                 ok: false,
-                message: 'Davet bağlantılarınızın bazıları aynı sunucuya işaret ediyor. Girdiğiniz her bağlantının farklı sunucuya göstermesi gerekmektedir. Lütfen tekrarlanmayan değerler ile tekrar deneyin.'
+                message: 'validator.servers.duplicate'
             }
         }
 
         if(invites.length > RaffleLimits.MAX_SERVER_COUNT){
             return {
                 ok: false,
-                message: `Maksimum ${RaffleLimits.MAX_SERVER_COUNT} sunucuya katılım zorunluluğu koyabilirsiniz.`
+                message: 'validator.servers.limit',
+                args: [RaffleLimits.MAX_SERVER_COUNT]
             }
         }
 
@@ -147,7 +150,7 @@ export const Flags: FlagMap = {
         if(!matchColor || matchColor.length === 0){
             return {
                 ok: false,
-                message: 'Lütfen geçerli bir renk girin. (Hexadecimal renk kodu veya renk.)'
+                message: 'validator.color.invalid'
             }
         }
 
@@ -172,7 +175,8 @@ export const Flags: FlagMap = {
             if(!fetchRole){
                 return {
                     ok: false,
-                    message: `Geçersiz rol tespit edildi, tespit edilen rol: **${role}**`
+                    message: 'validator.roles.invalid',
+                    args: [role]
                 }
             }
 
@@ -182,14 +186,15 @@ export const Flags: FlagMap = {
         if(allowedRoles.checkIfDuplicateExists()){
             return {
                 ok: false,
-                message: 'Çekişe katılabilecek roller arasında etiketlediğiniz rollerin bazıları aynı. Girdiğiniz her rolün birbirinden benzersiz olması gerekmektedir. Lütfen tekrarlanmayan değerler ile tekrar deneyin.'
+                message: 'validator.roles.allowed.duplicate'
             }
         }
 
         if(allowedRoles.length > RaffleLimits.MAX_ALLOWED_ROLE_COUNT){
             return {
                 ok: false,
-                message: `Katılım zorunluluğu olarak maksimum ${RaffleLimits.MAX_ALLOWED_ROLE_COUNT} rol belirleyebilirsiniz.`
+                message: 'validator.roles.allowed.limit',
+                args: [RaffleLimits.MAX_ALLOWED_ROLE_COUNT]
             }
         }
 
@@ -203,7 +208,7 @@ export const Flags: FlagMap = {
         if(!me.hasPermission('MANAGE_ROLES')){
             return {
                 ok: false,
-                message: 'Kazanan kişilere ödül olarak rol verebilmek için bota **Rolleri Yönet** yetkisi vermeniz gerekmektedir.'
+                message: 'validator.roles.unauthorized'
             }
         }
 
@@ -222,14 +227,16 @@ export const Flags: FlagMap = {
             if(!fetchRole){
                 return {
                     ok: false,
-                    message: `Geçersiz rol tespit edildi, tespit edilen rol: **${role}**`
+                    message: 'validator.roles.invalid',
+                    args: [role]
                 }
             }
 
             if(fetchRole.comparePositionTo(me.roles.highest) > 0){
                 return {
                     ok: false,
-                    message: `**${me.roles.highest.name}** rolü, **${fetchRole.name}** rolünün altında. Botun rolü ödül olarak verilecek rollerin üzerinde olmalıdır. Aksi takdirde ödül olarak rolü kullanıcıya veremez.`
+                    message: 'validator.roles.compare',
+                    args: [me.roles.highest.name, fetchRole.name]
                 }
             }
 
@@ -239,14 +246,15 @@ export const Flags: FlagMap = {
         if(rewardRoles.checkIfDuplicateExists()){
             return {
                 ok: false,
-                message: 'Ödül olarak verilecek roller arasında etiketlediğiniz rollerin bazıları aynı. Girdiğiniz her rolün birbirinden benzersiz olması gerekmektedir. Lütfen tekrarlanmayan değerler ile tekrar deneyin.'
+                message: 'validator.roles.reward.duplicate'
             }
         }
 
         if(rewardRoles.length > RaffleLimits.MAX_REWARD_ROLE_COUNT){
             return {
                 ok: false,
-                message: `Ödül olarak maksimum ${RaffleLimits.MAX_REWARD_ROLE_COUNT} rol verebilirsiniz.`
+                message: 'validator.roles.reward.limit',
+                args: [RaffleLimits.MAX_REWARD_ROLE_COUNT]
             }
         }
 
@@ -267,10 +275,17 @@ export default class FlagValidator{
         this.message = message
     }
 
-    async validate(key: keyof typeof Flags, value: string, message?: Message): Promise<FlagValidatorReturnType>{
+    async validate(
+        key: keyof typeof Flags,
+        value: string,
+        message?: Message
+    ): Promise<FlagValidatorReturnType>{
         const callback = Flags[key]
 
-        return callback(this.client, message ?? this.message, value)
+        const run = await callback(this.client, message ?? this.message, value)
+
+        run.args = run.args || []
+        return run
     }
 
 }

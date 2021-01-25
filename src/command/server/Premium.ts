@@ -11,25 +11,22 @@ export default class Premium extends Command{
         super({
             name: 'premium',
             aliases: ['pre', 'p'],
-            description: 'Premium durumunu görüntüler.',
+            description: 'commands.server.premium.description',
             usage: null,
             permission: undefined
         })
     }
 
     async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
-        let description: string[]
+        let description: string
         if(server.isPremium()){
-            description = [
-                `Premium: **${server.premium.humanizeType()}**`,
-                `Başlangıç Tarihi: **${getDateTimeToString(server.premium.startAt)}**`,
-                `Bitiş Tarihi: **${server.premium.type === PremiumType.PERMANENT ? 'Sınırsız ♾️' : getDateTimeToString(server.premium.finishAt)}**`
-            ]
+            description = server.translate('commands.server.premium.info', ...[
+                server.translate(`global.premium.${server.premium.humanizeType()}`),
+                getDateTimeToString(server.premium.startAt, server.locale),
+                server.premium.type === PremiumType.PERMANENT ? `${server.translate('global.unlimited')} ♾️` : getDateTimeToString(server.premium.finishAt, server.locale)
+            ])
         }else{
-            description = [
-                `Henüz bir **Premium** üyeliğin bulunmuyor.`,
-                `:star2:  [Premium 'u Denemeye Ne Dersin?](https://asena.xyz)`
-            ]
+            description = server.translate('commands.server.premium.try')
         }
 
         const embed: MessageEmbed = new MessageEmbed()

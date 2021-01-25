@@ -12,15 +12,15 @@ export default class Vote extends Command{
         super({
             name: 'survey',
             aliases: ['anket', 'anketoluştur', 'startvote', 'voting', 'vote'],
-            description: 'İki seçenekli oylama anketi oluşturur.',
-            usage: '[süre(1m | 1h) | -1(süresiz)] [oylama metni]',
+            description: 'commands.survey.vote.description',
+            usage: 'commands.survey.vote.usage',
             permission: 'ADMINISTRATOR'
         });
     }
 
     async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
-        const AGREE = Emojis.AGREE_EMOJI_ID;
-        const DISAGREE = Emojis.DISAGREE_EMOJI_ID;
+        const AGREE = `<a:yes:${Emojis.AGREE_EMOJI_ID}>`;
+        const DISAGREE = `<a:no:${Emojis.DISAGREE_EMOJI_ID}>`;
 
         if(args.length <= 1) return false
 
@@ -33,9 +33,9 @@ export default class Vote extends Command{
             const embed = new MessageEmbed()
                 .setAuthor(message.guild.name, message.guild.iconURL())
                 .setColor('#E74C3C')
-                .setDescription('Oylama başladı!')
+                .setDescription(server.translate('commands.survey.vote.embed.description'))
                 .setTimestamp()
-                .addField('Soru', args.filter(Boolean).join(' '), true)
+                .addField(server.translate('commands.survey.vote.embed.fields.question'), args.filter(Boolean).join(' '), true)
 
             if(message.guild.me.hasPermission('MANAGE_MESSAGES')){
                 await message.delete({
@@ -54,7 +54,7 @@ export default class Vote extends Command{
             const time = detectTime(second)
             if(!time){
                 await message.channel.send({
-                    embed: this.getErrorEmbed('Lütfen geçerli bir süre giriniz. (Örn; **1s** - **1m** - **5m** - **1h** vb.)')
+                    embed: this.getErrorEmbed(server.translate('commands.survey.vote.time.invalid'))
                 })
 
                 return true
@@ -62,7 +62,7 @@ export default class Vote extends Command{
 
             if(time < SurveyLimits.MIN_TIME || time > SurveyLimits.MAX_TIME){
                 await message.channel.send({
-                    embed: this.getErrorEmbed(`Anket süresi en az 1 dakika, maksimum 15 gün olabilir.`)
+                    embed: this.getErrorEmbed(server.translate('commands.survey.vote.time.exceeded'))
                 })
 
                 return true
@@ -71,10 +71,10 @@ export default class Vote extends Command{
             const embed = new MessageEmbed()
                 .setAuthor(message.author.username, message.author.displayAvatarURL() || message.author.defaultAvatarURL)
                 .setColor('#ffd1dc')
-                .setDescription('Oylama başladı!')
-                .setFooter(`Süre: ${secondsToTime(time).toString()}`)
+                .setDescription(server.translate('commands.survey.vote.embed.description'))
+                .setFooter(`${server.translate('commands.survey.vote.embed.footer')}: ${secondsToTime(time, server.locale).toString()}`)
                 .setTimestamp()
-                .addField('Soru', args.filter(Boolean).join(' '), true)
+                .addField(server.translate('commands.survey.vote.embed.fields.question'), args.filter(Boolean).join(' '), true)
 
             if(message.guild.me.hasPermission('MANAGE_MESSAGES')){
                 await message.delete({
@@ -93,7 +93,7 @@ export default class Vote extends Command{
                 if(!survey){
                     promises = [
                         $message.delete(),
-                        message.channel.send(':boom: Anket verisi veritabanına kaydedilemediği için iptal edildi.')
+                        message.channel.send(':boom: ' + server.translate('commands.survey.vote.error'))
                     ]
                 }else{
                     promises = [

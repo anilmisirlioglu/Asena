@@ -14,8 +14,8 @@ export default class CreateRaffle extends Command{
         super({
             name: 'create',
             aliases: ['çekilişoluştur', 'çekilişbaşlat', 'cekilisbaslat', 'createraffle'],
-            description: 'Çekiliş oluşturur.',
-            usage: '[kazanan sayısı<1 | 20>] [süre(1m | 5s) - [s(saniye) m(dakika) h(saat) d(gün)]] [ödül]',
+            description: 'commands.raffle.create.description',
+            usage: 'commands.raffle.create.usage',
             permission: 'ADMINISTRATOR'
         });
     }
@@ -40,7 +40,7 @@ export default class CreateRaffle extends Command{
             const validate = await validator.validate(key, value)
             if(!validate.ok){
                 await message.channel.send({
-                    embed: this.getErrorEmbed(validate.message)
+                    embed: this.getErrorEmbed(server.translate(validate.message, ...validate.args))
                 })
 
                 return true
@@ -53,7 +53,7 @@ export default class CreateRaffle extends Command{
         const raffles = await server.raffles.getContinues()
         if(raffles.length >= max){
             await message.channel.send({
-                embed: this.getErrorEmbed(`Maksimum çekiliş oluşturma sınırına ulaşmışsınız. (Max: ${max})`)
+                embed: this.getErrorEmbed(server.translate('commands.raffle.create.limits.max.created', max)),
             })
 
             return true
@@ -72,7 +72,7 @@ export default class CreateRaffle extends Command{
 
         const raffle = new Raffle(Object.assign({
             createdAt: new Date()
-        }, data as IRaffle))
+        }, data as IRaffle), server.locale)
 
         message.channel.send(Raffle.getStartMessage(), {
             embed: raffle.buildEmbed()
@@ -84,7 +84,7 @@ export default class CreateRaffle extends Command{
                 }, data) as IRaffle)
             ])
         }).catch(async () => {
-            await message.channel.send(':boom: Botun yetkileri, bu kanalda çekiliş oluşturmak için yetersiz olduğu için çekiliş başlatılamadı.')
+            await message.channel.send(':boom: ' + server.translate('commands.raffle.create.unauthorized'))
         })
 
         if(message.guild.me.hasPermission('MANAGE_MESSAGES')){

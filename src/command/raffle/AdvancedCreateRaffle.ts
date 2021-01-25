@@ -15,8 +15,8 @@ export default class AdvancedCreateRaffle extends Command{
         super({
             name: 'createp',
             aliases: ['cekilisbaslatp', 'createrafflep'],
-            description: 'Gelişmiş çekiliş oluşturur.',
-            usage: '--numberOfWinners "kazanan sayısı" --time "süre" --prize "ödül" --servers "sunucular" --color "renk" --allowedRoles "roller" --rewardRoles "ödül olarak verilecek roller"',
+            description: 'commands.raffle.advanced.description',
+            usage: 'commands.raffle.advanced.usage',
             permission: 'ADMINISTRATOR'
         })
     }
@@ -31,7 +31,7 @@ export default class AdvancedCreateRaffle extends Command{
             const filterArgs = matchFlags.filter(arg => arg.startsWith(flag))
             if(filterArgs.length > 1){
                 await message.channel.send({
-                    embed: this.getErrorEmbed('Lütfen aynı parametreyi birden fazla kez kullanmayın.')
+                    embed: this.getErrorEmbed(server.translate('commands.raffle.advanced.parameter.duplicate'))
                 })
 
                 return true
@@ -47,7 +47,7 @@ export default class AdvancedCreateRaffle extends Command{
         if(matchRequiredFlags.length !== RequiredFlags.length){
             await message.channel.send({
                 embed: this.getErrorEmbed([
-                    `Lütfen yazılması zorunlu olan parametreleri eksiksiz yazın. Gerekli parametreler:`,
+                    server.translate('commands.raffle.advanced.parameter.missing'),
                     `<:join_arrow:746358699706024047> **--numberOfWinners**`,
                     `<:join_arrow:746358699706024047> **--time**`,
                     `<:join_arrow:746358699706024047> **--prize**`
@@ -68,7 +68,7 @@ export default class AdvancedCreateRaffle extends Command{
             const [key, ...value] = param.split(' ')
             if(!(key in Flags)){
                 await message.channel.send({
-                    embed: this.getErrorEmbed(`Geçersiz parametre tespit edildi. Lütfen geçerli parametreler dışında bir parametre girmeden tekrar deneyin. Tespit edilen parametre: **--${key}**`)
+                    embed: this.getErrorEmbed(server.translate('commands.raffle.advanced.parameter.invalid', key))
                 })
 
                 return true
@@ -76,7 +76,7 @@ export default class AdvancedCreateRaffle extends Command{
 
             if(value.length === 0 || value[0] === ''){
                 await message.channel.send({
-                    embed: this.getErrorEmbed(`Lütfen parametre değerlerini boş bırakmayın. Tespit edilen parametre: **--${key}**`)
+                    embed: this.getErrorEmbed(server.translate('commands.raffle.advanced.parameter.empty', key))
                 })
 
                 return true
@@ -85,7 +85,7 @@ export default class AdvancedCreateRaffle extends Command{
             const validate = await validator.validate(key, value.join(' '))
             if(!validate.ok){
                 await message.channel.send({
-                    embed: this.getErrorEmbed(validate.message)
+                    embed: this.getErrorEmbed(server.translate(validate.message, ...validate.args))
                 })
 
                 return true
@@ -97,7 +97,7 @@ export default class AdvancedCreateRaffle extends Command{
         const raffles = await server.raffles.getContinues()
         if(raffles.length > RaffleLimits.MAX_COUNT_PREMIUM){
             await message.channel.send({
-                embed: this.getErrorEmbed(`Maksimum çekiliş oluşturma sınırına ulaşmışsınız. (Max: ${RaffleLimits.MAX_COUNT_PREMIUM}`)
+                embed: this.getErrorEmbed(server.translate('commands.raffle.create.limits.max.created', RaffleLimits.MAX_COUNT_PREMIUM)),
             })
 
             return true
@@ -108,7 +108,8 @@ export default class AdvancedCreateRaffle extends Command{
 
         const raffle = new Raffle(Object.assign({
             createdAt: new Date()
-        }, raffleProps as IRaffle))
+        }, raffleProps as IRaffle), server.locale)
+
         message.channel.send(Raffle.getStartMessage(), {
             embed: raffle.buildEmbed()
         }).then(async $message => {
@@ -119,7 +120,7 @@ export default class AdvancedCreateRaffle extends Command{
                 }, raffleProps) as IRaffle)
             ])
         }).catch(async () => {
-            await message.channel.send(':boom: Botun yetkileri, bu kanalda çekiliş oluşturmak için yetersiz olduğu için çekiliş başlatılamadı.')
+            await message.channel.send(':boom: ' + server.translate('commands.raffle.create.unauthorized'))
         })
 
         if(message.guild.me.hasPermission('MANAGE_MESSAGES')){

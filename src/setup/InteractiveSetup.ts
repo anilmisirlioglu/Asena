@@ -4,6 +4,7 @@ import InvalidArgumentException from '../utils/exceptions/InvalidArgumentExcepti
 import SetupPhase from './SetupPhase';
 import { EventEmitter } from 'events';
 import { Emojis, Setup } from '../Constants';
+import Server from '../structures/Server';
 
 type DataStoreType = Collection<number, any>
 
@@ -15,6 +16,7 @@ interface InteractiveSetupOptions{
     readonly user_id: Snowflake
     readonly channel_id: Snowflake
     readonly client: SuperClient
+    readonly server: Server
     readonly phases: SetupPhase[]
     readonly onFinishCallback: OnFinishCallback,
     readonly timeout: number | undefined
@@ -30,6 +32,7 @@ export default class InteractiveSetup extends EventEmitter{
     public readonly user_id: Snowflake
     public readonly channel_id: Snowflake
     private readonly client: SuperClient
+    private readonly server: Server
     private readonly phases: SetupPhase[]
     private readonly onFinishCallback: OnFinishCallback
     private readonly timeout: number
@@ -38,12 +41,13 @@ export default class InteractiveSetup extends EventEmitter{
         super()
 
         if(options.phases.length === 0){
-            throw new InvalidArgumentException('Yetersiz aşama. En az 1 aşama olmalıdır')
+            throw new InvalidArgumentException('Yetersiz aşama. En az 1 aşama olmalıdır.')
         }
 
         this.user_id = options.user_id
         this.channel_id = options.channel_id
         this.client = options.client
+        this.server = options.server
         this.phases = options.phases
         this.onFinishCallback = options.onFinishCallback
         this.timeout = options.timeout || 60 * 5 // 5 minute
@@ -93,16 +97,16 @@ export default class InteractiveSetup extends EventEmitter{
                             }
                         }else{
                             if(phase.skippable){
-                                this.emit('message', `${Emojis.RUBY_EMOJI} **${this.currentPhaseIndex + 1}.** adım başarıyla **atlandı**. Sıradaki adıma geçildi.`)
+                                this.emit('message', Emojis.RUBY_EMOJI + ' ' + this.server.translate('commands.raffle.setup.phases.skip.success', this.currentPhaseIndex + 1))
                                 this.dataStore.set(this.currentPhaseIndex, null)
                                 this.next()
                             }else{
-                                this.emit('message', ':boom: Bu adım atlanamaz.')
+                                this.emit('message', ':boom: ' + this.server.translate('commands.raffle.setup.phases.skip.error'))
                                 this.setPhaseListener(false)
                             }
                         }
                     }else{
-                        this.stop('İnteraktif kurulum sihirbazı iptal edildi.')
+                        this.stop('commands.raffle.setup.canceled')
                     }
                 }
             }else{
@@ -119,7 +123,7 @@ export default class InteractiveSetup extends EventEmitter{
     private setTimeoutTiming(){
         this.timer = setTimeout(async () => {
             if(!this.isItOver){
-                this.stop('İnteraktif kurulum sihirbazı zaman aşımına uğradı ve kapandı.')
+                this.stop('commands.raffle.setup.timeout')
             }
         }, this.timeout * 1000)
     }

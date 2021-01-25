@@ -3,11 +3,14 @@ import { Emojis } from './Constants';
 
 export default class Asena extends SuperClient{
 
-    constructor(){
+    constructor(isDevBuild: boolean){
         super({
             prefix: process.env.DEFAULT_PREFIX ?? '!a',
-            isDevBuild: process.env.NODE_ENV !== 'production'
+            isDevBuild
         })
+
+        // Load all languages
+        this.getLanguageManager().run()
 
         // Load all commands
         this.getCommandHandler().registerAllCommands()
@@ -28,8 +31,6 @@ export default class Asena extends SuperClient{
             this.init()
 
             this.getRaffleTimeUpdater().listenReactions()
-
-            this.getTaskTiming().startTimings()
         })
 
         // if it's a raffle message, delete the lottery
@@ -50,15 +51,12 @@ export default class Asena extends SuperClient{
 
         // Delete server data from db
         this.on('guildDelete', async guild => {
-            await (await this.servers.get(guild.id)).delete()
+            const server = await this.servers.get(guild.id)
+            await server.delete()
 
             try{
                 guild.owner?.createDM().then(channel => {
-                    channel.send([
-                        `> ${Emojis.RUBY_EMOJI} Botun kullanımı ile ilgili sorunlar mı yaşıyorsun? Lütfen bizimle iletişime geçmekten çekinme.\n`,
-                        `:earth_americas: Website: https://asena.xyz`,
-                        ':sparkles: Destek Sunucusu: https://discord.gg/CRgXhfs'
-                    ].join('\n'))
+                    channel.send(`> ${Emojis.RUBY_EMOJI} ${server.translate('events.guildDelete')}`)
                 })
             }catch(e){
                 // Do not show this error on the console. Because we don't care.

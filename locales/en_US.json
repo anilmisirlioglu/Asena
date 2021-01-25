@@ -1,0 +1,557 @@
+{
+  "version": "2.0.0",
+  "contributors": [
+    {
+      "name": "Yusuf S.",
+      "website": "https://github.com/yusfsm/",
+      "mail": "yusufvsaglam@gmail.com"
+    },
+    {
+      "name": "Anıl Mısırlıoğlu",
+      "website": "https://anil.tools",
+      "mail": "misirlioglianil@gmail.com"
+    },
+    {
+      "name": "Muhammed Ikbal",
+      "website": "https://github.com/Luciendew",
+      "mail": "m.ikbal0302l@gmail.com"
+    }
+  ],
+  "translator": "",
+  "aliases": ["en", "en-us", "english", "ingilizce", "eng"],
+  "code": "en_US",
+  "flag": ":flag_us:",
+  "full": "English (US)",
+  "strings": {
+    "global": {
+      "yes": "Yes",
+      "no": "No",
+      "open": "open",
+      "close": "close",
+      "connected": "Connected, stable.",
+      "disconnected": "Not connected.",
+      "admin": "Admin",
+      "member": "Member",
+      "usage": "Usage",
+      "message-id": "[message-id]",
+      "unlimited": "Unlimited",
+      "date-time": {
+        "months": {
+          "1": "January",
+          "2": "February",
+          "3": "March",
+          "4": "April",
+          "5": "May",
+          "6": "June",
+          "7": "July",
+          "8": "August",
+          "9": "September",
+          "10": "October",
+          "11": "November",
+          "12": "December"
+        },
+        "units": {
+          "day": "day",
+          "hour": "hour",
+          "minute": "minute",
+          "second": "second"
+        },
+        "time": "Time"
+      },
+      "permissions": {
+        "send-message": "Send Messages",
+        "add-reactions": "Add Reactions",
+        "view-channel": "View Channel",
+        "embed-links": "Embed Links",
+        "read-message-history": "Read Message History",
+        "use-external-emojis": "Use External Emojis",
+        "unsupported": "Unsupported Permission"
+      },
+      "premium": {
+        "normal": "Normal Membership",
+        "permanent": "Unlimited Membership",
+        "unknown": "Unknown"
+      },
+      "roles": {
+        "added": "Added Roles",
+        "removed": "Removed Roles"
+      }
+    },
+    "errors": {
+      "reporter": {
+        "title": "Error Reporter",
+        "description": [
+          "**Error:** {0}",
+          "**Error Message:** {0}",
+          "**Method:** {0}",
+          "**Path:** {0}",
+          "**Error Code:** {0}",
+          "**Stack Trace:**```{0}```"
+        ]
+      },
+      "message": [
+        "<:down:744193243805384704> The giveaway on your server could not be finalized due to an **error**.",
+        "Please contact us with the **screenshot** of this message so that we can save your giveaway.\n",
+        "> **Support-Contact:** https://discord.gg/CRgXhfs\n"
+      ]
+    },
+    "events": {
+      "guildDelete": [
+        "Are you having a problem with using the bot? Please contact with us.\n",
+        ":earth_americas: Website: https://asena.xyz",
+        ":sparkles: Support Server: https://discord.gg/CRgXhfs"
+      ]
+    },
+    "validator": {
+      "winners": {
+        "nan": "Please enter the number of winners in a numerical value.",
+        "limit": "The maximum number of members who win the giveaway 20, minimum 1 can be."
+      },
+      "time": {
+        "invalid": "Please enter a valid time. (Eg; **1s** - **1m** - **5m** - **1h** vb.)",
+        "limit": "The duration of the giveaway can be a minimum of 1 minute, and a maximum of 60 days."
+      },
+      "prize": {
+        "length": "The giveaway title can be up to 255 characters length."
+      },
+      "servers": {
+        "invalid": {
+          "invites": "Invalid invite link detected. Please enter valid invite link / links.",
+          "invite": "Invalid invite link: **{0}**"
+        },
+        "self": "You cannot specify the server on which you started the giveaway as the server that has to participate.",
+        "duplicate": "Some of your invite links point to the same server. Each link you enter must point to a different server. Please try again with non-duplicate values.",
+        "not.found": "**Asena** all participation imperative servers must also be present. Please add **Asena** to the server you enter the invitation link.",
+        "limit": "Maximum **{0}** to the server participation imperative you can put."
+      },
+      "color": {
+        "invalid": "Please enter a valid color. (Hexadecimal color code or color.)"
+      },
+      "roles": {
+        "invalid": "Invalid role detected, detected role: **{0}**",
+        "unauthorized": "To winners role as a reward in order to give You must give the bot **Manage Roles** authority.",
+        "compare": "The **{0}** role is under the **{1}** role. The role of the bot should as a reward be above the roles that will be awarded. Otherwise, it cannot award the role to the user as a reward.",
+        "allowed": {
+          "duplicate": "As a reward Among the roles that will be awarded, some of the roles you tagged are the same. Each role you enter from each other must be unique. Please try again with non-repeatable values.",
+          "limit": "You can specify a maximum {0} rol as a participation imperative."
+        },
+        "reward": {
+          "duplicate": "As a reward Among the roles that will be awarded, some of the roles you tagged are the same. Each role you enter from each other must be unique. Please try again with non-repeatable values.",
+          "limit": "You can give a maximum of {0} roles as a reward."
+        }
+      }
+    },
+    "structures": {
+      "survey": {
+        "results": {
+          "survey": "SURVEY RESULTS",
+          "vote": "Vote results"
+        }
+      },
+      "raffle": {
+        "winners": {
+          "none": {
+            "description": "Insufficient participation. There is no winner.",
+            "content": "There is no winners of the giveaway due to insufficient participation."
+          },
+          "single": {
+            "description": "Winner",
+            "content": "Congratulations {0}! You won **{1}**."
+          },
+          "plural": {
+            "description": "Winners",
+            "content": "Congratulations {0}! You won **{1}**."
+          }
+        },
+        "footer": {
+          "text": "{0} Winners",
+          "finish": "Ended",
+          "continues": "Ends at"
+        },
+        "join": "Click on the {0} emoji to enter the giveaway!",
+        "giveaway": "Giveaway",
+        "creator": "Hosted by",
+        "to.end": "Time remaining",
+        "prize": {
+          "roles": "As a reward roles to be given"
+        },
+        "should": {
+          "servers": "You must join these servers",
+          "roles": "You must have these roles"
+        },
+        "messages": {
+          "finish": "GIVEAWAY ENDED",
+          "start": "GIVEAWAY STARTED",
+          "alert": "LAST PARTICIPATION FOR THE GIVEAWAY"
+        },
+        "won": "Congratulations, you won a giveaway!",
+        "link": "Giveaway Link",
+        "vote": "Vote For Me"
+      }
+    },
+    "commands": {
+      "handler": {
+        "prefix": "The bot's command front name in the server(prefix): **{0}**",
+        "unauthorized": "To use this command **your auth** absent.",
+        "mention": "**{0}** for more information about and its commands: **{1}help**",
+        "permission": {
+          "missing": {
+            "message": "In order for the bot to work, '**{0}**' you must authorize **Send Message** on the channel. Otherwise, the bot will not be able to send a message to this channel and will not be able to work.",
+            "others": [
+              "The **permissions** required for the bot to run are missing. Please provide the permissions in the list below to the bot and try again.",
+              "\n{0}\n",
+              "If you need more detailed assistance, feel free to contact us."
+            ]
+          }
+        },
+        "premium": {
+          "only": "This feature is only for **Asena Premium** users.",
+          "try": "What do you say to trying Premium?"
+        }
+      },
+      "bot": {
+        "invitation": {
+          "description": "Gives the bot's invitation link.",
+          "bot.url": "Bot Invitation Link",
+          "support.server": "Support Server",
+          "website": "Website",
+          "click": {
+            "invite": "Click to Invite",
+            "join": "Click and Join"
+          }
+        },
+        "help": {
+          "description": "Gives information about the commands.",
+          "error": "The command named **{0}** could not be found.",
+          "success": "{0} help menu has sent to your DM box.",
+          "embed": {
+            "title": "Command Help",
+            "fields": {
+              "command": "Command",
+              "commands": "Commands",
+              "more": {
+                "detailed": "More Detailed Help?",
+                "info": "More Information?"
+              },
+              "alias": "Alias",
+              "description": "Description",
+              "permission": "Minimum Permission Level",
+              "usage": "Usage"
+            }
+          }
+        },
+        "info": {
+          "description": "Gives technical information about the bot.",
+          "embed": {
+            "title": "Bot Information",
+            "footer": "Made with ❤️ by Syntax Software",
+            "content": [
+              "Working Time (Uptime): **{0}**",
+              "NodeJS Version: **{0}**",
+              "DiscordJS Version: **{0}**",
+              "Asena Version: **{0}**",
+              "Asena Last Update: **{0}**",
+              "Platform (OS): **{0}**",
+              "Database Connection: {0}",
+              "CPU: **{0}**",
+              "CPU Speed: **{0} MHz**",
+              "CPU Core: **{0} Core / {1} Thread**",
+              "CPU Working Time (Uptime): **{0}**",
+              "Total Memory: **{0}**",
+              "Memory Used: **{0}**",
+              "Available Memory: **{0}**",
+              "Memory Used By Asena: **{0}**"
+            ]
+          }
+        }
+      },
+      "server": {
+        "locale": {
+          "description": "Changes the bots default language.",
+          "usage": "[list | set | reset] <args>",
+          "default": "Communication language of the bot in the server.",
+          "embed": {
+            "title": "Available Languages",
+            "footer": "To use: {0}locale set [language]"
+          },
+          "language": {
+            "enter.code": "Please specify a language code.",
+            "not.found": "Couldn't found the language ({0}). Please specify a valid language code.",
+            "default": {
+              "successfully.changed": "Your default language has set to **{0}**.",
+              "already.using": "You have been using default language already."
+            }
+          }
+        },
+        "prefix": {
+          "description": "Changes the bot's command prefix.",
+          "usage": "[prefix]",
+          "too.long": "The command prefix must be maximum 5 character.",
+          "changed": "The command prefix has set to **{0}**."
+        },
+        "permission": {
+          "description": "Edits command's permissions.",
+          "usage": "[everyone | admin] [command]",
+          "command": {
+            "not": {
+              "found": "The command was not found.",
+              "editable": "You can't edit this command's permissions."
+            },
+            "already": "This command has already **{0}** to everyone.",
+            "success": "The **{0}** command's permissions has editted successfully. Command status: **To everyone {1}**"
+          }
+        },
+        "premium": {
+          "description": "Displays the premium status.",
+          "try": [
+            "yet a **Premium** your membership does not exist.",
+            ":star2:  [What do you say trying Premium?](https://asena.xyz)"
+          ],
+          "info": [
+            "Premium: **{0}**",
+            "Starting date: **{0}**",
+            "End date: **{0}**"
+          ]
+        }
+      },
+      "raffle": {
+        "create": {
+          "description": "Creates a new giveaway.",
+          "usage": "[number of winners<1 | 20>] [time(1m | 5s) - [s(second) m(minute) h(hour) d(day)]] [prize]",
+          "limits": {
+            "winner.count": "The winners of the giveaway must be maximum 20, minimum 1.",
+            "title.length": "The giveaway title must be maximum 256 character length.",
+            "time": {
+              "invalid": "Please specify a valid time. (Eg; **1s** - **1m** - **5m** - **1h** etc.)",
+              "exceeded": "The giveaway time must be minimum 1 minute, maximum 60 day."
+            },
+            "max.created": "You have reached the maximum raffle create limit. (Max: {0})"
+          },
+          "unauthorized": "The raffle could not be started because the bot's permissions were insufficient to create a raffle on this channel."
+        },
+        "advanced": {
+          "description": "Advanced giveaway creates.",
+          "usage": "--numberOfWinners \"number of winners\" --time \"time\" --prize \"prize\" --servers \"servers\" --color \"color\" --allowedRoles \"roler\" --rewardRoles \"roles to be given as a reward\"",
+          "parameter": {
+            "duplicate": "Please do not use the same parameter times more than once.",
+            "missing": "Please, write all necessary parameters. Required parameters:",
+            "invalid": "Invalid parameter detected. Please try again without entering any parameters other than valid parameters. Detected parameter: **--{0}**",
+            "empty": "Please do not leave the parameter values blank. Detected parameter: **--{0}**"
+          }
+        },
+        "setup": {
+          "description": "Starts the setup wizard.",
+          "already": "You have started setup wizard already. Please finish or cancel the setup you started first.",
+          "unauthorized": "The giveaway could not be started because the bot's permissions were insufficient to create a raffle on this channel.",
+          "channel.gone": "The giveaway couldn't created. Couldn't find the specified channel. Suddenly disappeared...",
+          "canceled": "The setup wizard has cancelled.",
+          "timeout": "The setup wizard has timed out and closed.",
+          "success": "The giveaway has created successfully! The giveaway you started has published in the {0} channel...",
+          "phases": {
+            "skip": {
+              "error": "This step cannot be skipped.",
+              "success": "** {0}. ** step successfully ** skipped **. The next step has been taken."
+            },
+            "channel": {
+              "message": [
+                "**Welcome** to the {0} setup wizard!",
+                "If you want to **exit** from wizard, you can write `iptal`, `cancel` or `exit` to chat. Let's move on to the setup.\n",
+                "**Step 1:** Firstly let's determine in which channel the giveaway going to be.\n",
+
+                "`Please do not forget to mention a text channel on the server that the bot can access.`"
+              ],
+              "validator": {
+                "channel": {
+                  "none": "Please mention a text channel.",
+                  "invalid": "Please mention a valid text channel."
+                },
+                "success": "Successful! The giveaway channel has determined as {0}. Let's move on the next stage."
+              }
+            },
+            "winners": {
+              "message": [
+                "**Step 2:** Let's determine how many winners going to be.\n",
+                "`Please do not forget that you must specify a numeric and a number between 1 and 20.`"
+              ],
+              "validator": {
+                "non.integer": "Please specify a numeric value.",
+                "success": "Very good! In this giveaway, you are going to make a total of **{0}** people smile :slight_smile:!"
+              }
+            },
+            "time": {
+              "message": [
+                "**Step 3:** Now, let's determine a time to the giveaway.\n",
+                "`Do not forget, the time must be minimum 1 minute, maximum 60 day. While determining the time, you must use specifies time term like m (minute), h (hour), d (day). While using this you can write the time with or without whitespaces. Do not forget to, only one type of time can be used.`"
+              ],
+              "validator": {
+                "success": "Congratulations! The giveaway time has determined to **{0}**."
+              }
+            },
+            "color": {
+              "message": [
+                "**Step 4:** let's set a giveaways color.\n",
+                ":loudspeaker: If you want to **skip** this step, please write `pas`, `skip` to the chat.\n",
+                "`Remember only, only can write the English name or hexadecimal code of a color.`"
+              ],
+              "validator": {
+                "success": "Good choice! The giveaway color is set to **{0}**."
+              }
+            },
+            "servers": {
+              "message": [
+                "**Step 5:** If people need to join a certain server to participate in your raffle, you can determine which servers are in this section. Let's get to work.\n",
+                ":loudspeaker: If you want to **skip** this step, please write `pas`, `skip` to the chat.\n",
+                "`necessarily To specify the servers to enter, type the invite links of the servers, separating them with a comma. Remember, you can write maximum {0} servers and {1} must be in all the servers you specify.`"
+              ],
+              "validator": {
+                "success": "All right! Total **{0}** join the server imperative added."
+              }
+            },
+            "roles": {
+              "allowed": {
+                "message": [
+                  "**Step 6:** If people should have a specified role to attend to the giveaway, you can choose the roles that people should have. *Elite giveaways for your elite members*\n",
+                  ":loudspeaker: If you want to **skip** this step,  please write `pas`, `skip` or `geç` to the chat.\n",
+                  "`Write the name of the roles or mentions, with commas between them in the chat to decide the obligatory roles. Do not forget you can write maximum {0} role and people that will join, should have all of the roles.`"
+                ],
+                "validator": {
+                  "success": "Successful! People that want to join the giveaway must have all of the **{0}** roles."
+                }
+              },
+              "reward": {
+                "message": [
+                  "**Step 7:** What about to make the prize bigger? To make the person that won the giveaway, different from others, you can give role. *Buddy this is so cool!*\n",
+                  ":loudspeaker: If you want to **skip** this step,  please write `pas`, `skip` or `geç` to the chat.\n",
+                  "`Write the name of the roles or mentions, with commas between them in the chat to decide the roles that will be given as prize. Do not forget you can write maximum {0} role. The giveaway winners are given all of the roles that you set.`"
+                ],
+                "validator": {
+                  "success": "Fascinating! The **{0}** roles will be given to the winner of the giveaway as prize."
+                }
+              }
+            },
+            "prize": {
+              "message": [
+                "**Step {0}:** Finally, let's determine the giveaway's prize (At the same time it going to use as title)\n",
+                "`Do not forget to the prize's maximum length can be 255 character.`"
+              ],
+              "validator": {
+                "success": "That's it! The giveaway title and prize has determined to {0}."
+              }
+            }
+          }
+        },
+        "edit": {
+          "description": "Edits the giveaway.",
+          "usage": "[numberOfWinner|color|prize|time|rewardRoles] [...args]",
+          "deleted": "Apperantly this giveaway message has been deleted or timed out.",
+          "invalid": {
+            "id": "Invalid ID. Please write a valid giveaway ID.",
+            "mode": "Please specify a valid mode *(+ or -)*. (**Eg:** {0})",
+            "time": "Please specify a valid time."
+          },
+          "not": {
+            "found": "Couldn't find a can be edited giveaway.",
+            "continues": "Apperantly this giveaway already ended or cancelled. (You can edit only continuing giveaways.)"
+          },
+          "role": {
+            "max": "You can give maximum {0} role as prize.",
+            "already": "This {0} is already decided as a prize role.",
+            "not.found": "The {0} role could not be found among the roles to be gived."
+          },
+          "time": {
+            "little.left": "There are less than 2 minutes to giveaway ending. It must be much longer time to edit the giveaway.",
+            "down": {
+              "error": "Extended giveaway time can't fell below 2 minutes.",
+              "success": "It was shortened by {0}."
+            },
+            "up": {
+              "error": "Extended giveaway time can't exceed 60 day.",
+              "success": "It was extended by {0}."
+            }
+          },
+          "success": {
+            "color": "The giveaway color has been changed to **{0}**.",
+            "prize": "The giveaway prize/title has been successfully changed to **{0}**.",
+            "roles": "The will be given roles as prize has been edited again. ({0}: {1})",
+            "time": "The giveaway time has been edited successfully. **(Süre {0})**",
+            "winners": "The number of winner is has been successfully changed to **{0}**."
+          }
+        },
+        "list": {
+          "description": "Lists active giveaways on the server.",
+          "embed": {
+            "title": "Active giveaways",
+            "footer": "Giveaways",
+            "description": {
+              "active": {
+                "not.found": "There isn't any active giveaway.",
+                "found": "There is total **{0}** active giveaway"
+              }
+            },
+            "fields": {
+              "creator": "Creator",
+              "channel": "Channel",
+              "winner.count": "Number of Winners",
+              "start": "Start Date",
+              "finish": "Finish Date"
+            }
+          }
+        },
+        "cancel": {
+          "description": "Ends one existed giveaway.",
+          "not": {
+            "found": "There was no giveaway that could be canceled.",
+            "cancelable": "This giveaway is not an ongoing one. This command can be used on only ongoing giveaways."
+          },
+          "success": "The giveaway has canceled successfully."
+        },
+        "end": {
+          "description": "Ends the giveaway early.",
+          "not": {
+            "found": "There was no giveaway that could be ended.",
+            "continues": "Apparently, this giveaway has already ended or has been canceled."
+          },
+          "success": "The **{0}** giveaway has been finished early. The results have sent to the {1} channel."
+        },
+        "reroll": {
+          "description": "Determines the winners of the giveaway again.",
+          "not": {
+            "found": "Couldn't find a rerollable giveaway.",
+            "finish": "This lottery has not been ended yet. Please wait for the giveaway ending.",
+            "enough": "The raffle could not be rerolled again for insufficient participation.\n**Giveaway:** {0}"
+          },
+          "unauthorized": "Please give to the bot **Manage Roles* permission to reroll the winners. Otherwise bot can't give the will be given roles as prize to the winners.",
+          "canceled": "This giveaway has cancelled. Can not reroll a cancelled giveaway result.",
+          "timeout": "Apparently this giveaway message has been deleted or has timed out.",
+          "data.not.found": "Couldn't find the giveaway's participant data.",
+          "success": "Congratulations {0}! You have won **{1}** (The winners has rerolled.)\n**Giveaway:** {2}"
+        }
+      },
+      "survey": {
+        "question": {
+          "description": "You can ask questions to the server.",
+          "usage": "{question} ...[options]",
+          "too.many": "You can't write more than one question. Please try again with writing one question.",
+          "max.answer": "You can add maximum {0} option to your question.",
+          "error": "The question could not be sended on the chat channel for some reason."
+        },
+        "vote": {
+          "description": "Creates a two-option voting poll.",
+          "usage": "[time(1m | 1h) | -1(indefinite)] [voting text]",
+          "embed": {
+            "description": "The voting has started!",
+            "fields": {
+              "question": "Question"
+            },
+            "footer": "Time"
+          },
+          "time": {
+            "exceeded": "The survey time should be minimum 1 minute, maximum 15 day.",
+            "invalid": "Please specify a valid time. (Eg; **1s** - **1m** - **5m** - **1h** etc.)"
+          },
+          "error": "Survey data has canceled because it could not be saved in the database."
+        }
+      }
+    }
+  }
+}

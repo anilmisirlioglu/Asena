@@ -1,13 +1,12 @@
-import { Collection, Message, TextChannel } from 'discord.js';
+import { Collection, Message, MessageEmbed, TextChannel } from 'discord.js';
 
 import Command from './Command';
-import { Colors } from '../utils/TextFormat';
 import SuperClient from '../SuperClient';
 import { Bot } from '../Constants';
 import Factory from '../Factory';
 import { ICommandPremium } from '../decorators/Premium';
 import PermissionController from './PermissionController';
-import SetCommandPermission from './server/SetCommandPermission';
+import Permission from './server/Permission';
 
 import CancelRaffle from './raffle/CancelRaffle';
 import CreateRaffle from './raffle/CreateRaffle';
@@ -19,11 +18,12 @@ import Vote from './survey/Vote';
 import Question from './survey/Question';
 import Help from './bot/Help';
 import BotInfo from './bot/BotInfo';
-import SetPrefix from './server/SetPrefix';
+import Prefix from './server/Prefix';
 import Invitation from './bot/Invitation';
 import Premium from './server/Premium';
 import EditRaffle from './raffle/EditRaffle';
 import AdvancedCreateRaffle from './raffle/AdvancedCreateRaffle';
+import Locale from './server/Locale';
 
 type CommandMap = Collection<string, Command>
 
@@ -47,8 +47,9 @@ export default class CommandHandler extends Factory implements CommandRunner{
         new Help(),
         new BotInfo(),
         new Invitation(),
-        new SetPrefix(),
-        new SetCommandPermission(),
+        new Prefix(),
+        new Permission(),
+        new Locale(),
         new Premium()
     ]
 
@@ -58,12 +59,9 @@ export default class CommandHandler extends Factory implements CommandRunner{
     private aliases: Collection<string, string> = new Collection<string, string>()
 
     public registerAllCommands(): void{
-        // TODO::Auto Loader
-        CommandHandler.COMMANDS.forEach(command => {
-            this.registerCommand(command)
-        })
+        CommandHandler.COMMANDS.forEach(command => this.registerCommand(command))
 
-        this.client.logger.info(`Toplam ${Colors.LIGHT_PURPLE}${this.commands.keyArray().length} ${Colors.AQUA}komut başarıyla yüklendi.`)
+        this.client.logger.info(`Toplam ${this.commands.keyArray().length} komut başarıyla yüklendi.`)
     }
 
     public registerCommand(command: Command){
@@ -116,25 +114,21 @@ export default class CommandHandler extends Factory implements CommandRunner{
         if(!message.content.startsWith(prefix)){
             if(channel.permissionsFor(client.user).has('SEND_MESSAGES')){
                 if(message.content === Bot.PREFIX_COMMAND){
-                    await channel.send(`🌈   Botun sunucu içerisinde ki komut ön adı(prefix): **${server.prefix}**`)
+                    await channel.send(`🌈   ${server.translate('commands.handler.prefix', server.prefix)}`)
 
                     return
                 }
 
-                if(message.mentions.has(client.user)){
-                    await message.channel.send(`🌈   **${SuperClient.NAME}** ve komutları hakkında daha fazla bilgi için: **${server.prefix}help**`)
+                if(message.mentions.has(client.user) && !message.mentions.everyone){
+                    await message.channel.send('🌈  ' + server.translate('commands.handler.mention', SuperClient.NAME, server.prefix))
 
                     return
                 }
             }
         }
 
-        const args: string[] = message.content
-            .slice(prefix.length)
-            .trim()
-            .split(/ +/g)
+        const args: string[] = message.content.slice(prefix.length).trim().split(/ +/g)
         const cmd = args.shift().toLowerCase()
-
         if(cmd.length === 0){
             return
         }
@@ -157,34 +151,43 @@ export default class CommandHandler extends Factory implements CommandRunner{
                     if(!command.premium || (command.premium && server.isPremium())){
                         command.run(client, server, message, args).then(async (result: boolean) => {
                             if(!result){
-                                await channel.send({
-                                    embed: command.getUsageEmbed()
-                                })
+                                const embed = new MessageEmbed()
+                                    .setAuthor(SuperClient.NAME, SuperClient.AVATAR)
+                                    .setDescription(`${server.translate('global.usage')}: **${command.name} ${server.translate(command.usage)}**`)
+                                    .setColor('GOLD')
+
+                                await channel.send({ embed })
                             }
                         })
                     }else{
-                        await channel.send({
-                            embed: command.getPremiumEmbed()
-                        })
+                        const embed = new MessageEmbed()
+                            .setAuthor(SuperClient.NAME, SuperClient.AVATAR)
+                            .setDescription(server.translate('commands.handler.premium.only'))
+                            .addField(`:star2:  ${server.translate('commands.handler.premium.try')}`, '<:join_arrow:746358699706024047> [Asena Premium](https://asena.xyz)')
+                            .setColor('GREEN')
+
+                        await channel.send({ embed })
                     }
                 }else{
                     if(checkPermissions.missing.includes('SEND_MESSAGES') || checkPermissions.missing.includes('VIEW_CHANNEL')){
                         try{
                             message.author.createDM().then(dmChannel => {
-                                dmChannel.send(`Botun çalışabilmesi için '**${channel.name}**' kanalında bota '**Mesaj Gönder**' yetkisini sağlamanız/vermeniz gerekiyor. Aksi takdirde bot bu kanala mesaj gönderemez ve işlevini yerine getiremez/çalışamaz.`)
+                                dmChannel.send(server.translate('commands.handler.permission.missing.message', channel.name))
                             })
                         }catch(e){}
                     }else{
-                        await channel.send([
-                            'Botun çalışabilmesi için gerekli olan **izinler** eksik. Lütfen aşağıda ki listede bulunan izinleri bota sağlayıp/verip tekrar deneyin.',
-                            `\n${checkPermissions}\n`,
-                            'Eğer daha detaylı yardıma ihtiyacınız varsa bizimle iletişime geçmekten çekinmeyin.'
-                        ].join('\n'))
+                        let i = 1
+                        const missingToString = checkPermissions
+                            .missing
+                            .map(permission => `**${i++}.** ${server.translate(`global.permissions.${PermissionController.humanizePermission(permission)}`)}`)
+                            .join('\n')
+
+                        await channel.send(server.translate('commands.handler.permission.missing.others', missingToString))
                     }
                 }
             }else{
                 await channel.send({
-                    embed: command.getErrorEmbed('Bu komutu kullanmak için **yetkiniz** yok.')
+                    embed: command.getErrorEmbed(server.translate('commands.handler.unauthorized'))
                 })
             }
         }

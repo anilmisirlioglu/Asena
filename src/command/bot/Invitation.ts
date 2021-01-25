@@ -10,7 +10,7 @@ export default class Invitation extends Command{
         super({
             name: 'davet',
             aliases: ['invite', 'party', 'davetiye', 'link'],
-            description: 'Botun davet linkini verir.',
+            description: 'commands.bot.invitation.description',
             usage: null,
             permission: undefined
         })
@@ -19,9 +19,9 @@ export default class Invitation extends Command{
     async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
         const embed = new MessageEmbed()
             .setAuthor(SuperClient.NAME, SuperClient.AVATAR)
-            .addField(':rainbow:  **Botun Davet Linki:**', `[Tıkla Davet Et](${Bot.INVITE_URL})`)
-            .addField('<:hayalet:739432632030593105>  **Destek Sunucusu:**', `[Tıkla ve Giriş Yap](${Bot.SUPPORT_SERVER})`)
-            .addField(':earth_americas:  **Websitemiz:**', `[asena.xyz](${Bot.WEBSITE})`)
+            .addField(`:rainbow:  **${server.translate('commands.bot.invitation.bot.url')}:**`, `[${server.translate('commands.bot.invitation.click.invite')}](${Bot.INVITE_URL})`)
+            .addField(`<:hayalet:739432632030593105>  **${server.translate('commands.bot.invitation.support.server')}:**`, `[${server.translate('commands.bot.invitation.click.join')}](${Bot.SUPPORT_SERVER})`)
+            .addField(`:earth_americas:  **${server.translate('commands.bot.invitation.website')}:**`, `[asena.xyz](${Bot.WEBSITE})`)
             .setColor(message.guild.me.displayHexColor)
 
         await message.channel.send({ embed })
