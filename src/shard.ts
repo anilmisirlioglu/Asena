@@ -2,8 +2,7 @@
 
 import Asena from './Asena';
 import MongoDB from './drivers/MongoDB';
-import ProcessPacket, { ProcessPacketType } from './protocol/ProcessPacket';
-import ServerStatsPacket from './protocol/ServerStatsPacket';
+import { ProcessPacketType } from './protocol/ProcessPacket';
 import { findFlagValue } from './utils/FlagParser';
 
 let isProduction: boolean = findFlagValue('--production') ?? false
@@ -25,11 +24,24 @@ process.on('SIGTERM', async () => {
     process.exit(0)
 })
 
-process.on('message', async (packet: ProcessPacket) => {
+process.on('message', async (packet) => {
     switch(packet.type){
         case ProcessPacketType.SERVER_STATS:
-            // noinspection ES6MissingAwait
-            client.getActivityUpdater().updateActivity(packet as ServerStatsPacket)
+            client.getActivityUpdater().updateActivity(packet).then(void 0)
+            break
+
+        case ProcessPacketType.MODEL_TRANSFER:
+            switch(packet.modelType){
+                case 'Raffle':
+                    client.getTaskManager().executeRaffleTask(packet.items).then(void 0)
+                    break
+
+                case 'Survey':
+                    client.getTaskManager().executeSurveyTask(packet.items).then(void 0)
+                    break
+                }
+
+
             break
     }
 })

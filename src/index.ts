@@ -6,6 +6,10 @@ import TextFormat from './utils/TextFormat';
 import ServerStatsPacket from './protocol/ServerStatsPacket';
 import { findFlagValue } from './utils/FlagParser';
 import { updateDiscordBotsGGStats, updateTopGGStats } from './updater/StatsUpdater';
+import TaskScheduler from './scheduler/TaskScheduler';
+import AsyncRaffleTask from './scheduler/tasks/AsyncRaffleTask';
+import AsyncSurveyTask from './scheduler/tasks/AsyncSurveyTask';
+import MongoDB from './drivers/MongoDB';
 
 dotenv.config({
     path: `${__dirname}/../.env`
@@ -57,12 +61,28 @@ const sendUpdateActivityPacket = async () => {
     }
 }
 
+const mongodb = new MongoDB()
+
+const scheduleAsyncTasks = () => {
+    const scheduler = new TaskScheduler(manager, [
+        new AsyncRaffleTask(),
+        new AsyncSurveyTask()
+    ])
+
+    scheduler.startTimer()
+}
+
 const handler = async () => {
-    await manager.spawn()
+    await Promise.all([
+        mongodb.connect(),
+        manager.spawn()
+    ])
 
     logger.debug('Tüm shardlar konuşlandırıldı.')
 
     await sendUpdateActivityPacket()
+
+    scheduleAsyncTasks()
 
     // Sends a packet to update the server count every 5 minutes
     setInterval(sendUpdateActivityPacket, 1000 * 60 * 5)

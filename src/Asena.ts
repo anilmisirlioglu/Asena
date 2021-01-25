@@ -31,8 +31,6 @@ export default class Asena extends SuperClient{
             this.init()
 
             this.getRaffleTimeUpdater().listenReactions()
-
-            this.getTaskTiming().startTimings()
         })
 
         // if it's a raffle message, delete the lottery

@@ -1,10 +1,13 @@
+import { Document } from 'mongoose';
 import SuperClient from '../SuperClient';
 import { StructureType } from '../structures/Structure';
 import Server from '../structures/Server';
 
-export default abstract class Task<S extends StructureType>{
+export type StructureTask = Task<StructureType, Document>
 
-    public abstract onRun(): Promise<void>
+export default abstract class Task<S extends StructureType, D extends Document>{
+
+    public abstract onExecute(items: D[]): Promise<void>
 
     protected abstract intervalCallback(structure: S, server: Server): () => void
 
