@@ -18,7 +18,7 @@ export default class SyntaxWebhook extends WebhookClient{
                 `Sunucu ID: **${guild.id}**`,
                 `Sunucu Sahibi: **${guild.owner ? guild.owner.displayName : 'Bilinmiyor.'}**`,
                 `Sunucu Sahibi ID: **${guild.ownerID}**`,
-                `Üye Sayısı: **${guild.members.cache.size}**`,
+                `Üye Sayısı: **${guild.memberCount}**`,
                 `Sunucu Kurulma Tarihi: **${getDateTimeToString(guild.createdAt)}**`
             ].join('\n'))
             .setColor(isCreate ? 'GREEN' : 'RED')
