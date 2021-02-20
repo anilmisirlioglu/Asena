@@ -317,7 +317,7 @@
         },
         "cancel": {
           "description": "Var olan bir çekilişi bitirir.",
-          "usage": "[message id]",
+          "usage": "[mesaj id]",
           "not": {
             "found": "İptal edilebilecek bir çekiliş bulunamadı.",
             "cancelable": "Bu çekiliş devam eden bir çekiliş değil. Bu komut sadece devam eden çekilişlerde kullanılabilir."
@@ -326,7 +326,7 @@
         },
         "end": {
           "description": "Çekilişi erken bitirir.",
-          "usage": "[message id]",
+          "usage": "[mesaj id]",
           "not": {
             "found": "Erken bitirilebilecek bir çekiliş bulunamadı.",
             "continues": "Anlaşılan bu çekiliş zaten bitmiş veya iptal edilmiş."
@@ -335,7 +335,7 @@
         },
         "reroll": {
           "description": "Çekilişin kazananlarını tekrar belirler.",
-          "usage": "[message id]",
+          "usage": "[mesaj id]",
           "not": {
             "found": "Tekrar çekilebilecek bir çekiliş bulunamadı.",
             "finish": "Bu çekiliş daha sonuçlanmamış. Lütfen çekilişin bitmesini bekleyin.",
