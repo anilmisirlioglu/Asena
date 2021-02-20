@@ -330,6 +330,7 @@
         },
         "cancel": {
           "description": "Ends one existed giveaway.",
+          "usage": "[message id]",
           "not": {
             "found": "There was no giveaway that could be canceled.",
             "cancelable": "This giveaway is not an ongoing one. This command can be used on only ongoing giveaways."
@@ -338,6 +339,7 @@
         },
         "end": {
           "description": "Ends the giveaway early.",
+          "usage": "[message id]",
           "not": {
             "found": "There was no giveaway that could be ended.",
             "continues": "Apparently, this giveaway has already ended or has been canceled."
@@ -346,6 +348,7 @@
         },
         "reroll": {
           "description": "Determines the winners of the giveaway again.",
+          "usage": "[message id]",
           "not": {
             "found": "Couldn't find a rerollable giveaway.",
             "finish": "This lottery has not been ended yet. Please wait for the giveaway ending.",
