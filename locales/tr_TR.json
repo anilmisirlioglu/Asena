@@ -209,7 +209,7 @@
         },
         "prefix": {
           "description": "Botun komut prefix 'ini değiştirir.",
-          "usage": "[prefix]",
+          "usage": "[ön-ad]",
           "too.long": "Komut prefix 'i en fazla 5 karakterden oluşabilir.",
           "changed": "Komut ön adı **{0}** olarak değiştirildi."
         },
@@ -317,6 +317,7 @@
         },
         "cancel": {
           "description": "Var olan bir çekilişi bitirir.",
+          "usage": "[message id]",
           "not": {
             "found": "İptal edilebilecek bir çekiliş bulunamadı.",
             "cancelable": "Bu çekiliş devam eden bir çekiliş değil. Bu komut sadece devam eden çekilişlerde kullanılabilir."
@@ -325,6 +326,7 @@
         },
         "end": {
           "description": "Çekilişi erken bitirir.",
+          "usage": "[message id]",
           "not": {
             "found": "Erken bitirilebilecek bir çekiliş bulunamadı.",
             "continues": "Anlaşılan bu çekiliş zaten bitmiş veya iptal edilmiş."
@@ -333,6 +335,7 @@
         },
         "reroll": {
           "description": "Çekilişin kazananlarını tekrar belirler.",
+          "usage": "[message id]",
           "not": {
             "found": "Tekrar çekilebilecek bir çekiliş bulunamadı.",
             "finish": "Bu çekiliş daha sonuçlanmamış. Lütfen çekilişin bitmesini bekleyin.",
