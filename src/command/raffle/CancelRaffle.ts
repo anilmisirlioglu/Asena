@@ -12,7 +12,7 @@ export default class CancelRaffle extends Command{
             name: 'cancel',
             aliases: ['çekilişiptalet', 'çekilişiiptalet', 'cekilisiptal', 'çekilişiptal', 'cancelraffle'],
             description: 'commands.raffle.cancel.description',
-            usage: 'general.message-id',
+            usage: 'global.message-id',
             permission: 'ADMINISTRATOR'
         })
     }
