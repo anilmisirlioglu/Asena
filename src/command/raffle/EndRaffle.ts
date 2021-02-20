@@ -11,7 +11,7 @@ export default class EndRaffle extends Command{
             name: 'end',
             aliases: ['hemenbitir', 'finish', 'bitir', 'erkenbitir'],
             description: 'commands.raffle.end.description',
-            usage: 'general.message-id',
+            usage: 'global.message-id',
             permission: 'ADMINISTRATOR'
         });
     }
