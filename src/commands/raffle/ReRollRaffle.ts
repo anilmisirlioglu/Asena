@@ -10,9 +10,9 @@ export default class ReRollRaffle extends Command{
     constructor(){
         super({
             name: 'reroll',
-            aliases: ['tekrarcek', 'tekrarçek'],
+            aliases: ['tekrarcek'],
             description: 'commands.raffle.reroll.description',
-            usage: 'general.message-id',
+            usage: 'global.message-id',
             permission: 'ADMINISTRATOR'
         });
     }
