@@ -59,7 +59,6 @@ export default class Asena extends SuperClient{
         })
 
         this.getRaffleTimeUpdater().listenReactions()
-        this.getTaskTiming().startTimings()
     }
 
 }

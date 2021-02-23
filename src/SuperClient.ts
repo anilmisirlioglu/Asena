@@ -11,7 +11,6 @@ import {
 } from "discord.js";
 import Version from './utils/Version';
 import Logger from './utils/Logger';
-import TaskTiming from './tasks/TaskTiming';
 import CommandHandler from './commands/CommandHandler';
 import ActivityUpdater from './updater/ActivityUpdater';
 import RaffleTimeUpdater from './updater/RaffleTimeUpdater';
@@ -19,6 +18,7 @@ import ServerManager from './managers/ServerManager';
 import SetupManager from './setup/SetupManager';
 import SyntaxWebhook from './SyntaxWebhook';
 import LanguageManager from './language/LanguageManager';
+import ClientTaskManager from './scheduler/manager/ClientTaskManager';
 
 interface SuperClientBuilderOptions{
     prefix: string
@@ -34,7 +34,7 @@ export default abstract class SuperClient extends Client{
 
     readonly logger: Logger = new Logger('shard')
 
-    private readonly taskTiming: TaskTiming = new TaskTiming()
+    private readonly taskManager: ClientTaskManager = new ClientTaskManager()
 
     private readonly commandHandler: CommandHandler = new CommandHandler(this)
 
@@ -82,8 +82,8 @@ export default abstract class SuperClient extends Client{
         return this.self
     }
 
-    public getTaskTiming(): TaskTiming{
-        return this.taskTiming
+    public getTaskManager(): ClientTaskManager{
+        return this.taskManager
     }
 
     public getActivityUpdater(): ActivityUpdater{

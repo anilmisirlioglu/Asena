@@ -1,13 +1,12 @@
-import SurveyModel from '../../models/Survey';
+import { ISurvey } from '../../models/Survey';
 import Task from '../Task';
 import Survey from '../../structures/Survey';
 import Server from '../../structures/Server';
 
-export default class SurveyTask extends Task<Survey>{
+export default class SurveyTask extends Task<Survey, ISurvey>{
 
-    async onRun(): Promise<void>{
-        const cursor = await SurveyModel.find({}).cursor()
-        for(let survey = await cursor.next(); survey !== null; survey = await cursor.next()){
+    async onExecute(items: ISurvey[]): Promise<void>{
+        for(const survey of items){
             const server = await this.client.servers.get(survey.server_id)
             if(!server) continue
 
@@ -33,8 +32,10 @@ export default class SurveyTask extends Task<Survey>{
 
     protected intervalCallback(survey: Survey, server: Server): () => void{
         return async () => {
-            await survey.finish(this.client, server)
-            await survey.delete()
+            await Promise.all([
+                survey.finish(this.client, server),
+                survey.delete()
+            ])
         }
     }
 
