@@ -1,7 +1,7 @@
 import cron from 'node-cron';
 import { ShardingManager } from 'discord.js';
 import { AsyncDocumentTask } from './AsyncTask';
-import ShardingTaskManager from './ShardingTaskManager';
+import ShardingTaskManager from './managers/ShardingTaskManager';
 
 export default class TaskScheduler{
 

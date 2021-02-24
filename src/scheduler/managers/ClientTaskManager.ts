@@ -1,9 +1,9 @@
-import RaffleTask from './tasks/RaffleTask';
-import SurveyTask from './tasks/SurveyTask';
-import { IRaffle } from '../models/Raffle';
+import RaffleTask from '../tasks/RaffleTask';
+import SurveyTask from '../tasks/SurveyTask';
+import { IRaffle } from '../../models/Raffle';
 import { Document } from 'mongoose';
-import { StructureTask } from './Task';
-import { ISurvey } from '../models/Survey';
+import { StructureTask } from '../Task';
+import { ISurvey } from '../../models/Survey';
 
 interface ClientTask{
     readonly Raffle: RaffleTask

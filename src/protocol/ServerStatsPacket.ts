@@ -10,10 +10,10 @@ export default class ServerStatsPacket extends ProcessPacket implements IServerS
     serverCount: number
     shardCount: number
 
-    constructor(data: IServerStatsPacket){
+    constructor(payload: IServerStatsPacket){
         super({
             type: ProcessPacketType.SERVER_STATS,
-            data
+            payload
         })
     }
 

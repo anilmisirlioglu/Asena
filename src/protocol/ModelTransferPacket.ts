@@ -13,10 +13,10 @@ export default class ModelTransferPacket<S extends Document> extends ProcessPack
     items: S[]
     modelType: TransferableModelTypes
 
-    constructor(data: IModelTransferPacket<S>){
+    constructor(payload: IModelTransferPacket<S>){
         super({
             type: ProcessPacketType.MODEL_TRANSFER,
-            data
+            payload
         })
     }
 

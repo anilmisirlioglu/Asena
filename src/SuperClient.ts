@@ -19,7 +19,7 @@ import SetupManager from './setup/SetupManager';
 import SyntaxWebhook from './SyntaxWebhook';
 import PremiumUpdater from './updater/PremiumUpdater';
 import LanguageManager from './language/LanguageManager';
-import ClientTaskManager from './scheduler/ClientTaskManager';
+import ClientTaskManager from './scheduler/managers/ClientTaskManager';
 
 interface SuperClientBuilderOptions{
     prefix: string

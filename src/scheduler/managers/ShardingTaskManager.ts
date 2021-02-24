@@ -1,4 +1,4 @@
-import { AsyncDocumentTask } from './AsyncTask';
+import { AsyncDocumentTask } from '../AsyncTask';
 import { ShardingManager } from 'discord.js';
 
 export default class ShardingTaskManager{
