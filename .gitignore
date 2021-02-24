@@ -112,6 +112,3 @@ build/
 
 # Asena Daemon Linux Service
 asena.service
-
-# package lock file
-package-lock.json
