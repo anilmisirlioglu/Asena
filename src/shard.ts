@@ -5,7 +5,7 @@ import MongoDB from './drivers/MongoDB';
 import { ProcessPacketType } from './protocol/ProcessPacket';
 import { findFlagValue } from './utils/FlagParser';
 
-let isProduction: boolean = findFlagValue('--production') ?? false
+const isProduction: boolean = findFlagValue('--production') ?? false
 
 const mongo = new MongoDB()
 const client = new Asena(!isProduction)
