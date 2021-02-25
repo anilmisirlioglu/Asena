@@ -1,7 +1,7 @@
 {
   "name": "asena",
   "version": "2.0.0",
-  "description": "Fast and reliable raffle and poll bot for Discord",
+  "description": "Fast and reliable giveaway and poll bot for Discord",
   "homepage": "https://asena.xyz",
   "main": "./src/index.ts",
   "types": "./typings/index.d.ts",
