@@ -12,16 +12,17 @@ import SetCommandPermission from './server/SetCommandPermission';
 import SetPrefix from './server/SetPrefix';
 import Question from './survey/Question';
 import Vote from './survey/Vote';
+import Command from './Command';
 
-export default class CommandPool{
+export default class CommandPool implements Iterable<Command>{
 
     *[Symbol.iterator](){
-        yield this.flat([
-            ...this.BOT_COMMANDS,
-            ...this.RAFFLE_COMMANDS,
-            ...this.SERVER_COMMANDS,
-            ...this.SURVEY_COMMANDS
-        ])
+        yield* this.flat(
+            this.BOT_COMMANDS,
+            this.RAFFLE_COMMANDS,
+            this.SERVER_COMMANDS,
+            this.SURVEY_COMMANDS
+        )
     }
 
     private *flat(a?: any, ...r: any){
