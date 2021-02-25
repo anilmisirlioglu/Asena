@@ -38,8 +38,6 @@ process.on('message', async (packet) => {
                     client.getTaskManager().executeSurveyTask(packet.items).then(void 0)
                     break
             }
-
-
             break
     }
 })

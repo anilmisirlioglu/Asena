@@ -2,47 +2,15 @@ import { Collection, Message, MessageEmbed, TextChannel } from 'discord.js';
 
 import CommandRunner from './CommandRunner';
 import Command from './Command';
-import { Colors } from '../utils/TextFormat';
 import SuperClient from '../SuperClient';
 import Constants from '../Constants';
 import Factory from '../Factory';
-
-import CancelRaffle from './raffle/CancelRaffle';
-import CreateRaffle from './raffle/CreateRaffle';
-import ReRollRaffle from './raffle/ReRollRaffle';
-import SetupRaffle from './raffle/SetupRaffle';
-import EndRaffle from './raffle/EndRaffle';
-import Raffles from './raffle/Raffles';
-import Vote from './survey/Vote';
-import Question from './survey/Question';
-import Help from './bot/Help';
-import BotInfo from './bot/BotInfo';
-import SetPrefix from './server/SetPrefix';
-import SetCommandPermission from './server/SetCommandPermission';
 import PermissionController from '../controllers/PermissionController';
-import Invitation from './bot/Invitation';
-import Locale from './server/Locale';
+import CommandPool from './CommandPool';
 
 type CommandMap = Collection<string, Command>
 
 export default class CommandHandler extends Factory implements CommandRunner{
-
-    private static readonly COMMANDS: Command[] = [
-        new CancelRaffle(),
-        new CreateRaffle(),
-        new ReRollRaffle(),
-        new SetupRaffle(),
-        new EndRaffle(),
-        new Raffles(),
-        new Vote(),
-        new Question(),
-        new Help(),
-        new BotInfo(),
-        new Invitation(),
-        new SetPrefix(),
-        new SetCommandPermission(),
-        new Locale()
-    ]
 
     private permissionController: PermissionController = new PermissionController()
 
@@ -50,10 +18,9 @@ export default class CommandHandler extends Factory implements CommandRunner{
     private aliases: Collection<string, string> = new Collection<string, string>()
 
     public registerAllCommands(): void{
-        // TODO::Auto Loader
-        CommandHandler.COMMANDS.forEach(command => {
+        for(const command of new CommandPool){
             this.registerCommand(command)
-        })
+        }
 
         this.client.logger.info(`Toplam ${this.commands.keyArray().length} komut başarıyla yüklendi.`)
     }
