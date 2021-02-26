@@ -21,6 +21,7 @@
       "admin": "Admin",
       "member": "Üye",
       "usage": "Kullanımı",
+      "example": "Örnek",
       "message-id": "[mesaj-id]",
       "unlimited": "Sınırsız",
       "date-time": {
@@ -199,7 +200,7 @@
       },
       "bot": {
         "invitation": {
-          "description": "Botun davet linkini verir.",
+          "description": "Botun davet linkini verir",
           "bot.url": "Botun Davet Linki",
           "support.server": "Destek Sunucusu",
           "website": "Websitemiz",
@@ -209,7 +210,7 @@
           }
         },
         "help": {
-          "description": "Komutlar hakkında bilgi verir.",
+          "description": "Komutlar hakkında bilgi verir",
           "error": "**{0}** adında komut bulunamadı.",
           "success": "{0} yardım menüsünü DM kutunuza gönderildi.",
           "embed": {
@@ -229,7 +230,7 @@
           }
         },
         "info": {
-          "description": "Bot hakkında teknik bilgi verir.",
+          "description": "Bot hakkında teknik bilgi verir",
           "embed": {
             "title": "Bot Bilgisi",
             "footer": "Syntax Software tarafından ❤️ ile yapılmıştır",
@@ -255,7 +256,7 @@
       },
       "server": {
         "locale": {
-          "description": "Botun varsayılan dilini değiştirir.",
+          "description": "Botun varsayılan dilini değiştirir",
           "usage": "[list | set | reset] <args>",
           "default": "Botun sunucu içerisindeki iletişim dili",
           "embed": {
@@ -272,13 +273,13 @@
           }
         },
         "prefix": {
-          "description": "Botun komut prefix 'ini değiştirir.",
+          "description": "Botun komut prefix 'ini değiştirir",
           "usage": "[prefix]",
           "too.long": "Komut prefix 'i en fazla 5 karakterden oluşabilir.",
           "changed": "Komut ön adı **{0}** olarak değiştirildi."
         },
         "permission": {
-          "description": "Komutun izinlerini düzenler.",
+          "description": "Komutun izinlerini düzenler",
           "usage": "[everyone | admin] [komut]",
           "command": {
             "not": {
@@ -290,7 +291,7 @@
           }
         },
         "premium": {
-          "description": "Premium durumunu görüntüler.",
+          "description": "Premium durumunu görüntüler",
           "try": [
             "Henüz bir **Premium** üyeliğin bulunmuyor.",
             ":star2:  [Premium 'u Denemeye Ne Dersin?](https://asena.xyz)"
@@ -304,8 +305,8 @@
       },
       "raffle": {
         "create": {
-          "description": "Yeni bir çekiliş oluşturur.",
-          "usage": "[kazanan sayısı<1 | 20>] [süre(1m | 5s) - [s(saniye) m(dakika) h(saat) d(gün)]] [ödül]",
+          "description": "Yeni bir çekiliş oluşturur",
+          "usage": "[kazanan sayısı] [süre] [ödül]",
           "limits": {
             "winner.count": "Çekilişi kazanan üye sayısı maksimum 20, minimum 1 kişi olabilir.",
             "title.length": "Çekiliş başlığı maksimum 255 karakter uzunluğunda olmalıdır.",
@@ -318,7 +319,7 @@
           "unauthorized": "Botun yetkileri, bu kanalda çekiliş oluşturmak için yetersiz olduğu için çekiliş başlatılamadı."
         },
         "advanced": {
-          "description": "Gelişmiş çekiliş oluşturur.",
+          "description": "Gelişmiş çekiliş oluşturur",
           "usage": "--numberOfWinners \"kazanan sayısı\" --time \"süre\" --prize \"ödül\" --servers \"sunucular\" --color \"renk\" --allowedRoles \"roller\" --rewardRoles \"ödül olarak verilecek roller\"",
           "parameter": {
             "duplicate": "Lütfen aynı parametreyi birden fazla kez kullanmayın.",
@@ -328,7 +329,7 @@
           }
         },
         "setup": {
-          "description": "Çekiliş kurulum sihirbazını başlatır.",
+          "description": "Çekiliş kurulum sihirbazını başlatır",
           "already": "Zaten bir kurulum sihirbazı içindesin. Lütfen önce başlattığınız kurulumu bitirin veya iptal edin.",
           "unauthorized": "Botun yetkileri, bu kanalda çekiliş oluşturmak için yetersiz olduğu için çekiliş başlatılamadı.",
           "channel.gone": "Çekiliş oluşturulamadı. Girdiğiniz kanal sunucunuzda bulunamadı. Birden bire yok olmuş...",
@@ -428,7 +429,7 @@
           }
         },
         "edit": {
-          "description": "Çekilişi düzenler.",
+          "description": "Çekilişi düzenler",
           "usage": "[numberOfWinner|color|prize|time|rewardRoles] [...args]",
           "deleted": "Anlaşılan bu çekiliş mesajı silinmiş veya zaman aşımına uğramış.",
           "invalid": {
@@ -465,7 +466,7 @@
           }
         },
         "list": {
-          "description": "Sunucudaki aktif çekilişleri listeler.",
+          "description": "Sunucudaki aktif çekilişleri listeler",
           "embed": {
             "title": "Aktif Çekilişler",
             "footer": "Çekilişler",
@@ -485,7 +486,7 @@
           }
         },
         "cancel": {
-          "description": "Var olan bir çekilişi bitirir.",
+          "description": "Var olan bir çekilişi bitirir",
           "not": {
             "found": "İptal edilebilecek bir çekiliş bulunamadı.",
             "cancelable": "Bu çekiliş devam eden bir çekiliş değil. Bu komut sadece devam eden çekilişlerde kullanılabilir."
@@ -493,7 +494,7 @@
           "success": "Çekiliş başarıyla iptal edildi."
         },
         "end": {
-          "description": "Çekilişi erken bitirir.",
+          "description": "Çekilişi erken bitirir",
           "not": {
             "found": "Erken bitirilebilecek bir çekiliş bulunamadı.",
             "continues": "Anlaşılan bu çekiliş zaten bitmiş veya iptal edilmiş."
@@ -501,7 +502,7 @@
           "success": "**{0}** çekilişi erken bitirildi. Sonuçlar {1} kanalına gönderildi."
         },
         "reroll": {
-          "description": "Çekilişin kazananlarını tekrar belirler.",
+          "description": "Çekilişin kazananlarını tekrar belirler",
           "not": {
             "found": "Tekrar çekilebilecek bir çekiliş bulunamadı.",
             "finish": "Bu çekiliş daha sonuçlanmamış. Lütfen çekilişin bitmesini bekleyin.",
@@ -516,15 +517,15 @@
       },
       "survey": {
         "question": {
-          "description": "Sunucuya bir soru sorarsınız.",
+          "description": "Sunucuya bir soru sorarsınız",
           "usage": "{soru} ...[şıklar]",
           "too.many": "Birden fazla soru yazamazsınız. Lütfen tek bir soru yazarak tekrar deneyin.",
           "max.answer": "Sorunuza maksimum {0} şık ekleyebilirsiniz.",
           "error": "Soru sohbet kanalına bir sebepten dolayı gönderilemedi."
         },
         "vote": {
-          "description": "İki seçenekli oylama anketi oluşturur.",
-          "usage": "[süre(1m | 1h) | -1(süresiz)] [oylama metni]",
+          "description": "İki seçenekli oylama anketi oluşturur",
+          "usage": "[süre] [oylama metni]",
           "embed": {
             "description": "Oylama Başladı!",
             "fields": {

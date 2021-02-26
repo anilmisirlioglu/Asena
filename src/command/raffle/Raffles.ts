@@ -13,7 +13,8 @@ export default class Raffles extends Command{
             aliases: ['çekilişler', 'aktifçekilişler', 'cekilisler', 'activeraffles', 'list'],
             description: 'commands.raffle.list.description',
             usage: null,
-            permission: undefined
+            permission: undefined,
+            examples: []
         })
     }
 

@@ -11,7 +11,11 @@ export default class Permission extends Command{
             aliases: ['setcommmandpermission', 'setcommandperm', 'perm', 'permission'],
             description: 'commands.server.permission.description',
             usage: 'commands.server.permission.usage',
-            permission: 'ADMINISTRATOR'
+            permission: 'ADMINISTRATOR',
+            examples: [
+                'admin create',
+                'everyone question'
+            ]
         });
     }
 

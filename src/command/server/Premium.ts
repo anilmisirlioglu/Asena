@@ -13,7 +13,8 @@ export default class Premium extends Command{
             aliases: ['pre', 'p'],
             description: 'commands.server.premium.description',
             usage: null,
-            permission: undefined
+            permission: undefined,
+            examples: []
         })
     }
 

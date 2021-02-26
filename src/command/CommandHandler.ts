@@ -116,10 +116,15 @@ export default class CommandHandler extends Factory implements CommandRunner{
                     if(!command.premium || (command.premium && server.isPremium())){
                         command.run(client, server, message, args).then(async (result: boolean) => {
                             if(!result){
+                                const fullCMD = server.prefix + command.name
                                 const embed = new MessageEmbed()
-                                    .setAuthor(SuperClient.NAME, SuperClient.AVATAR)
-                                    .setDescription(`${server.translate('global.usage')}: **${command.name} ${server.translate(command.usage)}**`)
-                                    .setColor('GOLD')
+                                    .setTitle(`${server.translate('commands.bot.help.embed.fields.command')}: ${fullCMD}`)
+                                    .setDescription([
+                                        `**${server.translate('commands.bot.help.embed.fields.description')}:** ${server.translate(command.description)}`,
+                                        `**${server.translate('global.usage')}: **${fullCMD} ${server.translate(command.usage)}`,
+                                        `**${server.translate('global.example')}:** ${(command.examples.length === 1 ? fullCMD + ' ' + command.examples : '\n' + command.examples.map(item => fullCMD + ' ' + item).join('\n'))}`
+                                    ])
+                                    .setColor('BLUE')
 
                                 await channel.send({ embed })
                             }

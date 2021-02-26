@@ -12,7 +12,11 @@ export default class EndRaffle extends Command{
             aliases: ['hemenbitir', 'finish', 'bitir', 'erkenbitir'],
             description: 'commands.raffle.end.description',
             usage: 'global.message-id',
-            permission: 'ADMINISTRATOR'
+            permission: 'ADMINISTRATOR',
+            examples: [
+                '',
+                '111111111111111111'
+            ]
         });
     }
 

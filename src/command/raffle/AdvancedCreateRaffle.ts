@@ -17,7 +17,19 @@ export default class AdvancedCreateRaffle extends Command{
             aliases: ['cekilisbaslatp', 'createrafflep'],
             description: 'commands.raffle.advanced.description',
             usage: 'commands.raffle.advanced.usage',
-            permission: 'ADMINISTRATOR'
+            permission: 'ADMINISTRATOR',
+            examples: [
+                `
+                --numberOfWinners 1 
+                --time 2m 
+                --prize "Test" 
+                --color GREEN 
+                --rewardRoles @Premium 
+                --allowedRoles Asena 
+                --servers https://discord.gg/CRgXhfs
+                `,
+                '--numbersOfWinner 5 --time 1d --prize "Asena Premium"'
+            ]
         })
     }
 

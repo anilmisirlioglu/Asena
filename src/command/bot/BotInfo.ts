@@ -15,7 +15,8 @@ export default class BotInfo extends Command{
             aliases: ['teknikbilgi'],
             description: 'commands.bot.info.description',
             usage: null,
-            permission: undefined
+            permission: undefined,
+            examples: []
         })
     }
 

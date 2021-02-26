@@ -33,6 +33,7 @@
       "admin": "Admin",
       "member": "Member",
       "usage": "Usage",
+      "example": "Example",
       "message-id": "[message-id]",
       "unlimited": "Unlimited",
       "date-time": {
@@ -191,7 +192,7 @@
     },
     "commands": {
       "handler": {
-        "prefix": "The bot's command front name in the server(prefix): **{0}**",
+        "prefix": "The bot commands front name in the server(prefix): **{0}**",
         "unauthorized": "To use this command **your auth** absent.",
         "mention": "**{0}** for more information about and its commands: **{1}help**",
         "permission": {
@@ -211,7 +212,7 @@
       },
       "bot": {
         "invitation": {
-          "description": "Gives the bot's invitation link.",
+          "description": "Gives the bots invitation link",
           "bot.url": "Bot Invitation Link",
           "support.server": "Support Server",
           "website": "Website",
@@ -221,7 +222,7 @@
           }
         },
         "help": {
-          "description": "Gives information about the commands.",
+          "description": "Gives information about the commands",
           "error": "The command named **{0}** could not be found.",
           "success": "{0} help menu has sent to your DM box.",
           "embed": {
@@ -241,7 +242,7 @@
           }
         },
         "info": {
-          "description": "Gives technical information about the bot.",
+          "description": "Gives technical information about the bot",
           "embed": {
             "title": "Bot Information",
             "footer": "Made with ❤️ by Syntax Software",
@@ -267,7 +268,7 @@
       },
       "server": {
         "locale": {
-          "description": "Changes the bots default language.",
+          "description": "Changes the bot default language",
           "usage": "[list | set | reset] <args>",
           "default": "Communication language of the bot in the server.",
           "embed": {
@@ -284,13 +285,13 @@
           }
         },
         "prefix": {
-          "description": "Changes the bot's command prefix.",
+          "description": "Changes the bot command prefix",
           "usage": "[prefix]",
           "too.long": "The command prefix must be maximum 5 character.",
           "changed": "The command prefix has set to **{0}**."
         },
         "permission": {
-          "description": "Edits command's permissions.",
+          "description": "Edits command's permissions",
           "usage": "[everyone | admin] [command]",
           "command": {
             "not": {
@@ -302,7 +303,7 @@
           }
         },
         "premium": {
-          "description": "Displays the premium status.",
+          "description": "Displays the premium status",
           "try": [
             "yet a **Premium** your membership does not exist.",
             ":star2:  [What do you say trying Premium?](https://asena.xyz)"
@@ -316,8 +317,8 @@
       },
       "raffle": {
         "create": {
-          "description": "Creates a new giveaway.",
-          "usage": "[number of winners<1 | 20>] [time(1m | 5s) - [s(second) m(minute) h(hour) d(day)]] [prize]",
+          "description": "Creates a new giveaway",
+          "usage": "[number of winners] [time] [prize]",
           "limits": {
             "winner.count": "The winners of the giveaway must be maximum 20, minimum 1.",
             "title.length": "The giveaway title must be maximum 256 character length.",
@@ -330,7 +331,7 @@
           "unauthorized": "The raffle could not be started because the bot's permissions were insufficient to create a raffle on this channel."
         },
         "advanced": {
-          "description": "Advanced giveaway creates.",
+          "description": "Advanced giveaway creates",
           "usage": "--numberOfWinners \"number of winners\" --time \"time\" --prize \"prize\" --servers \"servers\" --color \"color\" --allowedRoles \"roler\" --rewardRoles \"roles to be given as a reward\"",
           "parameter": {
             "duplicate": "Please do not use the same parameter times more than once.",
@@ -340,7 +341,7 @@
           }
         },
         "setup": {
-          "description": "Starts the setup wizard.",
+          "description": "Starts the setup wizard",
           "already": "You have started setup wizard already. Please finish or cancel the setup you started first.",
           "unauthorized": "The giveaway could not be started because the bot's permissions were insufficient to create a raffle on this channel.",
           "channel.gone": "The giveaway couldn't created. Couldn't find the specified channel. Suddenly disappeared...",
@@ -441,9 +442,9 @@
           }
         },
         "edit": {
-          "description": "Edits the giveaway.",
+          "description": "Edits the giveaway",
           "usage": "[numberOfWinner|color|prize|time|rewardRoles] [...args]",
-          "deleted": "Apperantly this giveaway message has been deleted or timed out.",
+          "deleted": "Apparently this giveaway message has been deleted or timed out.",
           "invalid": {
             "id": "Invalid ID. Please write a valid giveaway ID.",
             "mode": "Please specify a valid mode *(+ or -)*. (**Eg:** {0})",
@@ -451,7 +452,7 @@
           },
           "not": {
             "found": "Couldn't find a can be edited giveaway.",
-            "continues": "Apperantly this giveaway already ended or cancelled. (You can edit only continuing giveaways.)"
+            "continues": "Apparently this giveaway already ended or cancelled. (You can edit only continuing giveaways.)"
           },
           "role": {
             "max": "You can give maximum {0} role as prize.",
@@ -478,7 +479,7 @@
           }
         },
         "list": {
-          "description": "Lists active giveaways on the server.",
+          "description": "Lists active giveaways on the server",
           "embed": {
             "title": "Active giveaways",
             "footer": "Giveaways",
@@ -498,7 +499,7 @@
           }
         },
         "cancel": {
-          "description": "Ends one existed giveaway.",
+          "description": "Ends one existed giveaway",
           "not": {
             "found": "There was no giveaway that could be canceled.",
             "cancelable": "This giveaway is not an ongoing one. This command can be used on only ongoing giveaways."
@@ -506,7 +507,7 @@
           "success": "The giveaway has canceled successfully."
         },
         "end": {
-          "description": "Ends the giveaway early.",
+          "description": "Ends the giveaway early",
           "not": {
             "found": "There was no giveaway that could be ended.",
             "continues": "Apparently, this giveaway has already ended or has been canceled."
@@ -514,7 +515,7 @@
           "success": "The **{0}** giveaway has been finished early. The results have sent to the {1} channel."
         },
         "reroll": {
-          "description": "Determines the winners of the giveaway again.",
+          "description": "Determines the winners of the giveaway again",
           "not": {
             "found": "Couldn't find a rerollable giveaway.",
             "finish": "This lottery has not been ended yet. Please wait for the giveaway ending.",
@@ -529,15 +530,15 @@
       },
       "survey": {
         "question": {
-          "description": "You can ask questions to the server.",
+          "description": "You can ask questions to the server",
           "usage": "{question} ...[options]",
           "too.many": "You can't write more than one question. Please try again with writing one question.",
           "max.answer": "You can add maximum {0} option to your question.",
           "error": "The question could not be sended on the chat channel for some reason."
         },
         "vote": {
-          "description": "Creates a two-option voting poll.",
-          "usage": "[time(1m | 1h) | -1(indefinite)] [voting text]",
+          "description": "Creates a two-option voting poll",
+          "usage": "[time] [voting text]",
           "embed": {
             "description": "The voting has started!",
             "fields": {

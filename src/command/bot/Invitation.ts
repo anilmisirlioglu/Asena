@@ -12,7 +12,8 @@ export default class Invitation extends Command{
             aliases: ['invite', 'party', 'davetiye', 'link'],
             description: 'commands.bot.invitation.description',
             usage: null,
-            permission: undefined
+            permission: undefined,
+            examples: []
         })
     }
 

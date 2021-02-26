@@ -13,7 +13,11 @@ export default class ReRollRaffle extends Command{
             aliases: ['tekrarçek'],
             description: 'commands.raffle.reroll.description',
             usage: 'global.message-id',
-            permission: 'ADMINISTRATOR'
+            permission: 'ADMINISTRATOR',
+            examples: [
+                '',
+                '111111111111111111'
+            ]
         });
     }
 

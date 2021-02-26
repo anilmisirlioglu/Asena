@@ -19,7 +19,13 @@ class EditRaffle extends Command{
             aliases: ['düzenle', 'set'],
             description: 'commands.raffle.edit.description',
             usage: 'commands.raffle.edit.usage',
-            permission: 'ADMINISTRATOR'
+            permission: 'ADMINISTRATOR',
+            examples: [
+                'color FFFFFF',
+                'color D7B5EB --raffle 814668595170639873',
+                'prize Lorem Ipsum',
+                'rewardRoles + @Role,RoleID'
+            ]
         })
     }
 
