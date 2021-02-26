@@ -13,7 +13,8 @@ export default class Help extends Command{
             aliases: ['yardim', 'yardım'],
             description: 'commands.bot.help.description',
             usage: null,
-            permission: undefined
+            permission: undefined,
+            examples: []
         })
     }
 
@@ -51,15 +52,20 @@ export default class Help extends Command{
             return true;
         }else{
             const searchCommand: Command | undefined = client.getCommandHandler().getCommandsMap().filter($command => $command.name === command.trim()).first();
-            if(searchCommand !== undefined){
+            if(searchCommand){
+                const fullCMD = prefix + searchCommand.name
                 const embed = new MessageEmbed()
                     .setAuthor(`📍 ${server.translate('commands.bot.help.embed.title')}`, message.author.displayAvatarURL() || message.author.defaultAvatarURL)
-                    .addField(server.translate('commands.bot.help.embed.fields.command'), `${prefix}${searchCommand.name}`)
+                    .addField(server.translate('commands.bot.help.embed.fields.command'), fullCMD)
                     .addField(server.translate('commands.bot.help.embed.fields.alias'), searchCommand.aliases.map(alias => `${prefix}${alias}`).join('\n'))
-                    .addField(server.translate('commands.bot.help.embed.fields.description'), `${server.translate(searchCommand.description)}`)
-                    .addField(server.translate('commands.bot.help.embed.fields.permission'), `${searchCommand.permission === 'ADMINISTRATOR' ? server.translate('global.admin') : server.translate('global.member')}`)
-                    .addField(server.translate('commands.bot.help.embed.fields.usage'), `${prefix}${searchCommand.name} ${searchCommand.usage === null ? '' : server.translate(searchCommand.usage)}`)
+                    .addField(server.translate('commands.bot.help.embed.fields.description'), server.translate(searchCommand.description))
+                    .addField(server.translate('commands.bot.help.embed.fields.permission'), searchCommand.permission === 'ADMINISTRATOR' ? server.translate('global.admin') : server.translate('global.member'))
+                    .addField(server.translate('commands.bot.help.embed.fields.usage'), `${fullCMD} ${searchCommand.usage === null ? '' : server.translate(searchCommand.usage)}`)
                     .setColor('GREEN')
+
+                if(searchCommand.examples.length > 0){
+                    embed.addField(server.translate('global.example'), searchCommand.examples.length === 1 ? fullCMD + ' ' + searchCommand.examples : '\n' + searchCommand.examples.map(item => fullCMD + ' ' + item).join('\n'))
+                }
 
                 await message.channel.send({ embed })
 

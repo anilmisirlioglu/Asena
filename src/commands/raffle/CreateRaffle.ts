@@ -16,7 +16,12 @@ export default class CreateRaffle extends Command{
             aliases: ['çekilişoluştur', 'çekilişbaşlat', 'cekilisbaslat', 'createraffle'],
             description: 'commands.raffle.create.description',
             usage: 'commands.raffle.create.usage',
-            permission: 'ADMINISTRATOR'
+            permission: 'ADMINISTRATOR',
+            examples: [
+                '1 1m Lorem Ipsum',
+                '5 2h Test',
+                '15 10d Premium'
+            ]
         });
     }
 

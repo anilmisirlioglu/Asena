@@ -7,36 +7,41 @@ interface CommandOptions{
     aliases: string[],
     description: string,
     usage: string | null,
-    permission: PermissionString | undefined
+    permission: PermissionString | undefined,
+    examples: string[]
 }
 
 export default abstract class Command{
 
-    protected constructor(protected readonly options: CommandOptions){}
+    protected constructor(protected readonly props: CommandOptions){}
 
     public get name(): string{
-        return this.options.name
+        return this.props.name
     }
 
     public get aliases(): string[]{
-        return this.options.aliases
+        return this.props.aliases
     }
 
     public get description(): string{
-        return this.options.description
+        return this.props.description
     }
 
     public get usage(): string | null{
-        return this.options.usage
+        return this.props.usage
     }
 
     public get permission(): string | undefined{
-        return this.options.permission
+        return this.props.permission
+    }
+
+    public get examples(): string[]{
+        return this.props.examples
     }
 
     public hasPermission(member: GuildMember): boolean{
-        if(this.options.permission){
-            return member.hasPermission(this.options.permission)
+        if(this.props.permission){
+            return member.hasPermission(this.props.permission)
         }
 
         return true
@@ -46,8 +51,7 @@ export default abstract class Command{
 
     public getErrorEmbed(error: string): MessageEmbed{
         return new MessageEmbed()
-            .setAuthor(SuperClient.NAME, SuperClient.AVATAR)
-            .setDescription(error)
+            .setDescription('<:error:812708631035248670> ' + error)
             .setColor('RED')
     }
 

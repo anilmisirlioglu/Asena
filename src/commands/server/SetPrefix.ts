@@ -8,10 +8,11 @@ export default class SetPrefix extends Command{
     constructor(){
         super({
             name: 'setprefix',
-            aliases: ['prefixdeğiştir'],
+            aliases: ['prefixdeğiştir', 'prefix'],
             description: 'commands.server.prefix.description',
             usage: 'commands.server.prefix.usage',
-            permission: 'ADMINISTRATOR'
+            permission: 'ADMINISTRATOR',
+            examples: ['?']
         });
     }
 

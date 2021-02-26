@@ -12,7 +12,13 @@ export default class Locale extends Command{
             aliases: ['lang', 'language', 'dil'],
             description: 'commands.server.locale.description',
             usage: 'commands.server.locale.usage',
-            permission: 'ADMINISTRATOR'
+            permission: 'ADMINISTRATOR',
+            examples: [
+                'list',
+                'reset',
+                'set en',
+                'set tr'
+            ]
         })
     }
 

@@ -19,7 +19,8 @@ export default class SetupRaffle extends Command{
             aliases: ['sihirbaz'],
             description: 'commands.raffle.setup.description',
             usage: null,
-            permission: 'ADMINISTRATOR'
+            permission: 'ADMINISTRATOR',
+            examples: []
         })
     }
 

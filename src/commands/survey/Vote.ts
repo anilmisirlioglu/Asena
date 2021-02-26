@@ -14,7 +14,11 @@ export default class Vote extends Command{
             aliases: ['anket', 'anketoluştur', 'startvote', 'voting', 'vote'],
             description: 'commands.survey.vote.description',
             usage: 'commands.survey.vote.usage',
-            permission: 'ADMINISTRATOR'
+            permission: 'ADMINISTRATOR',
+            examples: [
+                '1m Lorem Ipsum',
+                '-1 Infinity Survey Text'
+            ]
         });
     }
 

@@ -13,7 +13,11 @@ export default class Question extends Command{
             aliases: ['sorusor', 'soru'],
             description: 'commands.survey.question.description',
             usage: 'commands.survey.question.usage',
-            permission: 'ADMINISTRATOR'
+            permission: 'ADMINISTRATOR',
+            examples: [
+                '{question} [answer 1] [answer 2] [answer n]',
+                '{1 + 1} [2] [11]'
+            ]
         });
     }
 
