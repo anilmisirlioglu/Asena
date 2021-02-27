@@ -1,7 +1,7 @@
 import SuperClient from '../SuperClient';
 import { Invite, Message, Role } from 'discord.js';
 import { RaffleLimits } from '../Constants';
-import { decodeAndConvertTimeByUnit } from './DateTimeHelper';
+import { strToSeconds } from './DateTimeHelper';
 
 interface FlagValidatorReturnType{
     readonly ok: boolean,
@@ -39,8 +39,8 @@ export const Flags: FlagMap = {
         }
     },
     time: async (client, message, value) => {
-        const toSecond: number = decodeAndConvertTimeByUnit(value);
-        if(!toSecond){
+        const toSecond = strToSeconds(value)
+        if(toSecond <= 0){
             return {
                 ok: false,
                 message: 'validator.time.invalid'

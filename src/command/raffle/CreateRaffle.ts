@@ -19,10 +19,10 @@ export default class CreateRaffle extends Command{
             permission: 'ADMINISTRATOR',
             examples: [
                 '1 1m Lorem Ipsum',
-                '5 2h Test',
+                '5 2m2h3s Test',
                 '15 10d Premium'
             ]
-        });
+        })
     }
 
     async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{

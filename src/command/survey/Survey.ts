@@ -3,7 +3,7 @@ import { Message, MessageEmbed } from 'discord.js';
 import { Emojis, SurveyLimits } from '../../Constants';
 import SuperClient from '../../SuperClient';
 import SurveyModel from '../../models/Survey';
-import { decodeAndConvertTimeByUnit, secondsToString, strToSeconds } from '../../utils/DateTimeHelper';
+import { secondsToString, strToSeconds } from '../../utils/DateTimeHelper';
 import Server from '../../structures/Server';
 
 export default class Survey extends Command{
