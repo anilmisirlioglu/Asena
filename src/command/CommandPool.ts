@@ -14,7 +14,7 @@ import Permission from './server/Permission';
 import Prefix from './server/Prefix';
 import Premium from './server/Premium';
 import Question from './survey/Question';
-import Vote from './survey/Vote';
+import Survey from './survey/Survey';
 
 export default class CommandPool{
 
@@ -65,7 +65,7 @@ export default class CommandPool{
 
     private readonly SURVEY_COMMANDS = [
         new Question(),
-        new Vote()
+        new Survey()
     ]
 
 }

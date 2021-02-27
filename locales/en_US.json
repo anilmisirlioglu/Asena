@@ -541,7 +541,7 @@
         },
         "vote": {
           "description": "Creates a two-option voting poll",
-          "usage": "[time] [voting text]",
+          "usage": "(time) [voting text]",
           "embed": {
             "description": "The voting has started!",
             "fields": {
