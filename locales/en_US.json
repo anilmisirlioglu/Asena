@@ -51,10 +51,13 @@
           "12": "December"
         },
         "units": {
-          "day": "day",
-          "hour": "hour",
-          "minute": "minute",
-          "second": "second"
+          "year": "years",
+          "month": "months",
+          "week": "weeks",
+          "day": "days",
+          "hour": "hours",
+          "minute": "minutes",
+          "second": "seconds"
         },
         "time": "Time"
       },

@@ -2,7 +2,7 @@ import { Message, MessageEmbed } from 'discord.js'
 
 import Command from '../Command'
 import Constants from '../../Constants'
-import { getDateTimeToString } from '../../utils/DateTimeHelper'
+import { dateTimeToString } from '../../utils/DateTimeHelper'
 import SuperClient from '../../SuperClient';
 import Server from '../../structures/Server';
 
@@ -36,8 +36,8 @@ export default class Raffles extends Command{
                     creator: `<@${raffle.constituent_id}>`,
                     channel: `<#${raffle.channel_id}>`,
                     'winner.count': `**${raffle.numbersOfWinner}**`,
-                    start: `**${getDateTimeToString(new Date(raffle.createdAt), server.locale)}** (UTC)`,
-                    finish: `**${getDateTimeToString(new Date(raffle.finishAt), server.locale)}** (UTC)`
+                    start: `**${dateTimeToString(new Date(raffle.createdAt), server.locale)}** (UTC)`,
+                    finish: `**${dateTimeToString(new Date(raffle.finishAt), server.locale)}** (UTC)`
                 }
 
                 embed.addField(`${i++}. ${raffle.prize}`, Object.entries(data).map(([key, value]) => {

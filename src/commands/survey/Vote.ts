@@ -3,7 +3,7 @@ import { Message, MessageEmbed } from 'discord.js';
 import Constants from '../../Constants';
 import SuperClient from '../../SuperClient';
 import Survey from '../../models/Survey';
-import { detectTime, secondsToTime } from '../../utils/DateTimeHelper';
+import { detectTime, secondsToString } from '../../utils/DateTimeHelper';
 import Server from '../../structures/Server';
 
 export default class Vote extends Command{
@@ -73,7 +73,7 @@ export default class Vote extends Command{
                 .setAuthor(message.author.username, message.author.displayAvatarURL() || message.author.defaultAvatarURL)
                 .setColor('#ffd1dc')
                 .setDescription(server.translate('commands.survey.vote.embed.description'))
-                .setFooter(`${server.translate('commands.survey.vote.embed.footer')}: ${secondsToTime(time, server.locale).toString()}`)
+                .setFooter(`${server.translate('commands.survey.vote.embed.footer')}: ${secondsToString(time, server.locale).toString()}`)
                 .setTimestamp()
                 .addField(server.translate('commands.survey.vote.embed.fields.question'), args.filter(arg => arg !== undefined).join(' '), true)
 

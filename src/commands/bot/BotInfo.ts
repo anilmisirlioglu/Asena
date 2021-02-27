@@ -1,7 +1,7 @@
 import Command from '../Command';
 import { Message, MessageEmbed, version } from 'discord.js';
 import SuperClient from '../../SuperClient';
-import { secondsToTime } from '../../utils/DateTimeHelper';
+import { secondsToString } from '../../utils/DateTimeHelper';
 import * as os from 'os';
 import Byte from '../../utils/Byte';
 import MongoDB from '../../drivers/MongoDB';
@@ -22,7 +22,7 @@ export default class BotInfo extends Command{
 
     async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
         const argsOfTranslate = [
-            secondsToTime(Math.floor(client.uptime / 1000), server.locale).toString(),
+            secondsToString(Math.floor(client.uptime / 1000), server.locale).toString(),
             process.versions.node,
             version,
             client.version.getFullVersion(),
@@ -33,7 +33,7 @@ export default class BotInfo extends Command{
             os.cpus().shift().speed,
             os.cpus().length / 2,
             os.cpus().length,
-            secondsToTime(os.uptime(), server.locale).toString(),
+            secondsToString(os.uptime(), server.locale).toString(),
             Byte.getSymbolByQuantity(os.totalmem()),
             Byte.getSymbolByQuantity(os.totalmem() - os.freemem()),
             Byte.getSymbolByQuantity(os.freemem()),

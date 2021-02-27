@@ -1,5 +1,5 @@
 import Command from '../Command'
-import { secondsToTime, detectTime } from '../../utils/DateTimeHelper'
+import { secondsToString, detectTime } from '../../utils/DateTimeHelper'
 import { Message, TextChannel } from 'discord.js'
 import Constants from '../../Constants'
 import InteractiveSetup from '../../setup/InteractiveSetup'
@@ -122,7 +122,7 @@ export default class SetupRaffle extends Command{
                                 }
                             }
 
-                            const $secondsToTime = secondsToTime(toSecond, server.locale)
+                            const $secondsToTime = secondsToString(toSecond, server.locale)
                             message.channel.send(Constants.CONFETTI_REACTION_EMOJI + ' ' + server.translate('commands.raffle.setup.phases.time.validator.success', $secondsToTime.toString()))
                             return {
                                 result: true,

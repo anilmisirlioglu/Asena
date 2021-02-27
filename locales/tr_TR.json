@@ -39,6 +39,9 @@
           "12": "Aralık"
         },
         "units": {
+          "year": "yıl",
+          "month": "ay",
+          "week": "hafta",
           "day": "gün",
           "hour": "saat",
           "minute": "dakika",

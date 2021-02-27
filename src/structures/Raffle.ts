@@ -9,7 +9,7 @@ import {
 import Structure from './Structure';
 import RaffleModel, { IRaffle, RaffleStatus } from '../models/Raffle';
 import Timestamps from '../models/legacy/Timestamps';
-import { secondsToTime } from '../utils/DateTimeHelper';
+import { secondsToString } from '../utils/DateTimeHelper';
 import Constants from '../Constants';
 import ArrayRandom from '../array/ArrayRandom';
 import ID from '../models/legacy/ID';
@@ -146,8 +146,8 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
 
     public getEmbed(server: Server, alert: boolean = false, customRemainingTime: number = undefined): MessageEmbed{
         const finishAt: Date = this.finishAt
-        const time = secondsToTime(Math.ceil((finishAt.getTime() - this.createdAt.getTime()) / 1000), server.locale)
-        const remaining = secondsToTime(customRemainingTime ?? Math.ceil((finishAt.getTime() - Date.now()) / 1000), server.locale)
+        const time = secondsToString(Math.ceil((finishAt.getTime() - this.createdAt.getTime()) / 1000), server.locale)
+        const remaining = secondsToString(customRemainingTime ?? Math.ceil((finishAt.getTime() - Date.now()) / 1000), server.locale)
 
         return new MessageEmbed()
             .setAuthor(this.prize)
