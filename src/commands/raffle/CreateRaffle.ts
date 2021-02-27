@@ -3,7 +3,7 @@ import { Message } from 'discord.js'
 import Command from '../Command'
 import Constants from '../../Constants'
 import SuperClient from '../../SuperClient';
-import { decodeAndConvertTimeByUnit } from '../../utils/DateTimeHelper';
+import { strToSeconds } from '../../utils/DateTimeHelper';
 import { IRaffle } from '../../models/Raffle';
 import Server from '../../structures/Server';
 import Raffle from '../../structures/Raffle';
@@ -19,10 +19,10 @@ export default class CreateRaffle extends Command{
             permission: 'ADMINISTRATOR',
             examples: [
                 '1 1m Lorem Ipsum',
-                '5 2h Test',
+                '5 2m2h3s Test',
                 '15 10d Premium'
             ]
-        });
+        })
     }
 
     async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
@@ -51,8 +51,8 @@ export default class CreateRaffle extends Command{
             return true
         }
 
-        const toSecond: number = decodeAndConvertTimeByUnit(time);
-        if(!toSecond){
+        const toSecond = strToSeconds(time)
+        if(toSecond <= 0){
             await message.channel.send({
                 embed: this.getErrorEmbed(server.translate('commands.raffle.create.limits.time.invalid'))
             })
