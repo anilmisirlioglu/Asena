@@ -5,7 +5,7 @@ import Server from '../../structures/Server';
 import { Message } from 'discord.js';
 import FlagValidator from '../../utils/FlagValidator';
 import { RaffleLimits } from '../../Constants';
-import { secondsToTime } from '../../utils/DateTimeHelper';
+import { secondsToString } from '../../utils/DateTimeHelper';
 
 const RED_TICK = '<:red_tick:737035767150411889>'
 const GREEN_TICK = '<:green_tick:737035767301275770>'
@@ -210,7 +210,7 @@ class EditRaffle extends Command{
                         }
 
                         finishAt = finishAt - result
-                        successText = server.translate('commands.raffle.edit.time.down.success', secondsToTime(result / 1000, server.locale).toString())
+                        successText = server.translate('commands.raffle.edit.time.down.success', secondsToString(result / 1000, server.locale).toString())
                         break
 
                     case '+':
@@ -221,7 +221,7 @@ class EditRaffle extends Command{
                         }
 
                         finishAt = finishAt + result
-                        successText = server.translate('commands.raffle.edit.time.up.success', secondsToTime(result / 1000, server.locale).toString())
+                        successText = server.translate('commands.raffle.edit.time.up.success', secondsToString(result / 1000, server.locale).toString())
                         break
                 }
 

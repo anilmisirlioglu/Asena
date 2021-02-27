@@ -12,7 +12,7 @@ import {
 import Structure from './Structure';
 import RaffleModel, { IPartialServer, IRaffle, RaffleStatus } from '../models/Raffle';
 import Timestamps from '../models/legacy/Timestamps';
-import { secondsToTime } from '../utils/DateTimeHelper';
+import { secondsToString } from '../utils/DateTimeHelper';
 import { Emojis } from '../Constants';
 import ID from '../models/legacy/ID';
 import SuperClient from '../SuperClient';
@@ -213,8 +213,8 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
 
     public buildEmbed(alert: boolean = false, rm: number = undefined): MessageEmbed{
         const finishAt: Date = this.finishAt
-        const time = secondsToTime(Math.ceil((finishAt.getTime() - this.createdAt.getTime()) / 1000), Raffle.locale)
-        const remaining = secondsToTime(rm ?? Math.ceil((finishAt.getTime() - Date.now()) / 1000), Raffle.locale)
+        const time = secondsToString(Math.ceil((finishAt.getTime() - this.createdAt.getTime()) / 1000), Raffle.locale)
+        const remaining = secondsToString(rm ?? Math.ceil((finishAt.getTime() - Date.now()) / 1000), Raffle.locale)
 
         let description
         if(this.isNewEmbed){

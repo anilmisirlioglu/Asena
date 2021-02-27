@@ -1,64 +1,74 @@
 import LanguageManager from '../language/LanguageManager';
 
-declare interface SecondsToTime{
-    readonly d: number
-    readonly h: number
-    readonly m: number
-    readonly s: number
+interface TimeUnits{
+    year,
+    month,
+    week,
+    day,
+    hour,
+    minute,
+    second
+}
+
+const TimeUnitSeconds = {
+    year: 31536000,
+    month: 2592000,
+    week: 604800,
+    day: 86400,
+    hour: 3600,
+    minute: 60,
+    second: 1
+}
+
+interface ISecondConvert extends TimeUnits{
     toString(): string
 }
 
-const secondsToTime = ($seconds: number, locale = LanguageManager.DEFAULT_LANGUAGE): SecondsToTime => {
-    const secondsInAMinute = 60;
-    const secondsInAnHour = 60 * secondsInAMinute;
-    const secondsInADay = 24 * secondsInAnHour;
-
-    const days = Math.floor($seconds / secondsInADay);
-
-    const hourSeconds = $seconds % secondsInADay;
-    const hours = Math.floor(hourSeconds / secondsInAnHour);
-
-    const minuteSeconds = hourSeconds % secondsInAnHour;
-    const minutes = Math.floor(minuteSeconds / secondsInAMinute);
-
-    const remainingSeconds = minuteSeconds % secondsInAMinute;
-    const seconds = Math.ceil(remainingSeconds);
-
-    return {
-        d: days,
-        h: hours,
-        m: minutes,
-        s: seconds,
-        toString(): string{
-            let arr = [];
-            if(days !== 0){
-                arr.push(`${days} ${LanguageManager.translate(locale, 'global.date-time.units.day')}`)
-            }
-
-            if(hours !== 0){
-                arr.push(`${hours} ${LanguageManager.translate(locale, 'global.date-time.units.hour')}`)
-            }
-
-            if(minutes !== 0){
-                arr.push(`${minutes} ${LanguageManager.translate(locale, 'global.date-time.units.minute')}`)
-            }
-
-            if(seconds !== 0){
-                arr.push(`${seconds} ${LanguageManager.translate(locale, 'global.date-time.units.second')}`)
-            }
-
-            return arr.join(', ')
-        }
+const secondsToString = (
+    delta: number,
+    locale: string = LanguageManager.DEFAULT_LANGUAGE,
+    chunk: number = 5
+): ISecondConvert => {
+    const result: TimeUnits = {
+        year: 0,
+        month: 0,
+        week: 0,
+        day: 0,
+        hour: 0,
+        minute: 0,
+        second: 0
     }
+
+    Object.keys(TimeUnitSeconds).forEach((key) => {
+        result[key] = Math.floor(delta / TimeUnitSeconds[key])
+        delta -= result[key] * TimeUnitSeconds[key]
+    })
+
+    return Object.assign(result, {
+        toString(): string{
+            let arr = []
+            if(result.year !== 0) arr.push(`${result.year} ${LanguageManager.translate(locale, 'global.date-time.units.year')}`)
+            if(result.month !== 0) arr.push(`${result.month} ${LanguageManager.translate(locale, 'global.date-time.units.month')}`)
+            if(result.week !== 0) arr.push(`${result.week} ${LanguageManager.translate(locale, 'global.date-time.units.week')}`)
+            if(result.day !== 0) arr.push(`${result.day} ${LanguageManager.translate(locale, 'global.date-time.units.day')}`)
+            if(result.hour !== 0) arr.push(`${result.hour} ${LanguageManager.translate(locale, 'global.date-time.units.hour')}`)
+            if(result.minute !== 0) arr.push(`${result.minute} ${LanguageManager.translate(locale, 'global.date-time.units.minute')}`)
+            if(result.second !== 0) arr.push(`${result.second} ${LanguageManager.translate(locale, 'global.date-time.units.second')}`)
+
+            return arr.slice(0, chunk).join(', ')
+        }
+    })
 }
 
-const getDateTimeToString = (date: Date, locale = LanguageManager.DEFAULT_LANGUAGE): string => {
-    const month = LanguageManager.translate(locale, `global.date-time.months.${(date.getUTCMonth() + 1).toString()}`)
+const dateTimeToString = (date: Date, locale = LanguageManager.DEFAULT_LANGUAGE): string => {
+    const month = LanguageManager.translate(locale, `global.date-time.months.${(date.getUTCMonth() + 1)}`)
 
-    const hours = date.getUTCHours()
-    const minutes = date.getUTCMinutes()
-    const seconds = date.getUTCSeconds()
-    return `${date.getUTCDate()} ${month} ${date.getUTCFullYear()} ${String(hours).length === 1 ? `0${hours}` : hours}:${String(minutes).length === 1 ? `0${minutes}` : minutes}:${String(seconds).length === 1 ? `0${seconds}` : seconds}`
+    return `${date.getUTCDate()} ${month} ${date.getUTCFullYear()} ${fillZero(date.getUTCHours())}:${fillZero(date.getUTCMinutes())}:${date.getUTCSeconds()}`
+}
+
+const fillZero = (number: number | string): string => {
+    number = String(number)
+    return number.length === 1 ? `0${number}` : number
 }
 
 const detectTime = (time: string): number | undefined => {
@@ -104,8 +114,8 @@ const parseObjectDate = object => {
 }
 
 export {
-    secondsToTime,
-    getDateTimeToString,
+    secondsToString,
+    dateTimeToString,
     detectTime,
     parseObjectDate
 }

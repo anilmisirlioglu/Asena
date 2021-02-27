@@ -2,7 +2,7 @@ import { Message, MessageEmbed } from 'discord.js'
 import Command from '../Command'
 import SuperClient from '../../SuperClient'
 import Server from '../../structures/Server'
-import { getDateTimeToString } from '../../utils/DateTimeHelper'
+import { dateTimeToString } from '../../utils/DateTimeHelper'
 import { PremiumType } from '../../models/Premium'
 
 export default class Premium extends Command{
@@ -23,8 +23,8 @@ export default class Premium extends Command{
         if(server.isPremium()){
             description = server.translate('commands.server.premium.info', ...[
                 server.translate(`global.premium.${server.premium.humanizeType()}`),
-                getDateTimeToString(server.premium.startAt, server.locale),
-                server.premium.type === PremiumType.PERMANENT ? `${server.translate('global.unlimited')} ♾️` : getDateTimeToString(server.premium.finishAt, server.locale)
+                dateTimeToString(server.premium.startAt, server.locale),
+                server.premium.type === PremiumType.PERMANENT ? `${server.translate('global.unlimited')} ♾️` : dateTimeToString(server.premium.finishAt, server.locale)
             ])
         }else{
             description = server.translate('commands.server.premium.try')
