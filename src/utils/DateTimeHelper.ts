@@ -71,15 +71,23 @@ const fillZero = (number: number | string): string => {
     return number.length === 1 ? `0${number}` : number
 }
 
-const detectTime = (time: string): number | undefined => {
+const strToSeconds = (text: string): number => {
+    const arr = text.match(/([0-9]+)([smhd])/gi)
+    if(!arr || arr.length === 0) return 0
+
+    return arr
+        .map(decodeAndConvertTimeByUnit)
+        .filter(Boolean)
+        .reduce((a, b) => a + b, 0)
+}
+
+const decodeAndConvertTimeByUnit = (time: string): number | undefined => {
     const type: string = time.slice(-1)
     const value: number = Number(time.slice(0, time.length - 1))
 
-    let toSecond: number | undefined
-    if(isNaN(value)){
-        return undefined
-    }
+    if(isNaN(value)) return undefined
 
+    let toSecond: number | undefined
     switch(type){
         case 's':
             toSecond = value
@@ -104,5 +112,6 @@ const detectTime = (time: string): number | undefined => {
 export {
     secondsToString,
     dateTimeToString,
-    detectTime
+    strToSeconds,
+    decodeAndConvertTimeByUnit
 }

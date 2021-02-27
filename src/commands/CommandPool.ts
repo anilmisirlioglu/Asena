@@ -11,7 +11,7 @@ import Locale from './server/Locale';
 import SetCommandPermission from './server/SetCommandPermission';
 import SetPrefix from './server/SetPrefix';
 import Question from './survey/Question';
-import Vote from './survey/Vote';
+import Survey from './survey/Survey';
 import Command from './Command';
 
 export default class CommandPool implements Iterable<Command>{
@@ -60,7 +60,7 @@ export default class CommandPool implements Iterable<Command>{
 
     private readonly SURVEY_COMMANDS = [
         new Question(),
-        new Vote()
+        new Survey()
     ]
 
 }

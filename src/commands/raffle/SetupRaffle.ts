@@ -1,5 +1,5 @@
 import Command from '../Command'
-import { secondsToString, detectTime } from '../../utils/DateTimeHelper'
+import { secondsToString, decodeAndConvertTimeByUnit } from '../../utils/DateTimeHelper'
 import { Message, TextChannel } from 'discord.js'
 import Constants from '../../Constants'
 import InteractiveSetup from '../../setup/InteractiveSetup'
@@ -105,7 +105,7 @@ export default class SetupRaffle extends Command{
                         message: server.translate('commands.raffle.setup.phases.time.message'),
                         validator: (message: Message) => {
                             const time = message.content.replace(/ /g, '')
-                            const toSecond = detectTime(time)
+                            const toSecond = decodeAndConvertTimeByUnit(time)
                             if(!toSecond){
                                 message.channel.send(PREFIX + server.translate('commands.raffle.create.limits.time.invalid'))
                                 return {

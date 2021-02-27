@@ -358,7 +358,7 @@
         },
         "vote": {
           "description": "İki seçenekli oylama anketi oluşturur",
-          "usage": "[süre] [oylama metni]",
+          "usage": "(süre) [oylama metni]",
           "embed": {
             "description": "Oylama Başladı!",
             "fields": {
