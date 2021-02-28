@@ -139,6 +139,7 @@
       },
       "bot": {
         "ping": {
+          "description": "Botun ağ gecikme sürelerini gösterir",
           "title": "Ağ Bilgisi",
           "latency": {
             "bot": "Bot Gecikmesi",
