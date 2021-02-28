@@ -204,6 +204,7 @@
       "bot": {
         "ping": {
           "description": "Botun ağ gecikme sürelerini gösterir",
+          "calculating": "Hesaplanıyor...",
           "title": "Ağ Bilgisi",
           "latency": {
             "bot": "Bot Gecikmesi",

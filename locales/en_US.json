@@ -216,6 +216,7 @@
       "bot": {
         "ping": {
           "description": "Displays the bot network latency information",
+          "calculating": "Calculating...",
           "title": "Network Info",
           "latency": {
             "bot": "Bot Latency",
