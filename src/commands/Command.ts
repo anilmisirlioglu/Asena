@@ -1,6 +1,7 @@
 import { GuildMember, Message, MessageEmbed, PermissionString } from 'discord.js'
 import SuperClient from '../SuperClient';
 import Server from '../structures/Server';
+import ArgValidatorKit from './ArgValidatorKit';
 
 interface CommandOptions{
     name: string
@@ -11,9 +12,11 @@ interface CommandOptions{
     examples: string[]
 }
 
-export default abstract class Command{
+export default abstract class Command extends ArgValidatorKit{
 
-    protected constructor(protected readonly props: CommandOptions){}
+    protected constructor(protected readonly props: CommandOptions){
+        super()
+    }
 
     public get name(): string{
         return this.props.name

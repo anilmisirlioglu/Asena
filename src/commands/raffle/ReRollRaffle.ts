@@ -12,17 +12,40 @@ export default class ReRollRaffle extends Command{
             name: 'reroll',
             aliases: ['tekrarcek'],
             description: 'commands.raffle.reroll.description',
-            usage: 'global.message-id',
+            usage: 'commands.raffle.reroll.usage',
             permission: 'ADMINISTRATOR',
             examples: [
                 '',
-                '111111111111111111'
+                '1',
+                '111111111111111111',
+                '3 111111111111111111',
+                '111111111111111111 3'
             ]
-        });
+        })
     }
 
     async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
-        let message_id: string | undefined = args[0]
+        let message_id, count
+        for(const arg of args){
+            if(this.isValidSnowflake(arg)){
+                if(message_id) return false
+
+                message_id = arg.trim()
+            }else if(this.isValidNumber(arg)){
+                if(count) return false
+
+                const parse = parseInt(arg)
+                if(parse < 1){
+                    await message.channel.send({
+                        embed: this.getErrorEmbed(server.translate('commands.raffle.reroll.count.min'))
+                    })
+
+                    return true
+                }
+
+                count = parse
+            }else return false
+        }
 
         const raffle = await (message_id ? server.raffles.get(message_id) : server.raffles.getLastCreated())
         if(!raffle || !raffle.message_id){
@@ -59,7 +82,15 @@ export default class ReRollRaffle extends Command{
             }
         }
 
-        const winners = await raffle.identifyWinners(fetch)
+        if(count && count > raffle.numbersOfWinner){
+            await message.channel.send({
+                embed: this.getErrorEmbed(server.translate('commands.raffle.reroll.count.max', raffle.numbersOfWinner))
+            })
+
+            return true
+        }
+
+        const winners = await raffle.identifyWinners(fetch, count)
         const _message = raffle.getMessageURL()
         if(winners.length === 0){
             await message.channel.send(server.translate('commands.raffle.reroll.not.enough', _message))
