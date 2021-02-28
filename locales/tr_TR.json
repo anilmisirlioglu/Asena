@@ -346,7 +346,7 @@
           "canceled": "Bu çekiliş iptal edilmiş. İptal edilmiş bir çekilişin sonucu tekrar çekilemez.",
           "timeout": "Anlaşılan bu çekiliş mesajı silinmiş veya zaman aşımına uğramış.",
           "data.not.found": "Çekilişin katılımcı verileri bulunamadı.",
-          "count": {
+          "amount": {
             "min": "Yeniden çekilecek üye sayısı en az 1 olmalıdır.",
             "max": "Yeniden çekilecek üye sayısı, çekilişin kazanan sayısını aşamaz. Bu çekiliş için maksimum: **{0}**"
           },

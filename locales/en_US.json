@@ -359,7 +359,7 @@
           "canceled": "This giveaway has cancelled. Can not reroll a cancelled giveaway result.",
           "timeout": "Apparently this giveaway message has been deleted or has timed out.",
           "data.not.found": "Couldn't find the giveaway's participant data.",
-          "count": {
+          "amount": {
             "min": "The number of members to be again attract must be at least 1.",
             "max": "The number of members to be again attract, it cannot exceed the number of winners of the giveaway. Maximum for this giveaway: **{0}**"
           },
