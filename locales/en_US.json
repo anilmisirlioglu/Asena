@@ -214,6 +214,14 @@
         }
       },
       "bot": {
+        "ping": {
+          "description": "Displays the bot network latency information",
+          "title": "Network Info",
+          "latency": {
+            "bot": "Bot Latency",
+            "api": "API Latency"
+          }
+        },
         "invitation": {
           "description": "Gives the bots invitation link",
           "bot.url": "Bot Invitation Link",

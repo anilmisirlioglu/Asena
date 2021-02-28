@@ -15,6 +15,7 @@ import Prefix from './server/Prefix';
 import Premium from './server/Premium';
 import Question from './survey/Question';
 import Survey from './survey/Survey';
+import Ping from './bot/Ping';
 
 export default class CommandPool{
 
@@ -42,7 +43,8 @@ export default class CommandPool{
     private readonly BOT_COMMANDS = [
         new BotInfo(),
         new Help(),
-        new Invitation()
+        new Invitation(),
+        new Ping()
     ]
 
     private readonly RAFFLE_COMMANDS = [
