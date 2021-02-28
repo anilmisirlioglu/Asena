@@ -150,6 +150,13 @@
         }
       },
       "bot": {
+        "ping": {
+          "title": "Network Info",
+          "latency": {
+            "bot": "Bot Latency",
+            "api": "API Latency"
+          }
+        },
         "invitation": {
           "description": "Gives the bot invitation link",
           "bot.url": "Bot Invitation Link",

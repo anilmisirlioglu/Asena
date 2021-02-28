@@ -13,6 +13,7 @@ import SetPrefix from './server/SetPrefix';
 import Question from './survey/Question';
 import Survey from './survey/Survey';
 import Command from './Command';
+import Ping from './bot/Ping';
 
 export default class CommandPool implements Iterable<Command>{
 
@@ -40,7 +41,8 @@ export default class CommandPool implements Iterable<Command>{
     private readonly BOT_COMMANDS = [
         new BotInfo(),
         new Help(),
-        new Invitation()
+        new Invitation(),
+        new Ping()
     ]
 
     private readonly RAFFLE_COMMANDS = [

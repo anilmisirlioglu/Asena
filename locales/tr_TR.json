@@ -138,6 +138,13 @@
         }
       },
       "bot": {
+        "ping": {
+          "title": "Ağ Bilgisi",
+          "latency": {
+            "bot": "Bot Gecikmesi",
+            "api": "API Gecikmesi"
+          }
+        },
         "invitation": {
           "description": "Botun davet linkini verir",
           "bot.url": "Botun Davet Linki",
