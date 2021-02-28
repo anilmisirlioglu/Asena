@@ -17,7 +17,7 @@ export default class Ping extends Command{
     }
 
     async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
-        message.channel.send('<a:green_loading:736926844254814239> Calculating...').then(async m => {
+        message.channel.send(`<a:green_loading:736926844254814239> ${server.translate('commands.bot.ping.calculating')}`).then(async m => {
             const embed = new MessageEmbed()
                 .setAuthor(`${server.translate('commands.bot.ping.title')} 🚀`)
                 .setDescription([
