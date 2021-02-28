@@ -137,7 +137,10 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
         }
     }
 
-    public async identifyWinners(message: Message): Promise<string[]>{
+    public async identifyWinners(
+        message: Message,
+        numberOfWinners: number = this.numberOfWinners
+    ): Promise<string[]>{
         let winners = []
 
         if(message){
@@ -145,10 +148,10 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
             const [_, users] = (await reaction.users.fetch()).partition(user => user.bot)
             const userKeys = users.keyArray().filter(user_id => user_id !== this.constituent_id)
 
-            if(userKeys.length > this.numberOfWinners){
+            if(userKeys.length > numberOfWinners){
                 const randomArray = new RandomArray(userKeys)
                 randomArray.shuffle()
-                winners.push(...randomArray.random(this.numberOfWinners))
+                winners.push(...randomArray.random(numberOfWinners))
             }else{
                 winners.push(...userKeys)
             }

@@ -22,7 +22,7 @@
       "member": "Üye",
       "usage": "Kullanımı",
       "example": "Örnek",
-      "message-id": "[mesaj-id]",
+      "message-id": "(mesaj-id)",
       "unlimited": "Sınırsız",
       "date-time": {
         "months": {
@@ -506,6 +506,7 @@
         },
         "reroll": {
           "description": "Çekilişin kazananlarını tekrar belirler",
+          "usage": "(tekrar çekilecek kişi sayısı) (mesaj-id)",
           "not": {
             "found": "Tekrar çekilebilecek bir çekiliş bulunamadı.",
             "finish": "Bu çekiliş daha sonuçlanmamış. Lütfen çekilişin bitmesini bekleyin.",
@@ -515,6 +516,10 @@
           "canceled": "Bu çekiliş iptal edilmiş. İptal edilmiş bir çekilişin sonucu tekrar çekilemez.",
           "timeout": "Anlaşılan bu çekiliş mesajı silinmiş veya zaman aşımına uğramış.",
           "data.not.found": "Çekilişin katılımcı verileri bulunamadı.",
+          "amount": {
+            "min": "Yeniden çekilecek üye sayısı en az 1 olmalıdır.",
+            "max": "Yeniden çekilecek üye sayısı, çekilişin kazanan sayısını aşamaz. Bu çekiliş için maksimum: **{0}**"
+          },
           "success": "Tebrikler {0}! **{1}** kazandınız (Kazananlar tekrar çekildi)\n**Çekiliş:** {2}"
         }
       },

@@ -34,7 +34,7 @@
       "member": "Member",
       "usage": "Usage",
       "example": "Example",
-      "message-id": "[message-id]",
+      "message-id": "(message-id)",
       "unlimited": "Unlimited",
       "date-time": {
         "months": {
@@ -519,6 +519,7 @@
         },
         "reroll": {
           "description": "Determines the winners of the giveaway again",
+          "usage": "(amount) (message-id)",
           "not": {
             "found": "Couldn't find a rerollable giveaway.",
             "finish": "This lottery has not been ended yet. Please wait for the giveaway ending.",
@@ -528,6 +529,10 @@
           "canceled": "This giveaway has cancelled. Can not reroll a cancelled giveaway result.",
           "timeout": "Apparently this giveaway message has been deleted or has timed out.",
           "data.not.found": "Couldn't find the giveaway's participant data.",
+          "amount": {
+            "min": "The number of members to be again attract must be at least 1.",
+            "max": "The number of members to be again attract, it cannot exceed the number of winners of the giveaway. Maximum for this giveaway: **{0}**"
+          },
           "success": "Congratulations {0}! You have won **{1}** (The winners has rerolled.)\n**Giveaway:** {2}"
         }
       },
