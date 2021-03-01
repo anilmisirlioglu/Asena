@@ -161,7 +161,7 @@ export default abstract class SuperClient extends Client{
     }
 
     /**
-     * It only finds channels on servers in the shard.
+     * It only finds messages on servers in the shard.
      *
      * @param guildID
      * @param channelID
