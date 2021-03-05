@@ -121,7 +121,7 @@ export default abstract class SuperClient extends Client{
         if(channel instanceof TextChannel){
             return new Promise(resolve => {
                 return channel.messages
-                    .fetch(messageId)
+                    .fetch(messageId, false, true)
                     .catch(() => resolve(undefined))
                     .then((message: Message) => resolve(message))
             })
