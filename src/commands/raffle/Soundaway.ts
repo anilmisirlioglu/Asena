@@ -2,7 +2,7 @@ import Command from '../Command';
 import SuperClient from '../../SuperClient';
 import Server from '../../structures/Server';
 import { Message, MessageEmbed } from 'discord.js';
-import ArrayRandom from '../../array/ArrayRandom';
+import RandomArray from '../../utils/RandomArray';
 
 export default class Soundaway extends Command{
 
@@ -116,7 +116,7 @@ export default class Soundaway extends Command{
 
         const winners = []
         if(pool.length > numberOfWinners){
-            const random = new ArrayRandom(pool)
+            const random = new RandomArray(pool)
             random.shuffle()
             winners.push(...random.random(numberOfWinners))
         }else{

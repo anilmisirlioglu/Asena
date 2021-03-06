@@ -1,4 +1,4 @@
-export default class ArrayRandom<T extends any[]>{
+export default class RandomArray<T extends any[]>{
 
     constructor(private readonly array: T){}
 
