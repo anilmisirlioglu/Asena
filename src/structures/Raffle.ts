@@ -141,17 +141,16 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
         message: Message,
         numberOfWinners: number = this.numberOfWinners
     ): Promise<string[]>{
-        let winners = []
-
+        const winners = []
         if(message){
             const reaction: MessageReaction | undefined = await message.reactions.cache.get(Emojis.CONFETTI_REACTION_EMOJI)
             const [_, users] = (await reaction.users.fetch()).partition(user => user.bot)
             const userKeys = users.keyArray().filter(user_id => user_id !== this.constituent_id)
 
             if(userKeys.length > numberOfWinners){
-                const randomArray = new RandomArray(userKeys)
-                randomArray.shuffle()
-                winners.push(...randomArray.random(numberOfWinners))
+                const array = new RandomArray(userKeys)
+                array.shuffle()
+                winners.push(...array.random(numberOfWinners))
             }else{
                 winners.push(...userKeys)
             }
