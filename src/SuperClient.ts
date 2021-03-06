@@ -66,10 +66,9 @@ export default abstract class SuperClient extends Client{
                     'GUILD_VOICE_STATES'
                 ]
             },
-            // TODO(anilmisirlioglu)::change values
-            messageCacheMaxSize: 1024,
-            messageCacheLifetime: 600,
-            messageSweepInterval: 300
+            messageCacheMaxSize: 256,
+            messageCacheLifetime: 300,
+            messageSweepInterval: 240
         })
     }
 
