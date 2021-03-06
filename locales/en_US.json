@@ -128,6 +128,7 @@
         "creator": "Hosted by",
         "to.end": "Time remaining",
         "messages": {
+          "quick": "QUICK GIVEAWAY",
           "finish": "GIVEAWAY ENDED",
           "start": "GIVEAWAY STARTED",
           "alert": "LAST PARTICIPATION FOR THE GIVEAWAY"
@@ -252,6 +253,28 @@
         }
       },
       "raffle": {
+        "soundaway": {
+          "description": "Starts a new quick giveaway in the voice channel.",
+          "usage": "[number of winners] <@member-mention | voice-channel-id | empty> <title>",
+          "limits": {
+            "winner.count": "The winners of the giveaway must be maximum 20, minimum 1.",
+            "title.length": "The giveaway title must be maximum 256 character length."
+          },
+          "voice": {
+            "channel": {
+              "invalid": "Please enter a valid voice channel.",
+              "unauthorized": "The bot is not authorized to view users on this voice channel.",
+              "not.found": "Please enter a valid voice channel or member.",
+              "in": {
+                "not.found": {
+                  "user": "There are no users in this channel.",
+                  "users": "No members were found on voice channels."
+                }
+              },
+              "not.in.user": "This user in not in a voice channel."
+            }
+          }
+        },
         "create": {
           "description": "Creates a new giveaway",
           "usage": "[number of winners] [time] [prize]",

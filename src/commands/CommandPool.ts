@@ -14,6 +14,7 @@ import Question from './survey/Question';
 import Survey from './survey/Survey';
 import Command from './Command';
 import Ping from './bot/Ping';
+import Soundaway from './raffle/Soundaway';
 
 export default class CommandPool implements Iterable<Command>{
 
@@ -51,7 +52,8 @@ export default class CommandPool implements Iterable<Command>{
         new EndRaffle(),
         new Raffles(),
         new ReRollRaffle(),
-        new SetupRaffle()
+        new SetupRaffle(),
+        new Soundaway()
     ]
 
     private readonly SERVER_COMMANDS = [

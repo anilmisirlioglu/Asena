@@ -116,6 +116,7 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
         message: Message,
         numberOfWinners: number = this.numbersOfWinner
     ): Promise<string[]>{
+        // TODO(anilmisirlioglu)::refactor
         let winners = []
 
         if(message){

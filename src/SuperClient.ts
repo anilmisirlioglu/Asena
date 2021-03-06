@@ -62,9 +62,11 @@ export default abstract class SuperClient extends Client{
                     'GUILD_MESSAGES',
                     'GUILD_MESSAGE_REACTIONS',
                     'GUILD_EMOJIS',
-                    'GUILD_WEBHOOKS'
+                    'GUILD_WEBHOOKS',
+                    'GUILD_VOICE_STATES'
                 ]
             },
+            // TODO(anilmisirlioglu)::change values
             messageCacheMaxSize: 1024,
             messageCacheLifetime: 600,
             messageSweepInterval: 300
