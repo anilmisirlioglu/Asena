@@ -16,6 +16,7 @@ import Premium from './server/Premium';
 import Question from './survey/Question';
 import Survey from './survey/Survey';
 import Ping from './bot/Ping';
+import Soundaway from './raffle/Soundaway';
 
 export default class CommandPool{
 
@@ -55,7 +56,8 @@ export default class CommandPool{
         new EndRaffle(),
         new Raffles(),
         new ReRollRaffle(),
-        new SetupRaffle()
+        new SetupRaffle(),
+        new Soundaway()
     ]
 
     private readonly SERVER_COMMANDS = [

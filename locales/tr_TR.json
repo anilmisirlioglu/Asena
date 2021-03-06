@@ -172,6 +172,7 @@
           "roles": "Şu rollere sahip olmalısınız"
         },
         "messages": {
+          "quick": "HIZLI ÇEKİLİŞ",
           "finish": "ÇEKİLİŞ BİTTİ",
           "start": "ÇEKİLİŞ BAŞLADI",
           "alert": "ÇEKİLİŞ İÇİN SON KATILIM"
@@ -316,6 +317,28 @@
         }
       },
       "raffle": {
+        "soundaway": {
+          "description": "Ses kanalında yeni bir çekiliş oluşturur.",
+          "usage": "[kazanan sayısı] <@kullanıcı | ses-kanal-id | boş> <başlık>",
+          "limits": {
+            "winner.count": "Çekilişi kazanan üye sayısı maksimum 20, minimum 1 kişi olabilir.",
+            "title.length": "Çekiliş başlığı maksimum 255 karakter olabilir."
+          },
+          "voice": {
+            "channel": {
+              "invalid": "Lütfen geçerli bir ses kanalı girin.",
+              "unauthorized": "Botun bu kanaldaki kullanıcıları görme yetkisi yok.",
+              "not.found": "Lütfen geçerli bir kullanıcı veya kanal girin.",
+              "in": {
+                "not.found": {
+                  "user": "Bu kanalın içerisinde hiç kullanıcı yok.",
+                  "users": "Ses kanallarında üye bulunamadı."
+                }
+              },
+              "not.in.user": "Bu kullanıcı bir ses odasında değil."
+            }
+          }
+        },
         "create": {
           "description": "Yeni bir çekiliş oluşturur",
           "usage": "[kazanan sayısı] [süre] [ödül]",

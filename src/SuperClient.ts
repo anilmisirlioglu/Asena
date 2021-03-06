@@ -64,7 +64,8 @@ export default abstract class SuperClient extends Client{
                     'GUILD_MESSAGES',
                     'GUILD_MESSAGE_REACTIONS',
                     'GUILD_EMOJIS',
-                    'GUILD_WEBHOOKS'
+                    'GUILD_WEBHOOKS',
+                    'GUILD_VOICE_STATES'
                 ]
             },
             messageCacheMaxSize: 1024,
