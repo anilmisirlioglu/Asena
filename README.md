@@ -34,6 +34,7 @@ Example to make the bot's default language English:
 | setup | Starts the interactive setup wizard. |
 | end | Finish the giveaway early. |
 | raffles | List active giveaways on the server. |
+| soundaway | Starts a new quick giveaway in the voice channel. |
 | vote |  Starts a simple 2-option poll on the server. |
 | question | Asks a question. |
 | help | Sends the help menu to your inbox via a private message. |
@@ -41,6 +42,7 @@ Example to make the bot's default language English:
 | scperm | It regulates the authority of the command. |
 | invite | Sends the bots invite URL to the chat. |
 | locale | Changes the bots default language. |
+| ping | Displays the bot network latency information. |
 
 ## Invitation 🔗
 
