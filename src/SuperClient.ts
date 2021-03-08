@@ -57,14 +57,13 @@ export default abstract class SuperClient extends Client{
 
     protected constructor(private opts: SuperClientBuilderOptions){
         super({
-            partials: ['CHANNEL', 'MESSAGE', 'REACTION', 'GUILD_MEMBER'],
+            partials: ['MESSAGE', 'REACTION'],
             ws: {
                 intents: [
                     'GUILDS',
                     'GUILD_MESSAGES',
                     'GUILD_MESSAGE_REACTIONS',
                     'GUILD_EMOJIS',
-                    'GUILD_WEBHOOKS',
                     'GUILD_VOICE_STATES'
                 ]
             },
