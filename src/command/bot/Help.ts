@@ -36,7 +36,8 @@ export default class Help extends Command{
                 .setAuthor(`📍 ${server.translate('commands.bot.help.embed.title')}`, message.author.displayAvatarURL() || message.author.defaultAvatarURL)
                 .addField(server.translate('commands.bot.help.embed.fields.commands'), text)
                 .addField(`🌟 ${server.translate('commands.bot.help.embed.fields.more.detailed')}`, `${prefix}${this.name} [${server.translate('commands.bot.help.embed.fields.command')}]`)
-                .addField(`🌐 ${server.translate('commands.bot.help.embed.fields.more.info')}`, '**[Website](https://asena.xyz)**')
+                .addField(`🌐 ${server.translate('commands.bot.help.embed.fields.more.info')}`, `**[Website](https://asena.xyz)** - **[${server.translate('global.support')}](https://dc.asena.xyz)**`)
+                .addField(`⭐ ${server.translate('commands.bot.help.embed.fields.star')}`, '**[GitHub](https://github.com/anilmisirlioglu/Asena)**')
                 .setColor('RANDOM')
 
             message.author.createDM().then(channel => {

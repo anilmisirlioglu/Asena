@@ -36,6 +36,7 @@
         "uninitialized": "Uninitialized.",
         "unknown": "Unknown."
       },
+      "support": "Support Server",
       "admin": "Admin",
       "member": "Member",
       "usage": "Usage",
@@ -250,9 +251,10 @@
               "command": "Command",
               "commands": "Commands",
               "more": {
-                "detailed": "More Detailed Help?",
-                "info": "More Information?"
+                "detailed": "More detailed help?",
+                "info": "More information?"
               },
+              "star": "Support us by giving star to our project",
               "alias": "Alias",
               "description": "Description",
               "permission": "Minimum Permission Level",

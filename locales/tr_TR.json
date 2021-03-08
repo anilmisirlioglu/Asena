@@ -24,6 +24,7 @@
         "uninitialized": "Başlatılmamış.",
         "unknown": "Bilinmiyor."
       },
+      "support": "Destek Sunucusu",
       "admin": "Admin",
       "member": "Üye",
       "usage": "Kullanımı",
@@ -238,9 +239,10 @@
               "command": "Komut",
               "commands": "Komutlar",
               "more": {
-                "detailed": "Daha Detaylı Yardım?",
-                "info": "Daha Fazla Bilgi?"
+                "detailed": "Daha detaylı yardım?",
+                "info": "Daha fazla bilgi?"
               },
+              "star": "Projemize star vererek bizi destekleyin",
               "alias": "Takma Adları (Alias)",
               "description": "Açıklama",
               "permission": "Min. Yetki Seviyesi",
