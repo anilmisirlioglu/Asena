@@ -1,4 +1,4 @@
-import mongoose, { ConnectionOptions, Mongoose, STATES } from 'mongoose'
+import mongoose, { ConnectionOptions, Mongoose } from 'mongoose'
 import Logger from '../utils/Logger';
 
 export default class MongoDB{
@@ -74,5 +74,3 @@ export default class MongoDB{
     }
 
 }
-
-export { MongoDB }
