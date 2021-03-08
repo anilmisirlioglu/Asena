@@ -28,8 +28,14 @@
       "no": "No",
       "open": "open",
       "close": "close",
-      "connected": "Connected, stable.",
-      "disconnected": "Not connected.",
+      "states": {
+        "connected": "Connected, stable.",
+        "connecting": "Connecting.",
+        "disconnected": "Not connected.",
+        "disconnecting": "Disconnecting.",
+        "uninitialized": "Uninitialized.",
+        "unknown": "Unknown."
+      },
       "admin": "Admin",
       "member": "Member",
       "usage": "Usage",
@@ -195,23 +201,70 @@
           "embed": {
             "title": "Bot Information",
             "footer": "Made with ❤️ by Syntax Software",
-            "content": [
-              "Working Time (Uptime): **{0}**",
-              "NodeJS Version: **{0}**",
-              "DiscordJS Version: **{0}**",
-              "Asena Version: **{0}**",
-              "Asena Last Update: **{0}**",
-              "Platform (OS): **{0}**",
-              "Database Connection: {0}",
-              "CPU: **{0}**",
-              "CPU Speed: **{0} MHz**",
-              "CPU Core: **{0} Core / {1} Thread**",
-              "CPU Working Time (Uptime): **{0}**",
-              "Total Memory: **{0}**",
-              "Memory Used: **{0}**",
-              "Available Memory: **{0}**",
-              "Memory Used By Asena: **{0}**"
-            ]
+            "basic": {
+              "content": [
+                "Uptime: **{0}**",
+                "NodeJS Version: **{0}**",
+                "DiscordJS Version: **{0}**",
+                "Asena Version: **{0}**",
+                "Asena Last Update: **{0}**",
+                "Platform (OS): **{0}**",
+                "Database Connection: {0}",
+                "Database Version: **{0}**",
+                "Database Connection Count: **{0}**",
+                "CPU: **{0}**",
+                "CPU Speed: **{0} MHz**",
+                "CPU Core: **{0} Core / {1} Thread**",
+                "CPU Uptime: **{0}**",
+                "Total Memory: **{0}**",
+                "Memory Used: **{0}**",
+                "Available Memory: **{0}**",
+                "Memory Used by Shard: **{0}**",
+                "Memory Used by Asena: **{0}**"
+              ]
+            },
+            "advanced": {
+              "fields": {
+                "uptime": "Uptime",
+                "platform": "Platform (OS)",
+                "version": {
+                  "name": "Version",
+                  "value": [
+                    "NodeJS Version: **{0}**",
+                    "DiscordJS Version: **{0}**",
+                    "Asena Version: **{0}**",
+                    "Asena Last Update: **{0}**"
+                  ]
+                },
+                "memory": {
+                  "name": "Memory",
+                  "value": [
+                    "Total: **{0}**",
+                    "Used: **{0}**",
+                    "Available: **{0}**",
+                    "Used by Shard: **{0}**",
+                    "Used by Asena: **{0}**"
+                  ]
+                },
+                "processor": {
+                  "name": "Processor",
+                  "value": [
+                    "Model: **{0}**",
+                    "Speed: **{0}** GHz",
+                    "Core: **{0} Core / {1} Thread**",
+                    "Uptime: **{0}**"
+                  ]
+                },
+                "database": {
+                  "name": "Database",
+                  "value": [
+                    "Version: **{0}**",
+                    "Status: **{0}**",
+                    "Connection Count: **{0}**"
+                  ]
+                }
+              }
+            }
           }
         }
       },

@@ -16,8 +16,14 @@
       "no": "Hayır",
       "open": "açık",
       "close": "kapalı",
-      "connected": "Bağlı, stabil.",
-      "disconnected": "Bağlı değil.",
+      "states": {
+        "connected": "Bağlı, stabil.",
+        "connecting": "Bağlanıyor.",
+        "disconnected": "Bağlı değil.",
+        "disconnecting": "Bağlantı kesiliyor.",
+        "uninitialized": "Başlatılmamış.",
+        "unknown": "Bilinmiyor."
+      },
       "admin": "Admin",
       "member": "Üye",
       "usage": "Kullanımı",
@@ -183,23 +189,70 @@
           "embed": {
             "title": "Bot Bilgisi",
             "footer": "Syntax Software tarafından ❤️ ile yapılmıştır",
-            "content": [
-              "Çalışma Süresi (Uptime): **{0}**",
-              "NodeJS Sürümü: **{0}**",
-              "DiscordJS Sürümü: **{0}**",
-              "Asena Sürümü: **{0}**",
-              "Asena Son Güncelleme: **{0}**",
-              "Platform (OS): **{0}**",
-              "Veritabanı Bağlantısı: {0}",
-              "CPU: **{0}**",
-              "CPU Hız: **{0} MHz**",
-              "CPU Çekirdek (Core): **{0} Core / {1} Thread**",
-              "CPU Çalışma Süresi (Uptime): **{0}**",
-              "Toplam Bellek: **{0}**",
-              "Kullanılan Bellek: **{0}**",
-              "Kullanılabilir Bellek: **{0}**",
-              "Asena Tarafından Kullanılan Bellek: **{0}**"
-            ]
+            "basic": {
+              "content": [
+                "Çalışma Süresi (Uptime): **{0}**",
+                "NodeJS Sürümü: **{0}**",
+                "DiscordJS Sürümü: **{0}**",
+                "Asena Sürümü: **{0}**",
+                "Asena Son Güncelleme: **{0}**",
+                "Platform (OS): **{0}**",
+                "Veritabanı Bağlantısı: **{0}**",
+                "Veritabanı Sürümü: **{0}**",
+                "Veritabanı bağlantı sayısı: **{0}**",
+                "CPU: **{0}**",
+                "CPU Hız: **{0} GHz**",
+                "CPU Çekirdek (Core): **{0} Core / {1} Thread**",
+                "CPU Çalışma Süresi (Uptime): **{0}**",
+                "Toplam Bellek: **{0}**",
+                "Kullanılan Bellek: **{0}**",
+                "Kullanılabilir Bellek: **{0}**",
+                "Shard Tarafından Kullanılan Bellek: **{0}**",
+                "Asena Tarafından Kullanılan Bellek: **{0}**"
+              ]
+            },
+            "advanced": {
+              "fields": {
+                "uptime": "Çalışma Süresi",
+                "platform": "Platform (OS)",
+                "version": {
+                  "name": "Sürüm",
+                  "value": [
+                    "NodeJS Sürümü: **{0}**",
+                    "DiscordJS Sürümü: **{0}**",
+                    "Asena Sürümü: **{0}**",
+                    "Asena Son Güncelleme: **{0}**"
+                  ]
+                },
+                "memory": {
+                  "name": "Bellek",
+                  "value": [
+                    "Toplam: **{0}**",
+                    "Kullanılan: **{0}**",
+                    "Kullanılabilir: **{0}**",
+                    "Shard Tarafından Kullanılan: **{0}**",
+                    "Asena Tarafından Kullanılan: **{0}**"
+                  ]
+                },
+                "processor": {
+                  "name": "İşlemci",
+                  "value": [
+                    "Model: **{0}**",
+                    "Hız: **{0}** GHz",
+                    "Çekirdek (Core): **{0} Core / {1} Thread**",
+                    "Çalışma Süresi: **{0}**"
+                  ]
+                },
+                "database": {
+                  "name": "Veritabanı",
+                  "value": [
+                    "Sürüm: **{0}**",
+                    "Durum: **{0}**",
+                    "Bağlantı Sayısı: **{0}**"
+                  ]
+                }
+              }
+            }
           }
         }
       },
