@@ -101,29 +101,29 @@
         ]
       },
       "message": [
-        "<:down:744193243805384704> The giveaway on your server could not be finalized due to an **error**.",
-        "Please contact us with the **screenshot** of this message so that we can save your giveaway.\n",
+        "<:down:744193243805384704> The giveaway could not be finalized due to an **error**.",
+        "Please send us the **screenshot** of this message so that we can save your giveaway.\n",
         "> **Support-Contact:** https://discord.gg/CRgXhfs\n"
       ]
     },
     "events": {
       "guildDelete": [
-        "Are you having a problem with using the bot? Please contact with us.\n",
+        "Are you having a problem with using the bot? Please contact us at:.\n",
         ":earth_americas: Website: https://asena.xyz",
         ":sparkles: Support Server: https://discord.gg/CRgXhfs"
       ]
     },
     "validator": {
       "winners": {
-        "nan": "Please enter the number of winners in a numerical value.",
-        "limit": "The maximum number of members who win the giveaway 20, minimum 1 can be."
+        "nan": "Please enter the number of winners(Numerical values only).",
+        "limit": "The maximum number of members who cab win the giveaway are 20 and minimum is 1."
       },
       "time": {
         "invalid": "Please enter a valid time. (Eg; **1s** - **1m** - **5m** - **1h** vb.)",
         "limit": "The duration of the giveaway can be a minimum of 1 minute, and a maximum of 60 days."
       },
       "prize": {
-        "length": "The giveaway title can be up to 255 characters length."
+        "length": "The giveaway title can be up to 255 characters in length."
       },
       "servers": {
         "invalid": {
@@ -140,7 +140,7 @@
       },
       "roles": {
         "invalid": "Invalid role detected, detected role: **{0}**",
-        "unauthorized": "To winners role as a reward in order to give You must give the bot **Manage Roles** authority.",
+        "unauthorized": "To give winners a role as a reward, you must give the bot **Manage Roles** authority.",
         "compare": "The **{0}** role is under the **{1}** role. The role of the bot should as a reward be above the roles that will be awarded. Otherwise, it cannot award the role to the user as a reward.",
         "allowed": {
           "duplicate": "As a reward Among the roles that will be awarded, some of the roles you tagged are the same. Each role you enter from each other must be unique. Please try again with non-repeatable values.",
@@ -184,7 +184,7 @@
         "creator": "Hosted by",
         "to.end": "Time remaining",
         "prize": {
-          "roles": "As a reward roles to be given"
+          "roles": "As a reward, roles to be given"
         },
         "should": {
           "servers": "You must join these servers",
@@ -232,7 +232,7 @@
           }
         },
         "invitation": {
-          "description": "Gives the bots invitation link",
+          "description": "Gives the bot's invitation link",
           "bot.url": "Bot Invitation Link",
           "support.server": "Support Server",
           "website": "Website",
@@ -338,7 +338,7 @@
         "locale": {
           "description": "Changes the bot default language",
           "usage": "[list | set | reset] <args>",
-          "default": "Communication language of the bot in the server.",
+          "default": "The bot's language in this server.",
           "embed": {
             "title": "Available Languages",
             "footer": "To use: {0}locale set [language]"
@@ -348,7 +348,7 @@
             "not.found": "Couldn't found the language ({0}). Please specify a valid language code.",
             "default": {
               "successfully.changed": "Your default language has set to **{0}**.",
-              "already.using": "You have been using default language already."
+              "already.using": "You are already using the defaukt language."
             }
           }
         },
@@ -394,7 +394,7 @@
           "voice": {
             "channel": {
               "invalid": "Please enter a valid voice channel.",
-              "unauthorized": "The bot is not authorized to view users on this voice channel.",
+              "unauthorized": "The bot is not authorized to view users in this voice channel.",
               "not.found": "Please enter a valid voice channel or member.",
               "in": {
                 "not.found": {
@@ -411,21 +411,21 @@
           "usage": "[number of winners] [time] [prize]",
           "limits": {
             "winner.count": "The winners of the giveaway must be maximum 20, minimum 1.",
-            "title.length": "The giveaway title must be maximum 256 character length.",
+            "title.length": "The giveaway title must be a maximum 256 character length.",
             "time": {
               "invalid": "Please specify a valid time. (Eg; **1s** - **1m** - **5m** - **1h** etc.)",
               "exceeded": "The giveaway time must be minimum 1 minute, maximum 60 day."
             },
             "max.created": "You have reached the maximum raffle create limit. (Max: {0})"
           },
-          "unauthorized": "The raffle could not be started because the bot's permissions were insufficient to create a raffle on this channel."
+          "unauthorized": "The raffle could not be started because the bothas insuffiecient permissions in this channel."
         },
         "advanced": {
           "description": "Advanced giveaway creates",
           "usage": "--numberOfWinners \"number of winners\" --time \"time\" --prize \"prize\" --servers \"servers\" --color \"color\" --allowedRoles \"roler\" --rewardRoles \"roles to be given as a reward\"",
           "parameter": {
-            "duplicate": "Please do not use the same parameter times more than once.",
-            "missing": "Please, write all necessary parameters. Required parameters:",
+            "duplicate": "Please do not use the same parameter 2 or more times.",
+            "missing": "Please prvide all the required parameters. Required parameters:",
             "invalid": "Invalid parameter detected. Please try again without entering any parameters other than valid parameters. Detected parameter: **--{0}**",
             "empty": "Please do not leave the parameter values blank. Detected parameter: **--{0}**"
           }
