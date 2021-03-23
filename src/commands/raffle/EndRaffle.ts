@@ -17,7 +17,7 @@ export default class EndRaffle extends Command{
                 '',
                 '111111111111111111'
             ]
-        });
+        })
     }
 
     async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
@@ -38,8 +38,10 @@ export default class EndRaffle extends Command{
             return true
         }
 
-        await raffle.finish(client, server)
-        await message.channel.send(server.translate('commands.raffle.end.success', raffle.prize, `<#${raffle.channel_id}>`))
+        await Promise.all([
+            raffle.finish(client, server),
+            message.channel.send(server.translate('commands.raffle.end.success', raffle.prize, `<#${raffle.channel_id}>`))
+        ])
         if(message.guild.me.hasPermission('MANAGE_MESSAGES')){
             await message.delete({
                 timeout: 100
