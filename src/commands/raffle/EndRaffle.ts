@@ -21,8 +21,7 @@ export default class EndRaffle extends Command{
     }
 
     async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
-        let message_id: string | undefined = args[0]
-
+        const message_id: string | undefined = args[0]
         const raffle = await (message_id ? server.raffles.get(message_id) : server.raffles.getLastCreated())
         if(!raffle || !raffle.message_id){
             await message.channel.send({
