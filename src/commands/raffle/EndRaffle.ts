@@ -22,6 +22,13 @@ export default class EndRaffle extends Command{
 
     async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
         const message_id: string | undefined = args[0]
+        if(message_id && !this.isValidSnowflake(message_id)){
+            await message.channel.send({
+                embed: this.getErrorEmbed(server.translate('global.invalid.id'))
+            })
+            return true
+        }
+
         const raffle = await (message_id ? server.raffles.get(message_id) : server.raffles.getLastCreated())
         if(!raffle || !raffle.message_id){
             await message.channel.send({
