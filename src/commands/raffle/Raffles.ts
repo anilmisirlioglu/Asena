@@ -8,7 +8,7 @@ import Server from '../../structures/Server';
 
 export default class Raffles extends Command{
 
-    public constructor(){
+    constructor(){
         super({
             name: 'raffles',
             aliases: ['çekilişler', 'aktifçekilişler', 'cekilisler', 'activeraffles', 'list'],
@@ -16,7 +16,7 @@ export default class Raffles extends Command{
             usage: null,
             permission: undefined,
             examples: []
-        });
+        })
     }
 
     async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
