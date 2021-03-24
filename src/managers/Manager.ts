@@ -34,17 +34,16 @@ abstract class Manager<K, V extends Structure<M, D>, M extends Model<D>, D exten
             this.model.findOne({
                 [this.key()]: key
             }, (err, item) => {
-                if(err) resolve(undefined)
-
-                resolve(this.setCacheFromRawDocument(item))
+                resolve(item ? this.setCacheFromRawDocument(item) : undefined)
             })
         })
     }
 
     async create(data: D): Promise<V>{
+        // @ts-ignore
         const create = await this.model.findOneAndUpdate({
             [this.key()]: data[this.key()]
-        } as any, data, {
+        }, data, {
             upsert: true,
             new: true
         })
