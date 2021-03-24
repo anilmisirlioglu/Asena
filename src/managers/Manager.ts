@@ -14,23 +14,31 @@ abstract class Manager<K, V extends Structure<M, D>, M extends Model<D>, D exten
 
     protected abstract new(data: D): V
 
+    /**
+     * If already exists fetch from cache but if not, fetch from database
+     */
     async get(key: K): Promise<V | undefined>{
         if(this.exists(key)){
             return this.cache.get(key)
         }
 
-        const data = await this.model.findOne({
-            [this.key()]: key
-        } as any)
+        return this.fetch(key)
+    }
 
-        if(!data){
-            return undefined
-        }
+    /**
+     * Direct fetch from Database
+     */
+    async fetch(key: K): Promise<V | undefined>{
+        return new Promise(resolve => {
+            // @ts-ignore
+            this.model.findOne({
+                [this.key()]: key
+            }, (err, item) => {
+                if(err) resolve(undefined)
 
-        const structure = this.new(data)
-        this.set(structure.identifier_id, structure)
-
-        return structure
+                resolve(this.setCacheFromRawDocument(item))
+            })
+        })
     }
 
     async create(data: D): Promise<V>{
@@ -40,8 +48,12 @@ abstract class Manager<K, V extends Structure<M, D>, M extends Model<D>, D exten
             upsert: true,
             new: true
         })
-        const structure = this.new(create)
 
+        return this.setCacheFromRawDocument(create)
+    }
+
+    setCacheFromRawDocument(doc: D): V{
+        const structure = this.new(doc)
         this.set(structure.identifier_id, structure)
 
         return structure
