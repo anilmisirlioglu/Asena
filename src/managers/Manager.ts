@@ -18,11 +18,7 @@ abstract class Manager<K, V extends Structure<M, D>, M extends Model<D>, D exten
      * If already exists fetch from cache but if not, fetch from database
      */
     async get(key: K): Promise<V | undefined>{
-        if(this.exists(key)){
-            return this.cache.get(key)
-        }
-
-        return this.fetch(key)
+        return this.cache.get(key) || this.fetch(key)
     }
 
     /**

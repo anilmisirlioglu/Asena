@@ -95,11 +95,11 @@ export default class CreateRaffle extends Command{
         message.channel.send(Raffle.getStartMessage(server), {
             embed: raffle.getEmbed(server)
         }).then(async $message => {
-            await $message.react(Constants.CONFETTI_REACTION_EMOJI)
-
             await server.raffles.create(Object.assign({
                 message_id: $message.id
             }, data) as IRaffle)
+
+            await $message.react(Constants.CONFETTI_REACTION_EMOJI)
         }).catch(async () => {
             await message.channel.send(':boom: ' + server.translate('commands.raffle.create.unauthorized'))
         })

@@ -28,12 +28,24 @@ export default class Asena extends SuperClient{
             this.init()
         })
 
-        // if it's a raffle message, delete the lottery
+        // if it's a raffle message, delete the giveaway
+        const emojiLength = Constants.CONFETTI_EMOJI.length
         this.on('messageDelete', async message => {
-            const server = await this.servers.get(message.guild?.id)
-            const raffle = await server.raffles.get(message.id)
-            if(raffle && raffle.isContinues()){
-                await raffle.delete()
+            if(message.author?.id === this.user.id){
+                if(message.content){
+                    const content = message.content.trim()
+                    if(
+                        content.length >= emojiLength * 2 &&
+                        content.substr(0, emojiLength) == Constants.CONFETTI_EMOJI &&
+                        content.substr(content.length - emojiLength, emojiLength) == Constants.CONFETTI_EMOJI
+                    ){
+                        const server = await this.servers.get(message.guild?.id)
+                        const raffle = await server.raffles.get(message.id)
+                        if(raffle && raffle.isContinues()){
+                            await raffle.delete()
+                        }
+                    }
+                }
             }
         })
 

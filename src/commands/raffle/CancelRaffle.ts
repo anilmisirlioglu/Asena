@@ -46,7 +46,6 @@ export default class CancelRaffle extends Command{
         }
 
         await raffle.setCanceled()
-
         const $message = await client.fetchMessage(raffle.server_id, raffle.channel_id, raffle.message_id)
         if($message){
             await $message.delete({
@@ -55,7 +54,6 @@ export default class CancelRaffle extends Command{
         }
 
         await message.channel.send(`${Constants.CONFETTI_EMOJI} ${server.translate('commands.raffle.cancel.success')}`)
-
         if(message.guild.me.hasPermission('MANAGE_MESSAGES')){
             await message.delete({
                 timeout: 0
