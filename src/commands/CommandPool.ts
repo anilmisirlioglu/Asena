@@ -15,6 +15,7 @@ import Survey from './survey/Survey';
 import Command from './Command';
 import Ping from './bot/Ping';
 import Soundaway from './raffle/Soundaway';
+import FixRaffle from './raffle/FixRaffle';
 
 export default class CommandPool implements Iterable<Command>{
 
@@ -50,6 +51,7 @@ export default class CommandPool implements Iterable<Command>{
         new CreateRaffle(),
         new CancelRaffle(),
         new EndRaffle(),
+        new FixRaffle(),
         new Raffles(),
         new ReRollRaffle(),
         new SetupRaffle(),
