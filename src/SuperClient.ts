@@ -106,6 +106,14 @@ export default abstract class SuperClient extends Client{
         return this.languageManager
     }
 
+    textChannelElection(guild: Guild): TextChannel | undefined{
+        // @ts-ignore
+        return guild.channels.cache
+            .filter(channel => channel.type === 'text' && channel.permissionsFor(guild.me).has('SEND_MESSAGES'))
+            .sort((a, b) => a.position > b.position ? 1 : -1)
+            .first()
+    }
+
     fetchChannel<T extends Snowflake>(guildId: T, channelId: T): GuildChannel | undefined{
         const guild: Guild = this.guilds.cache.get(guildId)
         if(guild){
