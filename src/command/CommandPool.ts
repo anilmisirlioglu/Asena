@@ -17,6 +17,7 @@ import Question from './survey/Question';
 import Survey from './survey/Survey';
 import Ping from './bot/Ping';
 import Soundaway from './raffle/Soundaway';
+import FixRaffle from './raffle/FixRaffle';
 
 export default class CommandPool{
 
@@ -54,6 +55,7 @@ export default class CommandPool{
         new CancelRaffle(),
         new EditRaffle(),
         new EndRaffle(),
+        new FixRaffle(),
         new Raffles(),
         new ReRollRaffle(),
         new SetupRaffle(),

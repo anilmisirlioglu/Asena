@@ -595,6 +595,16 @@
             }
           }
         },
+        "fix": {
+          "description": "Ends endless giveaways",
+          "not": {
+            "found": "Giveaway not found.",
+            "finished": "This giveaway is still ongoing."
+          },
+          "timeout": "Apparently this giveaway message has been deleted or has timed out.",
+          "no.error": "We did not find a problem with the giveaway.",
+          "success": "**{0}** giveaway fixed. The results have sent to the {1} channel."
+        },
         "cancel": {
           "description": "Ends one existed giveaway",
           "not": {
@@ -616,7 +626,7 @@
           "usage": "(amount) (message-id)",
           "not": {
             "found": "Couldn't find a rerollable giveaway.",
-            "finish": "This lottery has not been ended yet. Please wait for the giveaway ending.",
+            "finish": "This giveaway has not been ended yet. Please wait for the giveaway ending.",
             "enough": "The raffle could not be rerolled again for insufficient participation.\n**Giveaway:** {0}"
           },
           "unauthorized": "Please give to the bot **Manage Roles* permission to reroll the winners. Otherwise bot can't give the will be given roles as prize to the winners.",

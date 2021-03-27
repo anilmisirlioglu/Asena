@@ -582,6 +582,16 @@
             }
           }
         },
+        "fix": {
+          "description": "Bitmeyen çekilişleri bitirir",
+          "not": {
+            "found": "Çekiliş bulunamadı.",
+            "finished": "Bu çekiliş halen devam ediyor."
+          },
+          "timeout": "Anlaşılan bu çekiliş mesajı silinmiş veya zaman aşımına uğramış.",
+          "no.error": "Çekilişinizde bir sorun bulamadık.",
+          "success": "**{0}** çekilişi düzeltildi. Sonuçlar {1} kanalına gönderildi."
+        },
         "cancel": {
           "description": "Var olan bir çekilişi bitirir",
           "not": {
