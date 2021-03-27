@@ -18,7 +18,7 @@ export default class Invitation extends Command{
     constructor(){
         super({
             name: 'davet',
-            aliases: ['invite', 'vote', 'davetiye', 'link', 'wiki'],
+            aliases: ['invite', 'davetiye', 'link', 'wiki'],
             description: 'commands.bot.invitation.description',
             usage: null,
             permission: undefined,
