@@ -125,12 +125,11 @@ export default class AdvancedCreateRaffle extends Command{
         message.channel.send(Raffle.getStartMessage(), {
             embed: raffle.buildEmbed()
         }).then(async $message => {
-            await Promise.all([
-                $message.react(Emojis.CONFETTI_REACTION_EMOJI),
-                server.raffles.create(Object.assign({
-                    message_id: $message.id
-                }, raffleProps) as IRaffle)
-            ])
+            await server.raffles.create(Object.assign({
+                message_id: $message.id
+            }, raffleProps) as IRaffle)
+
+            await $message.react(Emojis.CONFETTI_REACTION_EMOJI)
         }).catch(async () => {
             await message.channel.send(':boom: ' + server.translate('commands.raffle.create.unauthorized'))
         })
