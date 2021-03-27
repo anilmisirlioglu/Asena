@@ -91,14 +91,15 @@
       "message": [
         "<:down:744193243805384704> Sunucunuzda bulunan çekiliş bir **hatadan** dolayı sonuçlandırılamadı.",
         "Lütfen çekilişinizi kurtarabilmemiz için bu mesajın **ekran görüntüsü** ile birlikte bizimle iletişime geçin.\n",
-        "> **Destek-İletişim:** https://discord.gg/CRgXhfs\n"
+        "> **Destek-İletişim:** https://dc.asena.xyz\n"
       ]
     },
     "events": {
       "guildDelete": [
         "Botun kullanımı ile ilgili sorunlar mı yaşıyorsun? Lütfen bizimle iletişime geçmekten çekinme.\n",
         ":earth_americas: Website: https://asena.xyz",
-        ":sparkles: Destek Sunucusu: https://discord.gg/CRgXhfs"
+        ":question: Wiki: https://wiki.asena.xyz",
+        ":sparkles: Destek Sunucusu: https://dc.asena.xyz"
       ]
     },
     "validator": {
@@ -224,9 +225,12 @@
           "bot.url": "Botun Davet Linki",
           "support.server": "Destek Sunucusu",
           "website": "Websitemiz",
+          "vote": "Oy Ver",
+          "open.source": "Açık Kaynak",
           "click": {
             "invite": "Tıkla Davet Et",
-            "join": "Tıkla ve Giriş Yap"
+            "join": "Tıkla ve Giriş Yap",
+            "vote": "Tıkla ve Oy Ver"
           }
         },
         "help": {

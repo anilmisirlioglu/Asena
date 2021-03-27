@@ -103,14 +103,15 @@
       "message": [
         "<:down:744193243805384704> The giveaway could not be finalized due to an **error**.",
         "Please send us the **screenshot** of this message so that we can save your giveaway.\n",
-        "> **Support-Contact:** https://discord.gg/CRgXhfs\n"
+        "> **Support-Contact:** https://dc.asena.xyz\n"
       ]
     },
     "events": {
       "guildDelete": [
         "Are you having a problem with using the bot? Please contact us at:.\n",
         ":earth_americas: Website: https://asena.xyz",
-        ":sparkles: Support Server: https://discord.gg/CRgXhfs"
+        ":question: Wiki: https://wiki.asena.xyz",
+        ":sparkles: Support Server: https://dc.asena.xyz"
       ]
     },
     "validator": {
@@ -236,9 +237,12 @@
           "bot.url": "Bot Invitation Link",
           "support.server": "Support Server",
           "website": "Website",
+          "vote": "Vote",
+          "open.source": "Open Source",
           "click": {
             "invite": "Click to Invite",
-            "join": "Click and Join"
+            "join": "Click and Join",
+            "vote": "Click and Vote"
           }
         },
         "help": {

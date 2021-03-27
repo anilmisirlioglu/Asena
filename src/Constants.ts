@@ -5,9 +5,6 @@ interface IBot{
     readonly PERMITTED_ROLE_NAME: string
     readonly COOLDOWN_TIME: number
     readonly REQUIRED_PERMISSIONS: PermissionString[]
-    readonly INVITE_URL: string
-    readonly SUPPORT_SERVER: string
-    readonly WEBSITE: string
     readonly CLIENT_ID: string
 }
 
@@ -23,10 +20,17 @@ export const Bot: IBot = {
         'READ_MESSAGE_HISTORY',
         'USE_EXTERNAL_EMOJIS'
     ],
-    INVITE_URL: 'https://discord.com/oauth2/authorize?permissions=347200&scope=bot&client_id=716259870910840832&redirect_uri=https%3A%2F%2Fdiscord.gg%2FCRgXhfs&response_type=code',
-    SUPPORT_SERVER: 'https://discord.gg/CRgXhfs',
-    WEBSITE: 'https://asena.xyz',
     CLIENT_ID: '716259870910840832'
+}
+
+const DOMAIN = 'asena.xyz'
+export const URLMap = {
+    INVITE: `https://invite.${DOMAIN}`,
+    SUPPORT_SERVER: `https://dc.${DOMAIN}`,
+    WIKI: `https://wiki.${DOMAIN}`,
+    WEBSITE: `https://${DOMAIN}`,
+    GITHUB: `https://dev.${DOMAIN}`,
+    VOTE: 'https://top.gg/bot/716259870910840832/vote'
 }
 
 interface IRabbitMQ{
