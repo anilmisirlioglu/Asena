@@ -31,14 +31,9 @@ export default class RaffleManager extends Manager<Snowflake, Raffle, typeof Raf
             .findOne({ server_id: this.server.identifier_id })
             .sort({ createdAt: -1 })
 
-        if(search){
-            const raffle = this.new(search)
-            this.set(raffle.identifier_id, raffle)
+        if(!search) return undefined
 
-            return raffle
-        }
-
-        return undefined
+        return this.setCacheFromRawDocument(search)
     }
 
     public async getContinues(): Promise<SuperRaffle[]>{
