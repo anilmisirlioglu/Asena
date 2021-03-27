@@ -17,12 +17,11 @@ export default class EndRaffle extends Command{
                 '',
                 '111111111111111111'
             ]
-        });
+        })
     }
 
     async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
-        let message_id: string | undefined = args[0]
-
+        const message_id: string | undefined = args[0]
         const raffle = await (message_id ? server.raffles.get(message_id) : server.raffles.getLastCreated())
         if(!raffle || !raffle.message_id){
             await message.channel.send({
@@ -38,8 +37,10 @@ export default class EndRaffle extends Command{
             return true
         }
 
-        await raffle.finish(client)
-        await message.channel.send(server.translate('commands.raffle.end.success', raffle.prize, `<#${raffle.channel_id}>`))
+        await Promise.all([
+            raffle.finish(client),
+            message.channel.send(server.translate('commands.raffle.end.success', raffle.prize, `<#${raffle.channel_id}>`))
+        ])
         if(message.guild.me.hasPermission('MANAGE_MESSAGES')){
             await message.delete({
                 timeout: 100
