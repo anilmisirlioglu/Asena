@@ -103,6 +103,14 @@
         ":earth_americas: Website: https://asena.xyz",
         ":question: Wiki: https://wiki.asena.xyz",
         ":sparkles: Destek Sunucusu: https://dc.asena.xyz"
+      ],
+      "guildCreate": [
+        "**Beni eklediğiniz için teşekkürler!**",
+        "**»** Benim varsayılan komut önadım: `!a`",
+        "**»** Yardım menüsünü görmek için sohbete `!ahelp` yazabilirsin.",
+        "**»** Eğer bot ile ilgili detaylı bilgi istiyorsan **https://wiki.asena.xyz** adresini ziyaret edebilirsin.",
+        "**»** Daha detaylı yardım için **https://dc.asena.xyz** adresinden destek sunucumuza katılabilirsin.",
+        "**!**  If you want to use the bot in English, you can type `!alocale set en` in the chat."
       ]
     },
     "validator": {

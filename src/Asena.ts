@@ -49,9 +49,20 @@ export default class Asena extends SuperClient{
 
         // Create server data from db
         this.on('guildCreate', async guild => {
-            await this.servers.create({
+            const server = await this.servers.create({
                 server_id: guild.id
             } as any)
+
+            const message = server.translate('events.guildCreate')
+            if(guild.owner){
+                guild.owner.createDM()
+                    .then(channel => channel
+                        .send(message)
+                        .catch(() => this.textChannelElection(guild)?.send(message)))
+                    .catch(() => this.textChannelElection(guild)?.send(message))
+            }else{
+                this.textChannelElection(guild)?.send(message)
+            }
         })
 
         // Delete server data from db

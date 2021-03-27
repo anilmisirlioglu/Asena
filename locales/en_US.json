@@ -115,6 +115,13 @@
         ":earth_americas: Website: https://asena.xyz",
         ":question: Wiki: https://wiki.asena.xyz",
         ":sparkles: Support Server: https://dc.asena.xyz"
+      ],
+      "guildCreate": [
+        "**Thanks for adding me!**",
+        "**»** My default prefix here is: `!a`",
+        "**»** You can type `!ahelp` in chat to see the help menu.",
+        "**»** If you want detailed information about the bot, you can visit **https://wiki.asena.xyz**",
+        "**»** For more detailed help, you can join our support server at **https://dc.asena.xyz**"
       ]
     },
     "validator": {

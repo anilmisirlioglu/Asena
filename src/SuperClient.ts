@@ -145,6 +145,19 @@ export default abstract class SuperClient extends Client{
     }
 
     /**
+     * Text channel election
+     *
+     * @param guild
+     */
+    textChannelElection(guild: Guild): TextChannel | undefined{
+        // @ts-ignore
+        return guild.channels.cache
+            .filter(channel => channel.type === 'text' && channel.permissionsFor(guild.me).has('SEND_MESSAGES'))
+            .sort((a, b) => a.position > b.position ? 1 : -1)
+            .first()
+    }
+
+    /**
      * It only finds channels on servers in the shard.
      *
      * @param guildID   {Snowflake}
