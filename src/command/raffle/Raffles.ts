@@ -7,7 +7,7 @@ import Server from '../../structures/Server'
 
 export default class Raffles extends Command{
 
-    public constructor(){
+    constructor(){
         super({
             name: 'raffles',
             aliases: ['çekilişler', 'aktifçekilişler', 'cekilisler', 'activeraffles', 'list'],
