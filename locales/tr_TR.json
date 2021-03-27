@@ -24,6 +24,9 @@
         "uninitialized": "Başlatılmamış.",
         "unknown": "Bilinmiyor."
       },
+      "invalid": {
+        "id": "Geçersiz mesaj ID'si. Lütfen geçerli bir mesaj ID'si girin."
+      },
       "support": "Destek Sunucusu",
       "admin": "Admin",
       "member": "Üye",

@@ -22,7 +22,13 @@ export default class CancelRaffle extends Command{
     }
 
     async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
-        let message_id: string | undefined = args[0]
+        const message_id: string | undefined = args[0]
+        if(message_id && !this.isValidSnowflake(message_id)){
+            await message.channel.send({
+                embed: this.getErrorEmbed(server.translate('global.invalid.id'))
+            })
+            return true
+        }
 
         const raffle = await (message_id ? server.raffles.get(message_id) : server.raffles.getLastCreated())
         if(!raffle || !raffle.message_id){
@@ -40,7 +46,6 @@ export default class CancelRaffle extends Command{
         }
 
         await raffle.setCanceled()
-
         const $message = await client.fetchMessage(raffle.server_id, raffle.channel_id, raffle.message_id)
         if($message){
             await $message.delete({

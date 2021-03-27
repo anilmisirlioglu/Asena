@@ -36,6 +36,9 @@
         "uninitialized": "Uninitialized.",
         "unknown": "Unknown."
       },
+      "invalid": {
+        "id": "Invalid message ID. Please enter a valid message ID."
+      },
       "support": "Support Server",
       "admin": "Admin",
       "member": "Member",
