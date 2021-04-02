@@ -4,7 +4,7 @@ RUN apk add git
 
 WORKDIR /usr/app
 
-COPY package.json .
+COPY package.json package-lock.json ./
 
 RUN npm install && npm install tsc -g
 
