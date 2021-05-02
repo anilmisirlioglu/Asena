@@ -65,9 +65,10 @@ export default abstract class SuperClient extends Client{
                     'GUILD_VOICE_STATES'
                 ]
             },
-            messageCacheMaxSize: 256,
+            messageCacheMaxSize: 25,
             messageCacheLifetime: 300,
-            messageSweepInterval: 240
+            messageSweepInterval: 240,
+            messageEditHistoryMaxSize: 0
         })
     }
 

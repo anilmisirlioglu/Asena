@@ -25,11 +25,7 @@ export default class SyntaxWebhook extends WebhookClient{
             .setTimestamp()
 
         // noinspection JSIgnoredPromiseFromCall
-        this.send({
-            embeds: [
-                embed
-            ]
-        })
+        this.send({ embeds: [embed] })
     }
 
 }
