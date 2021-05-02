@@ -24,9 +24,7 @@ export default class SyntaxWebhook extends WebhookClient{
             .setColor(isCreate ? 'GREEN' : 'RED')
             .setTimestamp()
 
-        await this.send({
-            embeds: [embed]
-        })
+        await this.send({ embeds: [embed] })
     }
 
 }
