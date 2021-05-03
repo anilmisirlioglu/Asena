@@ -271,7 +271,7 @@
                   ]
                 },
                 "database": {
-                  "nfame": "Database",
+                  "name": "Database",
                   "value": [
                     "Version: **{0}**",
                     "Status: **{0}**"
