@@ -30,17 +30,8 @@ export default class BotInfo extends Command{
             .setTimestamp()
             .setColor('#CD5C5C')
 
-        const [memArr, connArr] = await Promise.all([
-            client.shard.broadcastEval('process.memoryUsage()'),
-            client.shard.broadcastEval(`(async () => {
-                const mongoose = require('mongoose')
-                return mongoose.connections.length
-            })()`)
-        ])
-
+        const memArr = await client.shard.broadcastEval('process.memoryUsage()')
         const totalMemUsage = memArr.reduce((prev, curr) => prev.heapUsed + curr.heapUsed, { heapUsed: 0 })
-        const totalConn = connArr.reduce((prev, curr) => prev + curr, 0)
-
         const isBasicView = args[0] && args[0] === 'basic'
         if(isBasicView){
             embed.addField(`**${client.user.username}**`, server.translate('commands.bot.info.embed.basic.content',
@@ -52,7 +43,6 @@ export default class BotInfo extends Command{
                 `${os.platform()} (${os.type()} ${os.arch()}) - ${os.release()}`,
                 server.translate(MongoDB.getState()),
                 `MongoDB x(${MongoDB.serverInfo['bits']}) v${MongoDB.serverInfo['version']}`,
-                totalConn,
                 os.cpus()[0].model,
                 os.cpus()[0].speed,
                 os.cpus().length / 2,
@@ -101,8 +91,7 @@ export default class BotInfo extends Command{
                     server.translate('commands.bot.info.embed.advanced.fields.database.name'),
                     server.translate('commands.bot.info.embed.advanced.fields.database.value',
                         `MongoDB (x${MongoDB.serverInfo['bits']}) v${MongoDB.serverInfo['version']}`,
-                        server.translate(MongoDB.getState()),
-                        totalConn
+                        server.translate(MongoDB.getState())
                     )
                 )
         }

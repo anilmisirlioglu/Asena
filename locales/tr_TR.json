@@ -280,7 +280,6 @@
                 "Platform (OS): **{0}**",
                 "Veritabanı Bağlantısı: **{0}**",
                 "Veritabanı Sürümü: **{0}**",
-                "Veritabanı bağlantı sayısı: **{0}**",
                 "CPU: **{0}**",
                 "CPU Hız: **{0} GHz**",
                 "CPU Çekirdek (Core): **{0} Core / {1} Thread**",
@@ -328,8 +327,7 @@
                   "name": "Veritabanı",
                   "value": [
                     "Sürüm: **{0}**",
-                    "Durum: **{0}**",
-                    "Bağlantı Sayısı: **{0}**"
+                    "Durum: **{0}**"
                   ]
                 }
               }
