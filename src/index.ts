@@ -11,8 +11,10 @@ import AsyncRaffleTask from './scheduler/tasks/AsyncRaffleTask';
 import AsyncSurveyTask from './scheduler/tasks/AsyncSurveyTask';
 import MongoDB from './drivers/MongoDB';
 
+const isDevBuild = process.env.NODE_ENV !== 'production'
+
 dotenv.config({
-    path: `${__dirname}/../.env`
+    path: `${__dirname}/../.env${isDevBuild ? '.local' : ''}`
 })
 
 TextFormat.init()
@@ -21,11 +23,9 @@ console.clear()
 console.log(TextFormat.toANSI(parseAsenaASCIIArt()))
 
 const shards: "auto" | number = findFlagValue('shard') ?? "auto"
-
-const isDevBuild = process.env.NODE_ENV !== 'production'
 const manager = new ShardingManager('./build/shard.js', {
     totalShards: shards,
-    token: process.env[isDevBuild ? 'TOKEN_DEV' : 'TOKEN'],
+    token: process.env.TOKEN,
     shardArgs: [`--production=${!isDevBuild}`]
 })
 
