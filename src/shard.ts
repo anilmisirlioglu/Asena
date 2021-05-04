@@ -47,7 +47,7 @@ process.on('message', async (packet) => {
 const handler = async () => {
     await mongo.connect()
 
-    await client.login(process.env[isProduction ? 'TOKEN' : 'TOKEN_DEV'])
+    await client.login(process.env.TOKEN)
 }
 
 setTimeout(handler)
