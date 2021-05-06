@@ -45,7 +45,6 @@ export default class CommandHandler extends Factory implements CommandRunner{
 
     async run(message: Message){
         const client: SuperClient = this.client
-
         if(!message.guild){
             return
         }
@@ -85,7 +84,7 @@ export default class CommandHandler extends Factory implements CommandRunner{
                 }
 
                 if(message.mentions.has(client.user) && !message.mentions.everyone){
-                    await message.channel.send('🌈  ' + server.translate('commands.handler.mention', SuperClient.NAME, server.prefix))
+                    await message.channel.send('🌈  ' + server.translate('commands.handler.mention', client.user.username, server.prefix))
 
                     return
                 }
@@ -131,7 +130,7 @@ export default class CommandHandler extends Factory implements CommandRunner{
                         })
                     }else{
                         const embed = new MessageEmbed()
-                            .setAuthor(SuperClient.NAME, SuperClient.AVATAR)
+                            .setAuthor(client.user.username, client.user.avatarURL())
                             .setDescription(server.translate('commands.handler.premium.only'))
                             .addField(`:star2:  ${server.translate('commands.handler.premium.try')}`, '<:join_arrow:746358699706024047> [Asena Premium](https://asena.xyz)')
                             .setColor('GREEN')

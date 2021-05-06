@@ -50,9 +50,6 @@ export default abstract class SuperClient extends Client{
 
     readonly webhook: SyntaxWebhook = new SyntaxWebhook()
 
-    static NAME: string
-    static AVATAR: string
-
     private static self: SuperClient
 
     protected constructor(private opts: SuperClientBuilderOptions){
@@ -75,9 +72,6 @@ export default abstract class SuperClient extends Client{
     }
 
     protected init(){
-        SuperClient.NAME = this.user.username
-        SuperClient.AVATAR = this.user.avatarURL()
-
         SuperClient.self = this
     }
 

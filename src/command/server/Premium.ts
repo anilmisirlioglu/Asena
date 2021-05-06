@@ -31,7 +31,7 @@ export default class Premium extends Command{
         }
 
         const embed: MessageEmbed = new MessageEmbed()
-            .setAuthor(`${SuperClient.NAME} Premium`, SuperClient.AVATAR)
+            .setAuthor(`${client.user.username} Premium`, client.user.avatarURL())
             .setColor('LUMINOUS_VIVID_PINK')
             .setFooter(message.guild.name, message.guild.iconURL())
             .setDescription(description)

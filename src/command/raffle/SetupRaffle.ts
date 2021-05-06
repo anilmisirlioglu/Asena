@@ -184,7 +184,7 @@ export default class SetupRaffle extends Command{
                         skippable: true
                     }),
                     new SetupPhase({
-                        message: server.translate('commands.raffle.setup.phases.servers.message', RaffleLimits.MAX_SERVER_COUNT, SuperClient.NAME),
+                        message: server.translate('commands.raffle.setup.phases.servers.message', RaffleLimits.MAX_SERVER_COUNT, client.user.username),
                         validator: async (message: Message) => runValidator('servers', message),
                         skippable: true
                     }),
