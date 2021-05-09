@@ -1,5 +1,5 @@
 import Asena from './Asena';
-import MongoDB from './drivers/MongoDB';
+import MongoDB from './MongoDB';
 import { findFlagValue } from './utils/FlagParser';
 import { ProcessPacketType } from './protocol/ProcessPacket';
 

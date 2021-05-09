@@ -1,5 +1,6 @@
 import ProcessPacket, { ProcessPacketType } from './ProcessPacket'
 import { Document } from 'mongoose';
+import { continuingGiveawayMetric, continuingSurveyMetric } from '../telemetry/metrics/NumericMetric';
 
 export type TransferableModelTypes = 'Raffle' | 'Survey'
 
@@ -18,6 +19,18 @@ export default class ModelTransferPacket<S extends Document> extends ProcessPack
             type: ProcessPacketType.MODEL_TRANSFER,
             payload
         })
+    }
+
+    observeMetric(){
+        switch(this.modelType){
+            case 'Raffle':
+                continuingGiveawayMetric.observe(this.items.length)
+                break
+
+            case 'Survey':
+                continuingSurveyMetric.observe(this.items.length)
+                break
+        }
     }
 
 }

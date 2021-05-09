@@ -32,7 +32,8 @@
     "discord.js": "^12.4.1",
     "dotenv": "^8.2.0",
     "mongoose": "^5.10.11",
-    "node-cron": "^2.0.3"
+    "node-cron": "^2.0.3",
+    "prom-client": "^13.1.0"
   },
   "devDependencies": {
     "@types/mocha": "^8.0.2",
