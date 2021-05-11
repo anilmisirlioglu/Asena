@@ -1,4 +1,5 @@
 import ProcessPacket, { ProcessPacketType } from './ProcessPacket';
+import { serverMetric, shardMetric } from '../telemetry/metrics/NumericMetric';
 
 interface IServerStatsPacket{
     serverCount: number
@@ -15,6 +16,11 @@ export default class ServerStatsPacket extends ProcessPacket implements IServerS
             type: ProcessPacketType.SERVER_STATS,
             payload
         })
+    }
+
+    observeMetric(){
+        serverMetric.observe(this.serverCount)
+        shardMetric.observe(this.shardCount)
     }
 
 }

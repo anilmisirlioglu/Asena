@@ -1,7 +1,7 @@
 /// <reference path='../typings/index.d.ts'/>
 
 import Asena from './Asena';
-import MongoDB from './drivers/MongoDB';
+import MongoDB from './MongoDB';
 import { ProcessPacketType } from './protocol/ProcessPacket';
 import { findFlagValue } from './utils/FlagParser';
 

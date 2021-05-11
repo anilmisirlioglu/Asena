@@ -9,9 +9,9 @@ import { updateDiscordBotsGGStats, updateTopGGStats } from './updater/StatsUpdat
 import TaskScheduler from './scheduler/TaskScheduler';
 import AsyncRaffleTask from './scheduler/tasks/AsyncRaffleTask';
 import AsyncSurveyTask from './scheduler/tasks/AsyncSurveyTask';
-import MongoDB from './drivers/MongoDB';
-
-const isDevBuild = process.env.NODE_ENV !== 'production'
+import MongoDB from './MongoDB';
+import { isDevBuild } from './utils/Version';
+import './telemetry/TelemetryServer';
 
 dotenv.config({
     path: `${__dirname}/../.env${isDevBuild ? '.local' : ''}`

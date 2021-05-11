@@ -29,12 +29,13 @@
     "test": "mocha -r ts-node/register tests/unit/*.test.ts"
   },
   "dependencies": {
-    "amqplib": "^0.6.0",
+    "amqplib": "^0.7.1",
     "child_process": "^1.0.2",
     "discord.js": "^12.4.1",
     "dotenv": "^8.2.0",
     "mongoose": "^5.10.11",
-    "node-cron": "^2.0.3"
+    "node-cron": "^2.0.3",
+    "prom-client": "^13.1.0"
   },
   "devDependencies": {
     "@types/amqplib": "^0.5.15",

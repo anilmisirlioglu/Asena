@@ -20,6 +20,8 @@ export default abstract class ProcessPacket{
         this.type = packet.type
 
         this.decode(packet.payload)
+
+        this.observeMetric()
     }
 
     protected decode(data: ProcessPacketPayload){
@@ -27,5 +29,7 @@ export default abstract class ProcessPacket{
             this[key] = value
         }
     }
+
+    abstract observeMetric(): void
 
 }
