@@ -22,7 +22,7 @@ Changes to be made must be made on the `stable` branch.
 
 1. First, install repository
     ```sh
-    git clone https://github.com/anilmisirlioglu/Asena && cd Asena
+    git clone --branch stable https://github.com/anilmisirlioglu/Asena && cd Asena
     ```
 
 2. Then, set permission and run
