@@ -110,6 +110,3 @@ dist
 
 # TypeScript build output
 build/
-
-# Asena Daemon Linux Service
-asena.service
