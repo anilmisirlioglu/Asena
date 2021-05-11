@@ -7,7 +7,29 @@
 [![Discord](https://discordapp.com/api/guilds/701790578874253363/widget.png?style=shield)](https://discord.gg/CRgXhfs)
 [![Version](https://img.shields.io/github/package-json/v/anilmisirlioglu/Asena?color=blue)](https://github.com/anilmisirlioglu/Asena)
 
-> stable, fast, easy and surrounded by new generation technologies Discord giveaway, survey & poll bot!
+> stable, fast, easy and surrounded by new generation technologies Discord giveaway & poll bot!
+
+## Branches
+`master`: Next future version.
+
+`stable`: Stable development version.
+
+Changes to be made must be made on the `stable` branch.
+
+## Build & Run
+
+> :warning: It should only be used for testing in development.
+
+1. First, install repository
+    ```sh
+    git clone https://github.com/anilmisirlioglu/Asena && cd Asena
+    ```
+
+2. Then, set permission and run
+    ```sh
+    chmod +x ./service-install.sh
+    ./service-install.sh --run
+    ```
 
 ## Multi Language Support
 
@@ -17,12 +39,12 @@ You can change the language of the bot in the server with the command `!alocale 
 **[TR]** Botun yüksek oranda Türk sunucularında kullanılmasından dolayı botun varsıyılan dili *Türkçe* olarak
 ayarlanmıştır. Botun sunucu içerisinde ki dilini `!alocale set <dil-kodu>` komutu ile değiştirebilirsiniz.
 
-Example to make the bot's default language English:
+Example to make the bots default language English:
 ```sh
 !alocale set en
 ```
 
-## Command List 🦾
+## Commands
 
 > Prefix: !a (Default)
 
@@ -44,21 +66,13 @@ Example to make the bot's default language English:
 | locale | Changes the bots default language. |
 | ping | Displays the bot network latency information. |
 
-## Invitation 🔗
+## Invitation
 
 If you want to take advantage of these features and create lotteries easily and quickly,
 you can add Asena to your server here: **[Asena Invitation](https://discord.com/oauth2/authorize?permissions=347200&scope=bot&client_id=716259870910840832&redirect_uri=https%3A%2F%2Fdiscord.gg%2FCRgXhfs&response_type=code)**
 
-## Self-Hosting ‍‼️
+## Self-Hosting
 
-Asena is any software that does not generate revenue. All features are offered for free.
+Asena is software that does not generate revenue. All features are offered for free.
 But for those who insist on hosting their own; The reason bot codes are open source is to help other developers who want to code the bot, to see the working principle and to contribute to those who want to solve the bot's software problems. Other than that, you cannot host the bot yourself in any way. This is a violation of rights.
 Otherwise, no assistance will be provided to edit, compile or generate any code in this repository.
-
-## Support Server
-[Click here to join the bots official discord server..](https://discord.gg/CRgXhfs)
-
-## Images 📷
-![image](https://cdn.discordapp.com/attachments/712449369827180596/724982732513607710/asena.png)
--
-![image](https://cdn.discordapp.com/attachments/729930836857716747/801470232597889045/unknown.png)
