@@ -4,7 +4,7 @@ import SuperClient from '../../SuperClient';
 import { secondsToString } from '../../utils/DateTimeHelper';
 import * as os from 'os';
 import Byte from '../../utils/Byte';
-import MongoDB from '../../drivers/MongoDB';
+import MongoDB from '../../MongoDB';
 import Server from '../../structures/Server';
 
 export default class BotInfo extends Command{

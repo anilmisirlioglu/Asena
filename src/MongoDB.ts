@@ -1,5 +1,5 @@
 import mongoose, { ConnectionOptions, Mongoose } from 'mongoose'
-import Logger from '../utils/Logger';
+import Logger from './utils/Logger';
 
 export default class MongoDB{
 

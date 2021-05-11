@@ -107,3 +107,5 @@ export default class Version{
         }
     }
 }
+
+export const isDevBuild = process.env.NODE_ENV !== 'production'

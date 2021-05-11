@@ -155,7 +155,7 @@
     },
     "commands": {
       "handler": {
-        "prefix": "The bot commands front name in the server(prefix): **{0}**",
+        "prefix": "The bot commands prefix in the server: **{0}**",
         "unauthorized": "To use this command **your auth** absent.",
         "permission": {
           "missing": {

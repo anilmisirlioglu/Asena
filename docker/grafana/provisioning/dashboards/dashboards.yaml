@@ -1,0 +1,12 @@
+apiVersion: 1
+
+providers:
+  - name: Asena
+    orgId: 1
+    folder: ''
+    type: file
+    updateIntervalSeconds: 15
+    disableDeletion: false
+    editable: true
+    options:
+      path: /etc/grafana/provisioning/dashboards
