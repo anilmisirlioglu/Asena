@@ -16,7 +16,7 @@ interface SetupPhaseOptions{
 
 export default class SetupPhase{
 
-    public constructor(private readonly options: SetupPhaseOptions){}
+    constructor(private readonly options: SetupPhaseOptions){}
 
     public get message(): string{
         const message = this.options.message

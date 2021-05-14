@@ -11,7 +11,7 @@ export default class Asena extends SuperClient{
         })
 
         // Load all languages
-        this.getLanguageManager().run()
+        this.getLanguageManager().init()
 
         // Load all commands
         this.getCommandHandler().registerAllCommands()
