@@ -13,8 +13,8 @@ export default class ActivityUpdater extends Factory{
 
             await client.user.setStatus('online')
 
-            client.logger.info(`${client.user.username} ${client.version.getFullVersion()} başlatılıyor...`)
-            client.logger.info(`${client.user.username} aktif, toplam ${client.guilds.cache.size} sunucuya hizmet veriliyor!`)
+            client.logger.info(`${client.user.username} ${client.version.getFullVersion()} launching...`)
+            client.logger.info(`${client.user.username} is active, serving a total of ${client.guilds.cache.size} servers!`)
         })
 
         this.setGuildCounterListeners()

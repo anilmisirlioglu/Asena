@@ -25,7 +25,7 @@ const server = http.createServer(async (req, res) => {
         }
     }
 }).listen(8080, () => {
-    logger.info('HTTP sunucusu aktif. Metrikler /metrics yolu üzerinden sunuluyor.')
+    logger.info('HTTP server is active. Telemetry data is provided at the /metrics endpoint.')
 })
 
 const versionMetric = new VersionMetric()

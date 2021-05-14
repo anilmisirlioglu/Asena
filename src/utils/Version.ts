@@ -23,7 +23,7 @@ export default class Version{
 
         const match = baseVersion.match(/(\d+)\.(\d+)\.(\d+)(?:-(.*))?$/);
         if(match === null || match.filter(Boolean).length < 4){
-            throw new InvalidArgumentException('Geçersiz temel sürüm, en az 3 sürüm basamağı (x.y.z) içermelidir.');
+            throw new InvalidArgumentException('Invalid base version, should contain at least 3 version digits (x.y.z)');
         }
 
         this.major = Number(match[1]);

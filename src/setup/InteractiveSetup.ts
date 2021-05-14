@@ -38,7 +38,7 @@ export default class InteractiveSetup extends EventEmitter{
         super()
 
         if(options.phases.length === 0){
-            throw new InvalidArgumentException('Yetersiz aşama. En az 1 aşama olmalıdır')
+            throw new InvalidArgumentException('Insufficient stage. There must be at least 1 stage.')
         }
 
         this.user_id = options.user_id

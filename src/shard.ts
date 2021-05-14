@@ -15,7 +15,7 @@ process.on('unhandledRejection', (rej) => {
 process.on('SIGTERM', async () => {
     if(MongoDB.isConnected()){
         await mongo.disconnect().then(() => {
-            client.logger.info('Uygulama sonlanmasıyla veritabanı bağlantısı kapatıldı.')
+            client.logger.info('Database connection closed on application termination.')
         })
     }
 
