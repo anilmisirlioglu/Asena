@@ -14,7 +14,7 @@ export default class LanguageManager{
 
     constructor(private client: SuperClient){}
 
-    run(){
+    init(){
         const files = readdirSync(LanguageManager.LOCALE_PATH)
         if(!files.length) this.client.logger.error('Herhangi bir dil dosyası bulunamadı.')
 

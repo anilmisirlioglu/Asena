@@ -48,9 +48,7 @@ export default class Language{
     public full: string
 
     /** Language strings */
-    public strings: {
-        [key: string]: string | string[]
-    } = {}
+    public strings: StringTree = {}
 
     constructor(info: LanguageInfo){
         this.version = new Version(info.version)

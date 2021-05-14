@@ -18,7 +18,7 @@ export default class MongoDB{
 
     private logger: Logger = new Logger(MongoDB.name.toLowerCase())
 
-    public constructor(options: ConnectionOptions = {
+    constructor(options: ConnectionOptions = {
         useNewUrlParser: true,
         useCreateIndex: true,
         useFindAndModify: false,
