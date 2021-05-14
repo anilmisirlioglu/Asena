@@ -32,14 +32,14 @@ const manager = new ShardingManager('./build/shard.js', {
 const logger = new Logger('main')
 
 manager.on('shardCreate', async shard => {
-    logger.info(`Shard ${shard.id} yaratıldı.`)
+    logger.info(`Shard ${shard.id} launched.`)
 
     shard.on('ready', () => {
-        logger.info(`Shard ${shard.id} hazır.`)
+        logger.info(`Shard ${shard.id} ready.`)
     })
 
     shard.on('disconnect', () => {
-        logger.info(`Shard ${shard.id} bağlantısı kesildi.`)
+        logger.info(`Shard ${shard.id} disconnected.`)
     })
 })
 
@@ -78,7 +78,7 @@ const handler = async () => {
         manager.spawn()
     ])
 
-    logger.debug('Tüm shardlar konuşlandırıldı.')
+    logger.debug('All shards deployed.')
 
     await sendUpdateActivityPacket()
 

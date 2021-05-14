@@ -11,13 +11,13 @@ export default class ActivityUpdater extends Factory{
         this.client.on('ready', async () => {
             const client: SuperClient = this.client
 
-            client.logger.info(`${client.user.username} ${client.version.getFullVersion()} başlatılıyor...`)
+            client.logger.info(`${client.user.username} ${client.version.getFullVersion()} launching...`)
 
             this.counter = client.guilds.cache.size
 
             await client.user.setStatus('online')
 
-            client.logger.info(`${client.user.username} aktif, toplam ${this.counter} sunucuya hizmet veriliyor!`)
+            client.logger.info(`${client.user.username} is active, serving a total of ${this.counter} servers!`)
         })
 
         this.setGuildCounterListeners()

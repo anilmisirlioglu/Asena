@@ -26,7 +26,7 @@ export default class CommandHandler extends Factory implements CommandRunner{
             this.registerCommand(command)
         }
 
-        this.client.logger.info(`Toplam ${this.commands.keyArray().length} komut başarıyla yüklendi.`)
+        this.client.logger.info(`Total ${this.commands.size} command successfully loaded.`)
     }
 
     public registerCommand(command: Command){

@@ -8,7 +8,7 @@ import {
     MessageEmbed,
     Snowflake,
     TextChannel
-} from "discord.js";
+} from 'discord.js';
 import Version from './utils/Version';
 import Logger from './utils/Logger';
 import CommandHandler from './command/CommandHandler';

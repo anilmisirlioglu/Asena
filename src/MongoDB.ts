@@ -28,7 +28,7 @@ export default class MongoDB{
 
         // event listeners
         mongoose.connection.on('open', () => {
-            this.logger.info('Veritabanı bağlantısı başarıyla kuruldu.');
+            this.logger.info('Database connection has been established successfully.')
 
             this.setConnected(true)
 
@@ -38,18 +38,14 @@ export default class MongoDB{
         })
 
         mongoose.connection.on('disconnected', () => {
-            this.logger.info('Veritabanı bağlantısı kesildi.')
+            this.logger.info('Database connection disconnected.')
 
             this.setConnected(false)
         })
 
         mongoose.connection.on('error', err => {
-            this.logger.error('Veritabanında bağlantı hatası: ' + err)
+            this.logger.error('Database connection error: ' + err)
         })
-    }
-
-    public getOptions(): ConnectionOptions{
-        return this.options
     }
 
     public async connect(): Promise<Mongoose>{
