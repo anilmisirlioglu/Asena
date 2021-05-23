@@ -72,8 +72,10 @@ export default class SetCommandPermission extends Command{
             return true
         }
 
-        await (add ? server.addPublicCommand($command.name) : server.deletePublicCommand($command.name))
-        await message.channel.send('🌈  ' + server.translate('commands.server.permission.command.success', $command.name, (add ? 'açık' : 'kapalı')))
+        await Promise.all([
+            (add ? server.addPublicCommand($command.name) : server.deletePublicCommand($command.name)),
+            message.channel.send('🌈  ' + server.translate('commands.server.permission.command.success', $command.name, opcl))
+        ])
 
         return true
     }
