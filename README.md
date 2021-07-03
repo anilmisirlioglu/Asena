@@ -31,6 +31,10 @@ Changes to be made must be made on the `stable` branch.
     ./service-install.sh --run
     ```
 
+## High-Level Design
+
+![asena-1](https://user-images.githubusercontent.com/20264712/122685996-97ee7500-d217-11eb-9160-8be3751af996.png)
+
 ## Multi Language Support
 
 **[EN]** Due to the high usage of the bot on Turkish servers, the default language of the bot is set to *Turkish*.
