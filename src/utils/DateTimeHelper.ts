@@ -60,15 +60,8 @@ const secondsToString = (
     })
 }
 
-const dateTimeToString = (date: Date, locale = LanguageManager.DEFAULT_LANGUAGE): string => {
-    const month = LanguageManager.translate(locale, `global.date-time.months.${(date.getUTCMonth() + 1)}`)
-
-    return `${date.getUTCDate()} ${month} ${date.getUTCFullYear()} ${fillZero(date.getUTCHours())}:${fillZero(date.getUTCMinutes())}:${date.getUTCSeconds()}`
-}
-
-const fillZero = (number: number | string): string => {
-    number = String(number)
-    return number.length === 1 ? `0${number}` : number
+const parseDiscordTimestamp = (d: Date): string => {
+    return `<t:${(+d / 1000) | 0}>`
 }
 
 const strToSeconds = (text: string): number => {
@@ -111,7 +104,7 @@ const decodeAndConvertTimeByUnit = (time: string): number | undefined => {
 
 export {
     secondsToString,
-    dateTimeToString,
+    parseDiscordTimestamp,
     strToSeconds,
     decodeAndConvertTimeByUnit
 }
