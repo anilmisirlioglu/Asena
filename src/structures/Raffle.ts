@@ -10,12 +10,12 @@ import Structure from './Structure';
 import RaffleModel, { IRaffle, RaffleStatus } from '../models/Raffle';
 import Timestamps from '../models/legacy/Timestamps';
 import { secondsToString } from '../utils/DateTimeHelper';
-import Constants, {URLMap} from '../Constants';
+import Constants, { URLMap } from '../Constants';
 import RandomArray from '../utils/RandomArray';
 import ID from '../models/legacy/ID';
 import SuperClient from '../SuperClient';
 import Server from './Server';
-import {parseGiveawayTimerURL} from "../utils/Utils";
+import { parseGiveawayTimerURL } from "../utils/Utils";
 
 type SuperRaffle = IRaffle & Timestamps & ID
 
