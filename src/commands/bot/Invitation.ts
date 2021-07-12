@@ -2,16 +2,7 @@ import Command from '../Command';
 import SuperClient from '../../SuperClient';
 import { Message, MessageEmbed } from 'discord.js';
 import Server from '../../structures/Server';
-
-const DOMAIN = 'asena.xyz'
-const URLMap = {
-    INVITE: `https://invite.${DOMAIN}`,
-    SUPPORT_SERVER: `https://dc.${DOMAIN}`,
-    WIKI: `https://wiki.${DOMAIN}`,
-    WEBSITE: `https://${DOMAIN}`,
-    GITHUB: `https://dev.${DOMAIN}`,
-    VOTE: 'https://top.gg/bot/716259870910840832/vote'
-}
+import { URLMap } from '../../Constants';
 
 export default class Invitation extends Command{
 

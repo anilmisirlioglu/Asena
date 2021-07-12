@@ -10,11 +10,12 @@ import Structure from './Structure';
 import RaffleModel, { IRaffle, RaffleStatus } from '../models/Raffle';
 import Timestamps from '../models/legacy/Timestamps';
 import { secondsToString } from '../utils/DateTimeHelper';
-import Constants from '../Constants';
+import Constants, {URLMap} from '../Constants';
 import RandomArray from '../utils/RandomArray';
 import ID from '../models/legacy/ID';
 import SuperClient from '../SuperClient';
 import Server from './Server';
+import {parseGiveawayTimerURL} from "../utils/Utils";
 
 type SuperRaffle = IRaffle & Timestamps & ID
 
@@ -147,21 +148,22 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
     }
 
     public getEmbed(server: Server, alert: boolean = false, customRemainingTime: number = undefined): MessageEmbed{
-        const finishAt: Date = this.finishAt
-        const time = secondsToString(Math.ceil((finishAt.getTime() - this.createdAt.getTime()) / 1000), server.locale)
-        const remaining = secondsToString(customRemainingTime ?? Math.ceil((finishAt.getTime() - Date.now()) / 1000), server.locale)
+        const length = Math.ceil((+this.finishAt - +this.createdAt) / 1000)
+        const time = secondsToString(length, server.locale)
+        const remaining = secondsToString(customRemainingTime ?? Math.ceil((+this.finishAt - Date.now()) / 1000), server.locale)
 
         return new MessageEmbed()
             .setAuthor(this.prize)
             .setDescription([
-                server.translate('structures.raffle.join', Constants.CONFETTI_REACTION_EMOJI),
-                `${server.translate('global.date-time.time')}: **${time}**`,
-                `${server.translate('structures.raffle.to.end')}: **${remaining}**`,
-                `${server.translate('structures.raffle.creator')}: <@${this.constituent_id}>`
+                `:star: ${server.translate('structures.raffle.join', Constants.CONFETTI_REACTION_EMOJI)}`,
+                `:alarm_clock: ${server.translate('global.date-time.time')}: **${time}**`,
+                `:calendar: ${server.translate('structures.raffle.to.end')}: **${remaining}**`,
+                `:reminder_ribbon: ${server.translate('structures.raffle.creator')}: <@${this.constituent_id}>`,
+                `:rocket: **[${server.translate('structures.raffle.timer')}](${parseGiveawayTimerURL(this.createdAt, length)})** • **[${server.translate('structures.raffle.vote')}](${URLMap.VOTE})**`,
             ])
             .setColor(alert ? 'RED' : '#bd087d')
             .setFooter(`${server.translate('structures.raffle.footer.text', this.numbersOfWinner)} | ${server.translate('structures.raffle.footer.continues')}`)
-            .setTimestamp(finishAt)
+            .setTimestamp(this.finishAt)
     }
 
 }

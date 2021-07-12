@@ -86,4 +86,14 @@ abstract class Constants{
 
 }
 
+export const DOMAIN = 'asena.xyz'
+export const URLMap = {
+    INVITE: `https://invite.${DOMAIN}`,
+    SUPPORT_SERVER: `https://dc.${DOMAIN}`,
+    WIKI: `https://wiki.${DOMAIN}`,
+    WEBSITE: `https://${DOMAIN}`,
+    GITHUB: `https://dev.${DOMAIN}`,
+    VOTE: 'https://top.gg/bot/716259870910840832/vote'
+}
+
 export default Constants

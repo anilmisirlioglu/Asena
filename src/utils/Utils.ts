@@ -1,4 +1,4 @@
-import Constants from '../Constants';
+import Constants, { DOMAIN } from '../Constants';
 
 const confEmojiLen = Constants.CONFETTI_EMOJI.length
 const validateRaffleText = (text: string) => {
@@ -10,6 +10,11 @@ const validateRaffleText = (text: string) => {
     )
 }
 
+const parseGiveawayTimerURL = (start: Date, length: number): string => {
+    return `https://${DOMAIN}/giveaway?start=${+start}&length=${length}`
+}
+
 export {
-    validateRaffleText
+    validateRaffleText,
+    parseGiveawayTimerURL
 }

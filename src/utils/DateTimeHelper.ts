@@ -60,9 +60,7 @@ const secondsToString = (
     })
 }
 
-const parseDiscordTimestamp = (d: Date): string => {
-    return `<t:${(+d / 1000) | 0}>`
-}
+const parseDiscordTimestamp = (d: Date): string => `<t:${(+d / 1000) | 0}>`
 
 const strToSeconds = (text: string): number => {
     const arr = text.match(/([0-9]+)([smhd])/gi)

@@ -145,6 +145,8 @@
         "giveaway": "Giveaway",
         "creator": "Hosted by",
         "to.end": "Time remaining",
+        "timer": "Giveaway Timer",
+        "vote": "Vote",
         "messages": {
           "quick": "QUICK GIVEAWAY",
           "finish": "GIVEAWAY ENDED",
