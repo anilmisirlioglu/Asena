@@ -121,7 +121,7 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
 
                 const embed: MessageEmbed = new MessageEmbed()
                     .setAuthor(this.prize)
-                    .setDescription(`${description}\n${this.translate('structures.raffle.creator')}: <@${this.constituent_id}>`)
+                    .setDescription(`:medal: ${description}\n:reminder_ribbon: ${this.translate('structures.raffle.creator')}: <@${this.constituent_id}>`)
                     .setFooter(`${this.translate('structures.raffle.footer.text', this.numberOfWinners)} | ${this.translate('structures.raffle.footer.finish')}`)
                     .setTimestamp(new Date(this.finishAt))
                     .setColor('#36393F')
