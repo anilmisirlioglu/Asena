@@ -1,4 +1,4 @@
-import { Emojis } from '../Constants';
+import {Emojis, URLMap } from '../Constants';
 
 const confEmojiLen = Emojis.CONFETTI_EMOJI.length
 const validateRaffleText = (text: string) => {
@@ -10,6 +10,11 @@ const validateRaffleText = (text: string) => {
     )
 }
 
+const parseGiveawayTimerURL = (start: Date, length: number): string => {
+    return `${URLMap.WEBSITE}/giveaway?start=${+start}&length=${length}`
+}
+
 export {
-    validateRaffleText
+    validateRaffleText,
+    parseGiveawayTimerURL
 }

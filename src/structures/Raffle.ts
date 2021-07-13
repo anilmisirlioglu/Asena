@@ -13,11 +13,12 @@ import Structure from './Structure';
 import RaffleModel, { IPartialServer, IRaffle, RaffleStatus } from '../models/Raffle';
 import Timestamps from '../models/legacy/Timestamps';
 import { secondsToString } from '../utils/DateTimeHelper';
-import { Emojis } from '../Constants';
+import { Emojis, URLMap } from '../Constants';
 import ID from '../models/legacy/ID';
 import SuperClient from '../SuperClient';
 import RandomArray from '../utils/RandomArray';
 import LanguageManager from '../language/LanguageManager';
+import { parseGiveawayTimerURL } from '../utils/Utils';
 
 type SuperRaffle = IRaffle & Timestamps & ID
 
@@ -214,49 +215,42 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
     }
 
     public buildEmbed(alert: boolean = false, rm: number = undefined): MessageEmbed{
-        const finishAt: Date = this.finishAt
-        const time = secondsToString(Math.ceil((finishAt.getTime() - this.createdAt.getTime()) / 1000), Raffle.locale)
-        const remaining = secondsToString(rm ?? Math.ceil((finishAt.getTime() - Date.now()) / 1000), Raffle.locale)
+        const length = Math.ceil((+this.finishAt - +this.createdAt) / 1000)
+        const time = secondsToString(length, Raffle.locale)
+        const remaining = secondsToString(rm ?? Math.ceil((+this.finishAt - Date.now()) / 1000), Raffle.locale)
 
-        let description
-        if(this.isNewEmbed){
+        const description = [
+            `:star: ${this.translate('structures.raffle.join', Emojis.CONFETTI_REACTION_EMOJI)}`,
+            `:alarm_clock: ${this.translate('global.date-time.time')}: **${time}**`,
+            `:calendar: ${this.translate('structures.raffle.to.end')}: **${remaining}**`,
+            `:reminder_ribbon: ${this.translate('structures.raffle.creator')}: <@${this.constituent_id}>`,
+            `:rocket: **[${this.translate('structures.raffle.timer')}](${parseGiveawayTimerURL(this.createdAt, length)})** • **[${this.translate('structures.raffle.vote')}](${URLMap.VOTE})**`
+        ]
+        if(this.isAdvancedEmbed){
             const roleToString = roles => roles.map(role => `<@&${role}>`).join(', ')
             const [checkOfRewardRoles, checkOfServers, checkOfAllowedRoles] = [
                 this.rewardRoles.length === 0,
-                this.rewardRoles.length === 0,
+                this.servers.length === 0,
                 this.allowedRoles.length === 0
             ]
 
-            description = [
-                `<:join_arrow:746358699706024047> ${this.translate('structures.raffle.join', Emojis.CONFETTI_REACTION_EMOJI)}`,
-                ' ',
-                `:stopwatch: ${this.translate('global.date-time.time')}: **${time}**`,
-                `:calendar: ${this.translate('structures.raffle.to.end')}: **${remaining}**`,
+            description.push(...[
                 ' ',
                 checkOfRewardRoles ? undefined : `:mega: ${this.translate('structures.raffle.prize.roles')}: ${roleToString(this.rewardRoles)}`,
                 checkOfServers ? undefined : `:mega: ${this.translate('structures.raffle.should.servers')}: **${this.servers.map(server => `[${server.name}](${server.invite})`).join(', ')}**`,
                 checkOfAllowedRoles ? undefined : `:mega: ${this.translate('structures.raffle.should.roles')}: ${roleToString(this.allowedRoles)}`,
-                ' ',
-                `:round_pushpin: ${this.translate('structures.raffle.creator')}: <@${this.constituent_id}>`
-            ].filter(Boolean)
-        }else{
-            description = [
-                this.translate('structures.raffle.join', Emojis.CONFETTI_REACTION_EMOJI),
-                `${this.translate('global.date-time.time')}: **${time}**`,
-                `${this.translate('structures.raffle.to.end')}: **${remaining}**`,
-                `${this.translate('structures.raffle.creator')}: <@${this.constituent_id}>`
-            ]
+            ].filter(Boolean))
         }
 
         return new MessageEmbed()
             .setAuthor(this.prize)
             .setDescription(description)
             .setColor(alert ? 'RED' : this.color ?? '#bd087d')
-            .setTimestamp(finishAt)
+            .setTimestamp(this.finishAt)
             .setFooter(`${this.translate('structures.raffle.footer.text', this.numberOfWinners)} | ${this.translate('structures.raffle.footer.continues')}`)
     }
 
-    private get isNewEmbed(): boolean{
+    private get isAdvancedEmbed(): boolean{
         return this.rewardRoles.length !== 0 ||
             this.servers.length !== 0 ||
             this.allowedRoles.length !== 0

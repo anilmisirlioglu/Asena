@@ -183,6 +183,8 @@
         "giveaway": "Çekiliş",
         "creator": "Oluşturan",
         "to.end": "Bitmesine",
+        "timer": "Çekiliş Sayacı",
+        "vote": "Oy Ver",
         "prize": {
           "roles": "Ödül olarak verilecek roller"
         },
@@ -197,8 +199,7 @@
           "alert": "ÇEKİLİŞ İÇİN SON KATILIM"
         },
         "won": "Tebrikler, bir çekiliş kazandınız!",
-        "link": "Çekiliş Bağlantısı",
-        "vote": "Bana Oy Ver"
+        "link": "Çekiliş Bağlantısı"
       }
     },
     "commands": {
@@ -218,7 +219,7 @@
         },
         "premium": {
           "only": "Bu özellik sadece **Asena Premium** kullanıcıları içindir.",
-          "try": "Premium 'u Denemeye Ne Dersin?"
+          "try": "Premium'u Denemeye Ne Dersin?"
         }
       },
       "bot": {
@@ -375,7 +376,7 @@
           "description": "Premium durumunu görüntüler",
           "try": [
             "Henüz bir **Premium** üyeliğin bulunmuyor.",
-            ":star2:  [Premium 'u Denemeye Ne Dersin?](https://asena.xyz)"
+            ":star2:  [Premium'u Denemeye Ne Dersin?](https://asena.xyz)"
           ],
           "info": [
             "Premium: **{0}**",

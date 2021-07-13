@@ -194,6 +194,8 @@
         "giveaway": "Giveaway",
         "creator": "Hosted by",
         "to.end": "Time remaining",
+        "timer": "Giveaway Timer",
+        "vote": "Vote",
         "prize": {
           "roles": "As a reward, roles to be given"
         },
@@ -208,8 +210,7 @@
           "alert": "LAST PARTICIPATION FOR THE GIVEAWAY"
         },
         "won": "Congratulations, you won a giveaway!",
-        "link": "Giveaway Link",
-        "vote": "Vote For Me"
+        "link": "Giveaway Link"
       }
     },
     "commands": {
