@@ -10,7 +10,7 @@ export default class Raffles extends Command{
     constructor(){
         super({
             name: 'raffles',
-            aliases: ['giveaway', 'giveaways', 'çekilişler', 'aktifçekilişler', 'cekilisler', 'activeraffles', 'list'],
+            aliases: ['giveaway', 'giveaways', 'çekilişler', 'cekilisler', 'list'],
             description: 'commands.raffle.list.description',
             usage: null,
             permission: undefined,
