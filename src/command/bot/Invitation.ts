@@ -20,11 +20,13 @@ export default class Invitation extends Command{
     async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
         const embed = new MessageEmbed()
             .setAuthor(client.user.username, client.user.avatarURL())
-            .addField(`🌈  **${server.translate('commands.bot.invitation.bot.url')}:**`, `[${server.translate('commands.bot.invitation.click.invite')}](${URLMap.INVITE})`)
-            .addField(`<:hayalet:739432632030593105>  **${server.translate('commands.bot.invitation.support.server')}:**`, `[${server.translate('commands.bot.invitation.click.join')}](${URLMap.SUPPORT_SERVER})`)
-            .addField(`🌎  **${server.translate('commands.bot.invitation.website')}:**`, `[asena.xyz](${URLMap.WEBSITE}) - [wiki.asena.xyz](${URLMap.WIKI})`)
-            .addField(`🎊  **${server.translate('commands.bot.invitation.vote')}:**`, `[${server.translate('commands.bot.invitation.click.vote')}](${URLMap.VOTE})`)
-            .addField(`📂  **${server.translate('commands.bot.invitation.open.source')}:**`, `[GitHub](${URLMap.GITHUB})`)
+            .setDescription([
+                `:link: ${server.translate('commands.bot.invitation.bot.url')}: **[${server.translate('commands.bot.invitation.click.invite')}](${URLMap.INVITE})**`,
+                `:technologist: ${server.translate('commands.bot.invitation.support.server')}: **[${server.translate('commands.bot.invitation.click.join')}](${URLMap.SUPPORT_SERVER})**`,
+                `:satellite_orbital: ${server.translate('commands.bot.invitation.website')}: **[asena.xyz](${URLMap.WEBSITE}) - [wiki.asena.xyz](${URLMap.WIKI})**`,
+                `:ringed_planet: ${server.translate('commands.bot.invitation.vote')}: **[${server.translate('commands.bot.invitation.click.vote')}](${URLMap.VOTE})**`,
+                `:star2: ${server.translate('commands.bot.invitation.open.source')}: **[GitHub](${URLMap.GITHUB})**`
+            ])
             .setColor(message.guild.me.displayHexColor)
 
         await message.channel.send({ embed })
