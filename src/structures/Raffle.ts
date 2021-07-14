@@ -115,14 +115,17 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
                         break
 
                     default:
-                        description = `${this.translate('structures.raffle.winners.plural.description')}:\n${winnersOfMentions.join('\n')}`
+                        description = `${this.translate('structures.raffle.winners.plural.description')}:\n${winnersOfMentions.map(winner => `:small_blue_diamond: ${winner}`).join('\n')}`
                         content = this.translate('structures.raffle.winners.plural.content', winnersOfMentions.join(', '), this.prize)
                         break
                 }
 
                 const embed: MessageEmbed = new MessageEmbed()
                     .setAuthor(this.prize)
-                    .setDescription(`:medal: ${description}\n:reminder_ribbon: ${this.translate('structures.raffle.creator')}: <@${this.constituent_id}>`)
+                    .setDescription([
+                        `:medal: ${description}`,
+                        `:reminder_ribbon: ${this.translate('structures.raffle.creator')}: <@${this.constituent_id}>`
+                    ])
                     .setFooter(`${this.translate('structures.raffle.footer.text', this.numberOfWinners)} | ${this.translate('structures.raffle.footer.finish')}`)
                     .setTimestamp(new Date(this.finishAt))
                     .setColor('#36393F')

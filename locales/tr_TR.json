@@ -395,6 +395,7 @@
           },
           "voice": {
             "channel": {
+              "all": "Tüm Sesli Odalar",
               "invalid": "Lütfen geçerli bir ses kanalı girin.",
               "unauthorized": "Botun bu kanaldaki kullanıcıları görme yetkisi yok.",
               "not.found": "Lütfen geçerli bir kullanıcı veya kanal girin.",

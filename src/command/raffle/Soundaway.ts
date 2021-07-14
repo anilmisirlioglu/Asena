@@ -37,7 +37,7 @@ export default class Soundaway extends Command{
             return true
         }
 
-        let pool = [], index
+        let pool = [], index, ch
         const arg1 = args[1]
         if(!(this.isValidSnowflake(arg1) || message.mentions.members.first())){
             pool = message.guild.channels.cache
@@ -58,6 +58,7 @@ export default class Soundaway extends Command{
             }
 
             index = 1
+            ch = server.translate('commands.raffle.soundaway.voice.channel.all')
         }else{
             const channel = this.isValidSnowflake(arg1) ?
                 message.guild.channels.cache.get(arg1) :
@@ -100,6 +101,7 @@ export default class Soundaway extends Command{
 
             pool = channel.members.keyArray()
             index = 2
+            ch = channel.name
         }
 
         let title
@@ -127,18 +129,17 @@ export default class Soundaway extends Command{
             server.translate('structures.raffle.winners.none.description') :
             winners.length === 1 ?
                 `${server.translate('structures.raffle.winners.single.description')}: <@${winners[0]}>` :
-                `${server.translate('structures.raffle.winners.plural.description')}:\n${winners.map(winner => `<@${winner}>`).join('\n')}`
+                `${server.translate('structures.raffle.winners.plural.description')}:\n${winners.map(winner => `:small_blue_diamond: <@${winner}>`).join('\n')}`
 
         const embed = new MessageEmbed()
+            .setAuthor(title ? title : `🔊 ${ch}`)
             .setDescription([
-                description,
-                `${server.translate('structures.raffle.creator')}: ${message.author}`
+                `:medal: ${description}`,
+                `:reminder_ribbon: ${server.translate('structures.raffle.creator')}: ${message.author}`
             ])
             .setFooter(`${server.translate('structures.raffle.footer.text', numberOfWinners)} | ${server.translate('structures.raffle.footer.finish')}`)
             .setTimestamp()
             .setColor('#36393F')
-
-        if(title) embed.setAuthor(title)
 
         await message.channel.send(`:tada: **${server.translate('structures.raffle.messages.quick')}** :tada:`, {
             embed

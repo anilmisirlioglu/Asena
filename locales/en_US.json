@@ -406,6 +406,7 @@
           },
           "voice": {
             "channel": {
+              "all": "All Voice Channels",
               "invalid": "Please enter a valid voice channel.",
               "unauthorized": "The bot is not authorized to view users in this voice channel.",
               "not.found": "Please enter a valid voice channel or member.",
