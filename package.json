@@ -1,6 +1,6 @@
 {
   "name": "asena",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "description": "Fast and reliable giveaway and poll bot for Discord",
   "homepage": "https://asena.xyz",
   "main": "./src/index.ts",
