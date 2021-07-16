@@ -8,8 +8,8 @@ export default class Invitation extends Command{
 
     constructor(){
         super({
-            name: 'davet',
-            aliases: ['invite', 'party', 'davetiye', 'link', 'wiki'],
+            name: 'invite',
+            aliases: ['davet', 'party', 'davetiye', 'link', 'wiki'],
             description: 'commands.bot.invitation.description',
             usage: null,
             permission: undefined,
