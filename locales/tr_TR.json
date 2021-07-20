@@ -348,6 +348,7 @@
           "language": {
             "enter.code": "Lütfen bir dil kodu girin.",
             "not.found": "Dil bulunamadı ({0}). Lütfen geçerli bir dil kodu girin.",
+            "already.using": "Zaten **{0}** dilini kullanıyorsunuz.",
             "default": {
               "successfully.changed": "Varsayılan diliniz **{0}** olarak ayarlandı.",
               "already.using": "Zaten varsayılan dili kullanılıyorsunuz."

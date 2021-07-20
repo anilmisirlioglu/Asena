@@ -51,7 +51,7 @@ export default class Locale extends Command{
                     await message.channel.send({
                         embed: this.getErrorEmbed(server.translate('commands.server.locale.language.enter.code'))
                     })
-                    return true
+                    break
                 }
 
                 const code = args[1]
@@ -60,12 +60,20 @@ export default class Locale extends Command{
                     await message.channel.send({
                         embed: this.getErrorEmbed(server.translate('commands.server.locale.language.not.found', code))
                     })
-                }else{
-                    await Promise.all([
-                        server.setLocale(locale),
-                        message.channel.send('🌈  ' + server.translate('commands.server.locale.language.default.successfully.changed', `${locale.flag} ${locale.full}`))
-                    ])
+                    break
                 }
+
+                if(locale.code == server.locale){
+                    await message.channel.send({
+                        embed: this.getErrorEmbed(server.translate('commands.server.locale.language.already.using', locale.full))
+                    })
+                    break
+                }
+
+                await Promise.all([
+                    server.setLocale(locale),
+                    message.channel.send('🌈  ' + locale.translate('commands.server.locale.language.default.successfully.changed', [`${locale.flag} ${locale.full}`]))
+                ])
                 break
 
             case 'reset':
@@ -77,7 +85,7 @@ export default class Locale extends Command{
                     const locale = LanguageManager.getLanguage(LanguageManager.DEFAULT_LANGUAGE)
                     await Promise.all([
                         server.setLocale(locale),
-                        message.channel.send('🌈  ' + server.translate('commands.server.locale.language.default.successfully.changed', `${locale.flag} ${locale.full}`))
+                        message.channel.send('🌈  ' + locale.translate('commands.server.locale.language.default.successfully.changed', [`${locale.flag} ${locale.full}`]))
                     ])
                 }
                 break

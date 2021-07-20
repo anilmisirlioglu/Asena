@@ -351,7 +351,7 @@
         "locale": {
           "description": "Changes the bot default language",
           "usage": "[list | set | reset] <args>",
-          "default": "The bot's language in this server.",
+          "default": "Communication language of the bot in the server",
           "embed": {
             "title": "Available Languages",
             "footer": "To use: {0}locale set [language]"
@@ -359,6 +359,7 @@
           "language": {
             "enter.code": "Please specify a language code.",
             "not.found": "Couldn't found the language ({0}). Please specify a valid language code.",
+            "already.using": "You're already using **{0}** language.",
             "default": {
               "successfully.changed": "Your default language has set to **{0}**.",
               "already.using": "You are already using the default language."
@@ -380,7 +381,7 @@
               "editable": "You can't edit this command's permissions."
             },
             "already": "This command has already **{0}** to everyone.",
-            "success": "The **{0}** command's permissions has editted successfully. Command status: **To everyone {1}**"
+            "success": "The **{0}** command's permissions has edited successfully. Command status: **To everyone {1}**"
           }
         },
         "premium": {
