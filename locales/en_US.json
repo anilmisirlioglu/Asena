@@ -46,6 +46,7 @@
       "example": "Example",
       "message-id": "(message-id)",
       "unlimited": "Unlimited",
+      "vote": "Vote",
       "date-time": {
         "months": {
           "1": "January",
@@ -190,27 +191,44 @@
           "finish": "Ended",
           "continues": "Ends at"
         },
-        "join": "Click on the {0} emoji to enter the giveaway!",
-        "giveaway": "Giveaway",
-        "creator": "Hosted by",
-        "to.end": "Time remaining",
-        "timer": "Giveaway Timer",
-        "vote": "Vote",
-        "prize": {
-          "roles": "As a reward, roles to be given"
+        "embed": {
+          "fields": {
+            "join": "Click on the {0} emoji to enter the giveaway!",
+            "giveaway": "Giveaway",
+            "creator": "Hosted by",
+            "to.end": "Time remaining",
+            "timer": "Giveaway Timer",
+            "prize": {
+              "roles": "As a reward, roles to be given"
+            },
+            "should": {
+              "servers": "You must join these servers",
+              "roles": "You must have these roles"
+            }
+          },
+          "footer": {
+            "text": "{0} Kazanan",
+            "finish": "Sona Erdi",
+            "continues": "Bitiş"
+          }
         },
-        "should": {
-          "servers": "You must join these servers",
-          "roles": "You must have these roles"
+        "winner": {
+          "embed": {
+            "title": "Congratulations, you won a giveaway!",
+            "fields": {
+              "prize": "Prize",
+              "server": "Server",
+              "link": "Giveaway Link",
+              "invite": "Invite"
+            }
+          }
         },
         "messages": {
           "quick": "QUICK GIVEAWAY",
           "finish": "GIVEAWAY ENDED",
           "start": "GIVEAWAY STARTED",
           "alert": "LAST PARTICIPATION FOR THE GIVEAWAY"
-        },
-        "won": "Congratulations, you won a giveaway!",
-        "link": "Giveaway Link"
+        }
       }
     },
     "commands": {

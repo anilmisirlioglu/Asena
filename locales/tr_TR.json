@@ -34,6 +34,7 @@
       "example": "Örnek",
       "message-id": "(mesaj-id)",
       "unlimited": "Sınırsız",
+      "vote": "Oy Ver",
       "date-time": {
         "months": {
           "1": "Ocak",
@@ -174,32 +175,44 @@
             "content": "Tebrikler {0}! **{1}** kazandınız."
           }
         },
-        "footer": {
-          "text": "{0} Kazanan",
-          "finish": "Sona Erdi",
-          "continues": "Bitiş"
+        "embed": {
+          "fields": {
+            "join": "Çekilişe katılmak için {0} emojisine tıklayın!",
+            "giveaway": "Çekiliş",
+            "creator": "Oluşturan",
+            "to.end": "Bitmesine",
+            "timer": "Çekiliş Sayacı",
+            "prize": {
+              "roles": "Ödül olarak verilecek roller"
+            },
+            "should": {
+              "servers": "Şu sunuculara üye olmalısınız",
+              "roles": "Şu rollere sahip olmalısınız"
+            }
+          },
+          "footer": {
+            "text": "{0} Kazanan",
+            "finish": "Sona Erdi",
+            "continues": "Bitiş"
+          }
         },
-        "join": "Çekilişe katılmak için {0} emojisine tıklayın!",
-        "giveaway": "Çekiliş",
-        "creator": "Oluşturan",
-        "to.end": "Bitmesine",
-        "timer": "Çekiliş Sayacı",
-        "vote": "Oy Ver",
-        "prize": {
-          "roles": "Ödül olarak verilecek roller"
-        },
-        "should": {
-          "servers": "Şu sunuculara üye olmalısınız",
-          "roles": "Şu rollere sahip olmalısınız"
+        "winner": {
+          "embed": {
+            "title": "Tebrikler, bir çekiliş kazandınız!",
+            "fields": {
+              "prize": "Ödül",
+              "server": "Sunucu",
+              "link": "Çekiliş Bağlantısı",
+              "invite": "Davet Et"
+            }
+          }
         },
         "messages": {
           "quick": "HIZLI ÇEKİLİŞ",
           "finish": "ÇEKİLİŞ BİTTİ",
           "start": "ÇEKİLİŞ BAŞLADI",
           "alert": "ÇEKİLİŞ İÇİN SON KATILIM"
-        },
-        "won": "Tebrikler, bir çekiliş kazandınız!",
-        "link": "Çekiliş Bağlantısı"
+        }
       }
     },
     "commands": {

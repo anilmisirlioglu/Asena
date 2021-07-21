@@ -135,9 +135,9 @@ export default class Soundaway extends Command{
             .setAuthor(title ? title : `🔊 ${ch}`)
             .setDescription([
                 `:medal: ${description}`,
-                `:reminder_ribbon: ${server.translate('structures.raffle.creator')}: ${message.author}`
+                `:reminder_ribbon: ${server.translate('structures.raffle.embed.fields.creator')}: ${message.author}`
             ])
-            .setFooter(`${server.translate('structures.raffle.footer.text', numberOfWinners)} | ${server.translate('structures.raffle.footer.finish')}`)
+            .setFooter(`${server.translate('structures.raffle.embed.footer.text', numberOfWinners)} | ${server.translate('structures.raffle.embed.footer.finish')}`)
             .setTimestamp()
             .setColor('#36393F')
 

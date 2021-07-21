@@ -124,17 +124,15 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
                     .setAuthor(this.prize)
                     .setDescription([
                         `:medal: ${description}`,
-                        `:reminder_ribbon: ${this.translate('structures.raffle.creator')}: <@${this.constituent_id}>`
+                        `:reminder_ribbon: ${this.translate('structures.raffle.embed.fields.creator')}: <@${this.constituent_id}>`
                     ])
-                    .setFooter(`${this.translate('structures.raffle.footer.text', this.numberOfWinners)} | ${this.translate('structures.raffle.footer.finish')}`)
+                    .setFooter(`${this.translate('structures.raffle.embed.footer.text', this.numberOfWinners)} | ${this.translate('structures.raffle.embed.footer.finish')}`)
                     .setTimestamp(new Date(this.finishAt))
                     .setColor('#36393F')
 
                 await Promise.all([
-                    message.edit(`${Emojis.CONFETTI_REACTION_EMOJI} **${this.translate('structures.raffle.messages.finish')}** ${Emojis.CONFETTI_REACTION_EMOJI}`, {
-                        embed
-                    }),
-                    channel.send(`${Emojis.CONFETTI_EMOJI} ${content}\n**${this.translate('structures.raffle.giveaway')}** ${_message}`),
+                    message.edit(`${Emojis.CONFETTI_REACTION_EMOJI} **${this.translate('structures.raffle.messages.finish')}** ${Emojis.CONFETTI_REACTION_EMOJI}`, { embed }),
+                    channel.send(`${Emojis.CONFETTI_EMOJI} ${content}\n**${this.translate('structures.raffle.embed.fields.giveaway')}** ${_message}`),
                     this.resolveWinners(client, channel.guild, winners),
                 ])
             }
@@ -164,25 +162,25 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
     }
 
     public async resolveWinners(client: SuperClient, guild: Guild, winners: string[]){
-        const me = guild.me
         const embed = new MessageEmbed()
-            .setTitle(`:medal: ${this.translate('structures.raffle.won')} <a:ablobangel:744194706795266138>`)
+            .setAuthor(`${this.translate('structures.raffle.winner.embed.title')} 🏅`)
             .setDescription([
-                `:gift: **${this.prize}**`,
-                `:gem:  **${guild.name}**`,
-                `:link: [${this.translate('structures.raffle.link')}](${this.getMessageURL()})`,
-                `:rocket: [${this.translate('structures.raffle.vote')}](https://top.gg/bot/716259870910840832/vote)`
+                `:gift: ${this.translate('structures.raffle.winner.embed.fields.prize')}: **${this.prize}**`,
+                `:star: ${this.translate('structures.raffle.winner.embed.fields.server')}: **${guild.name}**`,
+                `:link: **[${this.translate('structures.raffle.winner.embed.fields.link')}](${this.getMessageURL()})**`,
+                `:rocket: **[${this.translate('global.vote')}](${URLMap.VOTE})** • **[${this.translate('structures.raffle.winner.embed.fields.invite')}](${URLMap.INVITE})**`
             ])
-            .setFooter(client.user.username, client.user.avatarURL())
+            .setFooter('Powered by Asena', guild.iconURL())
+            .setTimestamp()
             .setColor('GREEN')
 
         let rewardRoles: Role[] = []
-        if(this.rewardRoles.length > 0 && me.hasPermission('MANAGE_ROLES')){
+        if(this.rewardRoles.length > 0 && guild.me.hasPermission('MANAGE_ROLES')){
             const fetchRoles = await guild.roles.fetch()
             rewardRoles = fetchRoles
                 .cache
                 .array()
-                .filter(role => this.rewardRoles.includes(role.id) && role.comparePositionTo(me.roles.highest) < 0)
+                .filter(role => this.rewardRoles.includes(role.id) && role.comparePositionTo(guild.me.roles.highest) < 0)
         }
 
         const promises: Promise<unknown>[] = winners.map(winner => new Promise(() => {
@@ -223,11 +221,11 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
         const remaining = secondsToString(rm ?? Math.ceil((+this.finishAt - Date.now()) / 1000), Raffle.locale)
 
         const description = [
-            `:star: ${this.translate('structures.raffle.join', Emojis.CONFETTI_REACTION_EMOJI)}`,
+            `:star: ${this.translate('structures.raffle.embed.fields.join', Emojis.CONFETTI_REACTION_EMOJI)}`,
             `:alarm_clock: ${this.translate('global.date-time.time')}: **${time}**`,
-            `:calendar: ${this.translate('structures.raffle.to.end')}: **${remaining}**`,
-            `:reminder_ribbon: ${this.translate('structures.raffle.creator')}: <@${this.constituent_id}>`,
-            `:rocket: **[${this.translate('structures.raffle.timer')}](${parseGiveawayTimerURL(this.createdAt, length)})** • **[${this.translate('structures.raffle.vote')}](${URLMap.VOTE})**`
+            `:calendar: ${this.translate('structures.raffle.embed.fields.to.end')}: **${remaining}**`,
+            `:reminder_ribbon: ${this.translate('structures.raffle.embed.fields.creator')}: <@${this.constituent_id}>`,
+            `:rocket: **[${this.translate('structures.raffle.embed.fields.timer')}](${parseGiveawayTimerURL(this.createdAt, length)})** • **[${this.translate('global.vote')}](${URLMap.VOTE})**`
         ]
         if(this.isAdvancedEmbed){
             const roleToString = roles => roles.map(role => `<@&${role}>`).join(', ')
@@ -239,9 +237,9 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
 
             description.push(...[
                 ' ',
-                checkOfRewardRoles ? undefined : `:mega: ${this.translate('structures.raffle.prize.roles')}: ${roleToString(this.rewardRoles)}`,
-                checkOfServers ? undefined : `:mega: ${this.translate('structures.raffle.should.servers')}: **${this.servers.map(server => `[${server.name}](${server.invite})`).join(', ')}**`,
-                checkOfAllowedRoles ? undefined : `:mega: ${this.translate('structures.raffle.should.roles')}: ${roleToString(this.allowedRoles)}`,
+                checkOfRewardRoles ? undefined : `:mega: ${this.translate('structures.raffle.embed.fields.prize.roles')}: ${roleToString(this.rewardRoles)}`,
+                checkOfServers ? undefined : `:mega: ${this.translate('structures.raffle.embed.fields.should.servers')}: **${this.servers.map(server => `[${server.name}](${server.invite})`).join(', ')}**`,
+                checkOfAllowedRoles ? undefined : `:mega: ${this.translate('structures.raffle.embed.fields.should.roles')}: ${roleToString(this.allowedRoles)}`,
             ].filter(Boolean))
         }
 
@@ -250,7 +248,7 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
             .setDescription(description)
             .setColor(alert ? 'RED' : this.color ?? '#bd087d')
             .setTimestamp(this.finishAt)
-            .setFooter(`${this.translate('structures.raffle.footer.text', this.numberOfWinners)} | ${this.translate('structures.raffle.footer.continues')}`)
+            .setFooter(`${this.translate('structures.raffle.embed.footer.text', this.numberOfWinners)} | ${this.translate('structures.raffle.embed.footer.continues')}`)
     }
 
     private get isAdvancedEmbed(): boolean{
