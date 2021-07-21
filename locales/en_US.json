@@ -186,11 +186,6 @@
             "content": "Congratulations {0}! You won **{1}**."
           }
         },
-        "footer": {
-          "text": "{0} Winners",
-          "finish": "Ended",
-          "continues": "Ends at"
-        },
         "embed": {
           "fields": {
             "join": "Click on the {0} emoji to enter the giveaway!",
@@ -207,9 +202,9 @@
             }
           },
           "footer": {
-            "text": "{0} Kazanan",
-            "finish": "Sona Erdi",
-            "continues": "Bitiş"
+            "text": "{0} Winners",
+            "finish": "Ended",
+            "continues": "Ends at"
           }
         },
         "winner": {
