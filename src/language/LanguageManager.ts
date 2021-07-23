@@ -16,36 +16,36 @@ export default class LanguageManager{
 
     init(){
         const files = readdirSync(LanguageManager.LOCALE_PATH)
-        if(!files.length) this.client.logger.error('Herhangi bir dil dosyası bulunamadı.')
+        if(!files.length) this.client.logger.error('Language files not found.')
 
         for(const file of files){
             if(!file.endsWith('.json')){
-                this.client.logger.warning(`${file} adlı dil dosyası '.json' uzantısı ile bitmiyor.`)
+                this.client.logger.warning(`The language file named ${file} does not end with the '.json' file extension.`)
                 continue
             }
 
             const language = require(`${LanguageManager.LOCALE_PATH}${sep}${file}`)
-            this.client.logger.info(`Dil yüklendi: ${Colors.LIGHT_PURPLE + language.full}`)
+            this.client.logger.info(`Language loaded: ${Colors.LIGHT_PURPLE + language.full}`)
 
             const locale = new Language(language)
             LanguageManager.addLanguage(locale)
 
             if(this.client.version.compare(locale.version) === -1){
                 if(locale.code === LanguageManager.DEFAULT_LANGUAGE){
-                    this.client.logger.warning(`Varsayılan dil (${LanguageManager.DEFAULT_LANGUAGE}) sürümü eski. Lütfen dil sürümünü güncelleyin.`)
+                    this.client.logger.warning(`The default language (${LanguageManager.DEFAULT_LANGUAGE}) version is out of date. Please update the language version.`)
                     process.exit(1)
                 }else{
-                    this.client.logger.warning(`${language.full} dilinin sürümü eski. Eksik anahtarlar varsayılan dilden sağlanacak.`)
+                    this.client.logger.warning(`The ${language.full} language version is out of date. Missing keys will be provided from the default language.`)
                 }
             }
         }
 
         if(!LanguageManager.languages.get(LanguageManager.DEFAULT_LANGUAGE)){
-            this.client.logger.error(`Varsayılan dil (${LanguageManager.DEFAULT_LANGUAGE}) yüklenemedi.`)
+            this.client.logger.error(`Default language (${LanguageManager.DEFAULT_LANGUAGE}) could not be loaded.`)
             process.exit(1)
         }
 
-        this.client.logger.info(`Toplam ${LanguageManager.languages.size} dil başarıyla yüklendi!`)
+        this.client.logger.info(`Total ${LanguageManager.languages.size} language successfully loaded!`)
     }
 
     private static addLanguage(locale: Language){
