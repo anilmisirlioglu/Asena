@@ -1,4 +1,4 @@
-import Command from '../Command';
+import Command, { Group } from '../Command';
 import SuperClient from '../../SuperClient';
 import Server from '../../structures/Server';
 import { Message, MessageEmbed } from 'discord.js';
@@ -8,6 +8,7 @@ export default class Ping extends Command{
     constructor(){
         super({
             name: 'ping',
+            group: Group.BOT,
             aliases: ['ms'],
             description: 'commands.bot.ping.description',
             usage: null,
@@ -21,8 +22,8 @@ export default class Ping extends Command{
             const embed = new MessageEmbed()
                 .setAuthor(`${server.translate('commands.bot.ping.title')} 🚀`)
                 .setDescription([
-                    `🤖 ${server.translate('commands.bot.ping.latency.bot')}: \`\`${this.resolveMS(m.createdTimestamp - message.createdTimestamp)}\`\``,
-                    `📨 ${server.translate('commands.bot.ping.latency.api')}: \`\`${this.resolveMS(client.ws.ping)}\`\``
+                    `🤖 ${server.translate('commands.bot.ping.latency.bot')}: \`${this.resolveMS(m.createdTimestamp - message.createdTimestamp)}\``,
+                    `📨 ${server.translate('commands.bot.ping.latency.api')}: \`${this.resolveMS(client.ws.ping)}\``
                 ])
                 .setColor('BLUE')
 

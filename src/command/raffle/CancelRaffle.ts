@@ -1,6 +1,6 @@
 import { Message } from 'discord.js'
 
-import Command from '../Command'
+import Command, { Group } from '../Command'
 import { Emojis } from '../../Constants'
 import SuperClient from '../../SuperClient';
 import Server from '../../structures/Server';
@@ -10,6 +10,7 @@ export default class CancelRaffle extends Command{
     constructor(){
         super({
             name: 'cancel',
+            group: Group.GIVEAWAY,
             aliases: ['cekilisiptal', 'cancelraffle'],
             description: 'commands.raffle.cancel.description',
             usage: 'global.message-id',

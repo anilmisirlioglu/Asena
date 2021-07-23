@@ -1,4 +1,4 @@
-import Command from '../Command';
+import Command, { Group } from '../Command';
 import SuperClient from '../../SuperClient';
 import Server from '../../structures/Server';
 import { Message, MessageEmbed } from 'discord.js';
@@ -9,6 +9,7 @@ export default class Locale extends Command{
     constructor(){
         super({
             name: 'locale',
+            group: Group.SERVER,
             aliases: ['lang', 'language', 'dil'],
             description: 'commands.server.locale.description',
             usage: 'commands.server.locale.usage',

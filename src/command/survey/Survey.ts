@@ -1,4 +1,4 @@
-import Command from '../Command';
+import Command, { Group } from '../Command';
 import { Message, MessageEmbed } from 'discord.js';
 import { Emojis, SurveyLimits } from '../../Constants';
 import SuperClient from '../../SuperClient';
@@ -11,6 +11,7 @@ export default class Survey extends Command{
     constructor(){
         super({
             name: 'survey',
+            group: Group.POLL,
             aliases: ['anket', 'voting', 'vote'],
             description: 'commands.survey.vote.description',
             usage: 'commands.survey.vote.usage',

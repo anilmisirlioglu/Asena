@@ -1,4 +1,4 @@
-import Command from '../Command';
+import Command, { Group } from '../Command';
 import Premium from '../../decorators/Premium';
 import SuperClient from '../../SuperClient';
 import Server from '../../structures/Server';
@@ -16,6 +16,7 @@ class EditRaffle extends Command{
     constructor(){
         super({
             name: 'edit',
+            group: Group.GIVEAWAY,
             aliases: ['düzenle', 'set'],
             description: 'commands.raffle.edit.description',
             usage: 'commands.raffle.edit.usage',

@@ -1,4 +1,4 @@
-import Command from '../Command';
+import Command, { Group } from '../Command';
 import { Message } from 'discord.js';
 import Server from '../../structures/Server';
 import SuperClient from '../../SuperClient';
@@ -9,6 +9,7 @@ export default class FixRaffle extends Command{
     constructor(){
         super({
             name: 'fix',
+            group: Group.GIVEAWAY,
             aliases: ['duzelt'],
             description: 'commands.raffle.fix.description',
             usage: 'global.message-id',

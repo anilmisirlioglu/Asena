@@ -1,6 +1,5 @@
 import { Message } from 'discord.js'
-
-import Command from '../Command'
+import Command, { Group } from '../Command'
 import SuperClient from '../../SuperClient';
 import Server from '../../structures/Server';
 
@@ -9,6 +8,7 @@ export default class EndRaffle extends Command{
     constructor(){
         super({
             name: 'end',
+            group: Group.GIVEAWAY,
             aliases: ['hemenbitir', 'finish', 'bitir', 'erkenbitir'],
             description: 'commands.raffle.end.description',
             usage: 'global.message-id',

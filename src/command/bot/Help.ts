@@ -1,6 +1,5 @@
 import { Message, MessageEmbed } from 'discord.js'
-
-import Command from '../Command'
+import Command, { Group } from '../Command'
 import SuperClient from '../../SuperClient';
 import Server from '../../structures/Server';
 import { Bot } from '../../Constants';
@@ -10,6 +9,7 @@ export default class Help extends Command{
     constructor(){
         super({
             name: 'help',
+            group: Group.BOT,
             aliases: ['yardim', 'yardım'],
             description: 'commands.bot.help.description',
             usage: null,
@@ -22,19 +22,33 @@ export default class Help extends Command{
         const command: undefined | string = args[0]
         const prefix = (await client.servers.get(message.guild.id)).prefix
         if(!args[0]){
-            const text = client.getCommandHandler().getCommandsArray().map(command => {
-                const label = `\`${command.name}\`: ${server.translate(command.description)}`
-                return command.permission === 'ADMINISTRATOR' ? (
-                    (
+            const commands = client.getCommandHandler().getCommandsArray().filter(command => {
+                if(command.permission === 'ADMINISTRATOR'){
+                    return (
                         message.member.hasPermission('ADMINISTRATOR') ||
-                        message.member.roles.cache.find(role => role.name.trim().toLowerCase() == Bot.PERMITTED_ROLE_NAME)
-                    ) ? label : undefined
-                ) : label
-            }).filter(Boolean).join('\n')
+                        message.member.roles.cache.find(role => role.name.trim().toLowerCase() === Bot.PERMITTED_ROLE_NAME)
+                    )
+                }
+
+                return true
+            })
+
+            const fieldMap = {}
+            for(const command of commands){
+                const label = `\`${command.name}\`: ${server.translate(command.description)}`
+                if(!fieldMap[command.group]){
+                    fieldMap[command.group] = {
+                        name: server.translate(`commands.${command.group}.name`),
+                        value: []
+                    }
+                }
+
+                fieldMap[command.group].value.push(label)
+            }
 
             const embed = new MessageEmbed()
                 .setAuthor(`📍 ${server.translate('commands.bot.help.embed.title')}`, message.author.displayAvatarURL() || message.author.defaultAvatarURL)
-                .addField(server.translate('commands.bot.help.embed.fields.commands'), text)
+                .addFields(Object.values(fieldMap))
                 .addField(`🌟 ${server.translate('commands.bot.help.embed.fields.more.detailed')}`, `${prefix}${this.name} [${server.translate('commands.bot.help.embed.fields.command')}]`)
                 .addField(`❓ ${server.translate('commands.bot.help.embed.fields.more.info')}`, `**[Wiki](https://wiki.asena.xyz)** - **[${server.translate('global.support')}](https://dc.asena.xyz)** - **[Website](https://asena.xyz)**`)
                 .addField(`⭐ ${server.translate('commands.bot.help.embed.fields.star')}`, '**[GitHub](https://github.com/anilmisirlioglu/Asena)**')
@@ -53,7 +67,6 @@ export default class Help extends Command{
             return true
         }else{
             const searchCommand: Command | undefined = client.getCommandHandler().getCommandsMap().filter($command => $command.name === command.trim()).first()
-            let embed
             if(searchCommand){
                 const fullCMD = prefix + searchCommand.name
                 const embed = new MessageEmbed()
@@ -70,11 +83,12 @@ export default class Help extends Command{
                 }
 
                 await message.channel.send({ embed })
-
-                return true
+            }else{
+                await message.channel.send({
+                    embed: this.getErrorEmbed(server.translate('commands.bot.help.error', command))
+                })
             }
 
-            await message.channel.send({ embed: embed ?? this.getErrorEmbed(server.translate('commands.bot.help.error', command)) })
             return true
         }
     }

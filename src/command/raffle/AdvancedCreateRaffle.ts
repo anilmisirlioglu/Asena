@@ -1,4 +1,4 @@
-import Command from '../Command';
+import Command, { Group } from '../Command';
 import { Message } from 'discord.js';
 import Server from '../../structures/Server';
 import SuperClient from '../../SuperClient';
@@ -14,6 +14,7 @@ export default class AdvancedCreateRaffle extends Command{
     constructor(){
         super({
             name: 'createp',
+            group: Group.GIVEAWAY,
             aliases: ['cekilisbaslatp', 'createrafflep'],
             description: 'commands.raffle.advanced.description',
             usage: 'commands.raffle.advanced.usage',

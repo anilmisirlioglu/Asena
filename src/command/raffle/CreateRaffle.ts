@@ -1,6 +1,6 @@
 import { Message } from 'discord.js'
 
-import Command from '../Command'
+import Command, { Group } from '../Command'
 import { RaffleLimits, Emojis } from '../../Constants'
 import SuperClient from '../../SuperClient';
 import { IRaffle } from '../../models/Raffle';
@@ -13,6 +13,7 @@ export default class CreateRaffle extends Command{
     constructor(){
         super({
             name: 'create',
+            group: Group.GIVEAWAY,
             aliases: ['cekilisbaslat', 'createraffle'],
             description: 'commands.raffle.create.description',
             usage: 'commands.raffle.create.usage',

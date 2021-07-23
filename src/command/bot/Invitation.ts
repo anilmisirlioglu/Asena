@@ -1,4 +1,4 @@
-import Command from '../Command';
+import Command, { Group } from '../Command';
 import SuperClient from '../../SuperClient';
 import { Message, MessageEmbed } from 'discord.js';
 import Server from '../../structures/Server';
@@ -9,6 +9,7 @@ export default class Invitation extends Command{
     constructor(){
         super({
             name: 'invite',
+            group: Group.BOT,
             aliases: ['davet', 'party', 'davetiye', 'link', 'wiki'],
             description: 'commands.bot.invitation.description',
             usage: null,

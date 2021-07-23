@@ -1,4 +1,4 @@
-import Command from '../Command'
+import Command, { Group } from '../Command'
 import { secondsToString, strToSeconds } from '../../utils/DateTimeHelper'
 import { Message, TextChannel } from 'discord.js'
 import { Emojis, RaffleLimits } from '../../Constants'
@@ -17,6 +17,7 @@ export default class SetupRaffle extends Command{
     constructor(){
         super({
             name: 'setup',
+            group: Group.GIVEAWAY,
             aliases: ['sihirbaz'],
             description: 'commands.raffle.setup.description',
             usage: null,

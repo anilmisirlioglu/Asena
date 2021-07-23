@@ -1,4 +1,4 @@
-import Command from '../Command';
+import Command, { Group } from '../Command';
 import SuperClient from '../../SuperClient';
 import Server from '../../structures/Server';
 import { Message, MessageEmbed } from 'discord.js';
@@ -9,6 +9,7 @@ export default class Soundaway extends Command{
     constructor(){
         super({
             name: 'soundaway',
+            group: Group.GIVEAWAY,
             aliases: ['voice', 'voiceaway', 'soundstart', 'sesçekiliş'],
             description: 'commands.raffle.soundaway.description',
             usage: 'commands.raffle.soundaway.usage',

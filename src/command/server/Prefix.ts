@@ -1,5 +1,5 @@
 import { Message } from 'discord.js'
-import Command from '../Command'
+import Command, { Group } from '../Command'
 import SuperClient from '../../SuperClient'
 import Server from '../../structures/Server'
 
@@ -8,6 +8,7 @@ export default class Prefix extends Command{
     constructor(){
         super({
             name: 'setprefix',
+            group: Group.SERVER,
             aliases: ['prefix', 'prefixdeğiştir'],
             description: 'commands.server.prefix.description',
             usage: 'commands.server.prefix.usage',

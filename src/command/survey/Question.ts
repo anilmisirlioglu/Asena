@@ -1,4 +1,4 @@
-import Command from '../Command'
+import Command, { Group } from '../Command'
 import SuperClient from '../../SuperClient'
 import { Message, MessageEmbed } from 'discord.js'
 import { LETTERS, ILetter, MAX_ANSWER_LENGTH } from '../../Constants'
@@ -10,6 +10,7 @@ export default class Question extends Command{
     constructor(){
         super({
             name: 'question',
+            group: Group.POLL,
             aliases: ['sorusor', 'soru'],
             description: 'commands.survey.question.description',
             usage: 'commands.survey.question.usage',

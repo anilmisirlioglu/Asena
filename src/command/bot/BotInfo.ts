@@ -1,4 +1,4 @@
-import Command from '../Command';
+import Command, { Group } from '../Command';
 import { Message, MessageEmbed, version } from 'discord.js';
 import SuperClient from '../../SuperClient';
 import { secondsToString } from '../../utils/DateTimeHelper';
@@ -12,6 +12,7 @@ export default class BotInfo extends Command{
     constructor(){
         super({
             name: 'botinfo',
+            group: Group.BOT,
             aliases: ['teknikbilgi'],
             description: 'commands.bot.info.description',
             usage: null,

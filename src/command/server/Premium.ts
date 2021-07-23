@@ -1,5 +1,5 @@
 import { Message, MessageEmbed } from 'discord.js'
-import Command from '../Command'
+import Command, { Group } from '../Command'
 import SuperClient from '../../SuperClient'
 import Server from '../../structures/Server'
 import { parseDiscordTimestamp } from '../../utils/DateTimeHelper'
@@ -10,6 +10,7 @@ export default class Premium extends Command{
     constructor(){
         super({
             name: 'premium',
+            group: Group.SERVER,
             aliases: ['pre', 'p'],
             description: 'commands.server.premium.description',
             usage: null,

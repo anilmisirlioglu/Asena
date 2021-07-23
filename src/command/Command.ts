@@ -5,6 +5,7 @@ import ArgValidatorKit from './ArgValidatorKit';
 
 interface CommandOptions{
     name: string
+    group: Group
     aliases: string[],
     description: string,
     usage: string | null,
@@ -12,10 +13,21 @@ interface CommandOptions{
     examples: string[]
 }
 
+export enum Group{
+    GIVEAWAY = 'raffle',
+    POLL = 'survey',
+    SERVER = 'server',
+    BOT = 'bot'
+}
+
 export default abstract class Command extends ArgValidatorKit{
 
     protected constructor(protected readonly props: CommandOptions){
         super()
+    }
+
+    public get group(): Group{
+        return this.props.group
     }
 
     public get name(): string{

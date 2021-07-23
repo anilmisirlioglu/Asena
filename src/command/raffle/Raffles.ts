@@ -1,5 +1,5 @@
 import { Message, MessageEmbed } from 'discord.js'
-import Command from '../Command'
+import Command, { Group } from '../Command'
 import { Emojis } from '../../Constants'
 import { parseDiscordTimestamp } from '../../utils/DateTimeHelper'
 import SuperClient from '../../SuperClient'
@@ -10,6 +10,7 @@ export default class Raffles extends Command{
     constructor(){
         super({
             name: 'raffles',
+            group: Group.GIVEAWAY,
             aliases: ['giveaway', 'giveaways', 'çekilişler', 'cekilisler', 'list'],
             description: 'commands.raffle.list.description',
             usage: null,

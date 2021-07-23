@@ -236,6 +236,7 @@
         }
       },
       "bot": {
+        "name": "Bot Komutları",
         "ping": {
           "description": "Botun ağ gecikme sürelerini gösterir",
           "calculating": "Hesaplanıyor...",
@@ -266,7 +267,6 @@
             "title": "Komut Yardımı",
             "fields": {
               "command": "Komut",
-              "commands": "Komutlar",
               "more": {
                 "detailed": "Daha detaylı yardım?",
                 "info": "Daha fazla bilgi?"
@@ -350,6 +350,7 @@
         }
       },
       "server": {
+        "name": "Sunucu Komutları",
         "locale": {
           "description": "Botun varsayılan dilini değiştirir",
           "usage": "[list | set | reset] <args>",
@@ -400,8 +401,9 @@
         }
       },
       "raffle": {
+        "name": "Çekiliş Komutları",
         "soundaway": {
-          "description": "Ses kanalında yeni bir çekiliş oluşturur.",
+          "description": "Ses kanalında yeni bir çekiliş oluşturur",
           "usage": "[kazanan sayısı] <@kullanıcı | ses-kanal-id | boş> <başlık>",
           "limits": {
             "winner.count": "Çekilişi kazanan üye sayısı maksimum 20, minimum 1 kişi olabilir.",
@@ -650,6 +652,7 @@
         }
       },
       "survey": {
+        "name": "Anket Komutları",
         "question": {
           "description": "Sunucuya bir soru sorarsınız",
           "usage": "{soru} ...[şıklar]",
