@@ -45,10 +45,10 @@ manager.on('shardCreate', async shard => {
 
 const sendUpdateActivityPacket = async () => {
     const shards = manager.shards
-    const fetch = await manager.fetchClientValues('guilds.cache.size')
+    const fetch = await manager.broadcastEval(client => client.guilds.cache.size)
     if(fetch.length > 0){
         const packet = new ServerStatsPacket({
-            shardCount: shards.keyArray().length,
+            shardCount: shards.size,
             serverCount: fetch.reduce((p, n) => p + n, 0)
         })
 
