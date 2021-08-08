@@ -1,5 +1,4 @@
 import { Collection, Message, MessageEmbed, TextChannel } from 'discord.js';
-
 import Command from './Command';
 import SuperClient from '../SuperClient';
 import { Bot } from '../Constants';
@@ -106,7 +105,7 @@ export default class CommandHandler extends Factory implements CommandRunner{
             const authorized: boolean = command.hasPermission(message.member) || message.member.roles.cache.filter(role => {
                 return role.name.trim().toLowerCase() === Bot.PERMITTED_ROLE_NAME
             }).size !== 0 || server.isPublicCommand(command.name)
-            if(authorized){
+            if(authorized && message.channel instanceof TextChannel){
                 const checkPermissions = this.getPermissionController().checkSelfPermissions(
                     message.guild,
                     message.channel
@@ -122,10 +121,10 @@ export default class CommandHandler extends Factory implements CommandRunner{
                                         `**${server.translate('commands.bot.help.embed.fields.description')}:** ${server.translate(command.description)}`,
                                         `**${server.translate('global.usage')}: **${fullCMD} ${server.translate(command.usage)}`,
                                         `**${server.translate('global.example')}:** ${(command.examples.length === 1 ? fullCMD + ' ' + command.examples : '\n' + command.examples.map(item => fullCMD + ' ' + item).join('\n'))}`
-                                    ])
+                                    ].join('\n'))
                                     .setColor('BLUE')
 
-                                await channel.send({ embed })
+                                await channel.send({ embeds: [embed] })
                             }
                         })
                     }else{
@@ -135,7 +134,7 @@ export default class CommandHandler extends Factory implements CommandRunner{
                             .addField(`:star2:  ${server.translate('commands.handler.premium.try')}`, '<:join_arrow:746358699706024047> [Asena Premium](https://asena.xyz)')
                             .setColor('GREEN')
 
-                        await channel.send({ embed })
+                        await channel.send({ embeds: [embed] })
                     }
                 }else{
                     if(checkPermissions.missing.includes('SEND_MESSAGES') || checkPermissions.missing.includes('VIEW_CHANNEL')){
@@ -156,7 +155,7 @@ export default class CommandHandler extends Factory implements CommandRunner{
                 }
             }else{
                 await channel.send({
-                    embed: command.getErrorEmbed(server.translate('commands.handler.unauthorized'))
+                    embeds: [command.getErrorEmbed(server.translate('commands.handler.unauthorized'))]
                 })
             }
         }

@@ -42,13 +42,13 @@ export default class Raffles extends Command{
 
                 embed.addField(`${i++}. ${raffle.prize}`, Object.entries(data).map(([key, value]) => {
                     return `${server.translate(`commands.raffle.list.embed.fields.${key}`)}: ${value}`
-                }))
+                }).join('\n'))
             })
 
             embed.setDescription(`${Emojis.CONFETTI_REACTION_EMOJI} ${server.translate('commands.raffle.list.embed.description.active.found', raffles.length)}`)
         }
 
-        await message.channel.send({ embed })
+        await message.channel.send({ embeds: [embed] })
 
         return true
     }

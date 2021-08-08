@@ -17,7 +17,7 @@ export default class Permission extends Command{
                 'admin create',
                 'everyone question'
             ]
-        });
+        })
     }
 
     async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
@@ -32,7 +32,7 @@ export default class Permission extends Command{
         const commandAuth: Command[] = commands.filter($command => $command.name === command)
         if(commandAuth.length === 0){
             await message.channel.send({
-                embed: this.getErrorEmbed(server.translate('commands.server.permission.command.not.found'))
+                embeds: [this.getErrorEmbed(server.translate('commands.server.permission.command.not.found'))]
             })
             return true
         }
@@ -40,7 +40,7 @@ export default class Permission extends Command{
         const $command: Command = commandAuth.shift()
         if(!$command.permission || this.name === $command.name){
             await message.channel.send({
-                embed: this.getErrorEmbed(server.translate('commands.server.permission.command.not.editable'))
+                embeds: [this.getErrorEmbed(server.translate('commands.server.permission.command.not.editable'))]
             })
             return true
         }
@@ -68,7 +68,7 @@ export default class Permission extends Command{
 
         if(err){
             await message.channel.send({
-                embed: this.getErrorEmbed(server.translate('commands.server.permission.command.already', opcl))
+                embeds: [this.getErrorEmbed(server.translate('commands.server.permission.command.already', opcl))]
             })
             return true
         }

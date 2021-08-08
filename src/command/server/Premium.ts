@@ -31,13 +31,13 @@ export default class Premium extends Command{
             description = server.translate('commands.server.premium.try')
         }
 
-        const embed: MessageEmbed = new MessageEmbed()
+        const embed = new MessageEmbed()
             .setAuthor(`${client.user.username} Premium`, client.user.avatarURL())
             .setColor('LUMINOUS_VIVID_PINK')
             .setFooter(message.guild.name, message.guild.iconURL())
             .setDescription(description)
 
-        await message.channel.send({ embed })
+        await message.channel.send({ embeds: [embed] })
         return true
     }
 

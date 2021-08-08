@@ -38,7 +38,7 @@ export default class ReRollRaffle extends Command{
                 const parse = parseInt(arg)
                 if(parse < 1){
                     await message.channel.send({
-                        embed: this.getErrorEmbed(server.translate('commands.raffle.reroll.amount.min'))
+                        embeds: [this.getErrorEmbed(server.translate('commands.raffle.reroll.amount.min'))]
                     })
 
                     return true
@@ -51,7 +51,7 @@ export default class ReRollRaffle extends Command{
         const raffle = await (message_id ? server.raffles.get(message_id) : server.raffles.getLastCreated())
         if(!raffle || !raffle.message_id){
             await message.channel.send({
-                embed: this.getErrorEmbed(server.translate('commands.raffle.reroll.not.found'))
+                embeds: [this.getErrorEmbed(server.translate('commands.raffle.reroll.not.found'))]
             })
 
             return true
@@ -59,7 +59,7 @@ export default class ReRollRaffle extends Command{
 
         if(raffle.status !== 'FINISHED'){
             await message.channel.send({
-                embed: this.getErrorEmbed(server.translate('commands.raffle.reroll.' + (raffle.status === 'CONTINUES' ? 'not.finish' : 'canceled')))
+                embeds: [this.getErrorEmbed(server.translate('commands.raffle.reroll.' + (raffle.status === 'CONTINUES' ? 'not.finish' : 'canceled')))]
             })
 
             return true
@@ -68,7 +68,7 @@ export default class ReRollRaffle extends Command{
         let fetch: Message | undefined = await client.fetchMessage(raffle.server_id, raffle.channel_id, raffle.message_id)
         if(!fetch){
             await message.channel.send({
-                embed: this.getErrorEmbed(server.translate('commands.raffle.reroll.timeout'))
+                embeds: [this.getErrorEmbed(server.translate('commands.raffle.reroll.timeout'))]
             })
 
             return true
@@ -78,7 +78,7 @@ export default class ReRollRaffle extends Command{
            fetch = await message.fetch()
             if(!fetch){
                 await message.channel.send({
-                    embed: this.getErrorEmbed(server.translate('commands.raffle.reroll.data.not.found'))
+                    embeds: [this.getErrorEmbed(server.translate('commands.raffle.reroll.data.not.found'))]
                 })
 
                 return true
@@ -87,7 +87,7 @@ export default class ReRollRaffle extends Command{
 
         if(amount && amount > raffle.numberOfWinners){
             await message.channel.send({
-                embed: this.getErrorEmbed(server.translate('commands.raffle.reroll.amount.max', raffle.numberOfWinners))
+                embeds: [this.getErrorEmbed(server.translate('commands.raffle.reroll.amount.max', raffle.numberOfWinners))]
             })
 
             return true
@@ -98,7 +98,7 @@ export default class ReRollRaffle extends Command{
         if(winners.length === 0){
             await message.channel.send(server.translate('commands.raffle.reroll.not.enough', _message))
         }else{
-            if(raffle.rewardRoles.length > 0 && !message.guild.me.hasPermission('MANAGE_ROLES')){
+            if(raffle.rewardRoles.length > 0 && !message.guild.me.permissions.has('MANAGE_ROLES')){
                 await message.channel.send(server.translate('commands.raffle.reroll.unauthorized'))
 
                 return true
@@ -123,10 +123,8 @@ export default class ReRollRaffle extends Command{
             ])
         }
 
-        if(message.guild.me.hasPermission('MANAGE_MESSAGES')){
-            await message.delete({
-                timeout: 100
-            })
+        if(message.guild.me.permissions.has('MANAGE_MESSAGES')){
+            setTimeout(message.delete, 100)
         }
 
         return true

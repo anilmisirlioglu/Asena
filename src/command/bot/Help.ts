@@ -25,7 +25,7 @@ export default class Help extends Command{
             const commands = client.getCommandHandler().getCommandsArray().filter(command => {
                 if(command.permission === 'ADMINISTRATOR'){
                     return (
-                        message.member.hasPermission('ADMINISTRATOR') ||
+                        message.member.permissions.has('ADMINISTRATOR') ||
                         message.member.roles.cache.find(role => role.name.trim().toLowerCase() === Bot.PERMITTED_ROLE_NAME)
                     )
                 }
@@ -55,13 +55,15 @@ export default class Help extends Command{
                 .setColor('RANDOM')
 
             message.author.createDM().then(channel => {
-                channel.send({ embed }).then(() => {
+                channel.send({ embeds: [embed] }).then(() => {
                     message.channel.send(server.translate('commands.bot.help.success', `<@${message.author.id}>`)).then($message => {
-                        $message.delete({ timeout: 2000 }).then(() => {
-                            message.delete();
-                        })
+                        setTimeout(() => {
+                            $message.delete().then(() => {
+                                message.delete()
+                            })
+                        }, 1500)
                     })
-                }).catch(() => message.channel.send({ embed }))
+                }).catch(() => message.channel.send({ embeds: [embed] }))
             })
 
             return true
@@ -85,7 +87,7 @@ export default class Help extends Command{
             }
 
             await message.channel.send({
-                embed: embed ?? this.getErrorEmbed(server.translate('commands.bot.help.error', command))
+                embeds: [embed ?? this.getErrorEmbed(server.translate('commands.bot.help.error', command))]
             })
             return true
         }

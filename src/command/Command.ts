@@ -44,7 +44,7 @@ export default abstract class Command extends ArgValidatorKit{
 
     public hasPermission(member: GuildMember): boolean{
         if(this.permission){
-            return member.hasPermission(this.permission)
+            return member.permissions.has(this.permission)
         }
 
         return true

@@ -1,4 +1,4 @@
-import { Channel, Guild, PermissionString } from 'discord.js';
+import { Guild, PermissionString, TextChannel } from 'discord.js';
 import { Bot } from '../Constants';
 
 interface PermissionState{
@@ -9,7 +9,7 @@ interface PermissionState{
 
 export default class PermissionController{
 
-    public checkSelfPermissions(guild: Guild, channel: Channel): PermissionState{
+    public checkSelfPermissions(guild: Guild, channel: TextChannel): PermissionState{
         const missingPermissions = this.getMissingPermissions(guild, channel)
 
         return {
@@ -18,7 +18,7 @@ export default class PermissionController{
         }
     }
 
-    public getMissingPermissions(guild: Guild, channel: Channel): PermissionString[]{
+    public getMissingPermissions(guild: Guild, channel: TextChannel): PermissionString[]{
         return guild.me.permissionsIn(channel).missing(Bot.REQUIRED_PERMISSIONS)
     }
 
