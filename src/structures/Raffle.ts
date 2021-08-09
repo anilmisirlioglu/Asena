@@ -125,7 +125,7 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
                     .setDescription([
                         `:medal: ${description}`,
                         `:reminder_ribbon: ${this.translate('structures.raffle.embed.fields.creator')}: <@${this.constituent_id}>`
-                    ])
+                    ].join('\n'))
                     .setFooter(`${this.translate('structures.raffle.embed.footer.text', this.numberOfWinners)} | ${this.translate('structures.raffle.embed.footer.finish')}`)
                     .setTimestamp(new Date(this.finishAt))
                     .setColor('#36393F')
@@ -150,7 +150,7 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
         if(message){
             const reaction: MessageReaction | undefined = await message.reactions.cache.get(Emojis.CONFETTI_REACTION_EMOJI)
             const [_, users] = (await reaction.users.fetch()).partition(user => user.bot)
-            const userKeys = users.keyArray().filter(user_id => user_id !== this.constituent_id)
+            const userKeys = [...users.keys()].filter(user_id => user_id !== this.constituent_id)
 
             if(userKeys.length > numberOfWinners){
                 const array = new RandomArray(userKeys)
@@ -180,10 +180,10 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
         let rewardRoles: Role[] = []
         if(this.rewardRoles.length > 0 && guild.me.permissions.has('MANAGE_ROLES')){
             const fetchRoles = await guild.roles.fetch()
-            rewardRoles = fetchRoles
-                .cache
-                .array()
-                .filter(role => this.rewardRoles.includes(role.id) && role.comparePositionTo(guild.me.roles.highest) < 0)
+            rewardRoles = [...fetchRoles.values()].filter(role =>
+                this.rewardRoles.includes(role.id) &&
+                role.comparePositionTo(guild.me.roles.highest) < 0
+            )
         }
 
         const promises: Promise<unknown>[] = winners.map(winner => new Promise(() => {
