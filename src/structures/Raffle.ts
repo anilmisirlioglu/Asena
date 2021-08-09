@@ -131,9 +131,12 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
                     .setColor('#36393F')
 
                 await Promise.all([
-                    message.edit(`${Emojis.CONFETTI_REACTION_EMOJI} **${this.translate('structures.raffle.messages.finish')}** ${Emojis.CONFETTI_REACTION_EMOJI}`, { embed }),
+                    message.edit({
+                        content: `${Emojis.CONFETTI_REACTION_EMOJI} **${this.translate('structures.raffle.messages.finish')}** ${Emojis.CONFETTI_REACTION_EMOJI}`,
+                        embeds: [embed]
+                    }),
                     channel.send(`${Emojis.CONFETTI_EMOJI} ${content}\n**${this.translate('structures.raffle.embed.fields.giveaway')}** ${_message}`),
-                    this.resolveWinners(client, channel.guild, winners),
+                    this.resolveWinners(client, channel.guild, winners)
                 ])
             }
         }
@@ -169,13 +172,13 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
                 `:star: ${this.translate('structures.raffle.winner.embed.fields.server')}: **${guild.name}**`,
                 `:link: **[${this.translate('structures.raffle.winner.embed.fields.link')}](${this.getMessageURL()})**`,
                 `:rocket: **[${this.translate('global.vote')}](${URLMap.VOTE})** • **[${this.translate('structures.raffle.winner.embed.fields.invite')}](${URLMap.INVITE})**`
-            ])
+            ].join('\n'))
             .setFooter('Powered by Asena', guild.iconURL())
             .setTimestamp()
             .setColor('GREEN')
 
         let rewardRoles: Role[] = []
-        if(this.rewardRoles.length > 0 && guild.me.hasPermission('MANAGE_ROLES')){
+        if(this.rewardRoles.length > 0 && guild.me.permissions.has('MANAGE_ROLES')){
             const fetchRoles = await guild.roles.fetch()
             rewardRoles = fetchRoles
                 .cache
@@ -187,7 +190,7 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
             guild.members.fetch(winner).then(async user => {
                 await Promise.all([
                     user.roles.add(rewardRoles),
-                    user.send({ embed }).catch(_ => {})
+                    user.send({ embeds: [embed] }).catch(_ => {})
                 ])
             })
         }))
@@ -245,7 +248,7 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
 
         return new MessageEmbed()
             .setAuthor(this.prize)
-            .setDescription(description)
+            .setDescription(description.join('\n'))
             .setColor(alert ? 'RED' : this.color ?? '#bd087d')
             .setTimestamp(this.finishAt)
             .setFooter(`${this.translate('structures.raffle.embed.footer.text', this.numberOfWinners)} | ${this.translate('structures.raffle.embed.footer.continues')}`)
