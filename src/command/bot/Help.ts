@@ -39,11 +39,11 @@ export default class Help extends Command{
                 if(!fieldMap[command.group]){
                     fieldMap[command.group] = {
                         name: server.translate(`commands.${command.group}.name`),
-                        value: []
+                        value: ''
                     }
                 }
 
-                fieldMap[command.group].value.push(label)
+                fieldMap[command.group].value += `${label}\n`
             }
 
             const embed = new MessageEmbed()

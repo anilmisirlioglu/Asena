@@ -48,20 +48,16 @@ export default class Permission extends Command{
         let opcl: string, err: boolean = false, add: boolean
         switch(cluster){
             case 'everyone':
-                if(server.isPublicCommand(command)){
-                    err = true
-                    opcl = server.translate('global.open')
-                }
+                if(server.isPublicCommand(command)) err = true
 
+                opcl = server.translate('global.open')
                 add = true
                 break
 
             default:
-                if(!server.isPublicCommand(command)){
-                    err = true
-                    opcl = server.translate('global.close')
-                }
+                if(!server.isPublicCommand(command)) err = true
 
+                opcl = server.translate('global.close')
                 add = false
                 break
         }

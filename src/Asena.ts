@@ -23,7 +23,7 @@ export default class Asena extends SuperClient{
         this.getPremiumUpdater().start()
 
         // Command run
-        this.on('message', async message => {
+        this.on('messageCreate', async message => {
             await this.getCommandHandler().run(message)
         })
 
