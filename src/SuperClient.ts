@@ -5,8 +5,10 @@ import {
     GuildChannel,
     HTTPError,
     Intents,
+    LimitedCollection,
     Message,
     MessageEmbed,
+    Options,
     Snowflake,
     TextChannel
 } from 'discord.js';
@@ -54,19 +56,24 @@ export default abstract class SuperClient extends Client{
     private static self: SuperClient
 
     protected constructor(private opts: SuperClientBuilderOptions){
-        // TODO::makeCache
         super({
+            makeCache: Options.cacheWithLimits({
+                MessageManager: {
+                    maxSize: 25,
+                    sweepInterval: 240,
+                    sweepFilter: LimitedCollection.filterByLifetime({
+                        lifetime: 300,
+                        getComparisonTimestamp: e => e.editedTimestamp ?? e.createdTimestamp,
+                    })
+                }
+            }),
             partials: ['MESSAGE', 'REACTION'],
             intents: [
                 Intents.FLAGS.GUILDS,
                 Intents.FLAGS.GUILD_MESSAGES,
                 Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
-                Intents.FLAGS.GUILD_VOICE_STATES,
-            ],
-            messageCacheLifetime: 300,
-            messageSweepInterval: 240,
-            // messageCacheMaxSize: 25,
-            // messageEditHistoryMaxSize: 0
+                Intents.FLAGS.GUILD_VOICE_STATES
+            ]
         })
     }
 
@@ -190,7 +197,7 @@ export default abstract class SuperClient extends Client{
 
     buildErrorReporterEmbed(lang: string, guild: Guild, err: DiscordAPIError | HTTPError): MessageEmbed{
         return new MessageEmbed()
-            .setAuthor(`${this.user.username} | ${LanguageManager.translate(lang, "errors.reporter.title")}`, this.user.avatarURL())
+            .setAuthor(`${this.user.username} | ${LanguageManager.translate(lang, 'errors.reporter.title')}`, this.user.avatarURL())
             .setColor('DARK_RED')
             .setFooter(guild.name, guild.iconURL())
             .setTimestamp()
