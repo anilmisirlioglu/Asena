@@ -29,10 +29,8 @@ export default class Survey extends Command{
         const DISAGREE = `<a:no:${Emojis.DISAGREE_EMOJI_ID}>`;
 
         if(args.length < 1) return false
-        if(message.guild.me.hasPermission('MANAGE_MESSAGES')){
-            await message.delete({
-                timeout: 0
-            })
+        if(message.guild.me.permissions.has('MANAGE_MESSAGES')){
+            await message.delete()
         }
 
         const arg0 = args[0]
@@ -42,7 +40,7 @@ export default class Survey extends Command{
 
             if(seconds < SurveyLimits.MIN_TIME || seconds > SurveyLimits.MAX_TIME){
                 await message.channel.send({
-                    embed: this.getErrorEmbed(server.translate('commands.survey.vote.time.exceeded'))
+                    embeds: [this.getErrorEmbed(server.translate('commands.survey.vote.time.exceeded'))]
                 })
 
                 return true
@@ -57,7 +55,7 @@ export default class Survey extends Command{
                 .setTimestamp()
                 .addField(server.translate('commands.survey.vote.embed.fields.question'), title, true)
 
-            message.channel.send({ embed }).then(async $message => {
+            message.channel.send({ embeds: [embed] }).then(async $message => {
                 const survey = await SurveyModel.create({
                     server_id: $message.guild.id,
                     channel_id: $message.channel.id,
@@ -88,7 +86,7 @@ export default class Survey extends Command{
                 .setTimestamp()
                 .addField(server.translate('commands.survey.vote.embed.fields.question'), args.join(' '), true)
 
-            await message.channel.send({ embed }).then(async vote => {
+            await message.channel.send({ embeds: [embed] }).then(async vote => {
                 await Promise.all([
                     vote.react(AGREE),
                     vote.react(DISAGREE)

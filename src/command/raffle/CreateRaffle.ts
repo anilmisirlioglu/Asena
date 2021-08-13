@@ -46,7 +46,7 @@ export default class CreateRaffle extends Command{
             const validate = await validator.validate(key, value)
             if(!validate.ok){
                 await message.channel.send({
-                    embed: this.getErrorEmbed(server.translate(validate.message, ...validate.args))
+                    embeds: [this.getErrorEmbed(server.translate(validate.message, ...validate.args))]
                 })
 
                 return true
@@ -59,7 +59,7 @@ export default class CreateRaffle extends Command{
         const raffles = await server.raffles.getContinues()
         if(raffles.length >= max){
             await message.channel.send({
-                embed: this.getErrorEmbed(server.translate('commands.raffle.create.limits.max.created', max)),
+                embeds: [this.getErrorEmbed(server.translate('commands.raffle.create.limits.max.created', max))]
             })
 
             return true
@@ -80,8 +80,9 @@ export default class CreateRaffle extends Command{
             createdAt: new Date()
         }, data as IRaffle), server.locale)
 
-        message.channel.send(Raffle.getStartMessage(), {
-            embed: raffle.buildEmbed()
+        message.channel.send({
+            content: Raffle.getStartMessage(),
+            embeds: [raffle.buildEmbed()]
         }).then(async $message => {
             await server.raffles.create(Object.assign({
                 message_id: $message.id
@@ -92,10 +93,8 @@ export default class CreateRaffle extends Command{
             await message.channel.send(':boom: ' + server.translate('commands.raffle.create.unauthorized'))
         })
 
-        if(message.guild.me.hasPermission('MANAGE_MESSAGES')){
-            await message.delete({
-                timeout: 0
-            })
+        if(message.guild.me.permissions.has('MANAGE_MESSAGES')){
+            await message.delete()
         }
 
         return true

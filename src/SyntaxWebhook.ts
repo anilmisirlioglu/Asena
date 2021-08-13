@@ -4,20 +4,21 @@ import { parseDiscordTimestamp } from './utils/DateTimeHelper';
 export default class SyntaxWebhook extends WebhookClient{
 
     constructor(){
-        super(
-            process.env.WEBHOOK_ID,
-            process.env.WEBHOOK_TOKEN
-        )
+        super({
+            id: process.env.WEBHOOK_ID,
+            token: process.env.WEBHOOK_TOKEN
+        })
     }
 
     public async resolveGuild(guild: Guild, isCreate: boolean = true): Promise<void>{
+        const owner = await guild.fetchOwner()
         const embed = new MessageEmbed()
             .setAuthor(`${isCreate ? 'Yeni Sunucuya Eklendi' : 'Sunucudan Silindi'}`, guild.iconURL() ?? guild.bannerURL())
             .setDescription([
                 `Sunucu: **${guild.name}**`,
                 `Sunucu ID: **${guild.id}**`,
-                `Sunucu Sahibi: **${guild.owner ? guild.owner.displayName : 'Bilinmiyor.'}**`,
-                `Sunucu Sahibi ID: **${guild.ownerID}**`,
+                `Sunucu Sahibi: **${owner ? owner.displayName : 'Bilinmiyor.'}**`,
+                `Sunucu Sahibi ID: **${guild.ownerId}**`,
                 `Üye Sayısı: **${guild.memberCount}**`,
                 `Sunucu Kurulma Tarihi: **${parseDiscordTimestamp(guild.createdAt)}**`
             ].join('\n'))

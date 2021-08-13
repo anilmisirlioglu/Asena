@@ -1,7 +1,7 @@
 import Command, { Group } from '../Command';
 import SuperClient from '../../SuperClient';
 import Server from '../../structures/Server';
-import { Message, MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed, VoiceChannel } from 'discord.js';
 import RandomArray from '../../utils/RandomArray';
 
 export default class Soundaway extends Command{
@@ -32,7 +32,7 @@ export default class Soundaway extends Command{
 
         if(numberOfWinners < 1 || numberOfWinners > 20){
             await message.channel.send({
-                embed: this.getErrorEmbed(server.translate('commands.raffle.soundaway.limits.winner.count'))
+                embeds: [this.getErrorEmbed(server.translate('commands.raffle.soundaway.limits.winner.count'))]
             })
 
             return true
@@ -43,16 +43,16 @@ export default class Soundaway extends Command{
         if(!(this.isValidSnowflake(arg1) || message.mentions.members.first())){
             pool = message.guild.channels.cache
                 .filter(channel =>
-                    channel.type == 'voice' &&
+                    channel.type == 'GUILD_VOICE' &&
                     channel.viewable &&
                     channel.members.size > 0
                 )
-                .map(channel => channel.members.keyArray() ?? [])
+                .map(channel => [...(channel as VoiceChannel).members.keys()] ?? [])
                 .reduce((prev, curr) => prev.concat(curr), [])
 
             if(pool.length === 0){
                 await message.channel.send({
-                    embed: this.getErrorEmbed(server.translate('commands.raffle.soundaway.voice.channel.in.not.found.users'))
+                    embeds: [this.getErrorEmbed(server.translate('commands.raffle.soundaway.voice.channel.in.not.found.users'))]
                 })
 
                 return true
@@ -67,18 +67,20 @@ export default class Soundaway extends Command{
 
             if(!channel){
                 await message.channel.send({
-                    embed: this.getErrorEmbed(message.mentions.members.first() ?
-                        server.translate('commands.raffle.soundaway.voice.channel.not.in.user') :
-                        server.translate('commands.raffle.soundaway.voice.channel.not.found')
-                    )
+                    embeds: [
+                        this.getErrorEmbed(message.mentions.members.first() ?
+                            server.translate('commands.raffle.soundaway.voice.channel.not.in.user') :
+                            server.translate('commands.raffle.soundaway.voice.channel.not.found')
+                        )
+                    ]
                 })
 
                 return true
             }
 
-            if(channel.type !== 'voice'){
+            if(channel.type !== 'GUILD_VOICE'){
                 await message.channel.send({
-                    embed: this.getErrorEmbed(server.translate('commands.raffle.soundaway.voice.channel.invalid'))
+                    embeds: [this.getErrorEmbed(server.translate('commands.raffle.soundaway.voice.channel.invalid'))]
                 })
 
                 return true
@@ -86,7 +88,7 @@ export default class Soundaway extends Command{
 
             if(!channel.viewable){
                 await message.channel.send({
-                    embed: this.getErrorEmbed(server.translate('commands.raffle.soundaway.voice.channel.unauthorized'))
+                    embeds: [this.getErrorEmbed(server.translate('commands.raffle.soundaway.voice.channel.unauthorized'))]
                 })
 
                 return true
@@ -94,13 +96,13 @@ export default class Soundaway extends Command{
 
             if(channel.members.size == 0){
                 await message.channel.send({
-                    embed: this.getErrorEmbed(server.translate('commands.raffle.soundaway.voice.channel.in.not.found.user'))
+                    embeds: [this.getErrorEmbed(server.translate('commands.raffle.soundaway.voice.channel.in.not.found.user'))]
                 })
 
                 return true
             }
 
-            pool = channel.members.keyArray()
+            pool = [...channel.members.keys()]
             index = 2
             ch = channel.name
         }
@@ -110,7 +112,7 @@ export default class Soundaway extends Command{
             title = args.slice(index, args.length).join(' ')
             if(title.length > 255){
                 await message.channel.send({
-                    embed: this.getErrorEmbed(server.translate('commands.raffle.soundaway.limits.title.length'))
+                    embeds: [this.getErrorEmbed(server.translate('commands.raffle.soundaway.limits.title.length'))]
                 })
 
                 return true
@@ -137,19 +139,18 @@ export default class Soundaway extends Command{
             .setDescription([
                 `:medal: ${description}`,
                 `:reminder_ribbon: ${server.translate('structures.raffle.embed.fields.creator')}: ${message.author}`
-            ])
+            ].join('\n'))
             .setFooter(`${server.translate('structures.raffle.embed.footer.text', numberOfWinners)} | ${server.translate('structures.raffle.embed.footer.finish')}`)
             .setTimestamp()
             .setColor('#36393F')
 
-        await message.channel.send(`:tada: **${server.translate('structures.raffle.messages.quick')}** :tada:`, {
-            embed
+        await message.channel.send({
+            content: `:tada: **${server.translate('structures.raffle.messages.quick')}** :tada:`,
+            embeds: [embed]
         })
 
-        if(message.guild.me.hasPermission('MANAGE_MESSAGES')){
-            await message.delete({
-                timeout: 0
-            })
+        if(message.guild.me.permissions.has('MANAGE_MESSAGES')){
+            await message.delete()
         }
 
         return true

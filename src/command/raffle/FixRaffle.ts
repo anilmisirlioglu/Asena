@@ -25,7 +25,7 @@ export default class FixRaffle extends Command{
         const message_id: string | undefined = args[0]
         if(message_id && !this.isValidSnowflake(message_id)){
             await message.channel.send({
-                embed: this.getErrorEmbed(server.translate('global.invalid.id'))
+                embeds: [this.getErrorEmbed(server.translate('global.invalid.id'))]
             })
             return true
         }
@@ -33,7 +33,7 @@ export default class FixRaffle extends Command{
         const raffle = await (message_id ? server.raffles.get(message_id) : server.raffles.getLastCreated())
         if(!raffle || !raffle.message_id){
             await message.channel.send({
-                embed: this.getErrorEmbed(server.translate('commands.raffle.fix.not.found'))
+                embeds: [this.getErrorEmbed(server.translate('commands.raffle.fix.not.found'))]
             })
 
             return true
@@ -41,7 +41,7 @@ export default class FixRaffle extends Command{
 
         if(raffle.status !== 'FINISHED'){
             await message.channel.send({
-                embed: this.getErrorEmbed(server.translate('commands.raffle.fix.not.finished'))
+                embeds: [this.getErrorEmbed(server.translate('commands.raffle.fix.not.finished'))]
             })
 
             return true
@@ -50,7 +50,7 @@ export default class FixRaffle extends Command{
         const fetch = await client.fetchMessage(raffle.server_id, raffle.channel_id, raffle.message_id)
         if(!fetch){
             await message.channel.send({
-                embed: this.getErrorEmbed(server.translate('commands.raffle.fix.timeout'))
+                embeds: [this.getErrorEmbed(server.translate('commands.raffle.fix.timeout'))]
             })
 
             return true
@@ -58,7 +58,7 @@ export default class FixRaffle extends Command{
 
         if(!validateRaffleText(fetch.content)){
             await message.channel.send({
-                embed: this.getErrorEmbed(server.translate('commands.raffle.fix.no.error'))
+                embeds: [this.getErrorEmbed(server.translate('commands.raffle.fix.no.error'))]
             })
 
             return true
@@ -68,10 +68,8 @@ export default class FixRaffle extends Command{
             raffle.finish(client),
             message.channel.send(server.translate('commands.raffle.fix.success', raffle.prize, `<#${raffle.channel_id}>`))
         ])
-        if(message.guild.me.hasPermission('MANAGE_MESSAGES')){
-            await message.delete({
-                timeout: 100
-            })
+        if(message.guild.me.permissions.has('MANAGE_MESSAGES')){
+            setTimeout(message.delete, 100)
         }
 
         return true

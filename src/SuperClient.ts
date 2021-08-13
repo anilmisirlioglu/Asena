@@ -4,8 +4,11 @@ import {
     Guild,
     GuildChannel,
     HTTPError,
+    Intents,
+    LimitedCollection,
     Message,
     MessageEmbed,
+    Options,
     Snowflake,
     TextChannel
 } from 'discord.js';
@@ -54,20 +57,23 @@ export default abstract class SuperClient extends Client{
 
     protected constructor(private opts: SuperClientBuilderOptions){
         super({
+            makeCache: Options.cacheWithLimits({
+                MessageManager: {
+                    maxSize: 25,
+                    sweepInterval: 240,
+                    sweepFilter: LimitedCollection.filterByLifetime({
+                        lifetime: 300,
+                        getComparisonTimestamp: e => e.editedTimestamp ?? e.createdTimestamp,
+                    })
+                }
+            }),
             partials: ['MESSAGE', 'REACTION'],
-            ws: {
-                intents: [
-                    'GUILDS',
-                    'GUILD_MESSAGES',
-                    'GUILD_MESSAGE_REACTIONS',
-                    'GUILD_EMOJIS',
-                    'GUILD_VOICE_STATES'
-                ]
-            },
-            messageCacheMaxSize: 25,
-            messageCacheLifetime: 300,
-            messageSweepInterval: 240,
-            messageEditHistoryMaxSize: 0
+            intents: [
+                Intents.FLAGS.GUILDS,
+                Intents.FLAGS.GUILD_MESSAGES,
+                Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+                Intents.FLAGS.GUILD_VOICE_STATES
+            ]
         })
     }
 
@@ -115,7 +121,7 @@ export default abstract class SuperClient extends Client{
      * @param guildID {Snowflake}
      */
     async fetchGuild(guildID: Snowflake): Promise<Guild | undefined>{
-        const fetch = await this.shard.broadcastEval(`this.guilds.cache.get("${guildID}")`)
+        const fetch = await this.shard.broadcastEval(client => client.guilds.cache.get(guildID))
 
         return this.resolveEval(fetch)
     }
@@ -127,14 +133,14 @@ export default abstract class SuperClient extends Client{
      * @param memberID
      */
     async fetchMember(guildID: Snowflake, memberID: Snowflake){
-        const fetch = await this.shard.broadcastEval(`(async () => {
-            const guild = this.guilds.cache.get("${guildID}")
-            if(guild) return guild.members.fetch("${memberID}").then(user => user).catch(() => {
+        const fetch = await this.shard.broadcastEval(client => {
+            const guild = client.guilds.cache.get(guildID)
+            if(guild) return guild.members.fetch(memberID).then(user => user).catch(() => {
                 return undefined
             })
-            
+
             return undefined
-        })()`)
+        })
 
         return this.resolveEval(fetch)
     }
@@ -147,8 +153,8 @@ export default abstract class SuperClient extends Client{
     textChannelElection(guild: Guild): TextChannel | undefined{
         // @ts-ignore
         return guild.channels.cache
-            .filter(channel => channel.type === 'text' && channel.permissionsFor(guild.me).has('SEND_MESSAGES'))
-            .sort((a, b) => a.position > b.position ? 1 : -1)
+            .filter(channel => channel.type === 'GUILD_TEXT' && channel.permissionsFor(guild.me).has('SEND_MESSAGES'))
+            .sort((a: GuildChannel, b: GuildChannel) => a.position > b.position ? 1 : -1)
             .first()
     }
 
@@ -162,7 +168,7 @@ export default abstract class SuperClient extends Client{
         const guild: Guild = this.guilds.cache.get(guildID)
         if(guild){
             const channel = guild.channels.cache.get(channelID)
-            if(channel && channel.viewable) return channel
+            if(channel && channel.type == 'GUILD_TEXT' && channel.viewable) return channel
         }
 
         return undefined
@@ -180,7 +186,7 @@ export default abstract class SuperClient extends Client{
         if(channel instanceof TextChannel){
             return new Promise(resolve => {
                 return channel.messages
-                    .fetch(messageID, false, true)
+                    .fetch(messageID, { cache: false, force: true })
                     .catch(() => resolve(undefined))
                     .then((message: Message) => resolve(message))
             })
@@ -191,7 +197,7 @@ export default abstract class SuperClient extends Client{
 
     buildErrorReporterEmbed(lang: string, guild: Guild, err: DiscordAPIError | HTTPError): MessageEmbed{
         return new MessageEmbed()
-            .setAuthor(`${this.user.username} | ${LanguageManager.translate(lang, "errors.reporter.title")}`, this.user.avatarURL())
+            .setAuthor(`${this.user.username} | ${LanguageManager.translate(lang, 'errors.reporter.title')}`, this.user.avatarURL())
             .setColor('DARK_RED')
             .setFooter(guild.name, guild.iconURL())
             .setTimestamp()

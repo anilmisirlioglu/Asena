@@ -27,10 +27,10 @@ export default class Invitation extends Command{
                 `:satellite_orbital: ${server.translate('commands.bot.invitation.website')}: **[asena.xyz](${URLMap.WEBSITE}) - [wiki.asena.xyz](${URLMap.WIKI})**`,
                 `:ringed_planet: ${server.translate('commands.bot.invitation.vote')}: **[${server.translate('commands.bot.invitation.click.vote')}](${URLMap.VOTE})**`,
                 `:star2: ${server.translate('commands.bot.invitation.open.source')}: **[GitHub](${URLMap.GITHUB})**`
-            ])
+            ].join('\n'))
             .setColor(message.guild.me.displayHexColor)
 
-        await message.channel.send({ embed })
+        await message.channel.send({ embeds: [embed] })
         return true
     }
 

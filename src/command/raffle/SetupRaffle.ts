@@ -30,7 +30,7 @@ export default class SetupRaffle extends Command{
         if(message.channel instanceof TextChannel){
             if(client.getSetupManager().inSetup(message.author.id)){
                 await message.channel.send({
-                    embed: this.getErrorEmbed(server.translate('commands.raffle.setup.already'))
+                    embeds: [this.getErrorEmbed(server.translate('commands.raffle.setup.already'))]
                 })
 
                 return true
@@ -40,7 +40,7 @@ export default class SetupRaffle extends Command{
             const result = await server.raffles.getContinues()
             if(result.length >= max){
                 await message.channel.send({
-                    embed: this.getErrorEmbed(server.translate('commands.raffle.create.limits.max.created', max))
+                    embeds: [this.getErrorEmbed(server.translate('commands.raffle.create.limits.max.created', max))]
                 })
 
                 return true
@@ -260,8 +260,9 @@ export default class SetupRaffle extends Command{
                             createdAt: new Date()
                         }, data as IRaffle), server.locale)
 
-                        channel.send(Raffle.getStartMessage(), {
-                            embed: raffle.buildEmbed()
+                        channel.send({
+                            content: Raffle.getStartMessage(),
+                            embeds: [raffle.buildEmbed()]
                         }).then(async $message => {
                             await server.raffles.create(Object.assign({
                                 message_id: $message.id

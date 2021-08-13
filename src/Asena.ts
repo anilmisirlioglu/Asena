@@ -23,7 +23,7 @@ export default class Asena extends SuperClient{
         this.getPremiumUpdater().start()
 
         // Command run
-        this.on('message', async message => {
+        this.on('messageCreate', async message => {
             await this.getCommandHandler().run(message)
         })
 
@@ -54,8 +54,9 @@ export default class Asena extends SuperClient{
             } as any)
 
             const message = server.translate('events.guildCreate')
-            if(guild.owner){
-                guild.owner.createDM()
+            const owner = await guild.fetchOwner()
+            if(owner){
+                owner.createDM()
                     .then(channel => channel
                         .send(message)
                         .catch(() => this.textChannelElection(guild)?.send(message)))
@@ -71,8 +72,10 @@ export default class Asena extends SuperClient{
             await server.delete()
 
             try{
-                guild.owner?.createDM().then(channel => {
-                    channel.send(`> ${Emojis.RUBY_EMOJI} ${server.translate('events.guildDelete')}`)
+                guild.fetchOwner().then(owner => {
+                    owner?.createDM().then(channel => {
+                        channel.send(`> ${Emojis.RUBY_EMOJI} ${server.translate('events.guildDelete')}`)
+                    })
                 })
             }catch(e){
                 // Do not show this error on the console. Because we don't care.

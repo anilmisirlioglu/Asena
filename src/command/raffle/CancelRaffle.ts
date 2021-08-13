@@ -1,5 +1,4 @@
 import { Message } from 'discord.js'
-
 import Command, { Group } from '../Command'
 import { Emojis } from '../../Constants'
 import SuperClient from '../../SuperClient';
@@ -26,7 +25,7 @@ export default class CancelRaffle extends Command{
         const message_id: string | undefined = args[0]
         if(message_id && !this.isValidSnowflake(message_id)){
             await message.channel.send({
-                embed: this.getErrorEmbed(server.translate('global.invalid.id'))
+                embeds: [this.getErrorEmbed(server.translate('global.invalid.id'))]
             })
             return true
         }
@@ -34,14 +33,14 @@ export default class CancelRaffle extends Command{
         const raffle = await (message_id ? server.raffles.get(message_id) : server.raffles.getLastCreated())
         if(!raffle || !raffle.message_id){
             await message.channel.send({
-                embed: this.getErrorEmbed(server.translate('commands.raffle.cancel.not.found'))
+                embeds: [this.getErrorEmbed(server.translate('commands.raffle.cancel.not.found'))]
             })
             return true
         }
 
         if(!raffle.isCancelable()){
             await message.channel.send({
-                embed: this.getErrorEmbed(server.translate('commands.raffle.cancel.not.cancelable'))
+                embeds: [this.getErrorEmbed(server.translate('commands.raffle.cancel.not.cancelable'))]
             })
             return true
         }
@@ -49,16 +48,12 @@ export default class CancelRaffle extends Command{
         await raffle.setCanceled()
         const $message = await client.fetchMessage(raffle.server_id, raffle.channel_id, raffle.message_id)
         if($message){
-            await $message.delete({
-                timeout: 0
-            })
+            await $message.delete()
         }
 
         await message.channel.send(`${Emojis.CONFETTI_EMOJI} ${server.translate('commands.raffle.cancel.success')}`)
-        if(message.guild.me.hasPermission('MANAGE_MESSAGES')){
-            await message.delete({
-                timeout: 0
-            })
+        if(message.guild.me.permissions.has('MANAGE_MESSAGES')){
+            await message.delete()
         }
 
         return true

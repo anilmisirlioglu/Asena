@@ -42,15 +42,15 @@ export default class Locale extends Command{
                 embed
                     .setAuthor(`🗣️ ${server.translate('commands.server.locale.embed.title')}`)
                     .setFooter(server.translate('commands.server.locale.embed.footer', server.prefix))
-                    .setDescription(description)
+                    .setDescription(description.join('\n'))
 
-                await message.channel.send(embed)
+                await message.channel.send({ embeds: [embed] })
                 break
 
             case 'set':
                 if(args.length < 2){
                     await message.channel.send({
-                        embed: this.getErrorEmbed(server.translate('commands.server.locale.language.enter.code'))
+                        embeds: [this.getErrorEmbed(server.translate('commands.server.locale.language.enter.code'))]
                     })
                     break
                 }
@@ -59,14 +59,14 @@ export default class Locale extends Command{
                 const locale = LanguageManager.findLanguage(code)
                 if(!locale){
                     await message.channel.send({
-                        embed: this.getErrorEmbed(server.translate('commands.server.locale.language.not.found', code))
+                        embeds: [this.getErrorEmbed(server.translate('commands.server.locale.language.not.found', code))]
                     })
                     break
                 }
 
                 if(locale.code == server.locale){
                     await message.channel.send({
-                        embed: this.getErrorEmbed(server.translate('commands.server.locale.language.already.using', locale.full))
+                        embeds: [this.getErrorEmbed(server.translate('commands.server.locale.language.already.using', locale.full))]
                     })
                     break
                 }
@@ -80,7 +80,7 @@ export default class Locale extends Command{
             case 'reset':
                 if(server.locale == LanguageManager.DEFAULT_LANGUAGE){
                     await message.channel.send({
-                        embed: this.getErrorEmbed(server.translate('commands.server.locale.language.default.already.using'))
+                        embeds: [this.getErrorEmbed(server.translate('commands.server.locale.language.default.already.using'))]
                     })
                 }else{
                     const locale = LanguageManager.getLanguage(LanguageManager.DEFAULT_LANGUAGE)

@@ -44,7 +44,7 @@ export default class AdvancedCreateRaffle extends Command{
             const filterArgs = matchFlags.filter(arg => arg.startsWith(flag))
             if(filterArgs.length > 1){
                 await message.channel.send({
-                    embed: this.getErrorEmbed(server.translate('commands.raffle.advanced.parameter.duplicate'))
+                    embeds: [this.getErrorEmbed(server.translate('commands.raffle.advanced.parameter.duplicate'))]
                 })
 
                 return true
@@ -59,12 +59,14 @@ export default class AdvancedCreateRaffle extends Command{
 
         if(matchRequiredFlags.length !== RequiredFlags.length){
             await message.channel.send({
-                embed: this.getErrorEmbed([
-                    server.translate('commands.raffle.advanced.parameter.missing'),
-                    `<:join_arrow:746358699706024047> **--numberOfWinners**`,
-                    `<:join_arrow:746358699706024047> **--time**`,
-                    `<:join_arrow:746358699706024047> **--prize**`
-                ].join('\n'))
+                embeds: [
+                    this.getErrorEmbed([
+                        server.translate('commands.raffle.advanced.parameter.missing'),
+                        `<:join_arrow:746358699706024047> **--numberOfWinners**`,
+                        `<:join_arrow:746358699706024047> **--time**`,
+                        `<:join_arrow:746358699706024047> **--prize**`
+                    ].join('\n'))
+                ]
             })
 
             return true
@@ -81,7 +83,7 @@ export default class AdvancedCreateRaffle extends Command{
             const [key, ...value] = param.split(' ')
             if(!(key in Flags)){
                 await message.channel.send({
-                    embed: this.getErrorEmbed(server.translate('commands.raffle.advanced.parameter.invalid', key))
+                    embeds: [this.getErrorEmbed(server.translate('commands.raffle.advanced.parameter.invalid', key))]
                 })
 
                 return true
@@ -89,7 +91,7 @@ export default class AdvancedCreateRaffle extends Command{
 
             if(value.length === 0 || value[0] === ''){
                 await message.channel.send({
-                    embed: this.getErrorEmbed(server.translate('commands.raffle.advanced.parameter.empty', key))
+                    embeds: [this.getErrorEmbed(server.translate('commands.raffle.advanced.parameter.empty', key))]
                 })
 
                 return true
@@ -98,7 +100,7 @@ export default class AdvancedCreateRaffle extends Command{
             const validate = await validator.validate(key, value.join(' '))
             if(!validate.ok){
                 await message.channel.send({
-                    embed: this.getErrorEmbed(server.translate(validate.message, ...validate.args))
+                    embeds: [this.getErrorEmbed(server.translate(validate.message, ...validate.args))]
                 })
 
                 return true
@@ -110,7 +112,7 @@ export default class AdvancedCreateRaffle extends Command{
         const raffles = await server.raffles.getContinues()
         if(raffles.length > RaffleLimits.MAX_COUNT_PREMIUM){
             await message.channel.send({
-                embed: this.getErrorEmbed(server.translate('commands.raffle.create.limits.max.created', RaffleLimits.MAX_COUNT_PREMIUM)),
+                embeds: [this.getErrorEmbed(server.translate('commands.raffle.create.limits.max.created', RaffleLimits.MAX_COUNT_PREMIUM))]
             })
 
             return true
@@ -123,8 +125,9 @@ export default class AdvancedCreateRaffle extends Command{
             createdAt: new Date()
         }, raffleProps as IRaffle), server.locale)
 
-        message.channel.send(Raffle.getStartMessage(), {
-            embed: raffle.buildEmbed()
+        message.channel.send({
+            content: Raffle.getStartMessage(),
+            embeds: [raffle.buildEmbed()]
         }).then(async $message => {
             await server.raffles.create(Object.assign({
                 message_id: $message.id
@@ -135,10 +138,8 @@ export default class AdvancedCreateRaffle extends Command{
             await message.channel.send(':boom: ' + server.translate('commands.raffle.create.unauthorized'))
         })
 
-        if(message.guild.me.hasPermission('MANAGE_MESSAGES')){
-            await message.delete({
-                timeout: 0
-            })
+        if(message.guild.me.permissions.has('MANAGE_MESSAGES')){
+            await message.delete()
         }
         return true
     }

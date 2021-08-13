@@ -31,8 +31,8 @@ export default class BotInfo extends Command{
             .setTimestamp()
             .setColor('#CD5C5C')
 
-        const memArr = await client.shard.broadcastEval('process.memoryUsage()')
-        const totalMemUsage = memArr.reduce((prev, curr) => prev.heapUsed + curr.heapUsed, { heapUsed: 0 })
+        const memArr = await client.shard.broadcastEval(() => process.memoryUsage())
+        const totalMemUsage = memArr.reduce((prev, curr) => prev + curr.heapUsed, 0)
         const isBasicView = args[0] && args[0] === 'basic'
         if(isBasicView){
             embed.addField(`**${client.user.username}**`, server.translate('commands.bot.info.embed.basic.content',
@@ -97,7 +97,7 @@ export default class BotInfo extends Command{
                 )
         }
 
-        await message.channel.send({ embed })
+        await message.channel.send({ embeds: [embed] })
         return true
     }
 

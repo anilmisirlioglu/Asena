@@ -19,7 +19,7 @@ export default class Question extends Command{
                 '{question} [answer 1] [answer 2] [answer n]',
                 '{1 + 1} [2] [11]'
             ]
-        });
+        })
     }
 
     async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
@@ -39,7 +39,7 @@ export default class Question extends Command{
 
         if(questions.length !== 0){
              await message.channel.send({
-                 embed: this.getErrorEmbed(server.translate('commands.survey.question.too.many'))
+                 embeds: [this.getErrorEmbed(server.translate('commands.survey.question.too.many'))]
             })
 
             return true
@@ -47,7 +47,7 @@ export default class Question extends Command{
 
         if(answers.length > MAX_ANSWER_LENGTH){
             await message.channel.send({
-                embed: this.getErrorEmbed(server.translate('commands.survey.question.max.answer', MAX_ANSWER_LENGTH))
+                embeds: [this.getErrorEmbed(server.translate('commands.survey.question.max.answer', MAX_ANSWER_LENGTH))]
             })
 
             return true
@@ -69,18 +69,14 @@ export default class Question extends Command{
             )
             .setColor('#5DADE2')
 
-        message.channel.send({
-            embed
-        }).then(vote => {
+        message.channel.send({ embeds: [embed] }).then(vote => {
             emojis.map(item => vote.react(item.emoji))
         }).catch(async () => {
             await message.channel.send(':boom: ' + server.translate('commands.survey.question.error'))
         })
 
-        if(message.guild.me.hasPermission('MANAGE_MESSAGES')){
-            await message.delete({
-                timeout: 0
-            })
+        if(message.guild.me.permissions.has('MANAGE_MESSAGES')){
+            await message.delete()
         }
 
         return true

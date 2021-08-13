@@ -42,7 +42,7 @@ class EditRaffle extends Command{
             message_id = matchContent.shift().split(' ').pop().removeWhiteSpaces()
             if(!/^\d{17,19}$/g.test(message_id)){
                 await message.channel.send({
-                    embed: this.getErrorEmbed(server.translate('commands.raffle.edit.invalid.id'))
+                    embeds: [this.getErrorEmbed(server.translate('commands.raffle.edit.invalid.id'))]
                 })
 
                 return true
@@ -52,7 +52,7 @@ class EditRaffle extends Command{
         const raffle = await (message_id ? server.raffles.get(message_id) : server.raffles.getLastCreated())
         if(!raffle || !raffle.message_id){
             await message.channel.send({
-                embed: this.getErrorEmbed(server.translate('commands.raffle.edit.not.found'))
+                embeds: [this.getErrorEmbed(server.translate('commands.raffle.edit.not.found'))]
             })
 
             return true
@@ -60,7 +60,7 @@ class EditRaffle extends Command{
 
         if(!raffle.isContinues()){
             await message.channel.send({
-                embed: this.getErrorEmbed(server.translate('commands.raffle.edit.not.continues'))
+                embeds: [this.getErrorEmbed(server.translate('commands.raffle.edit.not.continues'))]
             })
 
             return true
@@ -69,7 +69,7 @@ class EditRaffle extends Command{
         const fetch = await client.fetchMessage(raffle.server_id, raffle.channel_id, raffle.message_id)
         if(!fetch){
             await message.channel.send({
-                embed: this.getErrorEmbed(server.translate('commands.raffle.edit.deleted'))
+                embeds: [this.getErrorEmbed(server.translate('commands.raffle.edit.deleted'))]
             })
 
             return true
@@ -258,7 +258,7 @@ class EditRaffle extends Command{
         await Promise.all([
             raffle.update(updateQuery).then(async () => {
                 await fetch.edit({
-                    embed: raffle.buildEmbed()
+                    embeds: [raffle.buildEmbed()]
                 })
             }),
             message.channel.send(GREEN_TICK + ' ' + server.translate('commands.raffle.edit.success.' + success, ...vars))

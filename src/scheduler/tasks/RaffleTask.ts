@@ -38,14 +38,17 @@ export default class RaffleTask extends Task<Raffle, IRaffle>{
                         alert: boolean = true
                     ) => {
                         if(!isRejected){
-                            await result.edit(message, {
-                                embed: raffle.buildEmbed(alert, customTime)
+                            await result.edit({
+                                content: message,
+                                embeds: [raffle.buildEmbed(alert, customTime)]
                             }).catch(async (err: DiscordAPIError | HTTPError) => {
                                 const guild = result.guild
                                 if(guild){
                                     try{
-                                        await guild.owner?.send(server.translate('errors.message'), {
-                                            embed: this.client.buildErrorReporterEmbed(server.locale, guild, err)
+                                        const owner = await guild.fetchOwner()
+                                        await owner?.send({
+                                            content: server.translate('errors.message'),
+                                            embeds: [this.client.buildErrorReporterEmbed(server.locale, guild, err)]
                                         })
                                     }catch(err){
                                         isRejected = true

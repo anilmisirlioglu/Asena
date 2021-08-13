@@ -205,7 +205,7 @@ export const Flags: FlagMap = {
     },
     rewardRoles: async (client, message, value) => {
         const me = message.guild.me
-        if(!me.hasPermission('MANAGE_ROLES')){
+        if(!me.permissions.has('MANAGE_ROLES')){
             return {
                 ok: false,
                 message: 'validator.roles.unauthorized'

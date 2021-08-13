@@ -77,7 +77,7 @@ export default class InteractiveSetup extends EventEmitter{
             }, 100)
         }
 
-        this.client.once('message', async message => {
+        this.client.once('messageCreate', async message => {
             if(message.author.id === this.user_id && message.channel.id === this.channel_id){
                 if(!this.isItOver){
                     const content = message.content.trim()

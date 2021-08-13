@@ -14,7 +14,7 @@ export default class Prefix extends Command{
             usage: 'commands.server.prefix.usage',
             permission: 'ADMINISTRATOR',
             examples: ['?']
-        });
+        })
     }
 
     async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
@@ -23,7 +23,7 @@ export default class Prefix extends Command{
 
         if(prefix.length > 5){
             await message.channel.send({
-                embed: this.getErrorEmbed(server.translate('commands.server.prefix.too.long'))
+                embeds: [this.getErrorEmbed(server.translate('commands.server.prefix.too.long'))]
             })
 
             return true

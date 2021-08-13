@@ -24,12 +24,12 @@ export default class Ping extends Command{
                 .setDescription([
                     `🤖 ${server.translate('commands.bot.ping.latency.bot')}: \`${this.resolveMS(m.createdTimestamp - message.createdTimestamp)}\``,
                     `📨 ${server.translate('commands.bot.ping.latency.api')}: \`${this.resolveMS(client.ws.ping)}\``
-                ])
+                ].join('\n'))
                 .setColor('BLUE')
 
             await Promise.all([
                 m.delete(),
-                message.channel.send({ embed })
+                message.channel.send({ embeds: [embed] })
             ])
         })
 

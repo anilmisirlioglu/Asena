@@ -66,13 +66,14 @@ class Survey extends Structure<typeof SurveyModel, SuperSurvey>{
                     .setFooter(server.translate('structures.survey.results.vote'))
                     .setTimestamp()
                     .setTitle(this.title)
-                    .addField(`<a:yes:${Emojis.AGREE_EMOJI_ID}> (${server.translate('global.yes')})`, agreeCount, true)
-                    .addField(`<a:no:${Emojis.DISAGREE_EMOJI_ID}> (${server.translate('global.no')})`, disagreeCount, true)
+                    .addField(`<a:yes:${Emojis.AGREE_EMOJI_ID}> (${server.translate('global.yes')})`, agreeCount.toString(), true)
+                    .addField(`<a:no:${Emojis.DISAGREE_EMOJI_ID}> (${server.translate('global.no')})`, disagreeCount.toString(), true)
 
                 await Promise.all([
-                    message.delete({ timeout: 0 }),
-                    message.channel.send(`${Emojis.RUBY_EMOJI} **${server.translate('structures.survey.results.survey')}**`, {
-                        embed
+                    message.delete(),
+                    message.channel.send({
+                        content: `${Emojis.RUBY_EMOJI} **${server.translate('structures.survey.results.survey')}**`,
+                        embeds: [embed]
                     })
                 ])
             }
