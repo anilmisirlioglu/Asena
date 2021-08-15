@@ -21,12 +21,12 @@ export default class AdvancedCreateRaffle extends Command{
             permission: 'ADMINISTRATOR',
             examples: [
                 `
-                --numberOfWinners 1 
-                --time 2m 
-                --prize "Test" 
-                --color GREEN 
-                --rewardRoles @Premium 
-                --allowedRoles Asena 
+                --numberOfWinners 1
+                --time 2m
+                --prize "Test"
+                --color GREEN
+                --rewardRoles @Premium
+                --allowedRoles Asena
                 --servers https://discord.gg/CRgXhfs
                 `,
                 '--numberOfWinners 5 --time 1d --prize "Asena Premium"'
