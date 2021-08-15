@@ -138,35 +138,35 @@ class EditRaffle extends Command{
                     return true
                 }
 
+                const modeIsSum = mode === '+'
                 const validatedRoles: string[] = validateRoles.result
                 const rewardRoles = raffle.rewardRoles
-                const evaluate = eval(`${rewardRoles.length} ${mode} ${validatedRoles.length}`)
-                if((Number(evaluate) || 0) > RaffleLimits.MAX_REWARD_ROLE_COUNT){
+                const rewardRoleCount = modeIsSum ? rewardRoles.length + validatedRoles.length : rewardRoles.length - validatedRoles.length
+                if(rewardRoleCount > RaffleLimits.MAX_REWARD_ROLE_COUNT){
                     await message.channel.send(RED_TICK + ' ' + server.translate('commands.raffle.edit.role.max', RaffleLimits.MAX_REWARD_ROLE_COUNT))
 
                     return true
                 }
 
-                const check = mode === '+'
                 for(const role of validatedRoles){
                     const include = rewardRoles.includes(role)
-                    if(check ? include : !include){
-                        await message.channel.send(RED_TICK + ' ' + server.translate('commands.raffle.edit.role.' + (check ? 'already' : 'not.found'), `<@&${role}>`))
+                    if(modeIsSum ? include : !include){
+                        await message.channel.send(RED_TICK + ' ' + server.translate('commands.raffle.edit.role.' + (modeIsSum ? 'already' : 'not.found'), `<@&${role}>`))
 
                         return true
                     }
                 }
 
                 updateQuery = {
-                    [check ? '$push' : '$pull']: {
-                        rewardRoles: check ? validatedRoles : {
+                    [modeIsSum ? '$push' : '$pull']: {
+                        rewardRoles: modeIsSum ? validatedRoles : {
                             $in: validatedRoles
                         }
                     }
                 }
                 success = 'roles'
                 vars = [
-                    server.translate('global.roles' + (check ? 'added' : 'removed')),
+                    server.translate('global.roles' + (modeIsSum ? 'added' : 'removed')),
                     validatedRoles.map(role => `<@&${role}>`).join(', ')
                 ]
                 break

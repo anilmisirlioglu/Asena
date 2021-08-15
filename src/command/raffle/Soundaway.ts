@@ -27,7 +27,7 @@ export default class Soundaway extends Command{
     async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
         if(args.length < 1) return false
 
-        const numberOfWinners = parseInt(args[0])
+        const numberOfWinners = parseInt(args[0], 10)
         if(isNaN(numberOfWinners)) return false
 
         if(numberOfWinners < 1 || numberOfWinners > 20){

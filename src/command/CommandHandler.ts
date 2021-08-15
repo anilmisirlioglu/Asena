@@ -21,7 +21,7 @@ export default class CommandHandler extends Factory implements CommandRunner{
     private aliases: Collection<string, string> = new Collection<string, string>()
 
     public registerAllCommands(): void{
-        for(const command of new CommandPool){
+        for(const command of new CommandPool()){
             this.registerCommand(command)
         }
 

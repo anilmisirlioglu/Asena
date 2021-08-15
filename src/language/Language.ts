@@ -102,7 +102,7 @@ export default class Language{
     }
 
     parseArgs(str: string, args: Args): string{
-        return str.replace(/{(\d)}/g, (_, i) => (args[parseInt(i)] ?? "error").toString())
+        return str.replace(/{(\d)}/g, (_, i) => (args[parseInt(i, 10)] ?? "error").toString())
     }
 
 }

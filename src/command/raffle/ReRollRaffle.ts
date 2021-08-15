@@ -35,7 +35,7 @@ export default class ReRollRaffle extends Command{
             }else if(this.isValidNumber(arg)){
                 if(amount) return false
 
-                const parse = parseInt(arg)
+                const parse = parseInt(arg, 10)
                 if(parse < 1){
                     await message.channel.send({
                         embeds: [this.getErrorEmbed(server.translate('commands.raffle.reroll.amount.min'))]

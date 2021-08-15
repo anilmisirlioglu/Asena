@@ -2,7 +2,7 @@ FROM node:12-alpine
 
 ENV NO_UPDATE_NOTIFIER true
 
-RUN apk add git
+RUN apk --no-cache add git
 
 WORKDIR /usr/app
 
