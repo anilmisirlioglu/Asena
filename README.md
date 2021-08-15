@@ -9,13 +9,6 @@
 
 > stable, fast, easy and surrounded by new generation technologies Discord giveaway & poll bot!
 
-## Branches
-`master`: Next future version.
-
-`stable`: Stable development version.
-
-Changes to be made must be made on the `stable` branch.
-
 ## Build & Run
 
 > :warning: It should only be used for testing in development.
@@ -69,11 +62,6 @@ Example to make the bots default language English:
 | invite | Sends the bots invite URL to the chat. |
 | locale | Changes the bots default language. |
 | ping | Displays the bot network latency information. |
-
-## Invitation
-
-If you want to take advantage of these features and create lotteries easily and quickly,
-you can add Asena to your server here: **[Asena Invitation](https://discord.com/oauth2/authorize?permissions=347200&scope=bot&client_id=716259870910840832&redirect_uri=https%3A%2F%2Fdiscord.gg%2FCRgXhfs&response_type=code)**
 
 ## Self-Hosting
 
