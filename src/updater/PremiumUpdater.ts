@@ -14,7 +14,7 @@ export default class PremiumUpdater extends Factory{
         amqp.connect(process.env.AMQP_CONN_URL, (err, connection) => {
             if(err){
                 this.logger.error(`Colud not connect to RabbitMQ server. Error: ${err.message}`)
-                process.exit(1)
+                return
             }
 
             this.logger.info('Successfully connected to RabbitMQ server.')
