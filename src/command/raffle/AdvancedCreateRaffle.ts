@@ -29,7 +29,7 @@ export default class AdvancedCreateRaffle extends Command{
                 --allowedRoles Asena 
                 --servers https://discord.gg/CRgXhfs
                 `,
-                '--numbersOfWinner 5 --time 1d --prize "Asena Premium"'
+                '--numberOfWinners 5 --time 1d --prize "Asena Premium"'
             ]
         })
     }
