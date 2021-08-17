@@ -88,6 +88,8 @@ export default class CommandHandler extends Factory implements CommandRunner{
                     return
                 }
             }
+
+            return
         }
 
         const args: string[] = message.content.slice(prefix.length).trim().split(/ +/g)
