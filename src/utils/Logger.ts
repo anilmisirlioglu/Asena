@@ -1,45 +1,80 @@
 import TextFormat, { Colors } from './TextFormat';
-
-enum LogLevel{
-    ERROR = 'ERROR',
-    WARNING = 'WARN',
-    INFO = 'INFO',
-    DEBUG = 'DEBUG'
-}
-
-type ColorizedLogLevel = string
+import winston from 'winston';
+import { LoggingWinston } from '@google-cloud/logging-winston';
+import { isDevBuild } from './Version';
+import { Error } from 'mongoose';
 
 enum Space{
-    WORKER = 7
+    WORKER = 7,
+    LEVEL  = 5
+}
+
+const colors = {
+    'info': Colors.GREEN,
+    'warning': Colors.YELLOW,
+    'error': Colors.RED,
+    'debug': Colors.AQUA
 }
 
 export default class Logger{
 
-    private readonly worker: string
+    private readonly winston: winston.Logger
 
     constructor(worker: string){
-        this.worker = worker
-
         TextFormat.init()
+
+        this.winston = winston.createLogger({
+            levels: {
+                error: 0,
+                warn: 1,
+                info: 2,
+                debug: 5
+            },
+            transports: [
+                new winston.transports.Console({ level: 'debug' }),
+                isDevBuild ? undefined : new LoggingWinston({
+                    projectId: 'syntax-asena',
+                    keyFilename: 'asena-gcloud-key.json',
+                    level: 'error'
+                })
+            ].filter(Boolean),
+            format: winston.format.combine(
+                winston.format.label({ label: worker }),
+                winston.format.timestamp({ format: 'DD-MM-YYYY HH:mm:ss' }),
+                winston.format.metadata({
+                    fillExcept: ['message', 'level', 'timestamp', 'label']
+                }),
+                winston.format.printf(this.templateFunc)
+            )
+        })
     }
 
-    private send(message: string, level: ColorizedLogLevel): void{
-        const date = new Date()
-            .toISOString()
-            .replace(/T/, ' ')
-            .replace(/\..+/, '')
+    // raw format: DD-MM-YYYY HH:mm:ss {log level} {process id} [{worker}] > {message}
+    private templateFunc = (info: winston.Logform.TransformableInfo): string => TextFormat.toANSI(`${Colors.DARK_GRAY}${info.timestamp} ${this.parseLogLevel(info.level)} ${Colors.DARK_PURPLE}${process.pid} ${Colors.WHITE}[${Colors.AQUA}${this.space(info.label)}${Colors.WHITE}] ${Colors.GOLD}> ${Colors.WHITE}${info.message}${Colors.RESET}`)
 
-        const format = `${Colors.DARK_GRAY}${date} ${level} ${Colors.DARK_PURPLE}${process.pid} ${Colors.WHITE}[${Colors.AQUA}${this.space(this.worker)}${Colors.WHITE}] ${Colors.GOLD}> ${Colors.WHITE}${message}`;
-        console.log(TextFormat.toANSI(format + Colors.RESET));
+    private parseLogLevel(text: string): string{
+        return (colors[text] ?? Colors.RED) + this.space(text.toUpperCase(), Space.LEVEL, true)
     }
 
-    private space(text: string, space: Space = Space.WORKER): string{
-        return text.length >= space ? text.slice(0, space) : ' '.repeat(space - text.length) + text
+    private space(text: string, space: Space = Space.WORKER, spacesIsRightSide: boolean = false): string{
+        if(text.length >= space){
+            return text.slice(0, space)
+        }
+
+        const spaces = ' '.repeat(space - text.length)
+        return spacesIsRightSide ? text + spaces : spaces + text
     }
 
-    error   = (message: string) => this.send(message, Colors.RED + LogLevel.ERROR)
-    warning = (message: string) => this.send(message, Colors.GOLD + LogLevel.WARNING + ' ')
-    info    = (message: string) => this.send(message, Colors.GREEN + LogLevel.INFO + ' ')
-    debug   = (message: string) => this.send(message, Colors.AQUA + LogLevel.DEBUG)
+    error   = (message: string, ...meta: any[]) => this.winston.error(message, ...meta)
+    warning = (message: string, ...meta: any[]) => this.winston.warn(message, ...meta)
+    info    = (message: string, ...meta: any[]) => this.winston.info(message, ...meta)
+    debug   = (message: string, ...meta: any[]) => this.winston.debug(message, ...meta)
+
+    static formatError(e: Error){
+        return {
+            stack: e.stack.split(`\n`).map(line => line.trim()),
+            name: e.name
+        }
+    }
 
 }
