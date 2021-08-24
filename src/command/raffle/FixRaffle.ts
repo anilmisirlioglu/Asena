@@ -56,7 +56,7 @@ export default class FixRaffle extends Command{
             return true
         }
 
-        if(!validateRaffleText(fetch.content)){
+        if(!validateRaffleText(server, fetch.content)){
             await message.channel.send({
                 embeds: [this.getErrorEmbed(server.translate('commands.raffle.fix.no.error'))]
             })
@@ -68,8 +68,9 @@ export default class FixRaffle extends Command{
             raffle.finish(client),
             message.channel.send(server.translate('commands.raffle.fix.success', raffle.prize, `<#${raffle.channel_id}>`))
         ])
+
         if(message.guild.me.permissions.has('MANAGE_MESSAGES')){
-            setTimeout(message.delete, 100)
+            await message.delete()
         }
 
         return true
