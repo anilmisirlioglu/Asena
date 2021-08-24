@@ -1,13 +1,8 @@
-import {Emojis, URLMap } from '../Constants';
+import { Emojis, URLMap } from '../Constants';
+import Server from '../structures/Server';
 
-const confEmojiLen = Emojis.CONFETTI_EMOJI.length
-const validateRaffleText = (text: string) => {
-    text = text.trim()
-    return (
-        text.length >= confEmojiLen * 2 &&
-        text.substr(0, confEmojiLen) == Emojis.CONFETTI_EMOJI &&
-        text.substr(text.length - confEmojiLen, confEmojiLen) == Emojis.CONFETTI_EMOJI
-    )
+const validateRaffleText = (server: Server, text: string) => {
+    return `${Emojis.CONFETTI_REACTION_EMOJI} **${server.translate('structures.raffle.messages.finish')}** ${Emojis.CONFETTI_REACTION_EMOJI}` !== text
 }
 
 const parseGiveawayTimerURL = (start: Date, length: number): string => {

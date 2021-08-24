@@ -37,8 +37,8 @@ export default class Asena extends SuperClient{
         // if it's a raffle message, delete the lottery
         this.on('messageDelete', async message => {
             if(message.author?.id === this.user.id){
-                if(message.content && validateRaffleText(message.content)){
-                    const server = await this.servers.get(message.guild?.id)
+                const server = await this.servers.get(message.guild?.id)
+                if(server && message.content && validateRaffleText(server, message.content)){
                     const raffle = await server.raffles.get(message.id)
                     if(raffle && raffle.isContinues()){
                         await raffle.delete()

@@ -1,13 +1,5 @@
 import {
-    ColorResolvable,
-    Guild,
-    GuildChannel,
-    Message,
-    MessageEmbed,
-    MessageReaction,
-    Role,
-    Snowflake,
-    TextChannel
+    ColorResolvable, Guild, GuildChannel, Message, MessageEmbed, MessageReaction, Role, Snowflake, TextChannel
 } from 'discord.js';
 import Structure from './Structure';
 import RaffleModel, { IPartialServer, IRaffle, RaffleStatus } from '../models/Raffle';
@@ -148,7 +140,11 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
     ): Promise<string[]>{
         const winners = []
         if(message){
-            const reaction: MessageReaction | undefined = await message.reactions.cache.get(Emojis.CONFETTI_REACTION_EMOJI)
+            message = await message.fetch(true)
+
+            let reaction: MessageReaction | undefined = await message.reactions.cache.get(Emojis.CONFETTI_REACTION_EMOJI)
+            if(!reaction) return winners
+
             const [_, users] = (await reaction.users.fetch()).partition(user => user.bot)
             const userKeys = [...users.keys()].filter(user_id => user_id !== this.constituent_id)
 
