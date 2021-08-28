@@ -4,14 +4,24 @@ import Asena from './Asena';
 import MongoDB from './MongoDB';
 import { ProcessPacketType } from './protocol/ProcessPacket';
 import { findFlagValue } from './utils/FlagParser';
+import Logger from './utils/Logger';
+import { isDevBuild } from './utils/Version';
 
 const isProduction: boolean = findFlagValue('--production') ?? false
 
 const mongo = new MongoDB()
 const client = new Asena(!isProduction)
 
-process.on('unhandledRejection', (rej) => {
-    client.logger.error(rej?.toString() ?? 'Unknown Error')
+process.on('unhandledRejection', (rej: Error | null | undefined) => {
+    if(typeof rej === 'object'){
+        if(isDevBuild || rej.name !== 'DiscordAPIError'){
+            client.logger.error(rej.message, Logger.formatError(rej))
+        }
+    }
+})
+
+process.on('uncaughtException', (e: Error) => {
+    client.logger.error(e.message, Logger.formatError(e))
 })
 
 process.on('SIGTERM', async () => {

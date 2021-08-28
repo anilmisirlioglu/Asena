@@ -110,3 +110,6 @@ dist
 
 # TypeScript build output
 build/
+
+# GCloud Keys
+asena-gcloud-key.json

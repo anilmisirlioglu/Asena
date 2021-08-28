@@ -11,7 +11,7 @@ export default class Premium extends Command{
         super({
             name: 'premium',
             group: Group.SERVER,
-            aliases: ['pre', 'p'],
+            aliases: ['pre'],
             description: 'commands.server.premium.description',
             usage: null,
             permission: undefined,

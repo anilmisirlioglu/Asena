@@ -29,13 +29,15 @@
     "test": "mocha -r ts-node/register tests/unit/*.test.ts"
   },
   "dependencies": {
+    "@google-cloud/logging-winston": "^4.1.0",
     "amqplib": "^0.8.0",
     "child_process": "^1.0.2",
     "discord.js": "^13.1.0",
     "dotenv": "^8.2.0",
     "mongoose": "^5.10.11",
     "node-cron": "^2.0.3",
-    "prom-client": "^13.1.0"
+    "prom-client": "^13.1.0",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "@types/amqplib": "^0.5.15",
