@@ -67,19 +67,21 @@ export default class Asena extends SuperClient{
         })
 
         // Delete server data from db
-        this.on('guildDelete', async guild => {
-            const server = await this.servers.get(guild.id)
-            await server.delete()
-
-            try{
-                guild.fetchOwner().then(owner => {
-                    owner?.createDM().then(channel => {
-                        channel.send(`> ${Emojis.RUBY_EMOJI} ${server.translate('events.guildDelete')}`)
-                    })
-                })
-            }catch(e){
-                // Do not show this error on the console. Because we don't care.
-            }
+        this.on('guildDelete', guild => {
+            this.servers.get(guild.id).then(async server => {
+                if(server){
+                    await server.delete()
+                    try{
+                        guild.fetchOwner().then(owner => {
+                            owner?.createDM().then(channel => {
+                                channel.send(`> ${Emojis.RUBY_EMOJI} ${server.translate('events.guildDelete')}`)
+                            })
+                        })
+                    }catch(e){
+                        // Do not show this error on the console. Because we don't care.
+                    }
+                }
+            })
         })
     }
 
