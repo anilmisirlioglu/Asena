@@ -33,8 +33,8 @@ export default class Logger{
             transports: [
                 new winston.transports.Console({ level: 'debug' }),
                 isDevBuild ? undefined : new LoggingWinston({
-                    projectId: 'syntax-asena',
-                    keyFilename: 'asena-gcloud-key.json',
+                    projectId: process.env.GCP_PROJECT_ID,
+                    keyFilename: process.env.GCP_KEY_FILENAME,
                     level: 'error'
                 })
             ].filter(Boolean),
