@@ -75,7 +75,7 @@ export default class ReRollRaffle extends Command{
         }
 
         if(!fetch.reactions){
-           fetch = await message.fetch()
+           fetch = await message.fetch(true)
             if(!fetch){
                 await message.channel.send({
                     embeds: [this.getErrorEmbed(server.translate('commands.raffle.reroll.data.not.found'))]
@@ -124,7 +124,7 @@ export default class ReRollRaffle extends Command{
         }
 
         if(message.guild.me.permissions.has('MANAGE_MESSAGES')){
-            setTimeout(message.delete, 100)
+            await message.delete()
         }
 
         return true
