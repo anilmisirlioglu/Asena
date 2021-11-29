@@ -638,7 +638,7 @@
           "not": {
             "found": "Tekrar çekilebilecek bir çekiliş bulunamadı.",
             "finish": "Bu çekiliş daha sonuçlanmamış. Lütfen çekilişin bitmesini bekleyin.",
-            "enough": "Yeterli katılım olmadığından dolayı çekiliş tekrar çekilemedi.\n**Çekiliş:** {0}"
+            "enough": "Yeterli katılım olmadığından dolayı çekiliş tekrar çekilemedi."
           },
           "unauthorized": "Lütfen kazananları tekrar çekmek için bota **Rolleri Yönet** yetkisi verin. Aksi takdirde bot ödül olarak verilecek rolleri kazananlara veremez.",
           "canceled": "Bu çekiliş iptal edilmiş. İptal edilmiş bir çekilişin sonucu tekrar çekilemez.",
@@ -648,7 +648,7 @@
             "min": "Yeniden çekilecek üye sayısı en az 1 olmalıdır.",
             "max": "Yeniden çekilecek üye sayısı, çekilişin kazanan sayısını aşamaz. Bu çekiliş için maksimum: **{0}**"
           },
-          "success": "Tebrikler {0}! **{1}** kazandınız (Kazananlar tekrar çekildi)\n**Çekiliş:** {2}"
+          "success": "Tebrikler {0}! **{1}** kazandınız (Kazananlar tekrar çekildi)"
         }
       },
       "survey": {

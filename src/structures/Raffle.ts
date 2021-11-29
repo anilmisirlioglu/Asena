@@ -91,7 +91,6 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
             const message: Message | undefined = await channel.messages.fetch(this.message_id)
             if(message instanceof Message){
                 const winners: string[] = await this.identifyWinners(message)
-                const _message: string = this.getMessageURL()
                 const winnersOfMentions: string[] = winners.map(winner => `<@${winner}>`)
 
                 let description, content
@@ -127,7 +126,7 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
                         content: `${Emojis.CONFETTI_REACTION_EMOJI} **${this.translate('structures.raffle.messages.finish')}** ${Emojis.CONFETTI_REACTION_EMOJI}`,
                         embeds: [embed]
                     }),
-                    channel.send(`${Emojis.CONFETTI_EMOJI} ${content}\n**${this.translate('structures.raffle.embed.fields.giveaway')}** ${_message}`),
+                    message.reply(`${Emojis.CONFETTI_EMOJI} ${content}`),
                     this.resolveWinners(client, channel.guild, winners)
                 ])
             }
@@ -166,7 +165,7 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
             .setDescription([
                 `:gift: ${this.translate('structures.raffle.winner.embed.fields.prize')}: **${this.prize}**`,
                 `:star: ${this.translate('structures.raffle.winner.embed.fields.server')}: **${guild.name}**`,
-                `:link: **[${this.translate('structures.raffle.winner.embed.fields.link')}](${this.getMessageURL()})**`,
+                `:link: **[${this.translate('structures.raffle.winner.embed.fields.link')}](${this.messageURL})**`,
                 `:rocket: **[${this.translate('global.vote')}](${URLMap.VOTE})** • **[${this.translate('structures.raffle.winner.embed.fields.invite')}](${URLMap.INVITE})**`
             ].join('\n'))
             .setFooter('Powered by Asena', guild.iconURL())
@@ -202,8 +201,8 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
         ])
     }
 
-    public getMessageURL(): string{
-        return `https://discordapp.com/channels/${this.server_id}/${this.channel_id}/${this.message_id}`
+    public get messageURL(): string{
+        return `https://discord.com/channels/${this.server_id}/${this.channel_id}/${this.message_id}`
     }
 
     public static getStartMessage(): string{

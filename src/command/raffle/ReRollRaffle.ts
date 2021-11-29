@@ -94,9 +94,8 @@ export default class ReRollRaffle extends Command{
         }
 
         const winners = await raffle.identifyWinners(fetch, amount)
-        const _message = raffle.getMessageURL()
         if(winners.length === 0){
-            await message.channel.send(server.translate('commands.raffle.reroll.not.enough', _message))
+            await fetch.reply(server.translate('commands.raffle.reroll.not.enough'))
         }else{
             if(raffle.rewardRoles.length > 0 && !message.guild.me.permissions.has('MANAGE_ROLES')){
                 await message.channel.send(server.translate('commands.raffle.reroll.unauthorized'))
@@ -105,7 +104,7 @@ export default class ReRollRaffle extends Command{
             }
 
             await Promise.all([
-                message.channel.send(Emojis.CONFETTI_EMOJI + ' ' + server.translate('commands.raffle.reroll.success', winners.map(winner => `<@${winner}>`).join(', '), raffle.prize, _message)),
+                fetch.reply(Emojis.CONFETTI_EMOJI + ' ' + server.translate('commands.raffle.reroll.success', winners.map(winner => `<@${winner}>`).join(', '), raffle.prize)),
                 new Promise(async () => {
                     if(raffle.winners.length > 0){
                         const promises: Promise<unknown>[] = raffle.winners.map(winner => new Promise(() => {

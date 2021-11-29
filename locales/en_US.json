@@ -650,7 +650,7 @@
           "not": {
             "found": "Couldn't find a rerollable giveaway.",
             "finish": "This giveaway has not been ended yet. Please wait for the giveaway ending.",
-            "enough": "The raffle could not be rerolled again for insufficient participation.\n**Giveaway:** {0}"
+            "enough": "The raffle could not be rerolled again for insufficient participation."
           },
           "unauthorized": "Please give to the bot **Manage Roles* permission to reroll the winners. Otherwise bot can't give the will be given roles as prize to the winners.",
           "canceled": "This giveaway has cancelled. Can not reroll a cancelled giveaway result.",
@@ -660,7 +660,7 @@
             "min": "The number of members to be again attract must be at least 1.",
             "max": "The number of members to be again attract, it cannot exceed the number of winners of the giveaway. Maximum for this giveaway: **{0}**"
           },
-          "success": "Congratulations {0}! You have won **{1}** (The winners has rerolled.)\n**Giveaway:** {2}"
+          "success": "Congratulations {0}! You have won **{1}** (The winners has rerolled)"
         }
       },
       "survey": {
