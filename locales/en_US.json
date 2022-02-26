@@ -154,6 +154,7 @@
         "invalid": "Invalid role detected, detected role: **{0}**",
         "unauthorized": "To give winners a role as a reward, you must give the bot **Manage Roles** authority.",
         "compare": "The **{0}** role is under the **{1}** role. The role of the bot should as a reward be above the roles that will be awarded. Otherwise, it cannot award the role to the user as a reward.",
+        "insufficient": "You are not authorized to award this role.",
         "allowed": {
           "duplicate": "As a reward Among the roles that will be awarded, some of the roles you tagged are the same. Each role you enter from each other must be unique. Please try again with non-repeatable values.",
           "limit": "You can specify a maximum {0} rol as a participation imperative."

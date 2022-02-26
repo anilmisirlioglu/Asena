@@ -143,6 +143,7 @@
         "invalid": "Geçersiz rol tespit edildi, tespit edilen rol: **{0}**",
         "unauthorized": "Kazanan kişilere ödül olarak rol verebilmek için bota **Rolleri Yönet** yetkisi vermeniz gerekmektedir.",
         "compare": "**{0}** rolü, **{1}** rolünün altında. Botun rolü ödül olarak verilecek rollerin üzerinde olmalıdır. Aksi takdirde ödül olarak rolü kullanıcıya veremez.",
+        "insufficient": "Bu rolü ödül olarak verebilmek için yetkiniz yok.",
         "allowed": {
           "duplicate": "Çekilişe katılabilecek roller arasında etiketlediğiniz rollerin bazıları aynı. Girdiğiniz her rolün birbirinden benzersiz olması gerekmektedir. Lütfen tekrarlanmayan değerler ile tekrar deneyin.",
           "limit": "Katılım zorunluluğu olarak maksimum {0} rol belirleyebilirsiniz."

@@ -240,6 +240,14 @@ export const Flags: FlagMap = {
                 }
             }
 
+            if(fetchRole.comparePositionTo(message.member.roles.highest) >= 0){
+                return {
+                    ok: false,
+                    message: 'validator.roles.insufficient',
+                    args: [message.member.roles.highest.name, fetchRole.name]
+                }
+            }
+
             rewardRoles.push(fetchRole.id)
         }
 
