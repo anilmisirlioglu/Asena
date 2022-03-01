@@ -35,7 +35,7 @@ abstract class Manager<K, V extends Structure<M, D>, M extends Model<D>, D exten
         })
     }
 
-    async create(data: D): Promise<V>{
+    async create(data: Partial<D>): Promise<V>{
         // @ts-ignore
         const create = await this.model.findOneAndUpdate({
             [this.key()]: data[this.key()]

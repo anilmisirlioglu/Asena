@@ -157,9 +157,11 @@
     "structures": {
       "survey": {
         "results": {
-          "survey": "ANKET SONUÇLARI",
+          "survey": "OYLAMA SONUÇLARI",
           "vote": "Oylama sonuçları"
-        }
+        },
+        "attendees": "Katılımcılar",
+        "already": "Zaten bu seçeneğe oy vermişsiniz."
       },
       "raffle": {
         "winners": {
@@ -284,7 +286,7 @@
           "description": "Bot hakkında teknik bilgi verir",
           "embed": {
             "title": "Bot Bilgisi",
-            "footer": "Syntax Software tarafından ❤️ ile yapılmıştır",
+            "footer": "Asena Team tarafından ❤️ ile yapılmıştır",
             "basic": {
               "content": [
                 "Çalışma Süresi (Uptime): **{0}**",

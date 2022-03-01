@@ -1,19 +1,22 @@
 import Structure from './Structure';
-import SurveyModel, { ISurvey } from './../models/Survey'
+import SurveyModel, { AnswerMap, ISurvey, SurveyAnswer } from './../models/Survey'
 import Timestamps from '../models/legacy/Timestamps';
 import ID from '../models/legacy/ID';
 import {
     ColorResolvable,
     GuildChannel,
     Message,
+    MessageActionRow,
+    MessageAttachment,
+    MessageButton,
     MessageEmbed,
-    MessageReaction,
     Snowflake,
     TextChannel
 } from 'discord.js';
 import { Emojis } from '../Constants';
 import SuperClient from '../SuperClient';
 import Server from './Server';
+import { table } from '../utils/Table';
 
 type SuperSurvey = ISurvey & Timestamps & ID
 
@@ -24,6 +27,7 @@ class Survey extends Structure<typeof SurveyModel, SuperSurvey>{
     public message_id: Snowflake
     public title: string
     public finishAt: Date
+    public answers: AnswerMap
 
     constructor(data: SuperSurvey){
         super(SurveyModel, data)
@@ -39,6 +43,18 @@ class Survey extends Structure<typeof SurveyModel, SuperSurvey>{
         this.message_id = data.message_id
         this.title = data.title
         this.finishAt = data.finishAt
+
+        if(!(data.answers instanceof Map)){
+            data.answers = new Map<SurveyAnswer, string[]>(Object.entries(data.answers) as [SurveyAnswer, string[]][])
+        }
+
+        for(const key of Object.values(SurveyAnswer)){
+            if(!data.answers.has(key)){
+                data.answers.set(key, [])
+            }
+        }
+
+        this.answers = data.answers
     }
 
     public async finish(client: SuperClient, server: Server){
@@ -46,19 +62,7 @@ class Survey extends Structure<typeof SurveyModel, SuperSurvey>{
         if(channel instanceof TextChannel){
             const message: Message | undefined = await channel.messages.fetch(this.message_id)
             if(message instanceof Message){
-                const reactions = await Promise.all(
-                    [Emojis.AGREE_EMOJI_ID, Emojis.DISAGREE_EMOJI_ID].map(async emoji => {
-                        const reaction: MessageReaction = await message.reactions.cache.get(emoji)
-                        const fetch = await reaction.users.fetch()
-
-                        return fetch.size - 1
-                    })
-                )
-
-                const { agreeCount, disagreeCount } = {
-                    agreeCount: reactions[0],
-                    disagreeCount: reactions[1]
-                }
+                const [agreeCount, disagreeCount] = [this.countTrueAnswers(), this.countFalseAnswers()]
 
                 const embed = new MessageEmbed()
                     .setColor(this.detectColor(agreeCount, disagreeCount))
@@ -81,14 +85,90 @@ class Survey extends Structure<typeof SurveyModel, SuperSurvey>{
     }
 
     private detectColor(agreeCount: number, disagreeCount: number): ColorResolvable{
-        if(agreeCount > disagreeCount){
-            return 'GREEN'
-        }else if(agreeCount === disagreeCount){
-            return 'YELLOW'
-        }else{
-            return 'RED'
-        }
+        return agreeCount > disagreeCount ? 'GREEN' : (agreeCount === disagreeCount ? 'YELLOW' : 'RED')
     }
+
+    public isReplied(answer: SurveyAnswer, userId: Snowflake): Promise<boolean>{
+        if(this.answers.get(answer).includes(userId)){
+            return Promise.resolve(true)
+        }
+
+        return SurveyModel.exists({
+            [`answers.${answer}`]: {
+                $in: [userId]
+            },
+            message_id: this.message_id
+        })
+    }
+
+    public reply(answer: SurveyAnswer, userId: Snowflake){
+        return this.update({
+            message_id: this.message_id,
+            $push: {
+                [`answers.${answer}`]: userId
+            },
+            $pull: {
+                [`answers.${this.reverseAnswer(answer)}`]: {
+                    $in: [userId]
+                }
+            },
+        })
+    }
+
+    public toAttachment(): MessageAttachment{
+        const attendees = this.countTrueAnswers() + this.countFalseAnswers()
+        const arr = [
+            `Asena | Attendees Output`,
+            `------------------------`,
+            `Start Date: ${this.createdAt.toDateString()} (UTC)`,
+            `Finish Date: ${this.finishAt.toString()} (UTC)`,
+            `Title: ${this.title}`,
+            `Total Attendees: ${attendees}`,
+            `------------------------`,
+        ]
+
+        if(attendees > 0){
+            const data = []
+            this.answers.forEach((stack, type) => {
+                stack.forEach(item => {
+                    data.push({userId: item, answer: type})
+                })
+            })
+
+            arr.push(`Attendees: `, table(data))
+        }
+
+        const buffer = Buffer.from(arr.join('\n'))
+        return new MessageAttachment(buffer, `attendees_${this.message_id}.txt`)
+    }
+
+    private reverseAnswer = (answer: SurveyAnswer): SurveyAnswer => answer == SurveyAnswer.TRUE ? SurveyAnswer.FALSE : SurveyAnswer.TRUE
+
+    public static buildComponents(server: Server, countTrueAnswers: number = 0, countFalseAnswers: number = 0): MessageActionRow{
+        return new MessageActionRow()
+            .addComponents(
+                new MessageButton()
+                    .setCustomId(`survey:${SurveyAnswer.TRUE}`)
+                    .setLabel(`(${countTrueAnswers}) ${server.translate('global.yes')}`)
+                    .setStyle('SUCCESS')
+                    .setEmoji('<a:yes:721180088686870549>'),
+                new MessageButton()
+                    .setCustomId(`survey:${SurveyAnswer.FALSE}`)
+                    .setLabel(`(${countFalseAnswers}) ${server.translate('global.no')}`)
+                    .setStyle('DANGER')
+                    .setEmoji('<a:no:721179958378233887>'),
+                new MessageButton()
+                    .setCustomId(`survey:attendees`)
+                    .setLabel(server.translate('structures.survey.attendees'))
+                    .setStyle('PRIMARY')
+                    .setEmoji('<a:nitro:736983658803626044>')
+            )
+    }
+
+    public buildComponents = (server: Server): MessageActionRow => Survey.buildComponents(server, this.countTrueAnswers(), this.countFalseAnswers())
+
+    private countTrueAnswers = (): number => this.answers.get(SurveyAnswer.TRUE).length
+    private countFalseAnswers = (): number => this.answers.get(SurveyAnswer.FALSE).length
 
 }
 

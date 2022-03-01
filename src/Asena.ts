@@ -83,6 +83,10 @@ export default class Asena extends SuperClient{
                 }
             })
         })
+
+        this.on('interactionCreate', interaction => {
+            this.getInteractionHandler().execute(interaction)
+        })
     }
 
 }

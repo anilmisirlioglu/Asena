@@ -2,9 +2,12 @@ import Command, { Group } from '../Command';
 import { Message, MessageEmbed } from 'discord.js';
 import { Emojis, SurveyLimits } from '../../Constants';
 import SuperClient from '../../SuperClient';
-import SurveyModel from '../../models/Survey';
 import { secondsToString, strToSeconds } from '../../utils/DateTimeHelper';
 import Server from '../../structures/Server';
+import SurveyX from '../../structures/Survey';
+
+const AGREE = `<a:yes:${Emojis.AGREE_EMOJI_ID}>`
+const DISAGREE = `<a:no:${Emojis.DISAGREE_EMOJI_ID}>`
 
 export default class Survey extends Command{
 
@@ -25,9 +28,6 @@ export default class Survey extends Command{
     }
 
     async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
-        const AGREE = `<a:yes:${Emojis.AGREE_EMOJI_ID}>`;
-        const DISAGREE = `<a:no:${Emojis.DISAGREE_EMOJI_ID}>`;
-
         if(args.length < 1) return false
         if(message.guild.me.permissions.has('MANAGE_MESSAGES')){
             await message.delete()
@@ -48,35 +48,28 @@ export default class Survey extends Command{
 
             const title = args.slice(1, args.length).join(' ')
             const embed = new MessageEmbed()
-                .setAuthor(message.author.username, message.author.displayAvatarURL() || message.author.defaultAvatarURL)
+                .setAuthor(message.guild.name, message.guild.iconURL())
                 .setColor('#ffd1dc')
-                .setDescription(server.translate('commands.survey.vote.embed.description'))
+                .setDescription(`<a:checkmark:764367612246753290> ${server.translate('commands.survey.vote.embed.description')}`)
                 .setFooter(`${server.translate('commands.survey.vote.embed.footer')}: ${secondsToString(seconds, server.locale).toString()}`)
                 .setTimestamp()
                 .addField(server.translate('commands.survey.vote.embed.fields.question'), title, true)
 
-            message.channel.send({ embeds: [embed] }).then(async $message => {
-                const survey = await SurveyModel.create({
+            message.channel.send({embeds: [embed], components: [SurveyX.buildComponents(server)]}).then($message => {
+                server.surveys.create({
                     server_id: $message.guild.id,
                     channel_id: $message.channel.id,
                     message_id: $message.id,
                     title: title,
-                    finishAt: new Date(Date.now() + (seconds * 1000))
+                    finishAt: new Date(Date.now() + (seconds * 1000)),
+                }).then(async survey => {
+                    if(!survey){
+                        await Promise.all([
+                            $message.delete(),
+                            message.channel.send(':boom: ' + server.translate('commands.survey.vote.error'))
+                        ])
+                    }
                 })
-                let promises
-                if(!survey){
-                    promises = [
-                        $message.delete(),
-                        message.channel.send(':boom: ' + server.translate('commands.survey.vote.error'))
-                    ]
-                }else{
-                    promises = [
-                        $message.react(AGREE),
-                        $message.react(DISAGREE)
-                    ]
-                }
-
-                await Promise.all(promises)
             })
         }else{
             const embed = new MessageEmbed()
@@ -86,7 +79,7 @@ export default class Survey extends Command{
                 .setTimestamp()
                 .addField(server.translate('commands.survey.vote.embed.fields.question'), args.join(' '), true)
 
-            await message.channel.send({ embeds: [embed] }).then(async vote => {
+            message.channel.send({embeds: [embed]}).then(async vote => {
                 await Promise.all([
                     vote.react(AGREE),
                     vote.react(DISAGREE)

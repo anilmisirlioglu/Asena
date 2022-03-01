@@ -10,7 +10,7 @@ export default class SurveyTask extends Task<Survey, ISurvey>{
             const server = await this.client.servers.get(survey.server_id)
             if(!server) continue
 
-            const structure = new Survey(survey)
+            const structure = await server.surveys.get(survey.message_id) //new Survey(survey)
             const finishAt: Date = new Date(survey.finishAt)
             const remaining: number = +finishAt - Date.now()
             if(remaining <= 60 * 1000){

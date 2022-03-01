@@ -23,6 +23,7 @@ import SyntaxWebhook from './SyntaxWebhook';
 import PremiumUpdater from './updater/PremiumUpdater';
 import LanguageManager from './language/LanguageManager';
 import ClientTaskManager from './scheduler/managers/ClientTaskManager';
+import InteractionHandler from './interaction/InteractionHandler';
 
 interface SuperClientBuilderOptions{
     prefix: string
@@ -41,6 +42,7 @@ export default abstract class SuperClient extends Client{
     private readonly taskManager: ClientTaskManager = new ClientTaskManager()
 
     private readonly commandHandler: CommandHandler = new CommandHandler(this)
+    private readonly interactionHandler: InteractionHandler = new InteractionHandler()
 
     private readonly activityUpdater: ActivityUpdater = new ActivityUpdater(this)
     private readonly raffleTimeUpdater: RaffleTimeUpdater = new RaffleTimeUpdater(this)
@@ -103,6 +105,10 @@ export default abstract class SuperClient extends Client{
 
     public getCommandHandler(): CommandHandler{
         return this.commandHandler
+    }
+
+    public getInteractionHandler(): InteractionHandler{
+        return this.interactionHandler
     }
 
     public getSetupManager(): SetupManager{

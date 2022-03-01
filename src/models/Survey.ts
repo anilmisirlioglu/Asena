@@ -1,5 +1,7 @@
-import mongoose, { Schema, Document } from 'mongoose'
+import mongoose, { Document, Schema } from 'mongoose'
 import { Snowflake } from 'discord.js';
+
+export type AnswerMap = Map<SurveyAnswer, string[]>
 
 export interface ISurvey extends Document{
     server_id: Snowflake
@@ -7,6 +9,12 @@ export interface ISurvey extends Document{
     message_id: Snowflake
     title: string
     finishAt: Date
+    answers: AnswerMap
+}
+
+export enum SurveyAnswer{
+    TRUE = 'true',
+    FALSE = 'false'
 }
 
 const SurveySchema = new Schema({
@@ -27,9 +35,18 @@ const SurveySchema = new Schema({
         type: String,
         required: true
     },
-    finishAt:{
+    finishAt: {
         type: Date,
         required: true
+    },
+    answers: {
+        type: Map,
+        of: Array,
+        required: true,
+        default: {
+            [SurveyAnswer.TRUE]: [],
+            [SurveyAnswer.FALSE]: []
+        }
     }
 }, {
     timestamps: true

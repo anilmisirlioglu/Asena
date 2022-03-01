@@ -170,7 +170,9 @@
         "results": {
           "survey": "SURVEY RESULTS",
           "vote": "Vote results"
-        }
+        },
+        "attendees": "Attendees",
+        "already": "You have already answered for this option."
       },
       "raffle": {
         "winners": {
@@ -295,7 +297,7 @@
           "description": "Gives technical information about the bot",
           "embed": {
             "title": "Bot Information",
-            "footer": "Made with ❤️ by Syntax Software",
+            "footer": "Made with ❤️ by Asena Team",
             "basic": {
               "content": [
                 "Uptime: **{0}**",

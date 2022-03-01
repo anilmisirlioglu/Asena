@@ -8,6 +8,7 @@ import Premium from './Premium';
 import PremiumModel, { PremiumStatus } from './../models/Premium';
 import Language from '../language/Language';
 import LanguageManager from '../language/LanguageManager';
+import SurveyManager from '../managers/SurveyManager';
 
 type SuperServer = IServer & Timestamps & ID
 
@@ -20,6 +21,7 @@ class Server extends Structure<typeof ServerModel, SuperServer>{
     public locale: string
 
     public raffles: RaffleManager = new RaffleManager(this)
+    public surveys: SurveyManager = new SurveyManager()
 
     constructor(data: SuperServer){
         super(ServerModel, data)

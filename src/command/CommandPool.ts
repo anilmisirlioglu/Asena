@@ -18,38 +18,28 @@ import Survey from './survey/Survey';
 import Ping from './bot/Ping';
 import Soundaway from './raffle/Soundaway';
 import FixRaffle from './raffle/FixRaffle';
+import Pool from '../utils/Pool';
+import Command from './Command';
 
-export default class CommandPool{
+export default class CommandPool extends Pool<Command>{
 
-    *[Symbol.iterator](){
-        yield* this.flat(
-            this.BOT_COMMANDS,
-            this.RAFFLE_COMMANDS,
-            this.SERVER_COMMANDS,
-            this.SURVEY_COMMANDS
-        )
+    protected toMultidimensionalArray(): Command[][]{
+        return [
+            this.BotCommands,
+            this.RaffleCommands,
+            this.ServerCommands,
+            this.SurveyCommands
+        ]
     }
 
-    private *flat(a?: any, ...r: any){
-        if(Array.isArray(a)){
-            yield* this.flat(...a)
-        }else{
-            yield a
-        }
-
-        if(r.length){
-            yield* this.flat(...r)
-        }
-    }
-
-    private readonly BOT_COMMANDS = [
+    private readonly BotCommands = [
         new BotInfo(),
         new Help(),
         new Invitation(),
         new Ping()
     ]
 
-    private readonly RAFFLE_COMMANDS = [
+    private readonly RaffleCommands = [
         new AdvancedCreateRaffle(),
         new CreateRaffle(),
         new CancelRaffle(),
@@ -62,14 +52,14 @@ export default class CommandPool{
         new Soundaway()
     ]
 
-    private readonly SERVER_COMMANDS = [
+    private readonly ServerCommands = [
         new Locale(),
         new Permission(),
         new Prefix(),
         new Premium()
     ]
 
-    private readonly SURVEY_COMMANDS = [
+    private readonly SurveyCommands = [
         new Question(),
         new Survey()
     ]
