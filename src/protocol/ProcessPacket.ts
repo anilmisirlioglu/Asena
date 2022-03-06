@@ -1,6 +1,7 @@
 export enum ProcessPacketType{
     SERVER_STATS,
-    MODEL_TRANSFER
+    MODEL_TRANSFER,
+    COMMAND
 }
 
 interface ProcessPacketPayload{

@@ -6,6 +6,7 @@ import Factory from '../Factory';
 import { ICommandPremium } from '../decorators/Premium';
 import PermissionController from './PermissionController';
 import CommandPool from './CommandPool';
+import CommandPacket from '../protocol/CommandPacket';
 
 type CommandMap = Collection<string, Command>
 
@@ -127,6 +128,8 @@ export default class CommandHandler extends Factory implements CommandRunner{
                                     .setColor('BLUE')
 
                                 await channel.send({ embeds: [embed] })
+                            }else{
+                                this.pushMetric(command.name)
                             }
                         })
                     }else{
@@ -169,6 +172,10 @@ export default class CommandHandler extends Factory implements CommandRunner{
 
     public getCommandsMap(): CommandMap{
         return this.commands
+    }
+
+    private pushMetric(command: string): void{
+        this.client.shard.send(new CommandPacket(command)).then(void 0)
     }
 
 }

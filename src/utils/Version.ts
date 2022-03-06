@@ -106,6 +106,15 @@ export default class Version{
             return 0; // Same version
         }
     }
+
+    public toObject(){
+        return {
+            version: this.getFullVersion(),
+            major: this.getMajor(),
+            minor: this.getMinor(),
+            patch: this.getPatch()
+        }
+    }
 }
 
 export const isDevBuild = process.env.NODE_ENV !== 'production'

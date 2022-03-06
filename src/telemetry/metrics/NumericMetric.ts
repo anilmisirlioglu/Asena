@@ -1,6 +1,6 @@
-import GaugeMetric from './types/GaugeMetric';
+import Gauge from './types/Gauge';
 
-class NumericMetric extends GaugeMetric<number>{
+class NumericMetric extends Gauge<number>{
 
     observe(value: number){
         this.set(value)

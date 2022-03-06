@@ -13,7 +13,7 @@ export default class PremiumUpdater extends Factory{
     start(): void{
         amqp.connect(process.env.AMQP_CONN_URL, (err, connection) => {
             if(err){
-                this.logger.error(`Colud not connect to RabbitMQ server. Error: ${err.message}`)
+                this.logger.error(`Could not connect to RabbitMQ server. Error: ${err.message}`)
                 return
             }
 

@@ -17,7 +17,7 @@
   "gnetId": 11159,
   "graphTooltip": 0,
   "id": 2,
-  "iteration": 1620656656577,
+  "iteration": 1646552257133,
   "links": [],
   "panels": [
     {
@@ -286,8 +286,8 @@
                 "value": null
               },
               {
-                "color": "red",
-                "value": 80
+                "color": "green",
+                "value": 1200
               }
             ]
           }

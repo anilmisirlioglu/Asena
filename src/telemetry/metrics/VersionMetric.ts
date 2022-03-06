@@ -1,7 +1,7 @@
-import GaugeMetric from './types/GaugeMetric';
+import Gauge from './types/Gauge';
 import Version from '../../utils/Version';
 
-export default class VersionMetric extends GaugeMetric<Version>{
+export default class VersionMetric extends Gauge<Version>{
 
     constructor(){
         super({
@@ -12,12 +12,7 @@ export default class VersionMetric extends GaugeMetric<Version>{
     }
 
     observe(version: Version){
-        this.set({
-            version: version.getFullVersion(),
-            major: version.getMajor(),
-            minor: version.getMinor(),
-            patch: version.getPatch()
-        }, 1)
+        this.set(version.toObject(), version.getNumber())
     }
 
 }

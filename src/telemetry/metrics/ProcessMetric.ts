@@ -1,16 +1,17 @@
-import GaugeMetric from './types/GaugeMetric';
+import Gauge from './types/Gauge';
 
-export default class ProcessMetric extends GaugeMetric{
+export default class ProcessMetric extends Gauge{
 
     constructor(){
         super({
             name: 'asena_process_uptime',
-            help: 'Asena process uptime.'
+            help: 'Asena process uptime.',
+            collect: () => {
+                this.set(process.uptime())
+            }
         })
     }
 
-    observe(){
-        this.set(process.uptime())
-    }
+    observe(){}
 
 }

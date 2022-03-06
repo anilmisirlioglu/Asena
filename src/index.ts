@@ -12,6 +12,9 @@ import AsyncSurveyTask from './scheduler/tasks/AsyncSurveyTask';
 import MongoDB from './MongoDB';
 import { isDevBuild } from './utils/Version';
 import './telemetry/TelemetryServer';
+import CommandMetric from './telemetry/metrics/CommandMetric';
+import { ProcessPacketType } from './protocol/ProcessPacket';
+import ProcessMetric from './telemetry/metrics/ProcessMetric';
 
 dotenv.config({
     path: `${__dirname}/../.env${isDevBuild ? '.local' : ''}`
@@ -31,6 +34,8 @@ const manager = new ShardingManager('./build/shard.js', {
 
 const logger = new Logger('main')
 
+const commandMetric = new CommandMetric()
+
 manager.on('shardCreate', async shard => {
     logger.info(`Shard ${shard.id} launched.`)
 
@@ -41,9 +46,17 @@ manager.on('shardCreate', async shard => {
     shard.on('disconnect', () => {
         logger.info(`Shard ${shard.id} disconnected.`)
     })
+
+    shard.on('message', message => {
+        switch(message.type){
+            case ProcessPacketType.COMMAND:
+                commandMetric.observe(message.command)
+                break
+        }
+    })
 })
 
-const sendUpdateActivityPacket = async () => {
+const pushUpdateActivityPacket = async () => {
     const shards = manager.shards
     const fetch = await manager.broadcastEval(client => client.guilds.cache.size)
     if(fetch.length > 0){
@@ -73,6 +86,8 @@ const scheduleAsyncTasks = () => {
 }
 
 const handler = async () => {
+    new ProcessMetric()
+
     await Promise.all([
         mongodb.connect(),
         manager.spawn()
@@ -80,12 +95,11 @@ const handler = async () => {
 
     logger.debug('All shards deployed.')
 
-    await sendUpdateActivityPacket()
+    pushUpdateActivityPacket().then(() => {
+        setInterval(pushUpdateActivityPacket, 1000 * 60 * 5) // Sends a packet to update the server count every 5 minutes
+    })
 
     scheduleAsyncTasks()
-
-    // Sends a packet to update the server count every 5 minutes
-    setInterval(sendUpdateActivityPacket, 1000 * 60 * 5)
 }
 
 setTimeout(handler)

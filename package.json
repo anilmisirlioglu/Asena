@@ -36,7 +36,7 @@
     "dotenv": "^8.2.0",
     "mongoose": "^5.10.11",
     "node-cron": "^2.0.3",
-    "prom-client": "^13.1.0",
+    "prom-client": "^14.0.1",
     "winston": "^3.3.3"
   },
   "devDependencies": {
