@@ -6,7 +6,7 @@ import assert from 'assert';
 require('dotenv').config()
 
 const testServerCount = 296
-const testBotId = "716259870910840832"
+const testBotId = "744238006583427252"
 
 describe('Top GG Bot Stats Update Test', () => {
     it('should update bot stats', () => {
