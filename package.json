@@ -24,7 +24,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "start:dev": "nodemon --ext ts-node src/index.ts --",
+    "start:dev": "nodemon src/index.ts --",
     "start": "NODE_ENV=production node build/index.js --",
     "test": "mocha -r ts-node/register tests/unit/*.test.ts"
   },
@@ -45,7 +45,7 @@
     "@types/mongoose": "^5.7.36",
     "@types/node": "^14.14.6",
     "mocha": "^9.2.1",
-    "nodemon": "^2.0.6",
+    "nodemon": "^2.0.15",
     "ts-node": "^8.10.2",
     "typescript": "^4.3.5"
   },
