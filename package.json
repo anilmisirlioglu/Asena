@@ -29,7 +29,7 @@
     "test": "mocha -r ts-node/register tests/unit/*.test.ts"
   },
   "dependencies": {
-    "@google-cloud/logging-winston": "^4.1.0",
+    "@google-cloud/logging-winston": "^4.1.2",
     "amqplib": "^0.8.0",
     "child_process": "^1.0.2",
     "discord.js": "^13.1.0",
