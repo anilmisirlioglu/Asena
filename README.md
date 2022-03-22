@@ -15,7 +15,7 @@
 
 1. First, install repository
     ```sh
-    git clone --branch stable https://github.com/anilmisirlioglu/Asena && cd Asena
+    git clone https://github.com/anilmisirlioglu/Asena && cd Asena
     ```
 
 2. Then, set permission and run
@@ -27,41 +27,6 @@
 ## High-Level Design
 
 ![asena-1](https://user-images.githubusercontent.com/20264712/122685996-97ee7500-d217-11eb-9160-8be3751af996.png)
-
-## Multi Language Support
-
-**[EN]** Due to the high usage of the bot on Turkish servers, the default language of the bot is set to *Turkish*.
-You can change the language of the bot in the server with the command `!alocale set <language-code>`
-
-**[TR]** Botun yüksek oranda Türk sunucularında kullanılmasından dolayı botun varsıyılan dili *Türkçe* olarak
-ayarlanmıştır. Botun sunucu içerisinde ki dilini `!alocale set <dil-kodu>` komutu ile değiştirebilirsiniz.
-
-Example to make the bots default language English:
-```sh
-!alocale set en
-```
-
-## Commands
-
-> Prefix: !a (Default)
-
-| Command | Description |
-|:-----------:|:----------:|
-| cancel | Cancels the giveaway. |
-| create | Starts new giveaway in one line. |
-| reroll | Repeat the results of the giveaway. |
-| setup | Starts the interactive setup wizard. |
-| end | Finish the giveaway early. |
-| raffles | List active giveaways on the server. |
-| soundaway | Starts a new quick giveaway in the voice channel. |
-| vote |  Starts a simple 2-option poll on the server. |
-| question | Asks a question. |
-| help | Sends the help menu to your inbox via a private message. |
-| setprefix | The command changes its prefix. |
-| scperm | It regulates the authority of the command. |
-| invite | Sends the bots invite URL to the chat. |
-| locale | Changes the bots default language. |
-| ping | Displays the bot network latency information. |
 
 ## Self-Hosting
 
