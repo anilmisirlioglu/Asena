@@ -1,15 +1,16 @@
 import { CommandInteraction } from 'discord.js'
 import Command, { Group } from '../Command'
+import { Emojis } from '../../Constants'
 import SuperClient from '../../SuperClient';
 import Server from '../../structures/Server';
 
-export default class FinishRaffle extends Command{
+export default class Cancel extends Command{
 
     constructor(){
         super({
-            name: 'finish',
+            name: 'cancel',
             group: Group.GIVEAWAY,
-            description: 'commands.raffle.end.description',
+            description: 'commands.raffle.cancel.description',
             permission: 'ADMINISTRATOR',
             examples: [
                 '',
@@ -30,23 +31,27 @@ export default class FinishRaffle extends Command{
         const raffle = await (message_id ? server.raffles.get(message_id) : server.raffles.getLastCreated())
         if(!raffle || !raffle.message_id){
             await action.reply({
-                embeds: [this.getErrorEmbed(server.translate('commands.raffle.end.not.found'))]
+                embeds: [this.getErrorEmbed(server.translate('commands.raffle.cancel.not.found'))]
             })
             return true
         }
 
-        if(!raffle.isContinues()){
+        if(!raffle.isCancelable()){
             await action.reply({
-                embeds: [this.getErrorEmbed(server.translate('commands.raffle.end.not.continues'))]
+                embeds: [this.getErrorEmbed(server.translate('commands.raffle.cancel.not.cancelable'))]
             })
             return true
         }
 
-        await Promise.all([
-            raffle.finish(client),
-            action.reply(server.translate('commands.raffle.end.success', raffle.prize, `<#${raffle.channel_id}>`))
-        ])
+        await raffle.setCanceled()
+        const $message = await client.fetchMessage(raffle.server_id, raffle.channel_id, raffle.message_id)
+        if($message){
+            await $message.delete()
+        }
+
+        await action.reply(`${Emojis.CONFETTI_EMOJI} ${server.translate('commands.raffle.cancel.success')}`)
 
         return true
     }
+
 }

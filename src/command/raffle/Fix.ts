@@ -4,7 +4,7 @@ import Server from '../../structures/Server';
 import SuperClient from '../../SuperClient';
 import { validateRaffleText } from '../../utils/Utils';
 
-export default class FixRaffle extends Command{
+export default class Fix extends Command{
 
     constructor(){
         super({

@@ -1,16 +1,15 @@
 import { CommandInteraction } from 'discord.js'
 import Command, { Group } from '../Command'
-import { Emojis } from '../../Constants'
 import SuperClient from '../../SuperClient';
 import Server from '../../structures/Server';
 
-export default class CancelRaffle extends Command{
+export default class Finish extends Command{
 
     constructor(){
         super({
-            name: 'cancel',
+            name: 'finish',
             group: Group.GIVEAWAY,
-            description: 'commands.raffle.cancel.description',
+            description: 'commands.raffle.end.description',
             permission: 'ADMINISTRATOR',
             examples: [
                 '',
@@ -31,27 +30,23 @@ export default class CancelRaffle extends Command{
         const raffle = await (message_id ? server.raffles.get(message_id) : server.raffles.getLastCreated())
         if(!raffle || !raffle.message_id){
             await action.reply({
-                embeds: [this.getErrorEmbed(server.translate('commands.raffle.cancel.not.found'))]
+                embeds: [this.getErrorEmbed(server.translate('commands.raffle.end.not.found'))]
             })
             return true
         }
 
-        if(!raffle.isCancelable()){
+        if(!raffle.isContinues()){
             await action.reply({
-                embeds: [this.getErrorEmbed(server.translate('commands.raffle.cancel.not.cancelable'))]
+                embeds: [this.getErrorEmbed(server.translate('commands.raffle.end.not.continues'))]
             })
             return true
         }
 
-        await raffle.setCanceled()
-        const $message = await client.fetchMessage(raffle.server_id, raffle.channel_id, raffle.message_id)
-        if($message){
-            await $message.delete()
-        }
-
-        await action.reply(`${Emojis.CONFETTI_EMOJI} ${server.translate('commands.raffle.cancel.success')}`)
+        await Promise.all([
+            raffle.finish(client),
+            action.reply(server.translate('commands.raffle.end.success', raffle.prize, `<#${raffle.channel_id}>`))
+        ])
 
         return true
     }
-
 }

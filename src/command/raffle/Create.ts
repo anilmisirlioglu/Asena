@@ -7,7 +7,7 @@ import Server from '../../structures/Server';
 import Raffle from '../../structures/Raffle';
 import FlagValidator from '../../utils/FlagValidator';
 
-export default class CreateRaffle extends Command{
+export default class Create extends Command{
 
     constructor(){
         super({

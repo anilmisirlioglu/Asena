@@ -11,7 +11,7 @@ const RED_TICK = '<:red_tick:737035767150411889>'
 const GREEN_TICK = '<:green_tick:737035767301275770>'
 
 @Premium
-class EditRaffle extends Command{
+class Edit extends Command{
 
     constructor(){
         super({
@@ -233,4 +233,4 @@ class EditRaffle extends Command{
 
 }
 
-export default EditRaffle
+export default Edit

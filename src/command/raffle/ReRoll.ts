@@ -4,7 +4,7 @@ import { Emojis } from '../../Constants'
 import SuperClient from '../../SuperClient';
 import Server from '../../structures/Server';
 
-export default class ReRollRaffle extends Command{
+export default class ReRoll extends Command{
 
     constructor(){
         super({
