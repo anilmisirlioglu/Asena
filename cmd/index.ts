@@ -7,7 +7,7 @@ import TextFormat from '../src/utils/TextFormat';
 import { parseAsenaASCIIArt } from '../src/utils/ASCII';
 
 dotenv.config({
-    path: `${__dirname}/../../.env${isDevBuild ? '.local' : ''}`
+    path: `${process.cwd()}/.env${isDevBuild ? '.local' : ''}`
 })
 
 TextFormat.init()

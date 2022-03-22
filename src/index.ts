@@ -17,7 +17,7 @@ import { ProcessPacketType } from './protocol/ProcessPacket';
 import ProcessMetric from './telemetry/metrics/ProcessMetric';
 
 dotenv.config({
-    path: `${__dirname}/../.env${isDevBuild ? '.local' : ''}`
+    path: `${process.cwd()}/.env${isDevBuild ? '.local' : ''}`
 })
 
 TextFormat.init()
