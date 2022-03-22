@@ -13,9 +13,9 @@
   "exports": {
     ".": [
       {
-        "required": "./build/index.js"
+        "required": "./build/src/index.js"
       },
-      "./build/index.js"
+      "./build/src/index.js"
     ]
   },
   "repository": {
