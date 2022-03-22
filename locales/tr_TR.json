@@ -107,11 +107,11 @@
       ],
       "guildCreate": [
         "**Beni eklediğiniz için teşekkürler!**",
-        "**»** Benim varsayılan komut önadım: `!a`",
-        "**»** Yardım menüsünü görmek için sohbete `!ahelp` yazabilirsin.",
+        "**»** Benim varsayılan komut önadım: `/` **(Slash Commands)**",
+        "**»** Yardım menüsünü görmek için sohbete `/help` yazabilirsin.",
         "**»** Eğer bot ile ilgili detaylı bilgi istiyorsan **https://wiki.asena.xyz** adresini ziyaret edebilirsin.",
         "**»** Daha detaylı yardım için **https://dc.asena.xyz** adresinden destek sunucumuza katılabilirsin.",
-        "**!**  If you want to use the bot in English, you can type `!alocale set en` in the chat."
+        "**!**  If you want to use the bot in English, you can type `/locale set English` in the chat."
       ]
     },
     "validator": {
