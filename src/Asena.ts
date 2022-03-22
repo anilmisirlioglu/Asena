@@ -23,6 +23,7 @@ export default class Asena extends SuperClient{
         this.getPremiumUpdater().start()
 
         // Command run
+        /** TODO::Will remove after 30 april */
         this.on('messageCreate', async message => {
             await this.getCommandHandler().run(message)
         })
@@ -49,9 +50,7 @@ export default class Asena extends SuperClient{
 
         // Create server data from db
         this.on('guildCreate', async guild => {
-            const server = await this.servers.create({
-                server_id: guild.id
-            } as any)
+            const server = await this.servers.create({ server_id: guild.id })
 
             const message = server.translate('events.guildCreate')
             const owner = await guild.fetchOwner()
@@ -62,7 +61,7 @@ export default class Asena extends SuperClient{
                         .catch(() => this.textChannelElection(guild)?.send(message)))
                     .catch(() => this.textChannelElection(guild)?.send(message))
             }else{
-                this.textChannelElection(guild)?.send(message)
+                await this.textChannelElection(guild)?.send(message)
             }
         })
 

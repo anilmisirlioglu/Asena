@@ -125,3 +125,5 @@ export const LETTERS: ILetter[] = [
 
 export const TOP_GG_URL: string = 'top.gg'
 export const DISCORD_BOTS_GG_URL: string = 'discord.bots.gg'
+
+export const prefix = '/' // slash commands

@@ -220,6 +220,10 @@
     },
     "commands": {
       "handler": {
+        "deprecation": [
+          "<:warning:717334432645775400> Komutlar, **eğik çizgi (/)**  komutları ile değişti. Artık prefixler ile kullanılamıyacaklar. Eğik komutlar hali hazırda kullanıcıyı yönlendirdiği için interaktif kurulum sihirbazıda (`setup`) da kaldırılmıştır. Komutları görüntülemek için **/** yazın.\n",
+          "Eğer **Asena** için komut listesini göremiyorsan, botu aşağıdaki davet bağlantısından yeniden eklemeyi dene: https://invite.asena.xyz"
+        ],
         "prefix": "Botun sunucu içerisinde ki komut ön adı(prefix): **{0}**",
         "unauthorized": "Bu komutu kullanmak için **yetkiniz** yok.",
         "mention": "**{0}** ve komutları hakkında daha fazla bilgi için: **{1}help**",
@@ -265,7 +269,7 @@
         "help": {
           "description": "Komutlar hakkında bilgi verir",
           "error": "**{0}** adında komut bulunamadı.",
-          "success": "{0} yardım menüsünü DM kutunuza gönderildi.",
+          "success": "Yardım menüsü DM kutunuza gönderildi.",
           "embed": {
             "title": "Komut Yardımı",
             "fields": {
@@ -356,7 +360,6 @@
         "name": "Sunucu Komutları",
         "locale": {
           "description": "Botun varsayılan dilini değiştirir",
-          "usage": "[list | set | reset] <args>",
           "default": "Botun sunucu içerisindeki iletişim dili",
           "embed": {
             "title": "Kullanılabilir Diller",
@@ -374,13 +377,11 @@
         },
         "prefix": {
           "description": "Botun komut prefix 'ini değiştirir",
-          "usage": "[prefix]",
           "too.long": "Komut prefix 'i en fazla 5 karakterden oluşabilir.",
           "changed": "Komut ön adı **{0}** olarak değiştirildi."
         },
         "permission": {
           "description": "Komutun izinlerini düzenler",
-          "usage": "[everyone | admin] [komut]",
           "command": {
             "not": {
               "found": "Komut bulunamadı.",
@@ -407,7 +408,6 @@
         "name": "Çekiliş Komutları",
         "soundaway": {
           "description": "Ses kanalında yeni bir çekiliş oluşturur",
-          "usage": "[kazanan sayısı] <@kullanıcı | ses-kanal-id | boş> <başlık>",
           "limits": {
             "winner.count": "Çekilişi kazanan üye sayısı maksimum 20, minimum 1 kişi olabilir.",
             "title.length": "Çekiliş başlığı maksimum 255 karakter olabilir."
@@ -430,7 +430,6 @@
         },
         "create": {
           "description": "Yeni bir çekiliş oluşturur",
-          "usage": "[kazanan sayısı] [süre] [ödül]",
           "limits": {
             "winner.count": "Çekilişi kazanan üye sayısı maksimum 20, minimum 1 kişi olabilir.",
             "title.length": "Çekiliş başlığı maksimum 255 karakter uzunluğunda olmalıdır.",
@@ -440,11 +439,11 @@
             },
             "max.created": "Maksimum çekiliş oluşturma sınırına ulaşmışsınız. (Max: {0})"
           },
-          "unauthorized": "Botun yetkileri, bu kanalda çekiliş oluşturmak için yetersiz olduğu için çekiliş başlatılamadı."
+          "unauthorized": "Botun yetkileri, bu kanalda çekiliş oluşturmak için yetersiz olduğu için çekiliş başlatılamadı.",
+          "successfully": "Çekiliş başarıyla yayınlandı."
         },
         "advanced": {
           "description": "Gelişmiş çekiliş oluşturur",
-          "usage": "--numberOfWinners \"kazanan sayısı\" --time \"süre\" --prize \"ödül\" --servers \"sunucular\" --color \"renk\" --allowedRoles \"roller\" --rewardRoles \"ödül olarak verilecek roller\"",
           "parameter": {
             "duplicate": "Lütfen aynı parametreyi birden fazla kez kullanmayın.",
             "missing": "Lütfen yazılması zorunlu olan parametreleri eksiksiz yazın. Gerekli parametreler:",
@@ -554,7 +553,6 @@
         },
         "edit": {
           "description": "Çekilişi düzenler",
-          "usage": "[numberOfWinner|color|prize|time|rewardRoles] [...args]",
           "deleted": "Anlaşılan bu çekiliş mesajı silinmiş veya zaman aşımına uğramış.",
           "invalid": {
             "id": "Geçersiz ID biçimi. Lütfen geçerli bir çekiliş ID 'si yazın.",
@@ -605,9 +603,11 @@
               "channel": "Kanal",
               "winner.count": "Kazanan Sayısı",
               "start": "Başlangıç Tarihi",
-              "finish": "Bitiş Tarihi"
+              "finish": "Bitiş Tarihi",
+              "giveaway": "Çekiliş"
             }
-          }
+          },
+          "click": "Tıkla ve Git"
         },
         "fix": {
           "description": "Bitmeyen çekilişleri bitirir",
@@ -637,7 +637,6 @@
         },
         "reroll": {
           "description": "Çekilişin kazananlarını tekrar belirler",
-          "usage": "(tekrar çekilecek kişi sayısı) (mesaj-id)",
           "not": {
             "found": "Tekrar çekilebilecek bir çekiliş bulunamadı.",
             "finish": "Bu çekiliş daha sonuçlanmamış. Lütfen çekilişin bitmesini bekleyin.",
@@ -651,21 +650,21 @@
             "min": "Yeniden çekilecek üye sayısı en az 1 olmalıdır.",
             "max": "Yeniden çekilecek üye sayısı, çekilişin kazanan sayısını aşamaz. Bu çekiliş için maksimum: **{0}**"
           },
-          "success": "Tebrikler {0}! **{1}** kazandınız (Kazananlar tekrar çekildi)"
+          "congratulations": "Tebrikler {0}! **{1}** kazandınız. (Kazananlar tekrar çekildi)",
+          "successfully": "Kazananlar tekrar çekildi ve açıklandı."
         }
       },
       "survey": {
         "name": "Anket Komutları",
         "question": {
           "description": "Sunucuya bir soru sorarsınız",
-          "usage": "{soru} ...[şıklar]",
           "too.many": "Birden fazla soru yazamazsınız. Lütfen tek bir soru yazarak tekrar deneyin.",
           "max.answer": "Sorunuza maksimum {0} şık ekleyebilirsiniz.",
-          "error": "Soru sohbet kanalına bir sebepten dolayı gönderilemedi."
+          "error": "Soru sohbet kanalına bir sebepten dolayı gönderilemedi.",
+          "successfully": "Sorunuz başarıyla yayınlandı."
         },
         "vote": {
           "description": "İki seçenekli oylama anketi oluşturur",
-          "usage": "(süre) [oylama metni]",
           "embed": {
             "description": "Oylama Başladı!",
             "fields": {
@@ -677,7 +676,8 @@
             "exceeded": "Anket süresi en az 1 dakika, maksimum 15 gün olabilir.",
             "invalid": "Lütfen geçerli bir süre giriniz. (Örn; **1s** - **1m** - **5m** - **1h** vb.)"
           },
-          "error": "Anket verisi veritabanına kaydedilemediği için iptal edildi."
+          "error": "Anket verisi veritabanına kaydedilemediği için iptal edildi.",
+          "successfully": "Anket başarıyla oluşturuldu."
         }
       }
     }

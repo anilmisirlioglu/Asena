@@ -1,15 +1,16 @@
 import { Interaction } from 'discord.js';
 import InteractionManager from './InteractionManager';
 import InteractionDescriptor from './InteractionDescriptor';
+import Factory from '../Factory';
 
-export default class InteractionHandler{
+export default class InteractionHandler extends Factory{
 
     private readonly interactionManager = new InteractionManager()
 
     execute(interaction: Interaction){
+        /** COMMAND INTERACTIONS */
         if(interaction.isCommand()){
-            // COMMAND INTERACTIONS
-            // TODO::forward to command handler
+            this.getClient().getCommandHandler().run(interaction).then(void 0)
         }
 
         let customId

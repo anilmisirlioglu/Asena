@@ -53,7 +53,7 @@
         "rightSide": true,
         "show": true,
         "sideWidth": null,
-        "total": false,
+        "total": true,
         "values": true
       },
       "lines": true,
@@ -133,7 +133,9 @@
       "dashes": false,
       "datasource": null,
       "fieldConfig": {
-        "defaults": {},
+        "defaults": {
+          "unit": "none"
+        },
         "overrides": []
       },
       "fill": 1,
@@ -204,7 +206,7 @@
       "yaxes": [
         {
           "$$hashKey": "object:83",
-          "format": "short",
+          "format": "none",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -437,7 +439,7 @@
     "list": []
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {},

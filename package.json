@@ -25,13 +25,18 @@
   "scripts": {
     "build": "tsc",
     "start:dev": "nodemon src/index.ts --",
-    "start": "NODE_ENV=production node build/index.js --",
+    "start": "NODE_ENV=production node build/src/index.js --",
+    "publish:dev": "node build/cmd/index.js",
+    "publish": "NODE_ENV=production node build/cmd/index.js",
     "test": "mocha -r ts-node/register tests/unit/*.test.ts"
   },
   "dependencies": {
+    "@discordjs/builders": "^0.12.0",
+    "@discordjs/rest": "^0.3.0",
     "@google-cloud/logging-winston": "^4.1.2",
     "amqplib": "^0.8.0",
     "child_process": "^1.0.2",
+    "discord-api-types": "^0.28.0",
     "discord.js": "^13.1.0",
     "dotenv": "^8.2.0",
     "mongoose": "^5.10.11",

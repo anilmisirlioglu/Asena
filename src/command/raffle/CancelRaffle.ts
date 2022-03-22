@@ -1,4 +1,4 @@
-import { Message } from 'discord.js'
+import { CommandInteraction } from 'discord.js'
 import Command, { Group } from '../Command'
 import { Emojis } from '../../Constants'
 import SuperClient from '../../SuperClient';
@@ -10,21 +10,19 @@ export default class CancelRaffle extends Command{
         super({
             name: 'cancel',
             group: Group.GIVEAWAY,
-            aliases: ['cekilisiptal', 'cancelraffle'],
             description: 'commands.raffle.cancel.description',
-            usage: 'global.message-id',
             permission: 'ADMINISTRATOR',
             examples: [
                 '',
-                '111111111111111111'
+                'message: 111111111111111111',
             ]
         })
     }
 
-    async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
-        const message_id: string | undefined = args[0]
+    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<boolean>{
+        const message_id: string | undefined = action.options.getString('message', false)
         if(message_id && !this.isValidSnowflake(message_id)){
-            await message.channel.send({
+            await action.reply({
                 embeds: [this.getErrorEmbed(server.translate('global.invalid.id'))]
             })
             return true
@@ -32,14 +30,14 @@ export default class CancelRaffle extends Command{
 
         const raffle = await (message_id ? server.raffles.get(message_id) : server.raffles.getLastCreated())
         if(!raffle || !raffle.message_id){
-            await message.channel.send({
+            await action.reply({
                 embeds: [this.getErrorEmbed(server.translate('commands.raffle.cancel.not.found'))]
             })
             return true
         }
 
         if(!raffle.isCancelable()){
-            await message.channel.send({
+            await action.reply({
                 embeds: [this.getErrorEmbed(server.translate('commands.raffle.cancel.not.cancelable'))]
             })
             return true
@@ -51,10 +49,7 @@ export default class CancelRaffle extends Command{
             await $message.delete()
         }
 
-        await message.channel.send(`${Emojis.CONFETTI_EMOJI} ${server.translate('commands.raffle.cancel.success')}`)
-        if(message.guild.me.permissions.has('MANAGE_MESSAGES')){
-            await message.delete()
-        }
+        await action.reply(`${Emojis.CONFETTI_EMOJI} ${server.translate('commands.raffle.cancel.success')}`)
 
         return true
     }

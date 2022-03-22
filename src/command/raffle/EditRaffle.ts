@@ -2,7 +2,7 @@ import Command, { Group } from '../Command';
 import Premium from '../../decorators/Premium';
 import SuperClient from '../../SuperClient';
 import Server from '../../structures/Server';
-import { Message } from 'discord.js';
+import { CommandInteraction } from 'discord.js';
 import FlagValidator from '../../utils/FlagValidator';
 import { RaffleLimits } from '../../Constants';
 import { secondsToString } from '../../utils/DateTimeHelper';
@@ -17,41 +17,37 @@ class EditRaffle extends Command{
         super({
             name: 'edit',
             group: Group.GIVEAWAY,
-            aliases: ['düzenle', 'set'],
             description: 'commands.raffle.edit.description',
-            usage: 'commands.raffle.edit.usage',
             permission: 'ADMINISTRATOR',
             examples: [
-                'color FFFFFF',
-                'color D7B5EB --raffle 814668595170639873',
-                'prize Lorem Ipsum',
-                'rewardRoles + @Role,RoleID'
+                'option: color operator: + value: FFFFFF',
+                'option: color operator: + value: D7B5EB giveaway: 814668595170639873',
+                'option: prize operator: + value: Lorem Ipsum',
+                'option: reward-roles operator: + value: @Role,RoleID',
+                'option: time operator: + value: 1h5m',
+                'option: time operator: - value: 10m',
+                'option: winners operator: + value: 3'
             ]
         })
     }
 
-    async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
-        const key = args.shift()
-        const value = args[0]
+    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<boolean>{
+        const key = action.options.getString('option', true)
+        const value = action.options.getString('value', true)
 
-        if(!key || !value) return false
+        const message_id = action.options.getString('giveaway', false)
+        if(message_id && !/^\d{17,19}$/g.test(message_id)){
+            await action.reply({
+                embeds: [this.getErrorEmbed(server.translate('commands.raffle.edit.invalid.id'))]
+            })
 
-        let message_id: string | undefined
-        const matchContent = message.content.match(/(--raffle)[\x20\xA0]?(.*)/g)
-        if(matchContent && matchContent.length !== 0){
-            message_id = matchContent.shift().split(' ').pop().removeWhiteSpaces()
-            if(!/^\d{17,19}$/g.test(message_id)){
-                await message.channel.send({
-                    embeds: [this.getErrorEmbed(server.translate('commands.raffle.edit.invalid.id'))]
-                })
-
-                return true
-            }
+            return true
         }
+
 
         const raffle = await (message_id ? server.raffles.get(message_id) : server.raffles.getLastCreated())
         if(!raffle || !raffle.message_id){
-            await message.channel.send({
+            await action.reply({
                 embeds: [this.getErrorEmbed(server.translate('commands.raffle.edit.not.found'))]
             })
 
@@ -59,7 +55,7 @@ class EditRaffle extends Command{
         }
 
         if(!raffle.isContinues()){
-            await message.channel.send({
+            await action.reply({
                 embeds: [this.getErrorEmbed(server.translate('commands.raffle.edit.not.continues'))]
             })
 
@@ -68,21 +64,20 @@ class EditRaffle extends Command{
 
         const fetch = await client.fetchMessage(raffle.server_id, raffle.channel_id, raffle.message_id)
         if(!fetch){
-            await message.channel.send({
+            await action.reply({
                 embeds: [this.getErrorEmbed(server.translate('commands.raffle.edit.deleted'))]
             })
 
             return true
         }
 
-        const validator = new FlagValidator(client, message)
+        const validator = new FlagValidator(client, action)
         let updateQuery, success: string, vars: Array<number | string>
         switch(key){
-            case 'renk':
             case 'color':
                 const validateColor = await validator.validate('color', value)
                 if(!validateColor.ok){
-                    await message.channel.send(RED_TICK + ' ' + server.translate(validateColor.message))
+                    await action.reply(RED_TICK + ' ' + server.translate(validateColor.message))
 
                     return true
                 }
@@ -94,46 +89,30 @@ class EditRaffle extends Command{
                 vars = [color]
                 break
 
-            case 'ödül':
-            case 'title':
             case 'prize':
-                let text = args.join(' ')
-                if(message_id){
-                    text = args.slice(0, args.length - 2).join(' ')
-                }
-
-                const validatePrize = await validator.validate('prize', text)
+                const validatePrize = await validator.validate('prize', value)
                 if(!validatePrize.ok){
-                    await message.channel.send(RED_TICK + ' ' + server.translate(validatePrize.message))
+                    await action.reply(RED_TICK + ' ' + server.translate(validatePrize.message))
 
                     return true
                 }
 
-                updateQuery = {
-                    prize: text
-                }
+                updateQuery = { prize: value }
                 success = 'prize'
-                vars = [text]
+                vars = [value]
                 break
 
-            case 'ödülrol':
             case 'rewardRoles':
-            case 'rewardRole':
-                const mode = args.shift()
+                const mode = action.options.getString('operator')
                 if(mode !== '+' && mode !== '-'){
-                    await message.channel.send(RED_TICK + ' ' + server.translate('commands.raffle.edit.invalid.mode', `${server.prefix}edit rewardRoles + rol`))
+                    await action.reply(RED_TICK + ' ' + server.translate('commands.raffle.edit.invalid.mode', `${server.prefix}edit rewardRoles + rol`))
 
                     return true
                 }
 
-                let roles = args.join(' ')
-                if(message_id){
-                    roles = args.slice(0, args.length - 2).join(' ')
-                }
-
-                const validateRoles = await validator.validate('rewardRoles', roles)
+                const validateRoles = await validator.validate('rewardRoles', value)
                 if(!validateRoles.ok){
-                    await message.channel.send(RED_TICK + ' ' + server.translate(validateRoles.message, ...validateRoles.args))
+                    await action.reply(RED_TICK + ' ' + server.translate(validateRoles.message, ...validateRoles.args))
 
                     return true
                 }
@@ -143,7 +122,7 @@ class EditRaffle extends Command{
                 const rewardRoles = raffle.rewardRoles
                 const rewardRoleCount = modeIsSum ? rewardRoles.length + validatedRoles.length : rewardRoles.length - validatedRoles.length
                 if(rewardRoleCount > RaffleLimits.MAX_REWARD_ROLE_COUNT){
-                    await message.channel.send(RED_TICK + ' ' + server.translate('commands.raffle.edit.role.max', RaffleLimits.MAX_REWARD_ROLE_COUNT))
+                    await action.reply(RED_TICK + ' ' + server.translate('commands.raffle.edit.role.max', RaffleLimits.MAX_REWARD_ROLE_COUNT))
 
                     return true
                 }
@@ -151,7 +130,7 @@ class EditRaffle extends Command{
                 for(const role of validatedRoles){
                     const include = rewardRoles.includes(role)
                     if(modeIsSum ? include : !include){
-                        await message.channel.send(RED_TICK + ' ' + server.translate('commands.raffle.edit.role.' + (modeIsSum ? 'already' : 'not.found'), `<@&${role}>`))
+                        await action.reply(RED_TICK + ' ' + server.translate('commands.raffle.edit.role.' + (modeIsSum ? 'already' : 'not.found'), `<@&${role}>`))
 
                         return true
                     }
@@ -172,30 +151,22 @@ class EditRaffle extends Command{
                 break
 
             case 'time':
-            case 'zaman':
-                const timeMode = args.shift()
+                const timeMode = action.options.getString('operator')
                 if(timeMode !== '+' && timeMode !== '-'){
-                    await message.channel.send(RED_TICK + ' ' + server.translate('commands.raffle.edit.invalid.mode', `${server.prefix}edit time + 1m`))
+                    await action.reply(RED_TICK + ' ' + server.translate('commands.raffle.edit.invalid.mode', `${server.prefix}edit time + 1m`))
 
                     return true
                 }
 
                 if(Date.now() > +raffle.finishAt + (1000 * 60 * 2)){
-                    await message.channel.send(RED_TICK + ' ' + server.translate('commands.raffle.edit.time.little.left'))
+                    await action.reply(RED_TICK + ' ' + server.translate('commands.raffle.edit.time.little.left'))
 
                     return true
                 }
 
-                const time = args.shift()
-                if(!time){
-                    await message.channel.send(RED_TICK + ' ' + server.translate('commands.raffle.edit.invalid.time'))
-
-                    return true
-                }
-
-                const validateTime = await validator.validate('time', time)
+                const validateTime = await validator.validate('time', value)
                 if(!validateTime.ok){
-                    await message.channel.send(RED_TICK + ' ' + server.translate(validateTime.message))
+                    await action.reply(RED_TICK + ' ' + server.translate(validateTime.message))
 
                     return true
                 }
@@ -205,7 +176,7 @@ class EditRaffle extends Command{
                 switch(timeMode){
                     case '-':
                         if(1000 * 2 * 60 > (finishAt - result) - Date.now()){
-                            await message.channel.send(RED_TICK + ' ' + server.translate('commands.raffle.edit.time.down.error'))
+                            await action.reply(RED_TICK + ' ' + server.translate('commands.raffle.edit.time.down.error'))
 
                             return true
                         }
@@ -216,7 +187,7 @@ class EditRaffle extends Command{
 
                     case '+':
                         if(Date.now() - (finishAt + result) > RaffleLimits.MAX_TIME){
-                            await message.channel.send(RED_TICK + ' ' + server.translate('commands.raffle.edit.time.up.error'))
+                            await action.reply(RED_TICK + ' ' + server.translate('commands.raffle.edit.time.up.error'))
 
                             return true
                         }
@@ -226,27 +197,20 @@ class EditRaffle extends Command{
                         break
                 }
 
-                updateQuery = {
-                    finishAt: new Date(finishAt)
-                }
+                updateQuery = { finishAt: new Date(finishAt) }
                 success = 'time'
                 vars = [successText]
                 break
 
-            case 'kazanan':
-            case 'numberOfWinners':
-            case 'numberOfWinner':
             case 'winners':
                 const validateNumber = await validator.validate('numberOfWinners', value)
                 if(!validateNumber.ok){
-                    await message.channel.send(RED_TICK + ' ' + server.translate(validateNumber.message))
+                    await action.reply(RED_TICK + ' ' + server.translate(validateNumber.message))
 
                     return true
                 }
 
-                updateQuery = {
-                    numberOfWinners: validateNumber.result
-                }
+                updateQuery = { numberOfWinners: validateNumber.result }
                 success = 'winners'
                 vars = [validateNumber.result]
                 break
@@ -261,7 +225,7 @@ class EditRaffle extends Command{
                     embeds: [raffle.buildEmbed()]
                 })
             }),
-            message.channel.send(GREEN_TICK + ' ' + server.translate('commands.raffle.edit.success.' + success, ...vars))
+            action.reply(GREEN_TICK + ' ' + server.translate('commands.raffle.edit.success.' + success, ...vars))
         ])
 
         return true

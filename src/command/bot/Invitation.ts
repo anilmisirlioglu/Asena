@@ -1,6 +1,6 @@
 import Command, { Group } from '../Command';
 import SuperClient from '../../SuperClient';
-import { Message, MessageEmbed } from 'discord.js';
+import { CommandInteraction, MessageEmbed } from 'discord.js';
 import Server from '../../structures/Server';
 import { URLMap } from '../../Constants'
 
@@ -10,15 +10,13 @@ export default class Invitation extends Command{
         super({
             name: 'invite',
             group: Group.BOT,
-            aliases: ['davet', 'party', 'davetiye', 'link', 'wiki'],
             description: 'commands.bot.invitation.description',
-            usage: null,
             permission: undefined,
             examples: []
         })
     }
 
-    async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
+    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<boolean>{
         const embed = new MessageEmbed()
             .setAuthor(client.user.username, client.user.avatarURL())
             .setDescription([
@@ -28,9 +26,9 @@ export default class Invitation extends Command{
                 `:ringed_planet: ${server.translate('commands.bot.invitation.vote')}: **[${server.translate('commands.bot.invitation.click.vote')}](${URLMap.VOTE})**`,
                 `:star2: ${server.translate('commands.bot.invitation.open.source')}: **[GitHub](${URLMap.GITHUB})**`
             ].join('\n'))
-            .setColor(message.guild.me.displayHexColor)
+            .setColor(action.guild.me.displayHexColor)
 
-        await message.channel.send({ embeds: [embed] })
+        await action.reply({ embeds: [embed] })
         return true
     }
 

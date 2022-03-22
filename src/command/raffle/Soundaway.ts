@@ -1,7 +1,7 @@
 import Command, { Group } from '../Command';
 import SuperClient from '../../SuperClient';
 import Server from '../../structures/Server';
-import { Message, MessageEmbed, VoiceChannel } from 'discord.js';
+import { CommandInteraction, GuildMember, MessageEmbed, VoiceChannel } from 'discord.js';
 import RandomArray from '../../utils/RandomArray';
 
 export default class Soundaway extends Command{
@@ -10,38 +10,42 @@ export default class Soundaway extends Command{
         super({
             name: 'soundaway',
             group: Group.GIVEAWAY,
-            aliases: ['voice', 'voiceaway', 'soundstart', 'sesçekiliş'],
             description: 'commands.raffle.soundaway.description',
-            usage: 'commands.raffle.soundaway.usage',
             permission: 'ADMINISTRATOR',
             examples: [
-                '1',
-                '1 All Voice Channels Giveaway Title',
-                '5 @User',
-                '3 @User Test Title',
-                '7 789102011081162784 Test Title'
+                'winners: 1',
+                'winners: 2 title: Voice Channels Giveaway Title',
+                'winners: 3 user: @User',
+                'winners: 4 channel: #Channel',
+                'winners: 5 title: Asena Giveaway channel: #Channel',
             ]
         })
     }
 
-    async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
-        if(args.length < 1) return false
-
-        const numberOfWinners = parseInt(args[0], 10)
-        if(isNaN(numberOfWinners)) return false
-
+    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<boolean>{
+        const numberOfWinners = action.options.getInteger('winners', true)
         if(numberOfWinners < 1 || numberOfWinners > 20){
-            await message.channel.send({
+            await action.reply({
                 embeds: [this.getErrorEmbed(server.translate('commands.raffle.soundaway.limits.winner.count'))]
             })
 
             return true
         }
 
-        let pool = [], index, ch
-        const arg1 = args[1]
-        if(!(this.isValidSnowflake(arg1) || message.mentions.members.first())){
-            pool = message.guild.channels.cache
+        const title = action.options.getString('title', false)
+        if(title && title.length > 255){
+            await action.reply({
+                embeds: [this.getErrorEmbed(server.translate('commands.raffle.soundaway.limits.title.length'))]
+            })
+
+            return true
+        }
+
+        let pool = [], ch
+        const member = action.options.getMember('user', false)
+        const voice = action.options.getChannel('channel', false)
+        if(!(member || voice)){
+            pool = action.guild.channels.cache
                 .filter(channel =>
                     channel.type == 'GUILD_VOICE' &&
                     channel.viewable &&
@@ -51,24 +55,20 @@ export default class Soundaway extends Command{
                 .reduce((prev, curr) => prev.concat(curr), [])
 
             if(pool.length === 0){
-                await message.channel.send({
+                await action.reply({
                     embeds: [this.getErrorEmbed(server.translate('commands.raffle.soundaway.voice.channel.in.not.found.users'))]
                 })
 
                 return true
             }
 
-            index = 1
             ch = server.translate('commands.raffle.soundaway.voice.channel.all')
         }else{
-            const channel = this.isValidSnowflake(arg1) ?
-                message.guild.channels.cache.get(arg1) :
-                message.mentions.members.first()?.voice.channel
-
+            const channel = voice ?? (member as GuildMember)?.voice.channel
             if(!channel){
-                await message.channel.send({
+                await action.reply({
                     embeds: [
-                        this.getErrorEmbed(message.mentions.members.first() ?
+                        this.getErrorEmbed(member ?
                             server.translate('commands.raffle.soundaway.voice.channel.not.in.user') :
                             server.translate('commands.raffle.soundaway.voice.channel.not.found')
                         )
@@ -79,7 +79,7 @@ export default class Soundaway extends Command{
             }
 
             if(channel.type !== 'GUILD_VOICE'){
-                await message.channel.send({
+                await action.reply({
                     embeds: [this.getErrorEmbed(server.translate('commands.raffle.soundaway.voice.channel.invalid'))]
                 })
 
@@ -87,7 +87,7 @@ export default class Soundaway extends Command{
             }
 
             if(!channel.viewable){
-                await message.channel.send({
+                await action.reply({
                     embeds: [this.getErrorEmbed(server.translate('commands.raffle.soundaway.voice.channel.unauthorized'))]
                 })
 
@@ -95,7 +95,7 @@ export default class Soundaway extends Command{
             }
 
             if(channel.members.size == 0){
-                await message.channel.send({
+                await action.reply({
                     embeds: [this.getErrorEmbed(server.translate('commands.raffle.soundaway.voice.channel.in.not.found.user'))]
                 })
 
@@ -103,20 +103,7 @@ export default class Soundaway extends Command{
             }
 
             pool = [...channel.members.keys()]
-            index = 2
             ch = channel.name
-        }
-
-        let title
-        if(args[index]){
-            title = args.slice(index, args.length).join(' ')
-            if(title.length > 255){
-                await message.channel.send({
-                    embeds: [this.getErrorEmbed(server.translate('commands.raffle.soundaway.limits.title.length'))]
-                })
-
-                return true
-            }
         }
 
         const winners = []
@@ -138,20 +125,16 @@ export default class Soundaway extends Command{
             .setAuthor(title ? title : `🔊 ${ch}`)
             .setDescription([
                 `:medal: ${description}`,
-                `:reminder_ribbon: ${server.translate('structures.raffle.embed.fields.creator')}: ${message.author}`
+                `:reminder_ribbon: ${server.translate('structures.raffle.embed.fields.creator')}: ${action.member}`
             ].join('\n'))
             .setFooter(`${server.translate('structures.raffle.embed.footer.text', numberOfWinners)} | ${server.translate('structures.raffle.embed.footer.finish')}`)
             .setTimestamp()
             .setColor('#36393F')
 
-        await message.channel.send({
+        await action.reply({
             content: `:tada: **${server.translate('structures.raffle.messages.quick')}** :tada:`,
             embeds: [embed]
         })
-
-        if(message.guild.me.permissions.has('MANAGE_MESSAGES')){
-            await message.delete()
-        }
 
         return true
     }

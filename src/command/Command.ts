@@ -1,4 +1,4 @@
-import { GuildMember, Message, MessageEmbed, PermissionString } from 'discord.js'
+import { CommandInteraction, GuildMember, Message, MessageEmbed, PermissionString } from 'discord.js'
 import SuperClient from '../SuperClient';
 import Server from '../structures/Server';
 import ArgValidatorKit from './ArgValidatorKit';
@@ -6,9 +6,7 @@ import ArgValidatorKit from './ArgValidatorKit';
 interface CommandOptions{
     readonly name: string
     readonly group: Group
-    readonly aliases: string[],
     readonly description: string,
-    readonly usage: string | null,
     readonly permission: PermissionString | undefined,
     readonly examples: string[]
 }
@@ -24,9 +22,7 @@ export default abstract class Command extends ArgValidatorKit{
 
     readonly name: string
     readonly group: Group
-    readonly aliases: string[]
     readonly description: string
-    readonly usage: string | null
     readonly permission: PermissionString | undefined
     readonly examples: string[]
 
@@ -35,9 +31,7 @@ export default abstract class Command extends ArgValidatorKit{
 
         this.name = opts.name
         this.group = opts.group
-        this.aliases = opts.aliases ?? []
         this.description = opts.description
-        this.usage = opts.usage
         this.permission = opts.permission
         this.examples = opts.examples ?? []
     }
@@ -50,7 +44,7 @@ export default abstract class Command extends ArgValidatorKit{
         return true
     }
 
-    public abstract run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>
+    public abstract run(client: SuperClient, server: Server, action: CommandInteraction): Promise<boolean>
 
     public getErrorEmbed(error: string): MessageEmbed{
         return new MessageEmbed()

@@ -1,4 +1,4 @@
-import { Message, MessageEmbed } from 'discord.js'
+import { CommandInteraction, MessageEmbed } from 'discord.js'
 import Command, { Group } from '../Command'
 import SuperClient from '../../SuperClient'
 import Server from '../../structures/Server'
@@ -11,15 +11,13 @@ export default class Premium extends Command{
         super({
             name: 'premium',
             group: Group.SERVER,
-            aliases: ['pre'],
             description: 'commands.server.premium.description',
-            usage: null,
             permission: undefined,
             examples: []
         })
     }
 
-    async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
+    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<boolean>{
         let description: string
         if(server.isPremium()){
             description = server.translate('commands.server.premium.info', ...[
@@ -34,10 +32,10 @@ export default class Premium extends Command{
         const embed = new MessageEmbed()
             .setAuthor(`${client.user.username} Premium`, client.user.avatarURL())
             .setColor('LUMINOUS_VIVID_PINK')
-            .setFooter(message.guild.name, message.guild.iconURL())
+            .setFooter(action.guild.name, action.guild.iconURL())
             .setDescription(description)
 
-        await message.channel.send({ embeds: [embed] })
+        await action.reply({ embeds: [embed] })
         return true
     }
 

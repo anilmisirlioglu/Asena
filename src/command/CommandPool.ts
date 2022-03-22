@@ -1,17 +1,14 @@
-import AdvancedCreateRaffle from './raffle/AdvancedCreateRaffle';
 import EditRaffle from './raffle/EditRaffle';
 import CreateRaffle from './raffle/CreateRaffle';
 import CancelRaffle from './raffle/CancelRaffle';
-import EndRaffle from './raffle/EndRaffle';
+import FinishRaffle from './raffle/FinishRaffle';
 import Raffles from './raffle/Raffles';
 import ReRollRaffle from './raffle/ReRollRaffle';
-import SetupRaffle from './raffle/SetupRaffle';
 import BotInfo from './bot/BotInfo';
 import Help from './bot/Help';
 import Invitation from './bot/Invitation';
 import Locale from './server/Locale';
 import Permission from './server/Permission';
-import Prefix from './server/Prefix';
 import Premium from './server/Premium';
 import Question from './survey/Question';
 import Survey from './survey/Survey';
@@ -40,22 +37,19 @@ export default class CommandPool extends Pool<Command>{
     ]
 
     private readonly RaffleCommands = [
-        new AdvancedCreateRaffle(),
         new CreateRaffle(),
         new CancelRaffle(),
         new EditRaffle(),
-        new EndRaffle(),
+        new FinishRaffle(),
         new FixRaffle(),
         new Raffles(),
         new ReRollRaffle(),
-        new SetupRaffle(),
         new Soundaway()
     ]
 
     private readonly ServerCommands = [
         new Locale(),
         new Permission(),
-        new Prefix(),
         new Premium()
     ]
 

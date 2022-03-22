@@ -1,4 +1,4 @@
-import { Message } from 'discord.js'
+import { CommandInteraction } from 'discord.js'
 import Command, { Group } from '../Command'
 import SuperClient from '../../SuperClient'
 import Server from '../../structures/Server'
@@ -7,31 +7,24 @@ export default class Permission extends Command{
 
     constructor(){
         super({
-            name: 'scperm',
+            name: 'permission',
             group: Group.SERVER,
-            aliases: ['setcommmandpermission', 'setcommandperm', 'perm', 'permission'],
             description: 'commands.server.permission.description',
-            usage: 'commands.server.permission.usage',
             permission: 'ADMINISTRATOR',
             examples: [
-                'admin create',
-                'everyone question'
+                'state: everyone command: create',
+                'state: admin command: survey',
             ]
         })
     }
 
-    async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
-        if(args.length < 2) return false
+    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<boolean>{
+        const state: string = action.options.getString('state', true).trim().toLowerCase()
+        const command: string = action.options.getString('command', true).trim().toLowerCase()
 
-        const cluster: string = args[0].trim().toLowerCase()
-        if(['everyone', 'admin'].indexOf(cluster) === -1) return false
-
-        const command: string = args[1].trim().toLowerCase()
-        const commands: Command[] = client.getCommandHandler().getCommandsArray()
-
-        const commandAuth: Command[] = commands.filter($command => $command.name === command)
+        const commandAuth: Command[] = client.getCommandHandler().getCommandsArray().filter($command => $command.name === command)
         if(commandAuth.length === 0){
-            await message.channel.send({
+            await action.reply({
                 embeds: [this.getErrorEmbed(server.translate('commands.server.permission.command.not.found'))]
             })
             return true
@@ -39,14 +32,14 @@ export default class Permission extends Command{
 
         const $command: Command = commandAuth.shift()
         if(!$command.permission || this.name === $command.name){
-            await message.channel.send({
+            await action.reply({
                 embeds: [this.getErrorEmbed(server.translate('commands.server.permission.command.not.editable'))]
             })
             return true
         }
 
         let opcl: string, err: boolean = false, add: boolean
-        switch(cluster){
+        switch(state){
             case 'everyone':
                 if(server.isPublicCommand(command)) err = true
 
@@ -63,7 +56,7 @@ export default class Permission extends Command{
         }
 
         if(err){
-            await message.channel.send({
+            await action.reply({
                 embeds: [this.getErrorEmbed(server.translate('commands.server.permission.command.already', opcl))]
             })
             return true
@@ -71,7 +64,7 @@ export default class Permission extends Command{
 
         await Promise.all([
             (add ? server.addPublicCommand($command.name) : server.deletePublicCommand($command.name)),
-            message.channel.send('🌈  ' + server.translate('commands.server.permission.command.success', $command.name, opcl))
+            action.reply('🌈  ' + server.translate('commands.server.permission.command.success', $command.name, opcl))
         ])
         return true
     }

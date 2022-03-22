@@ -26,7 +26,7 @@ console.clear()
 console.log(TextFormat.toANSI(parseAsenaASCIIArt()))
 
 const shards: "auto" | number = findFlagValue('shard') ?? "auto"
-const manager = new ShardingManager('./build/shard.js', {
+const manager = new ShardingManager('./build/src/shard.js', {
     totalShards: shards,
     token: process.env.TOKEN,
     shardArgs: [`--production=${!isDevBuild}`]

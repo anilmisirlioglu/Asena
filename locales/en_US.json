@@ -231,6 +231,10 @@
     },
     "commands": {
       "handler": {
+        "deprecation": [
+          "<:warning:717334432645775400> Commands have been replaced by **slash (/) commands**. They can no longer be used with prefixes. It has also been removed in the interactive setup wizard (`setup`) as the slash commands are already guiding the user. Type **/** to display commands.\n",
+          "If you can't see the any slash commands for **Asena**, try adding the bot again from the invite link below: https://invite.asena.xyz"
+        ],
         "prefix": "The bot commands prefix in the server: **{0}**",
         "unauthorized": "To use this command **your auth** absent.",
         "mention": "**{0}** for more information about and its commands: **{1}help**",
@@ -276,7 +280,7 @@
         "help": {
           "description": "Gives information about the commands",
           "error": "The command named **{0}** could not be found.",
-          "success": "{0} help menu has sent to your DM box.",
+          "success": "Help menu has sent to your DM box.",
           "embed": {
             "title": "Command Help",
             "fields": {
@@ -367,7 +371,6 @@
         "name": "Server Commands",
         "locale": {
           "description": "Changes the bot default language",
-          "usage": "[list | set | reset] <args>",
           "default": "Communication language of the bot in the server",
           "embed": {
             "title": "Available Languages",
@@ -385,13 +388,11 @@
         },
         "prefix": {
           "description": "Changes the bot command prefix",
-          "usage": "[prefix]",
           "too.long": "The command prefix must be maximum 5 character.",
           "changed": "The command prefix has set to **{0}**."
         },
         "permission": {
           "description": "Edits commands permissions",
-          "usage": "[everyone | admin] [command]",
           "command": {
             "not": {
               "found": "The command was not found.",
@@ -418,7 +419,6 @@
         "name": "Giveaway Commands",
         "soundaway": {
           "description": "Starts a new quick giveaway in the voice channel",
-          "usage": "[number of winners] <@member-mention | voice-channel-id | empty> <title>",
           "limits": {
             "winner.count": "The winners of the giveaway must be maximum 20, minimum 1.",
             "title.length": "The giveaway title must be maximum 256 character length."
@@ -441,7 +441,6 @@
         },
         "create": {
           "description": "Creates a new giveaway",
-          "usage": "[number of winners] [time] [prize]",
           "limits": {
             "winner.count": "The winners of the giveaway must be maximum 20, minimum 1.",
             "title.length": "The giveaway title must be a maximum 256 character length.",
@@ -451,11 +450,11 @@
             },
             "max.created": "You have reached the maximum raffle create limit. (Max: {0})"
           },
-          "unauthorized": "The raffle could not be started because the bot has insufficient permissions in this channel."
+          "unauthorized": "The raffle could not be started because the bot has insufficient permissions in this channel.",
+          "successfully": "Giveaway was successfully created."
         },
         "advanced": {
           "description": "Advanced giveaway creates",
-          "usage": "--numberOfWinners \"number of winners\" --time \"time\" --prize \"prize\" --servers \"servers\" --color \"color\" --allowedRoles \"roles\" --rewardRoles \"roles to be given as a reward\"",
           "parameter": {
             "duplicate": "Please do not use the same parameter 2 or more times.",
             "missing": "Please provide all the required parameters. Required parameters:",
@@ -566,7 +565,6 @@
         },
         "edit": {
           "description": "Edits the giveaway",
-          "usage": "[numberOfWinner|color|prize|time|rewardRoles] [...args]",
           "deleted": "Apparently this giveaway message has been deleted or timed out.",
           "invalid": {
             "id": "Invalid ID. Please write a valid giveaway ID.",
@@ -617,9 +615,11 @@
               "channel": "Channel",
               "winner.count": "Number of Winners",
               "start": "Start Date",
-              "finish": "Finish Date"
+              "finish": "Finish Date",
+              "giveaway": "Giveaway"
             }
-          }
+          },
+          "click": "Click and Go"
         },
         "fix": {
           "description": "Ends endless giveaways",
@@ -649,7 +649,6 @@
         },
         "reroll": {
           "description": "Determines the winners of the giveaway again",
-          "usage": "(amount) (message-id)",
           "not": {
             "found": "Couldn't find a rerollable giveaway.",
             "finish": "This giveaway has not been ended yet. Please wait for the giveaway ending.",
@@ -663,21 +662,21 @@
             "min": "The number of members to be again attract must be at least 1.",
             "max": "The number of members to be again attract, it cannot exceed the number of winners of the giveaway. Maximum for this giveaway: **{0}**"
           },
-          "success": "Congratulations {0}! You have won **{1}** (The winners has rerolled)"
+          "congratulations": "Congratulations {0}! You have won **{1}**. (The winners has rerolled)",
+          "successfully": "The winners were rerolled and announced."
         }
       },
       "survey": {
         "name": "Poll Commands",
         "question": {
           "description": "You can ask questions to the server",
-          "usage": "{question} ...[options]",
           "too.many": "You can't write more than one question. Please try again with writing one question.",
           "max.answer": "You can add maximum {0} option to your question.",
-          "error": "The question could not be sended on the chat channel for some reason."
+          "error": "The question could not be sended on the chat channel for some reason.",
+          "successfully": "Your question has been successfully published."
         },
         "vote": {
           "description": "Creates a two-option voting poll",
-          "usage": "(time) [voting text]",
           "embed": {
             "description": "The voting has started!",
             "fields": {
@@ -687,9 +686,10 @@
           },
           "time": {
             "exceeded": "The survey time should be minimum 1 minute, maximum 15 day.",
-            "invalid": "Please specify a valid time. (Eg; **1s** - **1m** - **5m** - **1h** etc.)"
+            "invalid": "Please specify a valid time. (e.g; **1s** - **1m** - **5m** - **1h** etc.)"
           },
-          "error": "Survey data has canceled because it could not be saved in the database."
+          "error": "Survey data has canceled because it could not be saved in the database.",
+          "successfully": "Survey was successfully created."
         }
       }
     }

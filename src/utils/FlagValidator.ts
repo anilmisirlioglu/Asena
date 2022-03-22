@@ -1,5 +1,5 @@
 import SuperClient from '../SuperClient';
-import { Invite, Message, Role } from 'discord.js';
+import { CommandInteraction, GuildMember, Invite, Role } from 'discord.js';
 import { RaffleLimits } from '../Constants';
 import { strToSeconds } from './DateTimeHelper';
 
@@ -11,22 +11,21 @@ interface FlagValidatorReturnType{
 }
 
 type FlagMap = {
-    [key: string]: (client: SuperClient, message: Message, value: string) => Promise<FlagValidatorReturnType>
+    [key: string]: (client: SuperClient, action: CommandInteraction, value: string | number) => Promise<FlagValidatorReturnType>
 }
 
 export const RequiredFlags = ['numberOfWinners', 'time', 'prize']
 
 export const Flags: FlagMap = {
-    numberOfWinners: async (client, message, value) => {
-        const number = Number(value.removeWhiteSpaces())
-        if(isNaN(number)){
+    numberOfWinners: async (client, action, value: number) => {
+        if(isNaN(value)){
             return {
                 ok: false,
                 message: 'validator.winners.nan'
             }
         }
 
-        if(number > RaffleLimits.MAX_WINNER_COUNT || number < 1){
+        if(value > RaffleLimits.MAX_WINNER_COUNT || value < 1){
             return {
                 ok: false,
                 message: 'validator.winners.limit'
@@ -35,10 +34,10 @@ export const Flags: FlagMap = {
 
         return {
             ok: true,
-            result: number
+            result: value
         }
     },
-    time: async (client, message, value) => {
+    time: async (client, action, value: string) => {
         const toSecond = strToSeconds(value)
         if(toSecond <= 0){
             return {
@@ -59,7 +58,7 @@ export const Flags: FlagMap = {
             result: toSecond
         }
     },
-    prize: async (client, message, value) => {
+    prize: async (client, action, value: string) => {
         if(value.length === 0 || value.length > 255){
             return {
                 ok: false,
@@ -72,7 +71,7 @@ export const Flags: FlagMap = {
             result: value
         }
     },
-    servers: async (client, message, value) => {
+    servers: async (client, action, value: string) => {
         const servers = value.removeWhiteSpaces().split(',')
         const filterServers = servers.filter(server => {
             const match = server.match(/(https?:\/\/)?(www\.)?(discord\.gg|discordapp\.com\/invite)\/.?(?:[a-zA-Z0-9\-]{2,32})/g)
@@ -103,7 +102,7 @@ export const Flags: FlagMap = {
                 }
             }
 
-            if(fetchInvite.guild.id === message.guild.id){
+            if(fetchInvite.guild.id === action.guild.id){
                 return {
                     ok: false,
                     message: 'validator.servers.self'
@@ -145,7 +144,7 @@ export const Flags: FlagMap = {
             result: invites
         }
     },
-    color: async (client, message, value) => {
+    color: async (client, action, value: string) => {
         const matchColor = value.removeWhiteSpaces().match(/#?(?:[0-9a-fA-F]{3}){1,2}|(RED|WHITE|AQUA|GREEN|BLUE|YELLOW|PURPLE|LUMINOUS_VIVID_PINK|GOLD|ORANGE|GREY|NAVY|RANDOM|DARKER_GREY|DARK_AQUA|DARK_GREEN|DARK_BLUE|DARK_PURPLE|DARK_VIVID_PINK|DARK_GOLD|DARK_ORANGE|DARK_RED|DARK_GREY|LIGHT_GREY|DARK_NAVY)/g)
         if(!matchColor || matchColor.length === 0){
             return {
@@ -159,7 +158,7 @@ export const Flags: FlagMap = {
             result: matchColor.shift()
         }
     },
-    allowedRoles: async (client, message, value) => {
+    allowedRoles: async (client, action, value: string) => {
         const roles = value.split(',')
         const allowedRoles = []
 
@@ -167,9 +166,9 @@ export const Flags: FlagMap = {
         for(const role of roles){
             const matchRole = role.removeWhiteSpaces().match(/(\d{17,19})/g)
             if(matchRole && matchRole.length !== 0){
-                fetchRole = await message.guild.roles.fetch(matchRole.shift())
+                fetchRole = await action.guild.roles.fetch(matchRole.shift())
             }else{
-                fetchRole = message.guild.roles.cache.find(key => key.name === role.trim())
+                fetchRole = action.guild.roles.cache.find(key => key.name === role.trim())
             }
 
             if(!fetchRole){
@@ -203,8 +202,8 @@ export const Flags: FlagMap = {
             result: allowedRoles
         }
     },
-    rewardRoles: async (client, message, value) => {
-        const me = message.guild.me
+    rewardRoles: async (client, action, value: string) => {
+        const me = action.guild.me
         if(!me.permissions.has('MANAGE_ROLES')){
             return {
                 ok: false,
@@ -219,9 +218,9 @@ export const Flags: FlagMap = {
         for(const role of roles){
             const matchRole = role.removeWhiteSpaces().match(/(\d{17,19})/g)
             if(matchRole && matchRole.length !== 0){
-                fetchRole = await message.guild.roles.fetch(matchRole.shift())
+                fetchRole = await action.guild.roles.fetch(matchRole.shift())
             }else{
-                fetchRole = message.guild.roles.cache.find(key => key.name === role.trim())
+                fetchRole = action.guild.roles.cache.find(key => key.name === role.trim())
             }
 
             if(!fetchRole){
@@ -240,11 +239,11 @@ export const Flags: FlagMap = {
                 }
             }
 
-            if(fetchRole.comparePositionTo(message.member.roles.highest) >= 0){
+            if(fetchRole.comparePositionTo((action.member as GuildMember).roles.highest) >= 0){
                 return {
                     ok: false,
                     message: 'validator.roles.insufficient',
-                    args: [message.member.roles.highest.name, fetchRole.name]
+                    args: [(action.member as GuildMember).roles.highest.name, fetchRole.name]
                 }
             }
 
@@ -276,21 +275,21 @@ export const Flags: FlagMap = {
 export default class FlagValidator{
 
     private readonly client: SuperClient
-    private readonly message?: Message
+    private readonly action?: CommandInteraction
 
-    constructor(client: SuperClient, message?: Message){
+    constructor(client: SuperClient, action?: CommandInteraction){
         this.client = client
-        this.message = message
+        this.action = action
     }
 
     async validate(
         key: keyof typeof Flags,
-        value: string,
-        message?: Message
+        value: string | number,
+        action?: CommandInteraction
     ): Promise<FlagValidatorReturnType>{
         const callback = Flags[key]
 
-        const run = await callback(this.client, message ?? this.message, value)
+        const run = await callback(this.client, action ?? this.action, value)
 
         run.args = run.args || []
         return run

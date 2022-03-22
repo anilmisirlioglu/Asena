@@ -1,5 +1,5 @@
 import Command, { Group } from '../Command';
-import { Message, MessageEmbed } from 'discord.js';
+import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { Emojis, SurveyLimits } from '../../Constants';
 import SuperClient from '../../SuperClient';
 import { secondsToString, strToSeconds } from '../../utils/DateTimeHelper';
@@ -15,47 +15,46 @@ export default class Survey extends Command{
         super({
             name: 'survey',
             group: Group.POLL,
-            aliases: ['anket', 'voting', 'vote'],
             description: 'commands.survey.vote.description',
-            usage: 'commands.survey.vote.usage',
             permission: 'ADMINISTRATOR',
             examples: [
-                '1m Lorem Ipsum',
-                '1h2m Foo Bar',
-                'Infinity Survey Title'
+                'title: Lorem Ipsum time: 1m',
+                'title: Survey Title time: 1h2m',
+                'title: Hello World'
             ]
         })
     }
 
-    async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
-        if(args.length < 1) return false
-        if(message.guild.me.permissions.has('MANAGE_MESSAGES')){
-            await message.delete()
-        }
+    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<boolean>{
+        const title = action.options.getString('title', true)
+        const time = action.options.getString('time', false)
+        if(time){
+            const seconds = strToSeconds(time)
+            if(seconds == 0){
+                await action.reply({
+                    embeds: [this.getErrorEmbed(server.translate('commands.survey.vote.time.invalid'))]
+                })
 
-        const arg0 = args[0]
-        const seconds = strToSeconds(arg0)
-        if(seconds > 0){
-            if(!args[1]) return false
+                return true
+            }
 
             if(seconds < SurveyLimits.MIN_TIME || seconds > SurveyLimits.MAX_TIME){
-                await message.channel.send({
+                await action.reply({
                     embeds: [this.getErrorEmbed(server.translate('commands.survey.vote.time.exceeded'))]
                 })
 
                 return true
             }
 
-            const title = args.slice(1, args.length).join(' ')
             const embed = new MessageEmbed()
-                .setAuthor(message.guild.name, message.guild.iconURL())
+                .setAuthor(action.guild.name, action.guild.iconURL())
                 .setColor('#ffd1dc')
                 .setDescription(`<a:checkmark:764367612246753290> ${server.translate('commands.survey.vote.embed.description')}`)
                 .setFooter(`${server.translate('commands.survey.vote.embed.footer')}: ${secondsToString(seconds, server.locale).toString()}`)
                 .setTimestamp()
                 .addField(server.translate('commands.survey.vote.embed.fields.question'), title, true)
 
-            message.channel.send({embeds: [embed], components: [SurveyX.buildComponents(server)]}).then($message => {
+            action.channel.send({ embeds: [embed], components: [SurveyX.buildComponents(server)] }).then($message => {
                 server.surveys.create({
                     server_id: $message.guild.id,
                     channel_id: $message.channel.id,
@@ -66,26 +65,31 @@ export default class Survey extends Command{
                     if(!survey){
                         await Promise.all([
                             $message.delete(),
-                            message.channel.send(':boom: ' + server.translate('commands.survey.vote.error'))
+                            action.reply(':boom: ' + server.translate('commands.survey.vote.error'))
                         ])
                     }
                 })
             })
         }else{
             const embed = new MessageEmbed()
-                .setAuthor(message.guild.name, message.guild.iconURL())
+                .setAuthor(action.guild.name, action.guild.iconURL())
                 .setColor('#E74C3C')
                 .setDescription(server.translate('commands.survey.vote.embed.description'))
                 .setTimestamp()
-                .addField(server.translate('commands.survey.vote.embed.fields.question'), args.join(' '), true)
+                .addField(server.translate('commands.survey.vote.embed.fields.question'), title, true)//args.join(' ')
 
-            message.channel.send({embeds: [embed]}).then(async vote => {
+            action.channel.send({ embeds: [embed] }).then(async vote => {
                 await Promise.all([
                     vote.react(AGREE),
                     vote.react(DISAGREE)
                 ])
             })
         }
+
+        await action.reply({
+            content: server.translate('commands.survey.vote.successfully'),
+            ephemeral: true
+        })
 
         return true
     }

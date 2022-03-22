@@ -1,7 +1,7 @@
 import Command, { Group } from '../Command';
 import SuperClient from '../../SuperClient';
 import Server from '../../structures/Server';
-import { Message, MessageEmbed } from 'discord.js';
+import { CommandInteraction, MessageEmbed } from 'discord.js';
 
 export default class Ping extends Command{
 
@@ -9,27 +9,25 @@ export default class Ping extends Command{
         super({
             name: 'ping',
             group: Group.BOT,
-            aliases: ['ms'],
             description: 'commands.bot.ping.description',
-            usage: null,
             permission: undefined,
             examples: []
         })
     }
 
-    async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
-        message.channel.send(`<a:green_loading:736926844254814239> ${server.translate('commands.bot.ping.calculating')}`).then(async m => {
+    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<boolean>{
+        action.channel.send(`<a:green_loading:736926844254814239> ${server.translate('commands.bot.ping.calculating')}`).then(async m => {
             const embed = new MessageEmbed()
                 .setAuthor(`${server.translate('commands.bot.ping.title')} 🚀`)
                 .setDescription([
-                    `🤖 ${server.translate('commands.bot.ping.latency.bot')}: \`${this.resolveMS(m.createdTimestamp - message.createdTimestamp)}\``,
+                    `🤖 ${server.translate('commands.bot.ping.latency.bot')}: \`${this.resolveMS(m.createdTimestamp - action.createdTimestamp)}\``,
                     `📨 ${server.translate('commands.bot.ping.latency.api')}: \`${this.resolveMS(client.ws.ping)}\``
                 ].join('\n'))
                 .setColor('BLUE')
 
             await Promise.all([
                 m.delete(),
-                message.channel.send({ embeds: [embed] })
+                action.reply({ embeds: [embed] })
             ])
         })
 

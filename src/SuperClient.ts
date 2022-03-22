@@ -2,7 +2,7 @@ import {
     Client,
     DiscordAPIError,
     Guild,
-    GuildChannel,
+    GuildChannel, GuildPreview,
     HTTPError,
     Intents,
     LimitedCollection,
@@ -42,7 +42,7 @@ export default abstract class SuperClient extends Client{
     private readonly taskManager: ClientTaskManager = new ClientTaskManager()
 
     private readonly commandHandler: CommandHandler = new CommandHandler(this)
-    private readonly interactionHandler: InteractionHandler = new InteractionHandler()
+    private readonly interactionHandler: InteractionHandler = new InteractionHandler(this)
 
     private readonly activityUpdater: ActivityUpdater = new ActivityUpdater(this)
     private readonly raffleTimeUpdater: RaffleTimeUpdater = new RaffleTimeUpdater(this)
@@ -127,7 +127,9 @@ export default abstract class SuperClient extends Client{
      * @param guildID {Snowflake}
      */
     async fetchGuild(guildID: Snowflake): Promise<Guild | undefined>{
-        const fetch = await this.shard.broadcastEval(client => client.guilds.cache.get(guildID))
+        const fetch = await this.shard.broadcastEval((client, guildID) => client.guilds.cache.get(guildID), {
+            context: guildID
+        })
 
         return this.resolveEval(fetch)
     }
@@ -139,13 +141,20 @@ export default abstract class SuperClient extends Client{
      * @param memberID
      */
     async fetchMember(guildID: Snowflake, memberID: Snowflake){
-        const fetch = await this.shard.broadcastEval(client => {
-            const guild = client.guilds.cache.get(guildID)
-            if(guild) return guild.members.fetch(memberID).then(user => user).catch(() => {
-                return undefined
-            })
+        const fetch = await this.shard.broadcastEval((client, ctx) => {
+            const guild = client.guilds.cache.get(ctx.guildID)
+            if(guild){
+                return guild.members.fetch(ctx.memberID).then(user => user).catch(() => {
+                    return undefined
+                })
+            }
 
             return undefined
+        }, {
+            context: {
+                guildID,
+                memberID
+            }
         })
 
         return this.resolveEval(fetch)

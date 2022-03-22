@@ -1,9 +1,8 @@
-import { Message } from 'discord.js'
-
+import { CommandInteraction, MessageEmbed } from 'discord.js'
 import Command, { Group } from '../Command'
 import { RaffleLimits, Emojis } from '../../Constants'
 import SuperClient from '../../SuperClient';
-import { IRaffle } from '../../models/Raffle';
+import { RaffleStatus } from '../../models/Raffle';
 import Server from '../../structures/Server';
 import Raffle from '../../structures/Raffle';
 import FlagValidator from '../../utils/FlagValidator';
@@ -14,51 +13,67 @@ export default class CreateRaffle extends Command{
         super({
             name: 'create',
             group: Group.GIVEAWAY,
-            aliases: ['cekilisbaslat', 'createraffle'],
             description: 'commands.raffle.create.description',
-            usage: 'commands.raffle.create.usage',
             permission: 'ADMINISTRATOR',
             examples: [
-                '1 1m Lorem Ipsum',
-                '5 2m2h3s Test',
-                '15 10d Premium'
+                'winners: 1 time: 1h5m prize: Premium',
+                'winners: 2 time: 1m prize: Discord Nitro',
+                'winners: 3 time: 1m prize: Hello World color: GREEN',
+                'winners: 4 time: 1h prize: Hello World servers: https://discord.gg/invite',
+                'winners: 5 time: 5m prize: Hello World reward-roles: @Role,RoleID allowed-roles: @Role,RoleID',
             ]
         })
     }
 
-    async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
-        const validator = new FlagValidator(client, message)
-        const numberOfWinners = args[0]
-        const time: string = args[1]
-        const prize: string[] = args.slice(2, args.length)
+    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<boolean>{
+        // these flags are premium flags and required a premium to be used
+        const nonRequiredFlags = {
+            color: action.options.getString('color', false),
+            servers: action.options.getString('servers', false),
+            rewardRoles: action.options.getString('reward-roles', false),
+            allowedRoles: action.options.getString('allowed-roles', false),
+        }
 
-        if(time === undefined || prize.length === 0){
-            return false
+        Object.keys(nonRequiredFlags).forEach(key => nonRequiredFlags[key] === null ? delete nonRequiredFlags[key] : {})
+        if(Object.keys(nonRequiredFlags).length != 0){
+            if(!server.isPremium()){
+                const embed = new MessageEmbed()
+                    .setAuthor(client.user.username, client.user.avatarURL())
+                    .setDescription(server.translate('commands.handler.premium.only'))
+                    .addField(`:star2:  ${server.translate('commands.handler.premium.try')}`, '<:join_arrow:746358699706024047> [Asena Premium](https://asena.xyz)')
+                    .setColor('GREEN')
+
+                await action.reply({ embeds: [embed] })
+                return true
+            }
         }
 
         const flags = {
-            numberOfWinners,
-            prize: prize.join(' '),
-            time
+            numberOfWinners: action.options.getInteger('winners', true),
+            prize: action.options.getString('prize', true),
+            time: action.options.getString('time', true),
         }
 
-        for(const [key, value] of Object.entries(flags)){
-            const validate = await validator.validate(key, value)
-            if(!validate.ok){
-                await message.channel.send({
-                    embeds: [this.getErrorEmbed(server.translate(validate.message, ...validate.args))]
-                })
+        const validator = new FlagValidator(client, action)
+        for(const [key, value] of Object.entries({ ...nonRequiredFlags, ...flags })){
+            if(value){
+                const validate = await validator.validate(key, value)
+                if(!validate.ok){
+                    await action.reply({
+                        embeds: [this.getErrorEmbed(server.translate(validate.message, ...validate.args))]
+                    })
 
-                return true
+                    return true
+                }
+
+                flags[key] = validate.result
             }
-
-            flags[key] = validate.result
         }
 
         const max = RaffleLimits[`MAX_COUNT${server.isPremium() ? '_PREMIUM' : ''}`]
         const raffles = await server.raffles.getContinues()
         if(raffles.length >= max){
-            await message.channel.send({
+            await action.reply({
                 embeds: [this.getErrorEmbed(server.translate('commands.raffle.create.limits.max.created', max))]
             })
 
@@ -66,36 +81,37 @@ export default class CreateRaffle extends Command{
         }
 
         const finishAt: number = Date.now() + (Number(flags.time) * 1000)
+        delete flags.time
         const data = {
-            prize: flags.prize,
-            server_id: message.guild.id,
-            constituent_id: message.author.id,
-            channel_id: message.channel.id,
-            numberOfWinners: Number(flags.numberOfWinners),
-            status: 'CONTINUES',
-            finishAt: new Date(finishAt)
+            server_id: action.guild.id,
+            constituent_id: action.user.id,
+            channel_id: action.channel.id,
+            status: 'CONTINUES' as RaffleStatus,
+            finishAt: new Date(finishAt),
+            message_id: null,
+            ...flags
         }
 
-        const raffle = new Raffle(Object.assign({
-            createdAt: new Date()
-        }, data as IRaffle), server.locale)
+        await action.deferReply({ ephemeral: true })
 
-        message.channel.send({
+        const raffle = new Raffle(Object.assign({ createdAt: new Date() }, data) as any, server.locale)
+        action.channel.send({
             content: Raffle.getStartMessage(),
             embeds: [raffle.buildEmbed()]
         }).then(async $message => {
-            await server.raffles.create(Object.assign({
-                message_id: $message.id
-            }, data) as IRaffle)
+            data.message_id = $message.id
 
-            await $message.react(Emojis.CONFETTI_REACTION_EMOJI)
+            await server.raffles.create(data)
+
+            await Promise.all([
+                $message.react(Emojis.CONFETTI_REACTION_EMOJI),
+                action.editReply({
+                    content: server.translate('commands.raffle.create.successfully'),
+                })
+            ])
         }).catch(async () => {
-            await message.channel.send(':boom: ' + server.translate('commands.raffle.create.unauthorized'))
+            await action.editReply(':boom: ' + server.translate('commands.raffle.create.unauthorized'))
         })
-
-        if(message.guild.me.permissions.has('MANAGE_MESSAGES')){
-            await message.delete()
-        }
 
         return true
     }

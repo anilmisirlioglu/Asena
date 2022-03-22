@@ -1,8 +1,8 @@
-import { Message, MessageEmbed } from 'discord.js'
+import { CommandInteraction, GuildMember, MessageEmbed } from 'discord.js'
 import Command, { Group } from '../Command'
 import SuperClient from '../../SuperClient';
 import Server from '../../structures/Server';
-import { Bot } from '../../Constants';
+import { Bot, prefix } from '../../Constants';
 
 export default class Help extends Command{
 
@@ -10,24 +10,26 @@ export default class Help extends Command{
         super({
             name: 'help',
             group: Group.BOT,
-            aliases: ['yardim', 'yardım'],
             description: 'commands.bot.help.description',
-            usage: null,
             permission: undefined,
-            examples: []
+            examples: [
+                'command: help',
+                'command: create'
+            ]
         })
     }
 
-    async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
-        const command: undefined | string = args[0]
-        const prefix = (await client.servers.get(message.guild.id)).prefix
-        if(!args[0]){
+    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<boolean>{
+        const command = action.options.getString('command', false)
+        if(!command){
             const commands = client.getCommandHandler().getCommandsArray().filter(command => {
                 if(command.permission === 'ADMINISTRATOR'){
-                    return (
-                        message.member.permissions.has('ADMINISTRATOR') ||
-                        message.member.roles.cache.find(role => role.name.trim().toLowerCase() === Bot.PERMITTED_ROLE_NAME)
-                    )
+                    if(action.member instanceof GuildMember){
+                        return (
+                            action.member.permissions.has('ADMINISTRATOR') ||
+                            action.member.roles.cache.find(role => role.name.trim().toLowerCase() === Bot.PERMITTED_ROLE_NAME)
+                        )
+                    }
                 }
 
                 return true
@@ -47,49 +49,61 @@ export default class Help extends Command{
             }
 
             const embed = new MessageEmbed()
-                .setAuthor(`📍 ${server.translate('commands.bot.help.embed.title')}`, message.author.displayAvatarURL() || message.author.defaultAvatarURL)
+                .setAuthor(`📍 ${server.translate('commands.bot.help.embed.title')}`, action.user.displayAvatarURL() || action.user.defaultAvatarURL)
                 .addFields(Object.values(fieldMap))
                 .addField(`🌟 ${server.translate('commands.bot.help.embed.fields.more.detailed')}`, `${prefix}${this.name} [${server.translate('commands.bot.help.embed.fields.command')}]`)
                 .addField(`❓ ${server.translate('commands.bot.help.embed.fields.more.info')}`, `**[Wiki](https://wiki.asena.xyz)** - **[${server.translate('global.support')}](https://dc.asena.xyz)** - **[Website](https://asena.xyz)**`)
                 .addField(`⭐ ${server.translate('commands.bot.help.embed.fields.star')}`, '**[GitHub](https://github.com/anilmisirlioglu/Asena)**')
                 .setColor('RANDOM')
 
-            message.author.createDM().then(channel => {
+            action.user.createDM().then(channel => {
                 channel.send({ embeds: [embed] }).then(() => {
-                    message.channel.send(server.translate('commands.bot.help.success', `<@${message.author.id}>`)).then($message => {
-                        setTimeout(() => {
-                            $message.delete().then(() => {
-                                message.delete()
-                            })
-                        }, 1500)
+                    action.reply({
+                        content: server.translate('commands.bot.help.success'),
+                        ephemeral: true
                     })
-                }).catch(() => message.channel.send({ embeds: [embed] }))
+                }).catch(() => action.reply({ embeds: [embed] }))
             })
 
             return true
         }else{
             let embed
-            const searchCommand: Command | undefined = client.getCommandHandler().getCommandsMap().filter($command => $command.name === command.trim()).first()
-            if(searchCommand){
-                const fullCMD = prefix + searchCommand.name
+            const cmd = client.getCommandHandler().getCommandsMap().filter($command => $command.name === command.trim()).first()
+            if(cmd){
+                const fullCMD = prefix + cmd.name
                 embed = new MessageEmbed()
-                    .setAuthor(`📍 ${server.translate('commands.bot.help.embed.title')}`, message.author.displayAvatarURL() || message.author.defaultAvatarURL)
+                    .setAuthor(`📍 ${server.translate('commands.bot.help.embed.title')}`, action.user.displayAvatarURL() || action.user.defaultAvatarURL)
                     .addField(server.translate('commands.bot.help.embed.fields.command'), fullCMD)
-                    .addField(server.translate('commands.bot.help.embed.fields.alias'), searchCommand.aliases.map(alias => `${prefix}${alias}`).join('\n'))
-                    .addField(server.translate('commands.bot.help.embed.fields.description'), server.translate(searchCommand.description))
-                    .addField(server.translate('commands.bot.help.embed.fields.permission'), searchCommand.permission === 'ADMINISTRATOR' ? server.translate('global.admin') : server.translate('global.member'))
-                    .addField(server.translate('commands.bot.help.embed.fields.usage'), `${fullCMD} ${searchCommand.usage === null ? '' : server.translate(searchCommand.usage)}`)
+                    .addField(server.translate('commands.bot.help.embed.fields.description'), server.translate(cmd.description))
+                    .addField(server.translate('commands.bot.help.embed.fields.permission'), cmd.permission === 'ADMINISTRATOR' ? server.translate('global.admin') : server.translate('global.member'))
                     .setColor('GREEN')
 
-                if(searchCommand.examples.length > 0){
-                    embed.addField(server.translate('global.example'), searchCommand.examples.length === 1 ? fullCMD + ' ' + searchCommand.examples : '\n' + searchCommand.examples.map(item => fullCMD + ' ' + item).join('\n'))
+                if(cmd.examples.length > 0){
+                    const items = cmd.examples.map(item => `${fullCMD} ${this.parseOption(item)}`)
+
+                    embed.addField(server.translate('global.example'), items.join('\n'))
                 }
             }
 
-            await message.channel.send({
+            await action.reply({
                 embeds: [embed ?? this.getErrorEmbed(server.translate('commands.bot.help.error', command))]
             })
             return true
         }
     }
+
+    private parseOption(str: string): string{
+        const options = (str.match(/[\w-]{1,32}:(.+?)(?=[^\s]+:|$)/gm) ?? []).map(item => {
+            const kv = item.split(' ')
+            const key = kv.shift()
+            if(key.startsWith('sub:')){
+                return `${key.split(':').pop()} ${kv.join(' ')}`
+            }
+
+            return `**${key}** ${kv.join(' ')}`
+        })
+
+        return options.join(' ')
+    }
+
 }

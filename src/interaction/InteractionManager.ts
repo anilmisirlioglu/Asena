@@ -7,7 +7,7 @@ type InteractionMap = Collection<string, GenericInteraction>
 
 export default class InteractionManager{
 
-    private logger: Logger = new Logger('iaction')
+    private logger: Logger = new Logger('actions')
 
     private interactions: InteractionMap = new Collection<string, GenericInteraction>()
 

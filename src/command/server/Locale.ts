@@ -1,7 +1,7 @@
 import Command, { Group } from '../Command';
 import SuperClient from '../../SuperClient';
 import Server from '../../structures/Server';
-import { Message, MessageEmbed } from 'discord.js';
+import { CommandInteraction, MessageEmbed } from 'discord.js';
 import LanguageManager from '../../language/LanguageManager';
 
 export default class Locale extends Command{
@@ -10,29 +10,26 @@ export default class Locale extends Command{
         super({
             name: 'locale',
             group: Group.SERVER,
-            aliases: ['lang', 'language', 'dil'],
             description: 'commands.server.locale.description',
-            usage: 'commands.server.locale.usage',
             permission: 'ADMINISTRATOR',
             examples: [
-                'list',
-                'reset',
-                'set en',
-                'set tr'
+                'sub:list',
+                'sub:reset',
+                'sub:current',
+                'sub:set code: Türkçe',
+                'sub:set code: English'
             ]
         })
     }
 
-    async run(client: SuperClient, server: Server, message: Message, args: string[]): Promise<boolean>{
-        if(args.length === 0){
-            const language = LanguageManager.getLanguage(server.locale)
-            await message.channel.send(`🌎  ${server.translate('commands.server.locale.default')}: ${language.flag} **${language.full}** - **${language.code} v${language.version}**`)
-            return true
-        }
-
+    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<boolean>{
         const embed = new MessageEmbed().setColor('GREEN')
-        const subCommand = args[0].trim().toLowerCase()
-        switch(subCommand){
+        switch(action.options.getSubcommand(true)){
+            case 'current':
+                const language = LanguageManager.getLanguage(server.locale)
+                await action.reply(`🌎  ${server.translate('commands.server.locale.default')}: ${language.flag} **${language.full}** - **${language.code} v${language.version}**`)
+                break
+
             case 'list':
                 const description = LanguageManager.getLanguages().map(language => {
                     const text = `${language.flag} ${language.full} - ${language.code} v${language.version}`
@@ -44,28 +41,21 @@ export default class Locale extends Command{
                     .setFooter(server.translate('commands.server.locale.embed.footer', server.prefix))
                     .setDescription(description.join('\n'))
 
-                await message.channel.send({ embeds: [embed] })
+                await action.reply({ embeds: [embed] })
                 break
 
             case 'set':
-                if(args.length < 2){
-                    await message.channel.send({
-                        embeds: [this.getErrorEmbed(server.translate('commands.server.locale.language.enter.code'))]
-                    })
-                    break
-                }
-
-                const code = args[1]
+                const code = action.options.getString('code', true)
                 const locale = LanguageManager.findLanguage(code)
                 if(!locale){
-                    await message.channel.send({
+                    await action.reply({
                         embeds: [this.getErrorEmbed(server.translate('commands.server.locale.language.not.found', code))]
                     })
                     break
                 }
 
                 if(locale.code == server.locale){
-                    await message.channel.send({
+                    await action.reply({
                         embeds: [this.getErrorEmbed(server.translate('commands.server.locale.language.already.using', locale.full))]
                     })
                     break
@@ -73,20 +63,20 @@ export default class Locale extends Command{
 
                 await Promise.all([
                     server.setLocale(locale),
-                    message.channel.send('🌈  ' + locale.translate('commands.server.locale.language.default.successfully.changed', [`${locale.flag} ${locale.full}`]))
+                    action.reply('🌈  ' + locale.translate('commands.server.locale.language.default.successfully.changed', [`${locale.flag} ${locale.full}`]))
                 ])
                 break
 
             case 'reset':
                 if(server.locale == LanguageManager.DEFAULT_LANGUAGE){
-                    await message.channel.send({
+                    await action.reply({
                         embeds: [this.getErrorEmbed(server.translate('commands.server.locale.language.default.already.using'))]
                     })
                 }else{
                     const locale = LanguageManager.getLanguage(LanguageManager.DEFAULT_LANGUAGE)
                     await Promise.all([
                         server.setLocale(locale),
-                        message.channel.send('🌈  ' + locale.translate('commands.server.locale.language.default.successfully.changed', [`${locale.flag} ${locale.full}`]))
+                        action.reply('🌈  ' + locale.translate('commands.server.locale.language.default.successfully.changed', [`${locale.flag} ${locale.full}`]))
                     ])
                 }
                 break
