@@ -36,7 +36,7 @@
     "@google-cloud/logging-winston": "^4.1.2",
     "amqplib": "^0.8.0",
     "child_process": "^1.0.2",
-    "discord-api-types": "^0.28.0",
+    "discord-api-types": "^0.29.0",
     "discord.js": "^13.1.0",
     "dotenv": "^8.2.0",
     "mongoose": "^5.10.11",
