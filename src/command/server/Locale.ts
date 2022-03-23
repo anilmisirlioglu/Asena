@@ -38,7 +38,7 @@ export default class Locale extends Command{
 
                 embed
                     .setAuthor(`🗣️ ${server.translate('commands.server.locale.embed.title')}`)
-                    .setFooter(server.translate('commands.server.locale.embed.footer', server.prefix))
+                    .setFooter(server.translate('commands.server.locale.embed.footer'))
                     .setDescription(description.join('\n'))
 
                 await action.reply({ embeds: [embed] })

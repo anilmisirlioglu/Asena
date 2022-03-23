@@ -363,7 +363,7 @@
           "default": "Botun sunucu içerisindeki iletişim dili",
           "embed": {
             "title": "Kullanılabilir Diller",
-            "footer": "Kullanmak İçin: {0}locale set [dil]"
+            "footer": "Kullanmak İçin: /locale set code: Language"
           },
           "language": {
             "enter.code": "Lütfen bir dil kodu girin.",

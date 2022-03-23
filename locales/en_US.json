@@ -374,7 +374,7 @@
           "default": "Communication language of the bot in the server",
           "embed": {
             "title": "Available Languages",
-            "footer": "To use: {0}locale set [language]"
+            "footer": "To use: /locale set code: Language"
           },
           "language": {
             "enter.code": "Please specify a language code.",
