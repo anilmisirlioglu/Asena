@@ -1,4 +1,4 @@
-import Command, { Group } from '../Command';
+import Command, { Group, Result } from '../Command';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { Emojis, SurveyLimits } from '../../Constants';
 import SuperClient from '../../SuperClient';
@@ -25,25 +25,17 @@ export default class Survey extends Command{
         })
     }
 
-    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<boolean>{
+    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<Result>{
         const title = action.options.getString('title', true)
         const time = action.options.getString('time', false)
         if(time){
             const seconds = strToSeconds(time)
             if(seconds == 0){
-                await action.reply({
-                    embeds: [this.getErrorEmbed(server.translate('commands.survey.vote.time.invalid'))]
-                })
-
-                return true
+                return this.error('commands.survey.vote.time.invalid')
             }
 
             if(seconds < SurveyLimits.MIN_TIME || seconds > SurveyLimits.MAX_TIME){
-                await action.reply({
-                    embeds: [this.getErrorEmbed(server.translate('commands.survey.vote.time.exceeded'))]
-                })
-
-                return true
+                return this.error('commands.survey.vote.time.exceeded')
             }
 
             const embed = new MessageEmbed()
@@ -91,7 +83,7 @@ export default class Survey extends Command{
             ephemeral: true
         })
 
-        return true
+        return null
     }
 
 }

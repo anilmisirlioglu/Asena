@@ -1,5 +1,5 @@
 import { CommandInteraction, MessageEmbed } from 'discord.js'
-import Command, { Group } from '../Command'
+import Command, { Group, Result } from '../Command'
 import { Emojis } from '../../Constants'
 import { parseDiscordTimestamp } from '../../utils/DateTimeHelper'
 import SuperClient from '../../SuperClient'
@@ -18,7 +18,7 @@ export default class Raffles extends Command{
         })
     }
 
-    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<boolean>{
+    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<Result>{
         const raffles = await server.raffles.getContinues()
         const embed: MessageEmbed = new MessageEmbed()
             .setAuthor(server.translate('commands.raffle.list.embed.title'))
@@ -50,7 +50,7 @@ export default class Raffles extends Command{
 
         await action.reply({ embeds: [embed] })
 
-        return true
+        return null
     }
 
     private toDiscordMessageURL(raffle: IRaffle){

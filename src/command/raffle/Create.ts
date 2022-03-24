@@ -1,5 +1,5 @@
 import { CommandInteraction, MessageEmbed } from 'discord.js'
-import Command, { Group } from '../Command'
+import Command, { Group, Result } from '../Command'
 import { RaffleLimits, Emojis } from '../../Constants'
 import SuperClient from '../../SuperClient';
 import { RaffleStatus } from '../../models/Raffle';
@@ -25,7 +25,7 @@ export default class Create extends Command{
         })
     }
 
-    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<boolean>{
+    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<Result>{
         // these flags are premium flags and required a premium to be used
         const nonRequiredFlags = {
             color: action.options.getString('color', false),
@@ -44,7 +44,7 @@ export default class Create extends Command{
                     .setColor('GREEN')
 
                 await action.reply({ embeds: [embed] })
-                return true
+                return null
             }
         }
 
@@ -59,11 +59,7 @@ export default class Create extends Command{
             if(value){
                 const validate = await validator.validate(key, value)
                 if(!validate.ok){
-                    await action.reply({
-                        embeds: [this.getErrorEmbed(server.translate(validate.message, ...validate.args))]
-                    })
-
-                    return true
+                    return this.error(validate.message, ...validate.args)
                 }
 
                 flags[key] = validate.result
@@ -73,11 +69,7 @@ export default class Create extends Command{
         const max = RaffleLimits[`MAX_COUNT${server.isPremium() ? '_PREMIUM' : ''}`]
         const raffles = await server.raffles.getContinues()
         if(raffles.length >= max){
-            await action.reply({
-                embeds: [this.getErrorEmbed(server.translate('commands.raffle.create.limits.max.created', max))]
-            })
-
-            return true
+            return this.error('commands.raffle.create.limits.max.created', max)
         }
 
         const finishAt: number = Date.now() + (Number(flags.time) * 1000)
@@ -113,7 +105,7 @@ export default class Create extends Command{
             await action.editReply(':boom: ' + server.translate('commands.raffle.create.unauthorized'))
         })
 
-        return true
+        return null
     }
 
 }

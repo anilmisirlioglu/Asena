@@ -1,4 +1,4 @@
-import { CommandInteraction, GuildMember, Message, MessageEmbed, PermissionString } from 'discord.js'
+import { CommandInteraction, GuildMember, MessageEmbed, PermissionString } from 'discord.js'
 import SuperClient from '../SuperClient';
 import Server from '../structures/Server';
 import ArgValidatorKit from './ArgValidatorKit';
@@ -16,6 +16,15 @@ export enum Group{
     POLL = 'survey',
     SERVER = 'server',
     BOT = 'bot'
+}
+
+/**
+ * @param error must be one of the keys of a language strings
+ * @param args translation args
+ */
+export interface Result{
+    error?: string
+    args?: Array<string | number>
 }
 
 export default abstract class Command extends ArgValidatorKit{
@@ -44,7 +53,11 @@ export default abstract class Command extends ArgValidatorKit{
         return true
     }
 
-    public abstract run(client: SuperClient, server: Server, action: CommandInteraction): Promise<boolean>
+    public abstract run(client: SuperClient, server: Server, action: CommandInteraction): Promise<Result>
+
+    error(error: string, ...args: Array<string | number>): Result{
+        return { error, args  }
+    }
 
     public getErrorEmbed(error: string): MessageEmbed{
         return new MessageEmbed()

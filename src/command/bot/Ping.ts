@@ -1,4 +1,4 @@
-import Command, { Group } from '../Command';
+import Command, { Group, Result } from '../Command';
 import SuperClient from '../../SuperClient';
 import Server from '../../structures/Server';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
@@ -15,7 +15,7 @@ export default class Ping extends Command{
         })
     }
 
-    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<boolean>{
+    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<Result>{
         action.channel.send(`<a:green_loading:736926844254814239> ${server.translate('commands.bot.ping.calculating')}`).then(async m => {
             const embed = new MessageEmbed()
                 .setAuthor(`${server.translate('commands.bot.ping.title')} 🚀`)
@@ -31,7 +31,7 @@ export default class Ping extends Command{
             ])
         })
 
-        return true
+        return null
     }
 
     private resolveMS = (ms: number): string => ms > 999 ? `${ms / 1000}s` : `${ms}ms`

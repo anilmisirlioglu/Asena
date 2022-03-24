@@ -1,5 +1,5 @@
 import { CommandInteraction, GuildMember, MessageEmbed } from 'discord.js'
-import Command, { Group } from '../Command'
+import Command, { Group, Result } from '../Command'
 import SuperClient from '../../SuperClient';
 import Server from '../../structures/Server';
 import { Bot, prefix } from '../../Constants';
@@ -19,7 +19,7 @@ export default class Help extends Command{
         })
     }
 
-    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<boolean>{
+    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<Result>{
         const command = action.options.getString('command', false)
         if(!command){
             const commands = client.getCommandHandler().getCommandsArray().filter(command => {
@@ -64,8 +64,6 @@ export default class Help extends Command{
                     })
                 }).catch(() => action.reply({ embeds: [embed] }))
             })
-
-            return true
         }else{
             let embed
             const cmd = client.getCommandHandler().getCommandsMap().filter($command => $command.name === command.trim()).first()
@@ -88,8 +86,9 @@ export default class Help extends Command{
             await action.reply({
                 embeds: [embed ?? this.getErrorEmbed(server.translate('commands.bot.help.error', command))]
             })
-            return true
         }
+
+        return null
     }
 
     private parseOption(str: string): string{

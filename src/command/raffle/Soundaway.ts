@@ -1,4 +1,4 @@
-import Command, { Group } from '../Command';
+import Command, { Group, Result } from '../Command';
 import SuperClient from '../../SuperClient';
 import Server from '../../structures/Server';
 import { CommandInteraction, GuildMember, MessageEmbed, VoiceChannel } from 'discord.js';
@@ -22,23 +22,15 @@ export default class Soundaway extends Command{
         })
     }
 
-    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<boolean>{
+    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<Result>{
         const numberOfWinners = action.options.getInteger('winners', true)
         if(numberOfWinners < 1 || numberOfWinners > 20){
-            await action.reply({
-                embeds: [this.getErrorEmbed(server.translate('commands.raffle.soundaway.limits.winner.count'))]
-            })
-
-            return true
+            return this.error('commands.raffle.soundaway.limits.winner.count')
         }
 
         const title = action.options.getString('title', false)
         if(title && title.length > 255){
-            await action.reply({
-                embeds: [this.getErrorEmbed(server.translate('commands.raffle.soundaway.limits.title.length'))]
-            })
-
-            return true
+            return this.error('commands.raffle.soundaway.limits.title.length')
         }
 
         let pool = [], ch
@@ -55,51 +47,26 @@ export default class Soundaway extends Command{
                 .reduce((prev, curr) => prev.concat(curr), [])
 
             if(pool.length === 0){
-                await action.reply({
-                    embeds: [this.getErrorEmbed(server.translate('commands.raffle.soundaway.voice.channel.in.not.found.users'))]
-                })
-
-                return true
+                return this.error('commands.raffle.soundaway.voice.channel.in.not.found.users')
             }
 
             ch = server.translate('commands.raffle.soundaway.voice.channel.all')
         }else{
             const channel = voice ?? (member as GuildMember)?.voice.channel
             if(!channel){
-                await action.reply({
-                    embeds: [
-                        this.getErrorEmbed(member ?
-                            server.translate('commands.raffle.soundaway.voice.channel.not.in.user') :
-                            server.translate('commands.raffle.soundaway.voice.channel.not.found')
-                        )
-                    ]
-                })
-
-                return true
+                return this.error(member ? 'commands.raffle.soundaway.voice.channel.not.in.user' : 'commands.raffle.soundaway.voice.channel.not.found')
             }
 
             if(channel.type !== 'GUILD_VOICE'){
-                await action.reply({
-                    embeds: [this.getErrorEmbed(server.translate('commands.raffle.soundaway.voice.channel.invalid'))]
-                })
-
-                return true
+                return this.error('commands.raffle.soundaway.voice.channel.invalid')
             }
 
             if(!channel.viewable){
-                await action.reply({
-                    embeds: [this.getErrorEmbed(server.translate('commands.raffle.soundaway.voice.channel.unauthorized'))]
-                })
-
-                return true
+                return this.error('commands.raffle.soundaway.voice.channel.unauthorized')
             }
 
             if(channel.members.size == 0){
-                await action.reply({
-                    embeds: [this.getErrorEmbed(server.translate('commands.raffle.soundaway.voice.channel.in.not.found.user'))]
-                })
-
-                return true
+                return this.error('commands.raffle.soundaway.voice.channel.in.not.found.user')
             }
 
             pool = [...channel.members.keys()]
@@ -136,7 +103,7 @@ export default class Soundaway extends Command{
             embeds: [embed]
         })
 
-        return true
+        return null
     }
 
 }

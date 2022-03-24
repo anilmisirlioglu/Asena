@@ -1,4 +1,4 @@
-import Command, { Group } from '../Command';
+import Command, { Group, Result } from '../Command';
 import SuperClient from '../../SuperClient';
 import Server from '../../structures/Server';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
@@ -22,7 +22,7 @@ export default class Locale extends Command{
         })
     }
 
-    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<boolean>{
+    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<Result>{
         const embed = new MessageEmbed().setColor('GREEN')
         switch(action.options.getSubcommand(true)){
             case 'current':
@@ -48,17 +48,11 @@ export default class Locale extends Command{
                 const code = action.options.getString('code', true)
                 const locale = LanguageManager.findLanguage(code)
                 if(!locale){
-                    await action.reply({
-                        embeds: [this.getErrorEmbed(server.translate('commands.server.locale.language.not.found', code))]
-                    })
-                    break
+                    return this.error('commands.server.locale.language.not.found', code)
                 }
 
                 if(locale.code == server.locale){
-                    await action.reply({
-                        embeds: [this.getErrorEmbed(server.translate('commands.server.locale.language.already.using', locale.full))]
-                    })
-                    break
+                    return this.error('commands.server.locale.language.already.using', locale.full)
                 }
 
                 await Promise.all([
@@ -69,9 +63,7 @@ export default class Locale extends Command{
 
             case 'reset':
                 if(server.locale == LanguageManager.DEFAULT_LANGUAGE){
-                    await action.reply({
-                        embeds: [this.getErrorEmbed(server.translate('commands.server.locale.language.default.already.using'))]
-                    })
+                    return this.error('commands.server.locale.language.default.already.using')
                 }else{
                     const locale = LanguageManager.getLanguage(LanguageManager.DEFAULT_LANGUAGE)
                     await Promise.all([
@@ -80,12 +72,9 @@ export default class Locale extends Command{
                     ])
                 }
                 break
-
-            default:
-                return false
         }
 
-        return true
+        return null
     }
 
 }

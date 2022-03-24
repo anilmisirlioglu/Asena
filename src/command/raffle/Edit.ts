@@ -1,4 +1,4 @@
-import Command, { Group } from '../Command';
+import Command, { Group, Result } from '../Command';
 import Premium from '../../decorators/Premium';
 import SuperClient from '../../SuperClient';
 import Server from '../../structures/Server';
@@ -31,44 +31,28 @@ class Edit extends Command{
         })
     }
 
-    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<boolean>{
+    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<Result>{
         const key = action.options.getString('option', true)
         const value = action.options.getString('value', true)
 
         const message_id = action.options.getString('giveaway', false)
         if(message_id && !/^\d{17,19}$/g.test(message_id)){
-            await action.reply({
-                embeds: [this.getErrorEmbed(server.translate('commands.raffle.edit.invalid.id'))]
-            })
-
-            return true
+            return this.error('commands.raffle.edit.invalid.id')
         }
 
 
         const raffle = await (message_id ? server.raffles.get(message_id) : server.raffles.getLastCreated())
         if(!raffle || !raffle.message_id){
-            await action.reply({
-                embeds: [this.getErrorEmbed(server.translate('commands.raffle.edit.not.found'))]
-            })
-
-            return true
+            return this.error('commands.raffle.edit.not.found')
         }
 
         if(!raffle.isContinues()){
-            await action.reply({
-                embeds: [this.getErrorEmbed(server.translate('commands.raffle.edit.not.continues'))]
-            })
-
-            return true
+            return this.error('commands.raffle.edit.not.continues')
         }
 
         const fetch = await client.fetchMessage(raffle.server_id, raffle.channel_id, raffle.message_id)
         if(!fetch){
-            await action.reply({
-                embeds: [this.getErrorEmbed(server.translate('commands.raffle.edit.deleted'))]
-            })
-
-            return true
+            return this.error('commands.raffle.edit.deleted')
         }
 
         const validator = new FlagValidator(client, action)
@@ -79,7 +63,7 @@ class Edit extends Command{
                 if(!validateColor.ok){
                     await action.reply(RED_TICK + ' ' + server.translate(validateColor.message))
 
-                    return true
+                    return null
                 }
 
                 const color = validateColor.result
@@ -94,7 +78,7 @@ class Edit extends Command{
                 if(!validatePrize.ok){
                     await action.reply(RED_TICK + ' ' + server.translate(validatePrize.message))
 
-                    return true
+                    return null
                 }
 
                 updateQuery = { prize: value }
@@ -107,14 +91,14 @@ class Edit extends Command{
                 if(mode !== '+' && mode !== '-'){
                     await action.reply(RED_TICK + ' ' + server.translate('commands.raffle.edit.invalid.mode', `${server.prefix}edit rewardRoles + rol`))
 
-                    return true
+                    return null
                 }
 
                 const validateRoles = await validator.validate('rewardRoles', value)
                 if(!validateRoles.ok){
                     await action.reply(RED_TICK + ' ' + server.translate(validateRoles.message, ...validateRoles.args))
 
-                    return true
+                    return null
                 }
 
                 const modeIsSum = mode === '+'
@@ -124,7 +108,7 @@ class Edit extends Command{
                 if(rewardRoleCount > RaffleLimits.MAX_REWARD_ROLE_COUNT){
                     await action.reply(RED_TICK + ' ' + server.translate('commands.raffle.edit.role.max', RaffleLimits.MAX_REWARD_ROLE_COUNT))
 
-                    return true
+                    return null
                 }
 
                 for(const role of validatedRoles){
@@ -132,7 +116,7 @@ class Edit extends Command{
                     if(modeIsSum ? include : !include){
                         await action.reply(RED_TICK + ' ' + server.translate('commands.raffle.edit.role.' + (modeIsSum ? 'already' : 'not.found'), `<@&${role}>`))
 
-                        return true
+                        return null
                     }
                 }
 
@@ -155,20 +139,20 @@ class Edit extends Command{
                 if(timeMode !== '+' && timeMode !== '-'){
                     await action.reply(RED_TICK + ' ' + server.translate('commands.raffle.edit.invalid.mode', `${server.prefix}edit time + 1m`))
 
-                    return true
+                    return null
                 }
 
                 if(Date.now() > +raffle.finishAt + (1000 * 60 * 2)){
                     await action.reply(RED_TICK + ' ' + server.translate('commands.raffle.edit.time.little.left'))
 
-                    return true
+                    return null
                 }
 
                 const validateTime = await validator.validate('time', value)
                 if(!validateTime.ok){
                     await action.reply(RED_TICK + ' ' + server.translate(validateTime.message))
 
-                    return true
+                    return null
                 }
 
                 let finishAt = +raffle.finishAt, successText
@@ -178,7 +162,7 @@ class Edit extends Command{
                         if(1000 * 2 * 60 > (finishAt - result) - Date.now()){
                             await action.reply(RED_TICK + ' ' + server.translate('commands.raffle.edit.time.down.error'))
 
-                            return true
+                            return null
                         }
 
                         finishAt = finishAt - result
@@ -189,7 +173,7 @@ class Edit extends Command{
                         if(Date.now() - (finishAt + result) > RaffleLimits.MAX_TIME){
                             await action.reply(RED_TICK + ' ' + server.translate('commands.raffle.edit.time.up.error'))
 
-                            return true
+                            return null
                         }
 
                         finishAt = finishAt + result
@@ -207,16 +191,13 @@ class Edit extends Command{
                 if(!validateNumber.ok){
                     await action.reply(RED_TICK + ' ' + server.translate(validateNumber.message))
 
-                    return true
+                    return null
                 }
 
                 updateQuery = { numberOfWinners: validateNumber.result }
                 success = 'winners'
                 vars = [validateNumber.result]
                 break
-
-            default:
-                return false
         }
 
         await Promise.all([
@@ -228,7 +209,7 @@ class Edit extends Command{
             action.reply(GREEN_TICK + ' ' + server.translate('commands.raffle.edit.success.' + success, ...vars))
         ])
 
-        return true
+        return null
     }
 
 }

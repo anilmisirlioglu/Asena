@@ -1,5 +1,5 @@
 import { CommandInteraction } from 'discord.js'
-import Command, { Group } from '../Command'
+import Command, { Group, Result } from '../Command'
 import { Emojis } from '../../Constants'
 import SuperClient from '../../SuperClient';
 import Server from '../../structures/Server';
@@ -19,28 +19,19 @@ export default class Cancel extends Command{
         })
     }
 
-    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<boolean>{
+    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<Result>{
         const message_id: string | undefined = action.options.getString('message', false)
         if(message_id && !this.isValidSnowflake(message_id)){
-            await action.reply({
-                embeds: [this.getErrorEmbed(server.translate('global.invalid.id'))]
-            })
-            return true
+            return this.error('global.invalid.id')
         }
 
         const raffle = await (message_id ? server.raffles.get(message_id) : server.raffles.getLastCreated())
         if(!raffle || !raffle.message_id){
-            await action.reply({
-                embeds: [this.getErrorEmbed(server.translate('commands.raffle.cancel.not.found'))]
-            })
-            return true
+            return this.error('commands.raffle.cancel.not.found')
         }
 
         if(!raffle.isCancelable()){
-            await action.reply({
-                embeds: [this.getErrorEmbed(server.translate('commands.raffle.cancel.not.cancelable'))]
-            })
-            return true
+            return this.error('commands.raffle.cancel.not.cancelable')
         }
 
         await raffle.setCanceled()
@@ -51,7 +42,7 @@ export default class Cancel extends Command{
 
         await action.reply(`${Emojis.CONFETTI_EMOJI} ${server.translate('commands.raffle.cancel.success')}`)
 
-        return true
+        return null
     }
 
 }

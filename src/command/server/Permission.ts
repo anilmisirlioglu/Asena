@@ -1,5 +1,5 @@
 import { CommandInteraction } from 'discord.js'
-import Command, { Group } from '../Command'
+import Command, { Group, Result } from '../Command'
 import SuperClient from '../../SuperClient'
 import Server from '../../structures/Server'
 
@@ -18,24 +18,18 @@ export default class Permission extends Command{
         })
     }
 
-    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<boolean>{
+    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<Result>{
         const state: string = action.options.getString('state', true).trim().toLowerCase()
         const command: string = action.options.getString('command', true).trim().toLowerCase()
 
         const commandAuth: Command[] = client.getCommandHandler().getCommandsArray().filter($command => $command.name === command)
         if(commandAuth.length === 0){
-            await action.reply({
-                embeds: [this.getErrorEmbed(server.translate('commands.server.permission.command.not.found'))]
-            })
-            return true
+            return this.error('commands.server.permission.command.not.found')
         }
 
         const $command: Command = commandAuth.shift()
         if(!$command.permission || this.name === $command.name){
-            await action.reply({
-                embeds: [this.getErrorEmbed(server.translate('commands.server.permission.command.not.editable'))]
-            })
-            return true
+            return this.error('commands.server.permission.command.not.editable')
         }
 
         let opcl: string, err: boolean = false, add: boolean
@@ -56,17 +50,14 @@ export default class Permission extends Command{
         }
 
         if(err){
-            await action.reply({
-                embeds: [this.getErrorEmbed(server.translate('commands.server.permission.command.already', opcl))]
-            })
-            return true
+            return this.error('commands.server.permission.command.already', opcl)
         }
 
         await Promise.all([
             (add ? server.addPublicCommand($command.name) : server.deletePublicCommand($command.name)),
             action.reply('🌈  ' + server.translate('commands.server.permission.command.success', $command.name, opcl))
         ])
-        return true
+        return null
     }
 
 }

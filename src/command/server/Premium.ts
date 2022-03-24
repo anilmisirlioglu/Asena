@@ -1,5 +1,5 @@
 import { CommandInteraction, MessageEmbed } from 'discord.js'
-import Command, { Group } from '../Command'
+import Command, { Group, Result } from '../Command'
 import SuperClient from '../../SuperClient'
 import Server from '../../structures/Server'
 import { parseDiscordTimestamp } from '../../utils/DateTimeHelper'
@@ -17,7 +17,7 @@ export default class Premium extends Command{
         })
     }
 
-    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<boolean>{
+    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<Result>{
         let description: string
         if(server.isPremium()){
             description = server.translate('commands.server.premium.info', ...[
@@ -36,7 +36,7 @@ export default class Premium extends Command{
             .setDescription(description)
 
         await action.reply({ embeds: [embed] })
-        return true
+        return null
     }
 
 }

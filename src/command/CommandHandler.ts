@@ -96,18 +96,11 @@ export default class CommandHandler extends Factory implements CommandRunner{
                 const checkPermissions = this.getPermissionController().checkSelfPermissions(action.guild, action.channel)
                 if(checkPermissions.has){
                     if(!command.premium || (command.premium && server.isPremium())){
-                        command.run(client, server, action).then(async (result: boolean) => {
-                            if(!result){
-                                const fullCMD = prefix + command.name
-                                const embed = new MessageEmbed()
-                                    .setTitle(`${server.translate('commands.bot.help.embed.fields.command')}: ${fullCMD}`)
-                                    .setDescription([
-                                        `**${server.translate('commands.bot.help.embed.fields.description')}:** ${server.translate(command.description)}`,
-                                        `**${server.translate('global.example')}:** ${(command.examples.length === 1 ? fullCMD + ' ' + command.examples : '\n' + command.examples.map(item => fullCMD + ' ' + item).join('\n'))}`
-                                    ].join('\n'))
-                                    .setColor('BLUE')
-
-                                await action.reply({ embeds: [embed] })
+                        command.run(client, server, action).then(async result => {
+                            if(result && result.error){
+                                await action.reply({
+                                    embeds: [command.getErrorEmbed(server.translate(result.error, ...result.args))]
+                                })
                             }else{
                                 this.pushMetric(command.name)
                             }

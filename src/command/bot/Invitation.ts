@@ -1,4 +1,4 @@
-import Command, { Group } from '../Command';
+import Command, { Group, Result } from '../Command';
 import SuperClient from '../../SuperClient';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import Server from '../../structures/Server';
@@ -16,7 +16,7 @@ export default class Invitation extends Command{
         })
     }
 
-    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<boolean>{
+    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<Result>{
         const embed = new MessageEmbed()
             .setAuthor(client.user.username, client.user.avatarURL())
             .setDescription([
@@ -29,7 +29,7 @@ export default class Invitation extends Command{
             .setColor(action.guild.me.displayHexColor)
 
         await action.reply({ embeds: [embed] })
-        return true
+        return null
     }
 
 }

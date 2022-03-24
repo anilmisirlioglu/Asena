@@ -1,4 +1,4 @@
-import Command, { Group } from '../Command';
+import Command, { Group, Result } from '../Command';
 import { CommandInteraction, MessageEmbed, version } from 'discord.js';
 import SuperClient from '../../SuperClient';
 import { secondsToString } from '../../utils/DateTimeHelper';
@@ -19,7 +19,7 @@ export default class BotInfo extends Command{
         })
     }
 
-    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<boolean>{
+    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<Result>{
         const memArr = await client.shard.broadcastEval(() => process.memoryUsage())
         const totalMemUsage = memArr.reduce((prev, curr) => prev + curr.heapUsed, 0)
         const embed = new MessageEmbed()
@@ -67,7 +67,7 @@ export default class BotInfo extends Command{
             )
 
         await action.reply({ embeds: [embed] })
-        return true
+        return null
     }
 
 }

@@ -1,5 +1,5 @@
 import { CommandInteraction } from 'discord.js'
-import Command, { Group } from '../Command'
+import Command, { Group, Result } from '../Command'
 import SuperClient from '../../SuperClient';
 import Server from '../../structures/Server';
 
@@ -18,28 +18,19 @@ export default class Finish extends Command{
         })
     }
 
-    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<boolean>{
+    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<Result>{
         const message_id: string | undefined = action.options.getString('message', false)
         if(message_id && !this.isValidSnowflake(message_id)){
-            await action.reply({
-                embeds: [this.getErrorEmbed(server.translate('global.invalid.id'))]
-            })
-            return true
+            return this.error('global.invalid.id')
         }
 
         const raffle = await (message_id ? server.raffles.get(message_id) : server.raffles.getLastCreated())
         if(!raffle || !raffle.message_id){
-            await action.reply({
-                embeds: [this.getErrorEmbed(server.translate('commands.raffle.end.not.found'))]
-            })
-            return true
+            return this.error('commands.raffle.end.not.found')
         }
 
         if(!raffle.isContinues()){
-            await action.reply({
-                embeds: [this.getErrorEmbed(server.translate('commands.raffle.end.not.continues'))]
-            })
-            return true
+            return this.error('commands.raffle.end.not.continues')
         }
 
         await Promise.all([
@@ -47,6 +38,6 @@ export default class Finish extends Command{
             action.reply(server.translate('commands.raffle.end.success', raffle.prize, `<#${raffle.channel_id}>`))
         ])
 
-        return true
+        return null
     }
 }

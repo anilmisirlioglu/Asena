@@ -1,5 +1,5 @@
 import { CommandInteraction, Message } from 'discord.js'
-import Command, { Group } from '../Command'
+import Command, { Group, Result } from '../Command'
 import { Emojis } from '../../Constants'
 import SuperClient from '../../SuperClient';
 import Server from '../../structures/Server';
@@ -21,65 +21,37 @@ export default class ReRoll extends Command{
         })
     }
 
-    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<boolean>{
+    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<Result>{
         const message_id = action.options.getString('message', false)
         if(message_id && !this.isValidSnowflake(message_id)){
-            await action.reply({
-                embeds: [this.getErrorEmbed(server.translate('global.invalid.id'))]
-            })
-
-            return true
+            return this.error('global.invalid.id')
         }
 
         const amount = action.options.getInteger('winners', false)
         if(amount && amount < 1){
-            await action.reply({
-                embeds: [this.getErrorEmbed(server.translate('commands.raffle.reroll.amount.min'))]
-            })
-
-            return true
+            return this.error('commands.raffle.reroll.amount.min')
         }
 
         const raffle = await (message_id ? server.raffles.get(message_id) : server.raffles.getLastCreated())
         if(!raffle || !raffle.message_id){
-            await action.reply({
-                embeds: [this.getErrorEmbed(server.translate('commands.raffle.reroll.not.found'))]
-            })
-
-            return true
+            return this.error('commands.raffle.reroll.not.found')
         }
 
         if(raffle.status !== 'FINISHED'){
-            await action.reply({
-                embeds: [this.getErrorEmbed(server.translate('commands.raffle.reroll.' + (raffle.status === 'CONTINUES' ? 'not.finish' : 'canceled')))]
-            })
-
-            return true
+            return this.error('commands.raffle.reroll.' + (raffle.status === 'CONTINUES' ? 'not.finish' : 'canceled'))
         }
 
         let fetch: Message | undefined = await client.fetchMessage(raffle.server_id, raffle.channel_id, raffle.message_id)
         if(!fetch){
-            await action.reply({
-                embeds: [this.getErrorEmbed(server.translate('commands.raffle.reroll.timeout'))]
-            })
-
-            return true
+            return this.error('commands.raffle.reroll.timeout')
         }
 
         if(!fetch.reactions){
-            await action.reply({
-                embeds: [this.getErrorEmbed(server.translate('commands.raffle.reroll.data.not.found'))]
-            })
-
-            return true
+            return this.error('commands.raffle.reroll.data.not.found')
         }
 
         if(amount && amount > raffle.numberOfWinners){
-            await action.reply({
-                embeds: [this.getErrorEmbed(server.translate('commands.raffle.reroll.amount.max', raffle.numberOfWinners))]
-            })
-
-            return true
+            return this.error('commands.raffle.reroll.amount.max', raffle.numberOfWinners)
         }
 
         await action.reply({
@@ -92,9 +64,7 @@ export default class ReRoll extends Command{
             await fetch.reply(server.translate('commands.raffle.reroll.not.enough'))
         }else{
             if(raffle.rewardRoles.length > 0 && !action.guild.me.permissions.has('MANAGE_ROLES')){
-                await action.reply(server.translate('commands.raffle.reroll.unauthorized'))
-
-                return true
+                return this.error('commands.raffle.reroll.unauthorized')
             }
 
             await Promise.all([
@@ -116,7 +86,7 @@ export default class ReRoll extends Command{
             ])
         }
 
-        return true
+        return null
     }
 
 }

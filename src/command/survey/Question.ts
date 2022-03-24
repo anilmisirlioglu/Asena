@@ -1,4 +1,4 @@
-import Command, { Group } from '../Command'
+import Command, { Group, Result } from '../Command'
 import SuperClient from '../../SuperClient'
 import { CommandInteraction, MessageEmbed } from 'discord.js'
 import { LETTERS, ILetter, MAX_ANSWER_LENGTH } from '../../Constants'
@@ -20,16 +20,12 @@ export default class Question extends Command{
         })
     }
 
-    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<boolean>{
+    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<Result>{
         const question = action.options.getString('question', true)
         const answers = action.options.getString('answers', true).split('|')
 
         if(answers.length > MAX_ANSWER_LENGTH){
-            await action.reply({
-                embeds: [this.getErrorEmbed(server.translate('commands.survey.question.max.answer', MAX_ANSWER_LENGTH))]
-            })
-
-            return true
+            return this.error('commands.survey.question.max.answer', MAX_ANSWER_LENGTH)
         }
 
         let i: number = 0
@@ -58,7 +54,7 @@ export default class Question extends Command{
             await action.reply(':boom: ' + server.translate('commands.survey.question.error'))
         })
 
-        return true
+        return null
     }
 
 }
