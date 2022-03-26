@@ -35,7 +35,7 @@ export default class BotInfo extends Command{
                     process.versions.node,
                     version,
                     client.version.getFullVersion(),
-                    client.version.getLastUpdate().substr(0, 7)
+                    client.version.getLastUpdate().slice(0, 7)
                 )
             )
             .addField(
