@@ -1,6 +1,7 @@
 import { Interaction as DiscordInteraction } from 'discord.js';
 import InteractionDescriptor, { InteractionDescriptorOptions } from './InteractionDescriptor';
 import SuperClient from '../SuperClient';
+import Server from '../structures/Server';
 
 export type GenericInteraction = Interaction<DiscordInteraction>
 
@@ -14,7 +15,7 @@ export default abstract class Interaction<T extends DiscordInteraction> extends 
         super(opts)
     }
 
-    public abstract execute(interaction: T, action: string): void
+    public abstract execute(server: Server, interaction: T, action: string): void
 
     protected get client(): SuperClient{
         return SuperClient.getInstance()

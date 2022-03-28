@@ -1,6 +1,7 @@
 import Interaction from '../Interaction';
 import { SelectMenuInteraction } from 'discord.js';
 import LanguageManager from '../../language/LanguageManager';
+import Server from '../../structures/Server';
 
 export default class LocaleInteraction extends Interaction<SelectMenuInteraction>{
 
@@ -11,8 +12,7 @@ export default class LocaleInteraction extends Interaction<SelectMenuInteraction
         })
     }
 
-    async execute(interaction: SelectMenuInteraction, action: string){
-        const server = await this.client.servers.get(interaction.guildId)
+    async execute(server: Server, interaction: SelectMenuInteraction, action: string){
         const language = LanguageManager.findLanguage(interaction.values[0])
         await Promise.all([
             server.setLocale(language),
