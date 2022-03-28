@@ -14,7 +14,7 @@ export default class InteractionHandler extends Factory{
         }
 
         let customId
-        if(interaction.isButton()){
+        if(interaction.isButton() || interaction.isSelectMenu()){
             customId = interaction.customId
         }
 

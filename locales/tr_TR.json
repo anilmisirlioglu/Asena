@@ -10,6 +10,7 @@
   "code": "tr_TR",
   "flag": ":flag_tr:",
   "full": "Türkçe (TR)",
+  "emoji": "\uD83C\uDDF9\uD83C\uDDF7",
   "strings": {
     "global": {
       "yes": "Evet",

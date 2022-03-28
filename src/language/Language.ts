@@ -16,6 +16,7 @@ interface LanguageInfo{
     flag: string
     full: string
     strings: StringTree
+    emoji: string
 }
 
 interface Translator{
@@ -41,11 +42,14 @@ export default class Language{
     /** Language code according to IETF (https://wiki.freepascal.org/Language_Codes) */
     public code: string
 
-    /** Flag of language */
+    /** Flag of the language */
     public flag: string
 
-    /** The full name of language */
+    /** The full name of the language */
     public full: string
+
+    /** Emoji of the language */
+    public emoji: string
 
     /** Language strings */
     public strings: StringTree = {}
@@ -58,6 +62,7 @@ export default class Language{
         this.code = info.code
         this.flag = info.flag
         this.full = info.full
+        this.emoji = info.emoji
 
         this.decode(info.strings)
     }

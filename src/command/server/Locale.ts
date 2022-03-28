@@ -1,7 +1,7 @@
 import Command, { Group, Result } from '../Command';
 import SuperClient from '../../SuperClient';
 import Server from '../../structures/Server';
-import { CommandInteraction, MessageEmbed } from 'discord.js';
+import { CommandInteraction, MessageActionRow, MessageSelectMenu } from 'discord.js';
 import LanguageManager from '../../language/LanguageManager';
 
 export default class Locale extends Command{
@@ -12,68 +12,25 @@ export default class Locale extends Command{
             group: Group.SERVER,
             description: 'commands.server.locale.description',
             permission: 'ADMINISTRATOR',
-            examples: [
-                'sub:list',
-                'sub:reset',
-                'sub:current',
-                'sub:set code: Türkçe',
-                'sub:set code: English'
-            ]
+            examples: []
         })
     }
 
     async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<Result>{
-        const embed = new MessageEmbed().setColor('GREEN')
-        switch(action.options.getSubcommand(true)){
-            case 'current':
-                const language = LanguageManager.getLanguage(server.locale)
-                await action.reply(`🌎  ${server.translate('commands.server.locale.default')}: ${language.flag} **${language.full}** - **${language.code} v${language.version}**`)
-                break
+        const row = new MessageActionRow()
+            .addComponents(new MessageSelectMenu()
+                .setCustomId('locale:locale')
+                .addOptions(LanguageManager.getLanguages().map(language => {
+                    return {
+                        label: language.full,
+                        value: language.code,
+                        emoji: language.emoji,
+                        default: language.code == server.locale
+                    }
+                }))
+            )
 
-            case 'list':
-                const description = LanguageManager.getLanguages().map(language => {
-                    const text = `${language.flag} ${language.full} - ${language.code} v${language.version}`
-                    return server.locale === language.code ? `**~ ${text}**` : `**~**  ${text}`
-                })
-
-                embed
-                    .setAuthor(`🗣️ ${server.translate('commands.server.locale.embed.title')}`)
-                    .setFooter(server.translate('commands.server.locale.embed.footer'))
-                    .setDescription(description.join('\n'))
-
-                await action.reply({ embeds: [embed] })
-                break
-
-            case 'set':
-                const code = action.options.getString('code', true)
-                const locale = LanguageManager.findLanguage(code)
-                if(!locale){
-                    return this.error('commands.server.locale.language.not.found', code)
-                }
-
-                if(locale.code == server.locale){
-                    return this.error('commands.server.locale.language.already.using', locale.full)
-                }
-
-                await Promise.all([
-                    server.setLocale(locale),
-                    action.reply('🌈  ' + locale.translate('commands.server.locale.language.default.successfully.changed', [`${locale.flag} ${locale.full}`]))
-                ])
-                break
-
-            case 'reset':
-                if(server.locale == LanguageManager.DEFAULT_LANGUAGE){
-                    return this.error('commands.server.locale.language.default.already.using')
-                }else{
-                    const locale = LanguageManager.getLanguage(LanguageManager.DEFAULT_LANGUAGE)
-                    await Promise.all([
-                        server.setLocale(locale),
-                        action.reply('🌈  ' + locale.translate('commands.server.locale.language.default.successfully.changed', [`${locale.flag} ${locale.full}`]))
-                    ])
-                }
-                break
-        }
-
+        await action.reply({ components: [row] })
         return null
     }
 

@@ -2,7 +2,6 @@ import Interaction from '../Interaction';
 import { ButtonInteraction } from 'discord.js';
 import { SurveyAnswer } from '../../models/Survey';
 
-// noinspection JSMethodCanBeStatic
 export default class SurveyInteraction extends Interaction<ButtonInteraction>{
 
     constructor(){
