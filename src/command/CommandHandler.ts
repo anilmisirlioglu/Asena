@@ -63,7 +63,7 @@ export default class CommandHandler extends Factory implements CommandRunner{
         if(command){
             const authorized: boolean = command.hasPermission(action.member) || action.member.roles.cache.filter(role => {
                 return role.name.trim().toLowerCase() === Bot.PERMITTED_ROLE_NAME
-            }).size !== 0 || server.isPublicCommand(command.name)
+            }).size !== 0
             if(authorized && action.channel instanceof TextChannel){
                 const checkPermissions = this.getPermissionController().checkSelfPermissions(action.guild, action.channel)
                 if(checkPermissions.has){

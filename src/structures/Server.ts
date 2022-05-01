@@ -15,7 +15,6 @@ type SuperServer = IServer & Timestamps & ID
 class Server extends Structure<typeof ServerModel, SuperServer>{
 
     public server_id: Snowflake
-    public publicCommands: string[]
     public premium?: Premium
     public locale: string
 
@@ -28,7 +27,6 @@ class Server extends Structure<typeof ServerModel, SuperServer>{
 
     protected patch(data: SuperServer){
         this.server_id = data.server_id
-        this.publicCommands = data.publicCommands
         this.locale = data.locale
 
         PremiumModel.findOne({
@@ -62,30 +60,6 @@ class Server extends Structure<typeof ServerModel, SuperServer>{
 
     isPremium(): boolean{
         return this.premium && !this.premium.hasExpired()
-    }
-
-    isPublicCommand(command: string){
-        return this.publicCommands.includes(command)
-    }
-
-    async addPublicCommand(command: string){
-        if(!this.isPublicCommand(command)){
-            await this.update({
-                $push: {
-                    publicCommands: command
-                }
-            })
-        }
-    }
-
-    async deletePublicCommand(command: string){
-        if(this.isPublicCommand(command)){
-            await this.update({
-                $pull: {
-                    publicCommands: command
-                }
-            })
-        }
     }
 
 }

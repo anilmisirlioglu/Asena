@@ -3,7 +3,6 @@ import { Snowflake } from 'discord.js';
 
 export interface IServer extends Document{
     server_id: Snowflake,
-    publicCommands: string[],
     locale: string
 }
 
@@ -12,10 +11,6 @@ const ServerSchema: Schema = new Schema<IServer>({
         type: String,
         unique: true,
         required: true
-    },
-    publicCommands: {
-        type: Array,
-        default: []
     },
     locale: {
         type: String,

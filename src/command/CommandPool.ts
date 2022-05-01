@@ -8,7 +8,6 @@ import BotInfo from './bot/BotInfo';
 import Help from './bot/Help';
 import Invitation from './bot/Invitation';
 import Locale from './server/Locale';
-import Permission from './server/Permission';
 import Premium from './server/Premium';
 import Question from './survey/Question';
 import Survey from './survey/Survey';
@@ -49,7 +48,6 @@ export default class CommandPool extends Pool<Command>{
 
     private readonly ServerCommands = [
         new Locale(),
-        new Permission(),
         new Premium()
     ]
 

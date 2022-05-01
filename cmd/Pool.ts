@@ -6,7 +6,6 @@ import Ping from './bot/Ping';
 import BotInfo from './bot/BotInfo';
 import Premium from './server/Premium';
 import Locale from './server/Locale';
-import Permission from './server/Permission';
 import Question from './survey/Question';
 import Survey from './survey/Survey';
 import Raffles from './raffle/Raffles';
@@ -49,8 +48,7 @@ export default class Pool extends IPool<ApplicationCommand>{
 
     private readonly ServerCommands = [
         new Premium(),
-        new Locale(),
-        new Permission()
+        new Locale()
     ]
 
     private readonly SurveyCommands = [
