@@ -4,7 +4,7 @@ import SuperClient from '../../SuperClient';
 import Server from '../../structures/Server';
 import { CommandInteraction } from 'discord.js';
 import FlagValidator from '../../utils/FlagValidator';
-import { RaffleLimits } from '../../Constants';
+import { prefix, RaffleLimits } from '../../Constants';
 import { secondsToString } from '../../utils/DateTimeHelper';
 
 const RED_TICK = '<:red_tick:737035767150411889>'
@@ -89,7 +89,7 @@ class Edit extends Command{
             case 'rewardRoles':
                 const mode = action.options.getString('operator')
                 if(mode !== '+' && mode !== '-'){
-                    await action.reply(RED_TICK + ' ' + server.translate('commands.raffle.edit.invalid.mode', `${server.prefix}edit rewardRoles + rol`))
+                    await action.reply(RED_TICK + ' ' + server.translate('commands.raffle.edit.invalid.mode', `${prefix}edit rewardRoles + rol`))
 
                     return null
                 }
@@ -137,7 +137,7 @@ class Edit extends Command{
             case 'time':
                 const timeMode = action.options.getString('operator')
                 if(timeMode !== '+' && timeMode !== '-'){
-                    await action.reply(RED_TICK + ' ' + server.translate('commands.raffle.edit.invalid.mode', `${server.prefix}edit time + 1m`))
+                    await action.reply(RED_TICK + ' ' + server.translate('commands.raffle.edit.invalid.mode', `${prefix}edit time + 1m`))
 
                     return null
                 }

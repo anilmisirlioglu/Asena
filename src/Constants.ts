@@ -1,7 +1,6 @@
 import { EmojiResolvable, PermissionString } from 'discord.js';
 
 interface IBot{
-    readonly PREFIX_COMMAND: string
     readonly PERMITTED_ROLE_NAME: string
     readonly COOLDOWN_TIME: number
     readonly REQUIRED_PERMISSIONS: PermissionString[]
@@ -9,7 +8,6 @@ interface IBot{
 }
 
 export const Bot: IBot = {
-    PREFIX_COMMAND: '>>prefix',
     PERMITTED_ROLE_NAME: 'asena', // if there is no permission, this role is checked
     COOLDOWN_TIME: 5,
     REQUIRED_PERMISSIONS: [

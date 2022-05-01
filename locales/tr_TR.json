@@ -221,10 +221,6 @@
     },
     "commands": {
       "handler": {
-        "deprecation": [
-          "<:warning:717334432645775400> Komutlar, **eğik çizgi (/)**  komutları ile değişti. Artık prefixler ile kullanılamıyacaklar. Eğik komutlar hali hazırda kullanıcıyı yönlendirdiği için interaktif kurulum sihirbazıda (`setup`) da kaldırılmıştır. Komutları görüntülemek için **/** yazın.\n",
-          "Eğer **Asena** için komut listesini göremiyorsan, botu aşağıdaki davet bağlantısından yeniden eklemeyi dene: https://invite.asena.xyz"
-        ],
         "prefix": "Botun sunucu içerisinde ki komut ön adı(prefix): **{0}**",
         "unauthorized": "Bu komutu kullanmak için **yetkiniz** yok.",
         "mention": "**{0}** ve komutları hakkında daha fazla bilgi için: **{1}help**",

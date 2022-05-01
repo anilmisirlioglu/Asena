@@ -1,7 +1,6 @@
-import { Collection, CommandInteraction, GuildMember, Message, MessageEmbed, TextChannel } from 'discord.js';
+import { Collection, CommandInteraction, GuildMember, MessageEmbed, TextChannel } from 'discord.js';
 import Command from './Command';
-import SuperClient from '../SuperClient';
-import { Bot, prefix } from '../Constants';
+import { Bot} from '../Constants';
 import Factory from '../Factory';
 import { ICommandPremium } from '../decorators/Premium';
 import PermissionController from './PermissionController';
@@ -36,34 +35,7 @@ export default class CommandHandler extends Factory implements CommandRunner{
         return this.permissionController
     }
 
-    async run(action: CommandInteraction | Message){
-        const client: SuperClient = this.client
-
-        /** TODO::Will remove after 30 april */
-        if(action instanceof Message){
-            let server = await client.servers.get(action.guild.id)
-            if(!server){
-                server = await client.servers.create({ server_id: action.guild?.id })
-            }
-
-            const prefix = (client.isDevBuild ? 'dev' : '') + (server.prefix || client.prefix)
-            if(action.channel instanceof TextChannel){
-                if(!action.content.startsWith(prefix)){
-                    if(action.channel.permissionsFor(client.user).has('SEND_MESSAGES')){
-                        if(action.content === Bot.PREFIX_COMMAND){
-                            await action.channel.send(`🌈   ${server.translate('commands.handler.prefix', '/')}`)
-
-                            return
-                        }
-                    }
-                }else{
-                    await action.channel.send(server.translate('commands.handler.deprecation'))
-                }
-            }
-
-            return
-        }
-
+    async run(action: CommandInteraction){
         if(!action.guild || action.user.bot){
             return
         }
@@ -73,9 +45,9 @@ export default class CommandHandler extends Factory implements CommandRunner{
             return
         }
 
-        let server = await client.servers.get(action.guild.id)
+        let server = await this.client.servers.get(action.guild.id)
         if(!server){
-            server = await client.servers.create({ server_id: action.guild?.id })
+            server = await this.client.servers.create({ server_id: action.guild?.id })
         }
 
         if(!(action.member instanceof GuildMember)){
@@ -96,7 +68,7 @@ export default class CommandHandler extends Factory implements CommandRunner{
                 const checkPermissions = this.getPermissionController().checkSelfPermissions(action.guild, action.channel)
                 if(checkPermissions.has){
                     if(!command.premium || (command.premium && server.isPremium())){
-                        command.run(client, server, action).then(async result => {
+                        command.run(this.client, server, action).then(async result => {
                             if(result && result.error){
                                 await action.reply({
                                     embeds: [command.getErrorEmbed(server.translate(result.error, ...result.args))]
@@ -107,7 +79,7 @@ export default class CommandHandler extends Factory implements CommandRunner{
                         })
                     }else{
                         const embed = new MessageEmbed()
-                            .setAuthor(client.user.username, client.user.avatarURL())
+                            .setAuthor(this.client.user.username, this.client.user.avatarURL())
                             .setDescription(server.translate('commands.handler.premium.only'))
                             .addField(`:star2:  ${server.translate('commands.handler.premium.try')}`, '<:join_arrow:746358699706024047> [Asena Premium](https://asena.xyz)')
                             .setColor('GREEN')

@@ -14,7 +14,6 @@ type SuperServer = IServer & Timestamps & ID
 
 class Server extends Structure<typeof ServerModel, SuperServer>{
 
-    public prefix?: string
     public server_id: Snowflake
     public publicCommands: string[]
     public premium?: Premium
@@ -28,7 +27,6 @@ class Server extends Structure<typeof ServerModel, SuperServer>{
     }
 
     protected patch(data: SuperServer){
-        this.prefix = data.prefix
         this.server_id = data.server_id
         this.publicCommands = data.publicCommands
         this.locale = data.locale
@@ -50,10 +48,6 @@ class Server extends Structure<typeof ServerModel, SuperServer>{
 
     protected identifierKey(): string{
         return 'server_id'
-    }
-
-    async setPrefix(prefix: string){
-        await this.update({ prefix })
     }
 
     async setLocale(language: Language){

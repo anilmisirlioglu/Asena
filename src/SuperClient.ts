@@ -2,7 +2,7 @@ import {
     Client,
     DiscordAPIError,
     Guild,
-    GuildChannel, GuildPreview,
+    GuildChannel,
     HTTPError,
     Intents,
     LimitedCollection,
@@ -26,13 +26,11 @@ import ClientTaskManager from './scheduler/managers/ClientTaskManager';
 import InteractionHandler from './interaction/InteractionHandler';
 
 interface SuperClientBuilderOptions{
-    prefix: string
     isDevBuild: boolean
 }
 
 export default abstract class SuperClient extends Client{
 
-    readonly prefix: string = this.opts.prefix
     readonly isDevBuild: boolean = this.opts.isDevBuild
 
     readonly version: Version = new Version(process.env.npm_package_version || '1.0.0', this.opts.isDevBuild)
@@ -72,7 +70,6 @@ export default abstract class SuperClient extends Client{
             partials: ['MESSAGE', 'REACTION'],
             intents: [
                 Intents.FLAGS.GUILDS,
-                Intents.FLAGS.GUILD_MESSAGES,
                 Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
                 Intents.FLAGS.GUILD_VOICE_STATES
             ]

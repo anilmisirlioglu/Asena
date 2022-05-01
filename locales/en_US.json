@@ -232,10 +232,6 @@
     },
     "commands": {
       "handler": {
-        "deprecation": [
-          "<:warning:717334432645775400> Commands have been replaced by **slash (/) commands**. They can no longer be used with prefixes. It has also been removed in the interactive setup wizard (`setup`) as the slash commands are already guiding the user. Type **/** to display commands.\n",
-          "If you can't see the any slash commands for **Asena**, try adding the bot again from the invite link below: https://invite.asena.xyz"
-        ],
         "prefix": "The bot commands prefix in the server: **{0}**",
         "unauthorized": "To use this command **your auth** absent.",
         "mention": "**{0}** for more information about and its commands: **{1}help**",

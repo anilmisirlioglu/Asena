@@ -5,10 +5,7 @@ import { validateRaffleText } from './utils/Utils';
 export default class Asena extends SuperClient{
 
     constructor(isDevBuild: boolean){
-        super({
-            prefix: process.env.DEFAULT_PREFIX ?? '!a',
-            isDevBuild
-        })
+        super({ isDevBuild })
 
         // Load all languages
         this.getLanguageManager().init()
@@ -21,12 +18,6 @@ export default class Asena extends SuperClient{
 
         // Start premium updater
         this.getPremiumUpdater().start()
-
-        // Command run
-        /** TODO::Will remove after 30 april */
-        this.on('messageCreate', async message => {
-            await this.getCommandHandler().run(message)
-        })
 
         // Initialize app
         this.on('ready', () => {
