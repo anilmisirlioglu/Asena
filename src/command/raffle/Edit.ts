@@ -20,13 +20,14 @@ class Edit extends Command{
             description: 'commands.raffle.edit.description',
             permission: 'ADMINISTRATOR',
             examples: [
-                'option: color operator: + value: FFFFFF',
-                'option: color operator: + value: D7B5EB giveaway: 814668595170639873',
-                'option: prize operator: + value: Lorem Ipsum',
+                'option: color value: FFFFFF',
+                'option: color value: D7B5EB giveaway: 814668595170639873',
+                'option: prize value: Lorem Ipsum',
                 'option: reward-roles operator: + value: @Role,RoleID',
                 'option: time operator: + value: 1h5m',
                 'option: time operator: - value: 10m',
-                'option: winners operator: + value: 3'
+                'option: winners operator: + value: 3',
+                'option: banner value: https://image.com/image.png'
             ]
         })
     }
@@ -39,7 +40,6 @@ class Edit extends Command{
         if(message_id && !/^\d{17,19}$/g.test(message_id)){
             return this.error('commands.raffle.edit.invalid.id')
         }
-
 
         const raffle = await (message_id ? server.raffles.get(message_id) : server.raffles.getLastCreated())
         if(!raffle || !raffle.message_id){
@@ -56,7 +56,7 @@ class Edit extends Command{
         }
 
         const validator = new FlagValidator(client, action)
-        let updateQuery, success: string, vars: Array<number | string>
+        let query, success: string, vars: Array<number | string>
         switch(key){
             case 'color':
                 const validateColor = await validator.validate('color', value)
@@ -68,7 +68,7 @@ class Edit extends Command{
 
                 const color = validateColor.result
 
-                updateQuery = { color }
+                query = { color }
                 success = 'color'
                 vars = [color]
                 break
@@ -81,13 +81,13 @@ class Edit extends Command{
                     return null
                 }
 
-                updateQuery = { prize: value }
+                query = { prize: value }
                 success = 'prize'
                 vars = [value]
                 break
 
             case 'rewardRoles':
-                const mode = action.options.getString('operator')
+                const mode = action.options.getString('operator', false)
                 if(mode !== '+' && mode !== '-'){
                     await action.reply(RED_TICK + ' ' + server.translate('commands.raffle.edit.invalid.mode', `${prefix}edit rewardRoles + rol`))
 
@@ -120,7 +120,7 @@ class Edit extends Command{
                     }
                 }
 
-                updateQuery = {
+                query = {
                     [modeIsSum ? '$push' : '$pull']: {
                         rewardRoles: modeIsSum ? validatedRoles : {
                             $in: validatedRoles
@@ -135,7 +135,7 @@ class Edit extends Command{
                 break
 
             case 'time':
-                const timeMode = action.options.getString('operator')
+                const timeMode = action.options.getString('operator', false)
                 if(timeMode !== '+' && timeMode !== '-'){
                     await action.reply(RED_TICK + ' ' + server.translate('commands.raffle.edit.invalid.mode', `${prefix}edit time + 1m`))
 
@@ -181,7 +181,7 @@ class Edit extends Command{
                         break
                 }
 
-                updateQuery = { finishAt: new Date(finishAt) }
+                query = { finishAt: new Date(finishAt) }
                 success = 'time'
                 vars = [successText]
                 break
@@ -194,14 +194,26 @@ class Edit extends Command{
                     return null
                 }
 
-                updateQuery = { numberOfWinners: validateNumber.result }
+                query = { numberOfWinners: validateNumber.result }
                 success = 'winners'
                 vars = [validateNumber.result]
                 break
+
+            case 'banner':
+                const validateBanner = await validator.validate('banner', value)
+                if(!validateBanner.ok){
+                    await action.reply(RED_TICK + ' ' + server.translate(validateBanner.message))
+
+                    return null
+                }
+
+                query = { banner: value }
+                success = 'banner'
+                vars = [value]
         }
 
         await Promise.all([
-            raffle.update(updateQuery).then(async () => {
+            raffle.update(query).then(async () => {
                 await fetch.edit({
                     embeds: [raffle.buildEmbed()]
                 })

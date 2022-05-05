@@ -21,6 +21,7 @@ export default class Create extends Command{
                 'winners: 3 time: 1m prize: Hello World color: GREEN',
                 'winners: 4 time: 1h prize: Hello World servers: https://discord.gg/invite',
                 'winners: 5 time: 5m prize: Hello World reward-roles: @Role,RoleID allowed-roles: @Role,RoleID',
+                'winners: 6 time: 5m prize: Hello World banner: https://image.com/image.png',
             ]
         })
     }
@@ -32,6 +33,7 @@ export default class Create extends Command{
             servers: action.options.getString('servers', false),
             rewardRoles: action.options.getString('reward-roles', false),
             allowedRoles: action.options.getString('allowed-roles', false),
+            banner: action.options.getString('banner', false)
         }
 
         Object.keys(nonRequiredFlags).forEach(key => nonRequiredFlags[key] === null ? delete nonRequiredFlags[key] : {})

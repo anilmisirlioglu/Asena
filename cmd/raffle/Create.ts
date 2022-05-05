@@ -12,6 +12,7 @@ export default class Create extends ApplicationCommand{
         this.addStringOption(option => option.setName('servers').setDescription('Invitations of the servers that the member must participate in order to participate in the giveaway'))
         this.addStringOption(option => option.setName('reward-roles').setDescription('Reward roles of giveaway (e.g: @Role,Asena,712450379773771887)'))
         this.addStringOption(option => option.setName('allowed-roles').setDescription('The roles that the member must have in order to participate in the giveaway (e.g: @Role,Asena)'))
+        this.addStringOption(option => option.setName('banner').setDescription('Giveaway banner URL'))
     }
 
 }

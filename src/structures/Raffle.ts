@@ -24,11 +24,12 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
     public numberOfWinners: number
     public status: RaffleStatus
     public finishAt: Date
-    public servers: IPartialServer[]
     public allowedRoles: Snowflake[]
+    public servers: IPartialServer[]
     public rewardRoles: Snowflake[]
     public color?: ColorResolvable
     public winners?: Snowflake[]
+    public banner?: string
 
     private static locale: string
 
@@ -57,6 +58,7 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
         this.rewardRoles = data.rewardRoles ?? []
         this.color = data.color
         this.winners = data.winners ?? []
+        this.banner = data.banner
     }
 
     protected identifierKey(): string{
@@ -246,6 +248,7 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
             .setDescription(description.join('\n'))
             .setColor(alert ? 'RED' : this.color ?? '#bd087d')
             .setTimestamp(this.finishAt)
+            .setImage(this.banner)
             .setFooter(`${this.translate('structures.raffle.embed.footer.text', this.numberOfWinners)} | ${this.translate('structures.raffle.embed.footer.continues')}`)
     }
 

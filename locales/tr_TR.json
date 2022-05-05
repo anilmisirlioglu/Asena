@@ -153,6 +153,13 @@
           "duplicate": "Ödül olarak verilecek roller arasında etiketlediğiniz rollerin bazıları aynı. Girdiğiniz her rolün birbirinden benzersiz olması gerekmektedir. Lütfen tekrarlanmayan değerler ile tekrar deneyin.",
           "limit": "Ödül olarak maksimum {0} rol verebilirsiniz."
         }
+      },
+      "banner": {
+        "invalid": {
+          "protocol": "Afiş bağlantıları **'https'** ile başlamak zorundadır.",
+          "url": "Geçersiz bağlantı. Lütfen geçerli bir URL sağlayın.",
+          "image": "Bağlantının kaynağında resim veya gif bulunamadı."
+        }
       }
     },
     "structures": {

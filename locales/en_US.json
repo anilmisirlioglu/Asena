@@ -164,6 +164,13 @@
           "duplicate": "As a reward Among the roles that will be awarded, some of the roles you tagged are the same. Each role you enter from each other must be unique. Please try again with non-repeatable values.",
           "limit": "You can give a maximum of {0} roles as a reward."
         }
+      },
+      "banner": {
+        "invalid": {
+          "protocol": "The banner URL must start with **https**.",
+          "url": "Invalid URL. Please provide valid URL.",
+          "image": "No image or gif was found at the URL."
+        }
       }
     },
     "structures": {

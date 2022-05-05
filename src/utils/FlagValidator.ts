@@ -2,8 +2,9 @@ import SuperClient from '../SuperClient';
 import { CommandInteraction, GuildMember, Invite, Role } from 'discord.js';
 import { RaffleLimits } from '../Constants';
 import { strToSeconds } from './DateTimeHelper';
+import Image from './Image';
 
-interface FlagValidatorReturnType{
+interface FlagValidatorResult{
     readonly ok: boolean,
     readonly message?: string,
     args?: Array<number | string>
@@ -11,10 +12,8 @@ interface FlagValidatorReturnType{
 }
 
 type FlagMap = {
-    [key: string]: (client: SuperClient, action: CommandInteraction, value: string | number) => Promise<FlagValidatorReturnType>
+    [key: string]: (client: SuperClient, action: CommandInteraction, value: string | number) => Promise<FlagValidatorResult>
 }
-
-export const RequiredFlags = ['numberOfWinners', 'time', 'prize']
 
 export const Flags: FlagMap = {
     numberOfWinners: async (client, action, value: number) => {
@@ -269,6 +268,34 @@ export const Flags: FlagMap = {
             ok: true,
             result: rewardRoles
         }
+    },
+    banner: async (client, action, value: string) => {
+        if(value.startsWith('http://')){
+            return {
+                ok: false,
+                message: 'validator.banner.invalid.protocol'
+            }
+        }
+
+        const image = new Image(value)
+        if(!image.isValidURL()){
+            return {
+                ok: false,
+                message: 'validator.banner.invalid.url'
+            }
+        }
+
+        if(!await image.isValidImage()){
+            return {
+                ok: false,
+                message: 'validator.banner.invalid.image'
+            }
+        }
+
+        return {
+            ok: true,
+            result: value
+        }
     }
 }
 
@@ -286,7 +313,7 @@ export default class FlagValidator{
         key: keyof typeof Flags,
         value: string | number,
         action?: CommandInteraction
-    ): Promise<FlagValidatorReturnType>{
+    ): Promise<FlagValidatorResult>{
         const callback = Flags[key]
 
         const run = await callback(this.client, action ?? this.action, value)

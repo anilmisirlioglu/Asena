@@ -23,6 +23,7 @@ export interface IRaffle extends Document{
     rewardRoles?: Snowflake[]
     color?: ColorResolvable
     winners?: Snowflake[]
+    banner?: string
 }
 
 const RaffleSchema: Schema = new Schema<IRaffle>({
