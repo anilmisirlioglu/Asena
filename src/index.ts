@@ -90,7 +90,7 @@ const handler = async () => {
 
     await Promise.all([
         mongodb.connect(),
-        manager.spawn()
+        manager.spawn({ timeout: -1 })
     ])
 
     logger.debug('All shards deployed.')
