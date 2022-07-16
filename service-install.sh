@@ -17,14 +17,6 @@ check_docker_binaries() {
   else
     exit_err "Executable docker binary not found. Please install docker."
   fi
-
-  if [[ -f /usr/bin/docker-compose ]]; then
-    DOCKER_COMPOSE=/usr/bin/docker-compose
-  elif [[ -n $(type docker-compose) ]]; then
-    DOCKER_COMPOSE=$(type -p docker-compose)
-  else
-    exit_err "Executable docker-compose binary not found. Please install docker-compose."
-  fi
 }
 
 build_image() {
@@ -54,7 +46,7 @@ main() {
   echo "Service installation successfully finished."
   if [[ "${1}" == '--run' || "${1}" == '-r' ]]; then
     cd docker/
-    if ! $DOCKER_COMPOSE up -d; then
+    if ! $DOCKER compose up -d; then
       exit_err "Services could not be started. Please start it manually."
     fi
 
