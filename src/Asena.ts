@@ -16,8 +16,8 @@ export default class Asena extends SuperClient{
         // Activity updater start
         this.getActivityUpdater().start()
 
-        // Start premium updater
-        this.getPremiumUpdater().start()
+        // Start premium updater - Disable for nor
+        // this.getPremiumUpdater().start()
 
         // Initialize app
         this.on('ready', () => {
