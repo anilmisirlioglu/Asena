@@ -42,6 +42,7 @@
     "mongoose": "^5.10.11",
     "node-cron": "^2.0.3",
     "prom-client": "^14.0.1",
+    "saslprep": "^1.0.3",
     "winston": "^3.6.0"
   },
   "devDependencies": {
