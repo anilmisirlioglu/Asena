@@ -34,7 +34,10 @@ export default class InteractionHandler extends Factory{
                     server = await this.client.servers.create({ server_id: interaction.guildId })
                 }
 
-                action.execute(server, interaction, descriptor.action)
+                action.execute(server, interaction, {
+                    key: descriptor.action,
+                    data: descriptor.data
+                })
             })
         }
     }

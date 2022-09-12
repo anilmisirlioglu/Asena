@@ -59,7 +59,10 @@ export default class ReRoll extends Command{
             ephemeral: true
         })
 
-        const winners = await raffle.identifyWinners(fetch, amount || raffle.numberOfWinners)
+        const winners = await (raffle.isNewGenerationGiveaway() ?
+            raffle.determineWinners(amount || raffle.numberOfWinners) :
+            raffle.determineWinnersOnReactions(fetch, amount || raffle.numberOfWinners)
+        )
         if(winners.length === 0){
             await fetch.reply(server.translate('commands.raffle.reroll.not.enough'))
         }else{

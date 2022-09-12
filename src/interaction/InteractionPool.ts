@@ -2,6 +2,8 @@ import Pool from '../utils/Pool';
 import { GenericInteraction } from './Interaction';
 import SurveyInteraction from './actions/SurveyInteraction';
 import LocaleInteraction from './actions/LocaleInteraction';
+import GiveawayInteraction from './actions/GiveawayInteraction';
+import GeneralInteraction from './actions/GeneralInteraction';
 
 export default class InteractionPool extends Pool<GenericInteraction>{
 
@@ -13,7 +15,9 @@ export default class InteractionPool extends Pool<GenericInteraction>{
     }
 
     private readonly ButtonInteractions = [
-        new SurveyInteraction()
+        new SurveyInteraction(),
+        new GiveawayInteraction(),
+        new GeneralInteraction()
     ]
 
     private readonly SelectMenuInteractions = [

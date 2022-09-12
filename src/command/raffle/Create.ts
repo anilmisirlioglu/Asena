@@ -1,6 +1,6 @@
 import { CommandInteraction, MessageEmbed } from 'discord.js'
 import Command, { Group, Result } from '../Command'
-import { RaffleLimits, Emojis } from '../../Constants'
+import { RaffleLimits } from '../../Constants'
 import SuperClient from '../../SuperClient';
 import { RaffleStatus } from '../../models/Raffle';
 import Server from '../../structures/Server';
@@ -89,20 +89,14 @@ export default class Create extends Command{
         await action.deferReply({ ephemeral: true })
 
         const raffle = new Raffle(Object.assign({ createdAt: new Date() }, data) as any, server.locale)
-        action.channel.send({
-            content: Raffle.getStartMessage(),
-            embeds: [raffle.buildEmbed()]
-        }).then(async $message => {
+        action.channel.send(raffle.getMessageOptions()).then(async $message => {
             data.message_id = $message.id
 
             await server.raffles.create(data)
 
-            await Promise.all([
-                $message.react(Emojis.CONFETTI_REACTION_EMOJI),
-                action.editReply({
-                    content: server.translate('commands.raffle.create.successfully'),
-                })
-            ])
+            await action.editReply({
+                content: server.translate('commands.raffle.create.successfully')
+            })
         }).catch(async () => {
             await action.editReply(':boom: ' + server.translate('commands.raffle.create.unauthorized'))
         })
