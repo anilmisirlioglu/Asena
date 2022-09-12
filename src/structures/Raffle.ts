@@ -1,8 +1,19 @@
 import {
-    ColorResolvable, Guild, GuildChannel, Message, MessageEmbed, MessageReaction, Role, Snowflake, TextChannel
+    ColorResolvable,
+    Guild,
+    GuildChannel,
+    Message,
+    MessageActionRow,
+    MessageButton,
+    MessageEmbed,
+    MessageOptions,
+    MessageReaction,
+    Role,
+    Snowflake,
+    TextChannel
 } from 'discord.js';
 import Structure from './Structure';
-import RaffleModel, { IPartialServer, IRaffle, RaffleStatus } from '../models/Raffle';
+import RaffleModel, { IPartialServer, IRaffle, RaffleVersion, RaffleStatus } from '../models/Raffle';
 import Timestamps from '../models/legacy/Timestamps';
 import { secondsToString } from '../utils/DateTimeHelper';
 import { Emojis, URLMap } from '../Constants';
@@ -30,6 +41,8 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
     public color?: ColorResolvable
     public winners?: Snowflake[]
     public banner?: string
+    public participants: Snowflake[]
+    private __v: number
 
     private static locale: string
 
@@ -59,10 +72,16 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
         this.color = data.color
         this.winners = data.winners ?? []
         this.banner = data.banner
+        this.participants = data.participants ?? []
+        this.__v = data.__v
     }
 
     protected identifierKey(): string{
         return 'message_id'
+    }
+
+    public isFinished(): boolean{
+        return Date.now() > +this.finishAt
     }
 
     public isContinues(): boolean{
@@ -81,6 +100,48 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
         await this.setStatus('CANCELED')
     }
 
+    public isNewGenerationGiveaway(): boolean{
+        return this.__v == RaffleVersion.Interaction
+    }
+
+    public hasParticipant(user_id: Snowflake): boolean{
+        return this.participants.includes(user_id)
+    }
+
+    public async participate(user_id: Snowflake): Promise<boolean>{
+        const update = await this.model.findByIdAndUpdate(this.id, {
+            $push: {
+                participants: user_id
+            }
+        })
+
+        if(update){
+            this.participants.push(user_id)
+            return true
+        }
+
+        return false
+    }
+
+    public async leave(user_id: Snowflake): Promise<boolean>{
+        const update = await this.model.findByIdAndUpdate(this.id, {
+            $pull: {
+                participants: user_id
+            }
+        })
+
+        if(update){
+            const index = this.participants.indexOf(user_id)
+            if(index > -1){
+                this.participants.splice(index, 1)
+            }
+
+            return true
+        }
+
+        return false
+    }
+
     private translate(key: string, ...args: Array<string | number>){
         return LanguageManager.translate(Raffle.locale, key, ...args)
     }
@@ -92,7 +153,7 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
         if(channel instanceof TextChannel){
             const message: Message | undefined = await channel.messages.fetch(this.message_id)
             if(message instanceof Message){
-                const winners: string[] = await this.identifyWinners(message)
+                const winners: string[] = await (this.isNewGenerationGiveaway() ? this.determineWinners() : this.determineWinnersOnReactions(message))
                 const winnersOfMentions: string[] = winners.map(winner => `<@${winner}>`)
 
                 let description, content
@@ -126,7 +187,8 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
                 await Promise.all([
                     message.edit({
                         content: `${Emojis.CONFETTI_REACTION_EMOJI} **${this.translate('structures.raffle.messages.finish')}** ${Emojis.CONFETTI_REACTION_EMOJI}`,
-                        embeds: [embed]
+                        embeds: [embed],
+                        components: []
                     }),
                     message.reply(`${Emojis.CONFETTI_EMOJI} ${content}`),
                     this.resolveWinners(client, channel.guild, winners)
@@ -135,10 +197,22 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
         }
     }
 
-    public async identifyWinners(
-        message: Message,
-        numberOfWinners: number = this.numberOfWinners
-    ): Promise<string[]>{
+    public async determineWinners(numberOfWinners: number = this.numberOfWinners): Promise<string[]>{
+        const winners = []
+        if(this.participants.length > numberOfWinners){
+            const array = new RandomArray(this.participants)
+            array.shuffle()
+            winners.push(...array.random(numberOfWinners))
+        }else{
+            winners.push(...this.participants)
+        }
+
+        return winners
+    }
+
+    // This function will be removed in the future
+    // just made for a while for backward compatibility
+    public async determineWinnersOnReactions(message: Message, numberOfWinners: number = this.numberOfWinners): Promise<string[]>{
         const winners = []
         if(message){
             message = await message.fetch(true)
@@ -256,6 +330,25 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
         return this.rewardRoles.length !== 0 ||
             this.servers.length !== 0 ||
             this.allowedRoles.length !== 0
+    }
+
+    public buildComponents(): MessageActionRow {
+        return new MessageActionRow()
+            .addComponents(
+                new MessageButton()
+                    .setCustomId(`giveaway:join`)
+                    .setLabel(`(${this.participants.length || 0}) ${this.translate('global.join')}`)
+                    .setStyle('SUCCESS')
+                    .setEmoji('🎉')
+            )
+    }
+
+    public getMessageOptions(): MessageOptions{
+        return {
+            content: Raffle.getStartMessage(),
+            embeds: [this.buildEmbed()],
+            components: [this.buildComponents()]
+        }
     }
 
 }

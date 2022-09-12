@@ -1,6 +1,11 @@
 import ProcessPacket, { ProcessPacketType } from './ProcessPacket'
 import { Document } from 'mongoose';
-import { continuingGiveawayMetric, continuingSurveyMetric } from '../telemetry/metrics/NumericMetric';
+import {
+    continuingExVersionGiveawayMetric,
+    continuingGiveawayMetric,
+    continuingSurveyMetric
+} from '../telemetry/metrics/NumericMetric';
+import { RaffleVersion } from '../models/Raffle';
 
 export type TransferableModelTypes = 'Raffle' | 'Survey'
 
@@ -25,6 +30,7 @@ export default class ModelTransferPacket<S extends Document> extends ProcessPack
         switch(this.modelType){
             case 'Raffle':
                 continuingGiveawayMetric.observe(this.items.length)
+                continuingExVersionGiveawayMetric.observe(this.items.filter(item => item.__v == RaffleVersion.Reaction).length)
                 break
 
             case 'Survey':

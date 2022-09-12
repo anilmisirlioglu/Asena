@@ -8,12 +8,14 @@ export interface InteractionDescriptorOptions extends InteractionIdentifier{
 
 export interface InteractionDescriptorOption extends InteractionIdentifier{
     readonly action: string
+    readonly data: Map<string, string>
 }
 
 export default abstract class InteractionDescriptor implements InteractionDescriptorOptions{
 
     readonly identifier: string;
     readonly actions: string[];
+    readonly data: Map<string, string>
 
     protected constructor(opts: InteractionDescriptorOptions){
         this.identifier = opts.identifier
@@ -26,10 +28,23 @@ export default abstract class InteractionDescriptor implements InteractionDescri
             return undefined
         }
 
-        return {
-            identifier: keys[0],
-            action: keys[1]
+        let [identifier, action] = keys
+
+        const data = new Map<string, string>()
+        const items = action.split('?')
+        if(items.length > 1){
+            const kvList = items[1].split('&')
+            for(let item of kvList){
+                const kv = item.split('=')
+                if(kv.length == 2){
+                    data.set(kv[0], kv[1])
+                }
+            }
+
+            action = items[0]
         }
+
+        return {identifier, action, data}
     }
 
 }

@@ -48,6 +48,8 @@
       "message-id": "(message-id)",
       "unlimited": "Unlimited",
       "vote": "Vote",
+      "join": "Join",
+      "cancel": "Cancel",
       "date-time": {
         "months": {
           "1": "January",
@@ -234,6 +236,18 @@
           "finish": "GIVEAWAY ENDED",
           "start": "GIVEAWAY STARTED",
           "alert": "LAST PARTICIPATION FOR THE GIVEAWAY"
+        },
+        "ended": "This giveaway already ended.",
+        "not.found": "The giveaway not found. The giveaway may be deleted or canceled.",
+        "join": {
+          "already": "You have already joined this giveaway.",
+          "leave": "Leave Giveaway",
+          "constituent": "The person who created the giveaway cannot participate in the giveaway.",
+          "conditions": "In order to participate in this giveaway, you must provide participation conditions."
+        },
+        "leave": {
+          "already": "You have already leaved this giveaway",
+          "successfully": "You successfully left the giveaway."
         }
       }
     },

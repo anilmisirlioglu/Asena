@@ -36,6 +36,8 @@
       "message-id": "(mesaj-id)",
       "unlimited": "Sınırsız",
       "vote": "Oy Ver",
+      "join": "Katıl",
+      "cancel": "İptal",
       "date-time": {
         "months": {
           "1": "Ocak",
@@ -223,6 +225,18 @@
           "finish": "ÇEKİLİŞ BİTTİ",
           "start": "ÇEKİLİŞ BAŞLADI",
           "alert": "ÇEKİLİŞ İÇİN SON KATILIM"
+        },
+        "ended": "Bu çekiliş sona ermiş.",
+        "not.found": "Çekiliş bulunamadı. Çekiliş silinmiş veya iptal edilmiş olabilir.",
+        "join": {
+          "already": "Zaten bu çekilişe katılmışsınız.",
+          "leave": "Çekilişten Ayrıl",
+          "constituent": "Çekilişi oluşturan kişi çekilişe katılamaz.",
+          "conditions": "Bu çekilişe katılabilmeniz için katılım şartları sağlamalısınız."
+        },
+        "leave": {
+          "already": "Bu çekilişten zaten ayrılmışsınız",
+          "successfully": "Çekilişten başarıyla ayrıldınız."
         }
       }
     },

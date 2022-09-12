@@ -1,5 +1,10 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema, Document, HookNextFunction, set } from 'mongoose';
 import { ColorResolvable, Snowflake } from 'discord.js';
+
+export enum RaffleVersion{
+    Reaction,
+    Interaction
+}
 
 export type RaffleStatus = 'FINISHED' | 'ALMOST_DONE' | 'CONTINUES' | 'CANCELED'
 
@@ -24,6 +29,7 @@ export interface IRaffle extends Document{
     color?: ColorResolvable
     winners?: Snowflake[]
     banner?: string
+    participants: Snowflake[]
 }
 
 const RaffleSchema: Schema = new Schema<IRaffle>({
@@ -59,11 +65,23 @@ const RaffleSchema: Schema = new Schema<IRaffle>({
     finishAt: {
         type: Date,
         required: true
+    },
+    participants: {
+        type: Array,
+        default: [],
+        required: true
     }
 }, {
     timestamps: true,
     strict: false,
     strictQuery: true
+})
+
+RaffleSchema.pre('findOneAndUpdate', function(){
+    const setOnInsert = this.getUpdate()['$setOnInsert']
+    if(setOnInsert != null && setOnInsert.__v !== undefined){
+        setOnInsert.__v = RaffleVersion.Interaction
+    }
 })
 
 export default mongoose.model<IRaffle>('Raffle', RaffleSchema)
