@@ -1,9 +1,9 @@
-import { Guild, PermissionString, TextChannel } from 'discord.js';
+import { Guild, PermissionResolvable, PermissionsBitField, TextChannel } from 'discord.js';
 import { Bot } from '../Constants';
 
 interface PermissionState{
     has: Boolean
-    missing: PermissionString[]
+    missing: PermissionResolvable[]
     toString(): string
 }
 
@@ -18,28 +18,28 @@ export default class PermissionController{
         }
     }
 
-    public getMissingPermissions(guild: Guild, channel: TextChannel): PermissionString[]{
-        return guild.me.permissionsIn(channel).missing(Bot.REQUIRED_PERMISSIONS)
+    public getMissingPermissions(guild: Guild, channel: TextChannel): PermissionResolvable[]{
+        return guild.members.me.permissionsIn(channel).missing(Bot.REQUIRED_PERMISSIONS)
     }
 
-    public static humanizePermission(permission: PermissionString): string{
+    public static humanizePermission(permission: PermissionResolvable): string{
         switch(permission){
-            case 'SEND_MESSAGES':
+            case PermissionsBitField.Flags.SendMessages:
                 return 'send-message'
 
-            case 'ADD_REACTIONS':
+            case PermissionsBitField.Flags.AddReactions:
                 return 'add-reactions'
 
-            case 'VIEW_CHANNEL':
+            case PermissionsBitField.Flags.ViewChannel:
                 return 'view-channels'
 
-            case 'EMBED_LINKS':
+            case PermissionsBitField.Flags.EmbedLinks:
                 return 'embed-links'
 
-            case 'READ_MESSAGE_HISTORY':
+            case PermissionsBitField.Flags.ReadMessageHistory:
                 return 'read-message-history'
 
-            case 'USE_EXTERNAL_EMOJIS':
+            case PermissionsBitField.Flags.UseExternalEmojis:
                 return 'use-external-emojis'
 
             default:

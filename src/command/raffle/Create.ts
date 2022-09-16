@@ -1,4 +1,4 @@
-import { CommandInteraction, MessageEmbed } from 'discord.js'
+import { ChatInputCommandInteraction, Colors, EmbedBuilder, PermissionsBitField } from 'discord.js'
 import Command, { Group, Result } from '../Command'
 import { RaffleLimits } from '../../Constants'
 import SuperClient from '../../SuperClient';
@@ -14,7 +14,7 @@ export default class Create extends Command{
             name: 'create',
             group: Group.GIVEAWAY,
             description: 'commands.raffle.create.description',
-            permission: 'ADMINISTRATOR',
+            permission: PermissionsBitField.Flags.Administrator,
             examples: [
                 'winners: 1 time: 1h5m prize: Premium',
                 'winners: 2 time: 1m prize: Discord Nitro',
@@ -26,7 +26,7 @@ export default class Create extends Command{
         })
     }
 
-    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<Result>{
+    async run(client: SuperClient, server: Server, action: ChatInputCommandInteraction): Promise<Result>{
         // these flags are premium flags and required a premium to be used
         const nonRequiredFlags = {
             color: action.options.getString('color', false),
@@ -39,11 +39,19 @@ export default class Create extends Command{
         Object.keys(nonRequiredFlags).forEach(key => nonRequiredFlags[key] === null ? delete nonRequiredFlags[key] : {})
         if(Object.keys(nonRequiredFlags).length != 0){
             if(!server.isPremium()){
-                const embed = new MessageEmbed()
-                    .setAuthor(client.user.username, client.user.avatarURL())
+                const embed = new EmbedBuilder()
+                    .setAuthor({
+                        name: client.user.username,
+                        iconURL: client.user.avatarURL()
+                    })
                     .setDescription(server.translate('commands.handler.premium.only'))
-                    .addField(`:star2:  ${server.translate('commands.handler.premium.try')}`, '<:join_arrow:746358699706024047> [Asena Premium](https://asena.xyz)')
-                    .setColor('GREEN')
+                    .setFields([
+                        {
+                            name: `:star2:  ${server.translate('commands.handler.premium.try')}`,
+                            value: '<:join_arrow:746358699706024047> [Asena Premium](https://asena.xyz)'
+                        }
+                    ])
+                    .setColor(Colors.Green)
 
                 await action.reply({ embeds: [embed] })
                 return null

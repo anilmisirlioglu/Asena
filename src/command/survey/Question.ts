@@ -1,6 +1,6 @@
 import Command, { Group, Result } from '../Command'
 import SuperClient from '../../SuperClient'
-import { CommandInteraction, MessageEmbed } from 'discord.js'
+import { ChatInputCommandInteraction, EmbedBuilder, PermissionsBitField } from 'discord.js'
 import { LETTERS, ILetter, MAX_ANSWER_LENGTH } from '../../Constants'
 import regional from '../../utils/RegionalIndicator'
 import Server from '../../structures/Server'
@@ -12,7 +12,7 @@ export default class Question extends Command{
             name: 'question',
             group: Group.POLL,
             description: 'commands.survey.question.description',
-            permission: 'ADMINISTRATOR',
+            permission: PermissionsBitField.Flags.Administrator,
             examples: [
                 'question: your cool question answers: foo|bar|baz',
                 'question: 1 + 1 answers: 2|1'
@@ -20,7 +20,7 @@ export default class Question extends Command{
         })
     }
 
-    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<Result>{
+    async run(client: SuperClient, server: Server, action: ChatInputCommandInteraction): Promise<Result>{
         const question = action.options.getString('question', true)
         const answers = action.options.getString('answers', true).split('|')
 
@@ -30,7 +30,7 @@ export default class Question extends Command{
 
         let i: number = 0
         const emojis: ILetter[] = []
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
             .setTitle(question)
             .setDescription(answers
                 .map(answer => {

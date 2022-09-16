@@ -6,6 +6,7 @@ import { ProcessPacketType } from './protocol/ProcessPacket';
 import { findFlagValue } from './utils/FlagParser';
 import Logger from './utils/Logger';
 import { isDevBuild } from './utils/Version';
+import { Packet } from './protocol/packets';
 
 const isProduction: boolean = findFlagValue('--production') ?? false
 
@@ -34,13 +35,13 @@ process.on('SIGTERM', async () => {
     process.exit(0)
 })
 
-process.on('message', async (packet) => {
+process.on('message', async (packet: Packet) => {
     switch(packet.type){
-        case ProcessPacketType.SERVER_STATS:
-            client.getActivityUpdater().updateActivity(packet).then(void 0)
+        case ProcessPacketType.ServerStats:
+            client.getActivityUpdater().setActivity(packet)
             break
 
-        case ProcessPacketType.MODEL_TRANSFER:
+        case ProcessPacketType.ModelTransfer:
             switch(packet.modelType){
                 case 'Raffle':
                     client.getTaskManager().executeRaffleTask(packet.items).then(void 0)

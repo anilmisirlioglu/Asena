@@ -1,5 +1,5 @@
 import Interaction, { Action } from '../Interaction';
-import { ButtonInteraction, MessageActionRow, MessageButton} from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, ChannelType } from 'discord.js';
 import Server from '../../structures/Server';
 import Raffle from '../../structures/Raffle';
 import ID from '../ID';
@@ -44,9 +44,9 @@ export default class GiveawayInteraction extends Interaction<ButtonInteraction>{
             return interaction.reply({
                 content: server.translate('structures.raffle.join.already'),
                 ephemeral: true,
-                components: [new MessageActionRow()
+                components: [new ActionRowBuilder<ButtonBuilder>()
                     .addComponents(
-                        new MessageButton()
+                        new ButtonBuilder()
                             .setCustomId(new ID()
                                 .setIdentifier('giveaway')
                                 .setAction('leave')
@@ -54,15 +54,15 @@ export default class GiveawayInteraction extends Interaction<ButtonInteraction>{
                                 .toString()
                             )
                             .setLabel(server.translate('structures.raffle.join.leave'))
-                            .setStyle('DANGER'),
-                        new MessageButton()
+                            .setStyle(ButtonStyle.Danger),
+                        new ButtonBuilder()
                             .setCustomId(new ID()
                                 .setIdentifier('general')
                                 .setAction('cancel')
                                 .toString()
                             )
                             .setLabel(server.translate('global.cancel'))
-                            .setStyle('SUCCESS')
+                            .setStyle(ButtonStyle.Success)
                     )]
             })
         }
@@ -118,7 +118,7 @@ export default class GiveawayInteraction extends Interaction<ButtonInteraction>{
         }
 
         const channel = await interaction.guild.channels.fetch(giveaway.channel_id)
-        if(channel.type == 'GUILD_TEXT'){
+        if(channel.type == ChannelType.GuildText){
             const message = await channel.messages.fetch(giveaway.message_id)
             if(!message){
                 return interaction.reply({

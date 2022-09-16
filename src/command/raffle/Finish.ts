@@ -1,4 +1,4 @@
-import { CommandInteraction } from 'discord.js'
+import { ChatInputCommandInteraction, CommandInteraction, PermissionsBitField } from 'discord.js'
 import Command, { Group, Result } from '../Command'
 import SuperClient from '../../SuperClient';
 import Server from '../../structures/Server';
@@ -10,7 +10,7 @@ export default class Finish extends Command{
             name: 'finish',
             group: Group.GIVEAWAY,
             description: 'commands.raffle.end.description',
-            permission: 'ADMINISTRATOR',
+            permission: PermissionsBitField.Flags.Administrator,
             examples: [
                 '',
                 'message: 111111111111111111',
@@ -18,7 +18,7 @@ export default class Finish extends Command{
         })
     }
 
-    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<Result>{
+    async run(client: SuperClient, server: Server, action: ChatInputCommandInteraction): Promise<Result>{
         const message_id: string | undefined = action.options.getString('message', false)
         if(message_id && !this.isValidSnowflake(message_id)){
             return this.error('global.invalid.id')

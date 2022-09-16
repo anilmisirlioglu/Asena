@@ -9,7 +9,7 @@ export default class Soundaway extends ApplicationCommand{
         this.addIntegerOption(option => option.setName('winners').setDescription('The number of winners').setRequired(true))
         this.addStringOption(option => option.setName('title').setDescription('Giveaway title'))
         this.addUserOption(option => option.setName('user').setDescription('If the user represents the giveaway is determined as the voice channel in which the user is located'))
-        this.addChannelOption(option => option.setName('channel').setDescription('If the channel represents, the giveaway is determined as a voice channel').addChannelType(ChannelType.GuildVoice.valueOf()))
+        this.addChannelOption(option => option.setName('channel').setDescription('If the channel represents, the giveaway is determined as a voice channel').addChannelTypes(ChannelType.GuildVoice))
     }
 
 }

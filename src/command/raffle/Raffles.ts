@@ -1,4 +1,4 @@
-import { CommandInteraction, MessageEmbed } from 'discord.js'
+import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js'
 import Command, { Group, Result } from '../Command'
 import { Emojis } from '../../Constants'
 import { parseDiscordTimestamp } from '../../utils/DateTimeHelper'
@@ -18,12 +18,12 @@ export default class Raffles extends Command{
         })
     }
 
-    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<Result>{
+    async run(client: SuperClient, server: Server, action: ChatInputCommandInteraction): Promise<Result>{
         const raffles = await server.raffles.getContinues()
-        const embed: MessageEmbed = new MessageEmbed()
-            .setAuthor(server.translate('commands.raffle.list.embed.title'))
+        const embed = new EmbedBuilder()
+            .setAuthor({ name: server.translate('commands.raffle.list.embed.title') })
             .setColor('#DDA0DD')
-            .setFooter(action.guild.name)
+            .setFooter({ text: action.guild.name })
             .setTimestamp()
 
         if(raffles.length === 0){
@@ -40,9 +40,14 @@ export default class Raffles extends Command{
                     giveaway: `**[${server.translate('commands.raffle.list.click')}](${this.toDiscordMessageURL(raffle)})**`
                 }
 
-                embed.addField(`${i++}. ${raffle.prize}`, Object.entries(data).map(([key, value]) => {
-                    return `${server.translate(`commands.raffle.list.embed.fields.${key}`)}: ${value}`
-                }).join('\n'))
+                embed.setFields([
+                    {
+                        name: `${i++}. ${raffle.prize}`,
+                        value: Object.entries(data).map(([key, value]) => {
+                            return `${server.translate(`commands.raffle.list.embed.fields.${key}`)}: ${value}`
+                        }).join('\n')
+                    }
+                ])
             })
 
             embed.setDescription(`${Emojis.CONFETTI_REACTION_EMOJI} ${server.translate('commands.raffle.list.embed.description.active.found', raffles.length)}`)

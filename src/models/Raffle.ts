@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, HookNextFunction, set } from 'mongoose';
+import mongoose, { Schema, Document } from 'mongoose';
 import { ColorResolvable, Snowflake } from 'discord.js';
 
 export enum RaffleVersion{

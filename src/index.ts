@@ -49,7 +49,7 @@ manager.on('shardCreate', async shard => {
 
     shard.on('message', message => {
         switch(message.type){
-            case ProcessPacketType.COMMAND:
+            case ProcessPacketType.Command:
                 commandMetric.observe(message.command)
                 break
         }
@@ -57,9 +57,9 @@ manager.on('shardCreate', async shard => {
 })
 
 const pushUpdateActivityPacket = async () => {
-    const shards = manager.shards
-    const fetch = await manager.broadcastEval(client => client.guilds.cache.size)
+    const fetch = await manager.fetchClientValues('guilds.cache.size') as number[]
     if(fetch.length > 0){
+        const shards = manager.shards
         const packet = new ServerStatsPacket({
             shardCount: shards.size,
             serverCount: fetch.reduce((p, n) => p + n, 0)

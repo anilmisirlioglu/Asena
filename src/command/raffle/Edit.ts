@@ -2,7 +2,7 @@ import Command, { Group, Result } from '../Command';
 import Premium from '../../decorators/Premium';
 import SuperClient from '../../SuperClient';
 import Server from '../../structures/Server';
-import { CommandInteraction } from 'discord.js';
+import { ChatInputCommandInteraction, PermissionsBitField } from 'discord.js';
 import FlagValidator from '../../utils/FlagValidator';
 import { prefix, RaffleLimits } from '../../Constants';
 import { secondsToString } from '../../utils/DateTimeHelper';
@@ -18,7 +18,7 @@ class Edit extends Command{
             name: 'edit',
             group: Group.GIVEAWAY,
             description: 'commands.raffle.edit.description',
-            permission: 'ADMINISTRATOR',
+            permission: PermissionsBitField.Flags.Administrator,
             examples: [
                 'option: color value: FFFFFF',
                 'option: color value: D7B5EB giveaway: 814668595170639873',
@@ -32,7 +32,7 @@ class Edit extends Command{
         })
     }
 
-    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<Result>{
+    async run(client: SuperClient, server: Server, action: ChatInputCommandInteraction): Promise<Result>{
         const key = action.options.getString('option', true)
         const value = action.options.getString('value', true)
 

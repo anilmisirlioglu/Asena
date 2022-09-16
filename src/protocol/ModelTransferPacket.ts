@@ -9,21 +9,19 @@ import { RaffleVersion } from '../models/Raffle';
 
 export type TransferableModelTypes = 'Raffle' | 'Survey'
 
-interface IModelTransferPacket<S extends Document>{
+interface ModelTransferPacketPayload<S extends Document>{
     items: S[]
     modelType: TransferableModelTypes
 }
 
-export default class ModelTransferPacket<S extends Document> extends ProcessPacket implements IModelTransferPacket<S>{
+export default class ModelTransferPacket<S extends Document> extends ProcessPacket implements ModelTransferPacketPayload<S>{
 
+    readonly type: ProcessPacketType.ModelTransfer = ProcessPacketType.ModelTransfer
     items: S[]
     modelType: TransferableModelTypes
 
-    constructor(payload: IModelTransferPacket<S>){
-        super({
-            type: ProcessPacketType.MODEL_TRANSFER,
-            payload
-        })
+    constructor(payload: ModelTransferPacketPayload<S>){
+        super(payload)
     }
 
     observeMetric(){

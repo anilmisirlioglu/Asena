@@ -1,26 +1,19 @@
 export enum ProcessPacketType{
-    SERVER_STATS,
-    MODEL_TRANSFER,
-    COMMAND
+    ServerStats,
+    ModelTransfer,
+    Command
 }
 
 interface ProcessPacketPayload{
     [key: string]: any
 }
 
-interface IProcessPacket{
-    type: ProcessPacketType
-    payload: ProcessPacketPayload
-}
-
 export default abstract class ProcessPacket{
 
-    readonly type: ProcessPacketType
+    readonly abstract type: ProcessPacketType
 
-    protected constructor(packet: IProcessPacket){
-        this.type = packet.type
-
-        this.decode(packet.payload)
+    protected constructor(payload: ProcessPacketPayload){
+        this.decode(payload)
 
         this.observeMetric()
     }

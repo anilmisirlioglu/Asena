@@ -1,4 +1,4 @@
-import { Guild, MessageEmbed, WebhookClient } from 'discord.js';
+import { Colors, EmbedBuilder, Guild, WebhookClient } from 'discord.js';
 import { parseDiscordTimestamp } from './utils/DateTimeHelper';
 
 export default class SyntaxWebhook extends WebhookClient{
@@ -12,8 +12,11 @@ export default class SyntaxWebhook extends WebhookClient{
 
     public async resolveGuild(guild: Guild, isCreate: boolean = true): Promise<void>{
         const owner = await guild.fetchOwner()
-        const embed = new MessageEmbed()
-            .setAuthor(`${isCreate ? 'Yeni Sunucuya Eklendi' : 'Sunucudan Silindi'}`, guild.iconURL() ?? guild.bannerURL())
+        const embed = new EmbedBuilder()
+            .setAuthor({
+                iconURL: guild.iconURL() ?? guild.bannerURL(),
+                name: isCreate ? 'Yeni Sunucuya Eklendi' : 'Sunucudan Silindi',
+            })
             .setDescription([
                 `Sunucu: **${guild.name}**`,
                 `Sunucu ID: **${guild.id}**`,
@@ -22,7 +25,7 @@ export default class SyntaxWebhook extends WebhookClient{
                 `Üye Sayısı: **${guild.memberCount}**`,
                 `Sunucu Kurulma Tarihi: **${parseDiscordTimestamp(guild.createdAt)}**`
             ].join('\n'))
-            .setColor(isCreate ? 'GREEN' : 'RED')
+            .setColor(isCreate ? Colors.Green : Colors.Red)
             .setTimestamp()
 
         await this.send({ embeds: [embed] })

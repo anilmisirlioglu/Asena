@@ -3,13 +3,15 @@ import SurveyModel, { AnswerMap, ISurvey, SurveyAnswer } from './../models/Surve
 import Timestamps from '../models/legacy/Timestamps';
 import ID from '../models/legacy/ID';
 import {
+    ActionRowBuilder,
+    AttachmentBuilder,
+    ButtonBuilder,
+    ButtonStyle,
     ColorResolvable,
+    Colors,
+    EmbedBuilder,
     GuildChannel,
     Message,
-    MessageActionRow,
-    MessageAttachment,
-    MessageButton,
-    MessageEmbed,
     Snowflake,
     TextChannel
 } from 'discord.js';
@@ -64,14 +66,27 @@ class Survey extends Structure<typeof SurveyModel, SuperSurvey>{
             if(message instanceof Message){
                 const [agreeCount, disagreeCount] = [this.countTrueAnswers(), this.countFalseAnswers()]
 
-                const embed = new MessageEmbed()
+                const embed = new EmbedBuilder()
                     .setColor(this.detectColor(agreeCount, disagreeCount))
-                    .setAuthor(message.author.username, message.author.displayAvatarURL() || message.author.defaultAvatarURL)
-                    .setFooter(server.translate('structures.survey.results.vote'))
+                    .setAuthor({
+                        name: message.author.username,
+                        iconURL: message.author.displayAvatarURL() || message.author.defaultAvatarURL,
+                    })
+                    .setFooter({text: server.translate('structures.survey.results.vote')})
                     .setTimestamp()
                     .setTitle(this.title)
-                    .addField(`<a:yes:${Emojis.AGREE_EMOJI_ID}> (${server.translate('global.yes')})`, agreeCount.toString(), true)
-                    .addField(`<a:no:${Emojis.DISAGREE_EMOJI_ID}> (${server.translate('global.no')})`, disagreeCount.toString(), true)
+                    .setFields([
+                        {
+                            name: `<a:yes:${Emojis.AGREE_EMOJI_ID}> (${server.translate('global.yes')})`,
+                            value: agreeCount.toString(),
+                            inline: true,
+                        },
+                        {
+                            name: `<a:no:${Emojis.DISAGREE_EMOJI_ID}> (${server.translate('global.no')})`,
+                            value: disagreeCount.toString(),
+                            inline: true,
+                        }
+                    ])
 
                 await Promise.all([
                     message.delete(),
@@ -85,7 +100,7 @@ class Survey extends Structure<typeof SurveyModel, SuperSurvey>{
     }
 
     private detectColor(agreeCount: number, disagreeCount: number): ColorResolvable{
-        return agreeCount > disagreeCount ? 'GREEN' : (agreeCount === disagreeCount ? 'YELLOW' : 'RED')
+        return agreeCount > disagreeCount ? Colors.Green : (agreeCount === disagreeCount ? Colors.Yellow : Colors.Red)
     }
 
     public isReplied(answer: SurveyAnswer, userId: Snowflake): Promise<boolean>{
@@ -115,7 +130,7 @@ class Survey extends Structure<typeof SurveyModel, SuperSurvey>{
         })
     }
 
-    public toAttachment(): MessageAttachment{
+    public toAttachment(): AttachmentBuilder{
         const attendees = this.countTrueAnswers() + this.countFalseAnswers()
         const arr = [
             `Asena | Attendees Output`,
@@ -139,33 +154,35 @@ class Survey extends Structure<typeof SurveyModel, SuperSurvey>{
         }
 
         const buffer = Buffer.from(arr.join('\n'))
-        return new MessageAttachment(buffer, `attendees_${this.message_id}.txt`)
+        return new AttachmentBuilder(buffer, {
+            name: `attendees_${this.message_id}.txt`
+        })
     }
 
     private reverseAnswer = (answer: SurveyAnswer): SurveyAnswer => answer == SurveyAnswer.TRUE ? SurveyAnswer.FALSE : SurveyAnswer.TRUE
 
-    public static buildComponents(server: Server, countTrueAnswers: number = 0, countFalseAnswers: number = 0): MessageActionRow{
-        return new MessageActionRow()
+    public static buildComponents(server: Server, countTrueAnswers: number = 0, countFalseAnswers: number = 0): ActionRowBuilder<ButtonBuilder>{
+        return new ActionRowBuilder<ButtonBuilder>()
             .addComponents(
-                new MessageButton()
+                new ButtonBuilder()
                     .setCustomId(`survey:${SurveyAnswer.TRUE}`)
                     .setLabel(`(${countTrueAnswers}) ${server.translate('global.yes')}`)
-                    .setStyle('SUCCESS')
+                    .setStyle(ButtonStyle.Success)
                     .setEmoji('<a:yes:721180088686870549>'),
-                new MessageButton()
+                new ButtonBuilder()
                     .setCustomId(`survey:${SurveyAnswer.FALSE}`)
                     .setLabel(`(${countFalseAnswers}) ${server.translate('global.no')}`)
-                    .setStyle('DANGER')
+                    .setStyle(ButtonStyle.Danger)
                     .setEmoji('<a:no:721179958378233887>'),
-                new MessageButton()
+                new ButtonBuilder()
                     .setCustomId(`survey:attendees`)
                     .setLabel(server.translate('structures.survey.attendees'))
-                    .setStyle('PRIMARY')
+                    .setStyle(ButtonStyle.Primary)
                     .setEmoji('<a:nitro:736983658803626044>')
             )
     }
 
-    public buildComponents = (server: Server): MessageActionRow => Survey.buildComponents(server, this.countTrueAnswers(), this.countFalseAnswers())
+    public buildComponents = (server: Server): ActionRowBuilder<ButtonBuilder> => Survey.buildComponents(server, this.countTrueAnswers(), this.countFalseAnswers())
 
     private countTrueAnswers = (): number => this.answers.get(SurveyAnswer.TRUE).length
     private countFalseAnswers = (): number => this.answers.get(SurveyAnswer.FALSE).length

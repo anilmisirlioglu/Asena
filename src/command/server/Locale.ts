@@ -1,7 +1,11 @@
 import Command, { Group, Result } from '../Command';
 import SuperClient from '../../SuperClient';
 import Server from '../../structures/Server';
-import { CommandInteraction, MessageActionRow, MessageSelectMenu } from 'discord.js';
+import {
+    ActionRowBuilder,
+    ChatInputCommandInteraction, PermissionsBitField,
+    SelectMenuBuilder
+} from 'discord.js';
 import LanguageManager from '../../language/LanguageManager';
 
 export default class Locale extends Command{
@@ -11,14 +15,14 @@ export default class Locale extends Command{
             name: 'locale',
             group: Group.SERVER,
             description: 'commands.server.locale.description',
-            permission: 'ADMINISTRATOR',
+            permission: PermissionsBitField.Flags.Administrator,
             examples: []
         })
     }
 
-    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<Result>{
-        const row = new MessageActionRow()
-            .addComponents(new MessageSelectMenu()
+    async run(client: SuperClient, server: Server, action: ChatInputCommandInteraction): Promise<Result>{
+        const row = new ActionRowBuilder<SelectMenuBuilder>()
+            .addComponents(new SelectMenuBuilder()
                 .setCustomId('locale:locale')
                 .addOptions(LanguageManager.getLanguages().map(language => {
                     return {

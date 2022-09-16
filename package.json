@@ -31,13 +31,13 @@
     "test": "mocha -r ts-node/register tests/unit/*.test.ts"
   },
   "dependencies": {
-    "@discordjs/builders": "^0.12.0",
-    "@discordjs/rest": "^0.3.0",
+    "@discordjs/builders": "^1.2.0",
+    "@discordjs/rest": "^1.1.0",
     "@google-cloud/logging-winston": "^4.1.2",
     "amqplib": "^0.8.0",
     "child_process": "^1.0.2",
-    "discord-api-types": "^0.29.0",
-    "discord.js": "^13.1.0",
+    "discord-api-types": "^0.37.10",
+    "discord.js": "^14.3.0",
     "dotenv": "^8.2.0",
     "mongoose": "^5.10.11",
     "node-cron": "^2.0.3",
@@ -49,11 +49,11 @@
     "@types/amqplib": "^0.5.15",
     "@types/mocha": "^9.1.0",
     "@types/mongoose": "^5.7.36",
-    "@types/node": "^14.14.6",
+    "@types/node": "^18.7.1",
     "mocha": "^9.2.1",
     "nodemon": "^2.0.15",
     "ts-node": "^8.10.2",
-    "typescript": "^4.3.5"
+    "typescript": "^4.8.3"
   },
   "engines": {
     "node": ">=16.9.0"

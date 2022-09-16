@@ -1,19 +1,21 @@
 import {
+    ActionRowBuilder,
+    ButtonBuilder,
+    ButtonStyle,
     ColorResolvable,
+    Colors,
+    EmbedBuilder,
     Guild,
     GuildChannel,
-    Message,
-    MessageActionRow,
-    MessageButton,
-    MessageEmbed,
+    Message, MessageEditOptions,
     MessageOptions,
-    MessageReaction,
+    MessageReaction, PermissionsBitField,
     Role,
     Snowflake,
     TextChannel
 } from 'discord.js';
 import Structure from './Structure';
-import RaffleModel, { IPartialServer, IRaffle, RaffleVersion, RaffleStatus } from '../models/Raffle';
+import RaffleModel, { IPartialServer, IRaffle, RaffleStatus, RaffleVersion } from '../models/Raffle';
 import Timestamps from '../models/legacy/Timestamps';
 import { secondsToString } from '../utils/DateTimeHelper';
 import { Emojis, URLMap } from '../Constants';
@@ -174,13 +176,13 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
                         break
                 }
 
-                const embed: MessageEmbed = new MessageEmbed()
-                    .setAuthor(this.prize)
+                const embed = new EmbedBuilder()
+                    .setAuthor({ name: this.prize })
                     .setDescription([
                         `:medal: ${description}`,
                         `:reminder_ribbon: ${this.translate('structures.raffle.embed.fields.creator')}: <@${this.constituent_id}>`
                     ].join('\n'))
-                    .setFooter(`${this.translate('structures.raffle.embed.footer.text', this.numberOfWinners)} | ${this.translate('structures.raffle.embed.footer.finish')}`)
+                    .setFooter({ text: `${this.translate('structures.raffle.embed.footer.text', this.numberOfWinners)} | ${this.translate('structures.raffle.embed.footer.finish')}` })
                     .setTimestamp(new Date(this.finishAt))
                     .setColor('#36393F')
 
@@ -236,24 +238,27 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
     }
 
     public async resolveWinners(client: SuperClient, guild: Guild, winners: string[]){
-        const embed = new MessageEmbed()
-            .setAuthor(`${this.translate('structures.raffle.winner.embed.title')} 🏅`)
+        const embed = new EmbedBuilder()
+            .setAuthor({ name: `${this.translate('structures.raffle.winner.embed.title')} 🏅` })
             .setDescription([
                 `:gift: ${this.translate('structures.raffle.winner.embed.fields.prize')}: **${this.prize}**`,
                 `:star: ${this.translate('structures.raffle.winner.embed.fields.server')}: **${guild.name}**`,
                 `:link: **[${this.translate('structures.raffle.winner.embed.fields.link')}](${this.messageURL})**`,
                 `:rocket: **[${this.translate('global.vote')}](${URLMap.VOTE})** • **[${this.translate('structures.raffle.winner.embed.fields.invite')}](${URLMap.INVITE})**`
             ].join('\n'))
-            .setFooter('Powered by Asena', guild.iconURL())
+            .setFooter({
+                text: 'Powered by Asena',
+                iconURL: guild.iconURL()
+            })
             .setTimestamp()
-            .setColor('GREEN')
+            .setColor(Colors.Green)
 
         let rewardRoles: Role[] = []
-        if(this.rewardRoles.length > 0 && guild.me.permissions.has('MANAGE_ROLES')){
+        if(this.rewardRoles.length > 0 && guild.members.me.permissions.has(PermissionsBitField.Flags.ManageRoles)){
             const fetchRoles = await guild.roles.fetch()
             rewardRoles = [...fetchRoles.values()].filter(role =>
                 this.rewardRoles.includes(role.id) &&
-                role.comparePositionTo(guild.me.roles.highest) < 0
+                role.comparePositionTo(guild.members.me.roles.highest) < 0
             )
         }
 
@@ -289,7 +294,7 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
         return `${Emojis.CONFETTI_EMOJI} **${LanguageManager.translate(this.locale, 'structures.raffle.messages.alert')}** ${Emojis.CONFETTI_EMOJI}`
     }
 
-    public buildEmbed(alert: boolean = false, rm: number = undefined): MessageEmbed{
+    public buildEmbed(alert: boolean = false, rm: number = undefined): EmbedBuilder{
         const length = Math.ceil((+this.finishAt - +this.createdAt) / 1000)
         const time = secondsToString(length, Raffle.locale)
         const remaining = secondsToString(rm ?? Math.ceil((+this.finishAt - Date.now()) / 1000), Raffle.locale)
@@ -317,13 +322,15 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
             ].filter(Boolean))
         }
 
-        return new MessageEmbed()
-            .setAuthor(this.prize)
+        return new EmbedBuilder()
+            .setAuthor({ name: this.prize })
             .setDescription(description.join('\n'))
-            .setColor(alert ? 'RED' : this.color ?? '#bd087d')
+            .setColor(alert ? Colors.Red : this.color ?? '#bd087d')
             .setTimestamp(this.finishAt)
             .setImage(this.banner)
-            .setFooter(`${this.translate('structures.raffle.embed.footer.text', this.numberOfWinners)} | ${this.translate('structures.raffle.embed.footer.continues')}`)
+            .setFooter({
+                text: `${this.translate('structures.raffle.embed.footer.text', this.numberOfWinners)} | ${this.translate('structures.raffle.embed.footer.continues')}`
+            })
     }
 
     private get isAdvancedEmbed(): boolean{
@@ -332,18 +339,18 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
             this.allowedRoles.length !== 0
     }
 
-    public buildComponents(): MessageActionRow {
-        return new MessageActionRow()
+    public buildComponents(): ActionRowBuilder<ButtonBuilder>{
+        return new ActionRowBuilder<ButtonBuilder>()
             .addComponents(
-                new MessageButton()
+                new ButtonBuilder()
                     .setCustomId(`giveaway:join`)
                     .setLabel(`(${this.participants.length || 0}) ${this.translate('global.join')}`)
-                    .setStyle('SUCCESS')
+                    .setStyle(ButtonStyle.Success)
                     .setEmoji('🎉')
             )
     }
 
-    public getMessageOptions(): MessageOptions{
+    public getMessageOptions(): MessageOptions & MessageEditOptions{
         return {
             content: Raffle.getStartMessage(),
             embeds: [this.buildEmbed()],

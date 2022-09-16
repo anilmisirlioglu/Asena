@@ -1,4 +1,4 @@
-import { CommandInteraction, Message } from 'discord.js'
+import { ChatInputCommandInteraction, Message, PermissionsBitField } from 'discord.js'
 import Command, { Group, Result } from '../Command'
 import { Emojis } from '../../Constants'
 import SuperClient from '../../SuperClient';
@@ -11,7 +11,7 @@ export default class ReRoll extends Command{
             name: 'reroll',
             group: Group.GIVEAWAY,
             description: 'commands.raffle.reroll.description',
-            permission: 'ADMINISTRATOR',
+            permission: PermissionsBitField.Flags.Administrator,
             examples: [
                 '',
                 'winners: 1',
@@ -21,7 +21,7 @@ export default class ReRoll extends Command{
         })
     }
 
-    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<Result>{
+    async run(client: SuperClient, server: Server, action: ChatInputCommandInteraction): Promise<Result>{
         const message_id = action.options.getString('message', false)
         if(message_id && !this.isValidSnowflake(message_id)){
             return this.error('global.invalid.id')
@@ -66,7 +66,7 @@ export default class ReRoll extends Command{
         if(winners.length === 0){
             await fetch.reply(server.translate('commands.raffle.reroll.not.enough'))
         }else{
-            if(raffle.rewardRoles.length > 0 && !action.guild.me.permissions.has('MANAGE_ROLES')){
+            if(raffle.rewardRoles.length > 0 && !action.guild.members.me.permissions.has(PermissionsBitField.Flags.ManageRoles)){
                 return this.error('commands.raffle.reroll.unauthorized')
             }
 

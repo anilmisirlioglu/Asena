@@ -1,5 +1,5 @@
 import SuperClient from '../SuperClient';
-import { CommandInteraction, GuildMember, Invite, Role } from 'discord.js';
+import { ChatInputCommandInteraction, GuildMember, Invite, PermissionsBitField, Role } from 'discord.js';
 import { RaffleLimits } from '../Constants';
 import { strToSeconds } from './DateTimeHelper';
 import Image from './Image';
@@ -12,7 +12,7 @@ interface FlagValidatorResult{
 }
 
 type FlagMap = {
-    [key: string]: (client: SuperClient, action: CommandInteraction, value: string | number) => Promise<FlagValidatorResult>
+    [key: string]: (client: SuperClient, action: ChatInputCommandInteraction, value: string | number) => Promise<FlagValidatorResult>
 }
 
 export const Flags: FlagMap = {
@@ -202,8 +202,8 @@ export const Flags: FlagMap = {
         }
     },
     rewardRoles: async (client, action, value: string) => {
-        const me = action.guild.me
-        if(!me.permissions.has('MANAGE_ROLES')){
+        const me = action.guild.members.me
+        if(!me.permissions.has(PermissionsBitField.Flags.ManageRoles)){
             return {
                 ok: false,
                 message: 'validator.roles.unauthorized'
@@ -302,9 +302,9 @@ export const Flags: FlagMap = {
 export default class FlagValidator{
 
     private readonly client: SuperClient
-    private readonly action?: CommandInteraction
+    private readonly action?: ChatInputCommandInteraction
 
-    constructor(client: SuperClient, action?: CommandInteraction){
+    constructor(client: SuperClient, action?: ChatInputCommandInteraction){
         this.client = client
         this.action = action
     }
@@ -312,7 +312,7 @@ export default class FlagValidator{
     async validate(
         key: keyof typeof Flags,
         value: string | number,
-        action?: CommandInteraction
+        action?: ChatInputCommandInteraction
     ): Promise<FlagValidatorResult>{
         const callback = Flags[key]
 

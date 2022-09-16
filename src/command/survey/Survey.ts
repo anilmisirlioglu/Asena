@@ -1,5 +1,5 @@
 import Command, { Group, Result } from '../Command';
-import { CommandInteraction, MessageEmbed } from 'discord.js';
+import { ChatInputCommandInteraction, EmbedBuilder, PermissionsBitField } from 'discord.js';
 import { Emojis, SurveyLimits } from '../../Constants';
 import SuperClient from '../../SuperClient';
 import { secondsToString, strToSeconds } from '../../utils/DateTimeHelper';
@@ -16,7 +16,7 @@ export default class Survey extends Command{
             name: 'survey',
             group: Group.POLL,
             description: 'commands.survey.vote.description',
-            permission: 'ADMINISTRATOR',
+            permission: PermissionsBitField.Flags.Administrator,
             examples: [
                 'title: Lorem Ipsum time: 1m',
                 'title: Survey Title time: 1h2m',
@@ -25,7 +25,7 @@ export default class Survey extends Command{
         })
     }
 
-    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<Result>{
+    async run(client: SuperClient, server: Server, action: ChatInputCommandInteraction): Promise<Result>{
         const title = action.options.getString('title', true)
         const time = action.options.getString('time', false)
         if(time){
@@ -38,13 +38,22 @@ export default class Survey extends Command{
                 return this.error('commands.survey.vote.time.exceeded')
             }
 
-            const embed = new MessageEmbed()
-                .setAuthor(action.guild.name, action.guild.iconURL())
+            const embed = new EmbedBuilder()
+                .setAuthor({
+                    name: action.guild.name,
+                    iconURL: action.guild.iconURL()
+                })
                 .setColor('#ffd1dc')
                 .setDescription(`<a:checkmark:764367612246753290> ${server.translate('commands.survey.vote.embed.description')}`)
-                .setFooter(`${server.translate('commands.survey.vote.embed.footer')}: ${secondsToString(seconds, server.locale).toString()}`)
+                .setFooter({ text: `${server.translate('commands.survey.vote.embed.footer')}: ${secondsToString(seconds, server.locale).toString()}` })
                 .setTimestamp()
-                .addField(server.translate('commands.survey.vote.embed.fields.question'), title, true)
+                .setFields([
+                    {
+                        name: server.translate('commands.survey.vote.embed.fields.question'),
+                        value: title,
+                        inline: true
+                    }
+                ])
 
             action.channel.send({ embeds: [embed], components: [SurveyX.buildComponents(server)] }).then($message => {
                 server.surveys.create({
@@ -63,12 +72,21 @@ export default class Survey extends Command{
                 })
             })
         }else{
-            const embed = new MessageEmbed()
-                .setAuthor(action.guild.name, action.guild.iconURL())
+            const embed = new EmbedBuilder()
+                .setAuthor({
+                    name: action.guild.name,
+                    iconURL: action.guild.iconURL()
+                })
                 .setColor('#E74C3C')
                 .setDescription(server.translate('commands.survey.vote.embed.description'))
                 .setTimestamp()
-                .addField(server.translate('commands.survey.vote.embed.fields.question'), title, true)//args.join(' ')
+                .setFields([
+                    {
+                        name: server.translate('commands.survey.vote.embed.fields.question'),
+                        value: title,
+                        inline: true
+                    }
+                ])
 
             action.channel.send({ embeds: [embed] }).then(async vote => {
                 await Promise.all([
