@@ -11,7 +11,7 @@ export default class Edit extends ApplicationCommand{
             { name: 'time', value: 'time' },
             { name: 'winners', value: 'winners' },
             { name: 'reward-roles', value: 'reward-roles' },
-            { name: 'banner', value: 'winners' }
+            { name: 'banner', value: 'banner' }
         ))
         this.addStringOption(option => option.setName('value').setDescription('Selected options new value').setRequired(true))
         this.addStringOption(option => option.setName('giveaway').setDescription('Giveaway message ID for specific giveaway'))

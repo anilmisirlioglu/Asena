@@ -1,5 +1,4 @@
 import {
-    BaseGuildTextChannel,
     ChannelType,
     Client,
     Colors,
@@ -7,9 +6,12 @@ import {
     EmbedBuilder,
     Guild,
     GuildChannel,
-    HTTPError, IntentsBitField, LimitedCollection,
+    HTTPError,
+    IntentsBitField,
     Message,
-    Options, Partials, PermissionsBitField,
+    Options,
+    Partials,
+    PermissionsBitField,
     Snowflake,
     TextChannel
 } from 'discord.js';
