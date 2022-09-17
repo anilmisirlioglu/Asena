@@ -20,7 +20,7 @@ export default class Fix extends Command{
     }
 
     async run(client: SuperClient, server: Server, action: ChatInputCommandInteraction): Promise<Result>{
-        const message_id: string | undefined = action.options.getString('message', false)
+        const message_id: string | undefined = action.options.getString('giveaway', false)
         if(message_id && !this.isValidSnowflake(message_id)){
             return this.error('global.invalid.id')
         }

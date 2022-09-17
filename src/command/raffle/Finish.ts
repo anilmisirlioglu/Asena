@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, CommandInteraction, PermissionsBitField } from 'discord.js'
+import { ChatInputCommandInteraction, PermissionsBitField } from 'discord.js'
 import Command, { Group, Result } from '../Command'
 import SuperClient from '../../SuperClient';
 import Server from '../../structures/Server';
@@ -19,7 +19,7 @@ export default class Finish extends Command{
     }
 
     async run(client: SuperClient, server: Server, action: ChatInputCommandInteraction): Promise<Result>{
-        const message_id: string | undefined = action.options.getString('message', false)
+        const message_id: string | undefined = action.options.getString('giveaway', false)
         if(message_id && !this.isValidSnowflake(message_id)){
             return this.error('global.invalid.id')
         }

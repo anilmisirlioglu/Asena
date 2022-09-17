@@ -5,6 +5,7 @@ export default class Premium extends ApplicationCommand{
     build(): void{
         this.setName('premium')
         this.setDescription('Returns the Asena Premium subscription information')
+        this.setDescriptionLocalizations({ tr: 'Asena premium üyeliğinin durumunu gösterir' })
     }
 
 }

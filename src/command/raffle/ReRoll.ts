@@ -22,7 +22,7 @@ export default class ReRoll extends Command{
     }
 
     async run(client: SuperClient, server: Server, action: ChatInputCommandInteraction): Promise<Result>{
-        const message_id = action.options.getString('message', false)
+        const message_id = action.options.getString('giveaway', false)
         if(message_id && !this.isValidSnowflake(message_id)){
             return this.error('global.invalid.id')
         }
