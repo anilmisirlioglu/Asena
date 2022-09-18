@@ -52,7 +52,7 @@ export const Emojis = {
     RUBY_EMOJI: '<a:ruby:721700215190454344>'
 }
 
-interface IRaffleLimits{
+interface IGiveawayLimits{
     readonly MIN_TIME: number
     readonly MAX_TIME: number
     readonly MAX_WINNER_COUNT: number
@@ -63,7 +63,7 @@ interface IRaffleLimits{
     readonly MAX_REWARD_ROLE_COUNT: number
 }
 
-export const RaffleLimits: IRaffleLimits = {
+export const GiveawayLimits: IGiveawayLimits = {
     MIN_TIME: 60,
     MAX_TIME: 60 * 60 * 24 * 60,
     MAX_WINNER_COUNT: 20,

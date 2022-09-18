@@ -10,7 +10,7 @@ export default class Question extends Command{
     constructor(){
         super({
             name: 'question',
-            group: Group.POLL,
+            group: Group.Poll,
             description: 'commands.survey.question.description',
             permission: PermissionsBitField.Flags.Administrator,
             examples: [

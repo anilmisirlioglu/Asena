@@ -5,9 +5,9 @@ import {
     continuingGiveawayMetric,
     continuingSurveyMetric
 } from '../telemetry/metrics/NumericMetric';
-import { RaffleVersion } from '../models/Raffle';
+import { GiveawayVersion } from '../models/Giveaway';
 
-export type TransferableModelTypes = 'Raffle' | 'Survey'
+export type TransferableModelTypes = 'Giveaway' | 'Survey'
 
 interface ModelTransferPacketPayload<S extends Document>{
     items: S[]
@@ -26,9 +26,9 @@ export default class ModelTransferPacket<S extends Document> extends ProcessPack
 
     observeMetric(){
         switch(this.modelType){
-            case 'Raffle':
+            case 'Giveaway':
                 continuingGiveawayMetric.observe(this.items.length)
-                continuingExVersionGiveawayMetric.observe(this.items.filter(item => item.__v == RaffleVersion.Reaction).length)
+                continuingExVersionGiveawayMetric.observe(this.items.filter(item => item.__v == GiveawayVersion.Reaction).length)
                 break
 
             case 'Survey':

@@ -173,7 +173,7 @@
         "attendees": "Katılımcılar",
         "already": "Zaten bu seçeneğe oy vermişsiniz."
       },
-      "raffle": {
+      "giveaway": {
         "winners": {
           "none": {
             "description": "Yetersiz katılım. Kazanan olmadı.",
@@ -190,7 +190,7 @@
         },
         "embed": {
           "fields": {
-            "join": "Çekilişe katılmak için {0} emojisine tıklayın!",
+            "join": "Çekilişe katılmak için {0} butonuna tıklayın!",
             "giveaway": "Çekiliş",
             "creator": "Oluşturan",
             "to.end": "Bitmesine",
@@ -425,7 +425,7 @@
           ]
         }
       },
-      "raffle": {
+      "giveaway": {
         "name": "Çekiliş Komutları",
         "soundaway": {
           "description": "Ses kanalında yeni bir çekiliş oluşturur",

@@ -1,6 +1,6 @@
 import SuperClient from '../SuperClient';
-import { ChatInputCommandInteraction, GuildMember, Invite, PermissionsBitField, Role } from 'discord.js';
-import { RaffleLimits } from '../Constants';
+import { ChatInputCommandInteraction, Colors, GuildMember, Invite, PermissionsBitField, Role } from 'discord.js';
+import { GiveawayLimits } from '../Constants';
 import { strToSeconds } from './DateTimeHelper';
 import Image from './Image';
 
@@ -24,7 +24,7 @@ export const Flags: FlagMap = {
             }
         }
 
-        if(value > RaffleLimits.MAX_WINNER_COUNT || value < 1){
+        if(value > GiveawayLimits.MAX_WINNER_COUNT || value < 1){
             return {
                 ok: false,
                 message: 'validator.winners.limit'
@@ -45,7 +45,7 @@ export const Flags: FlagMap = {
             }
         }
 
-        if(toSecond < RaffleLimits.MIN_TIME || toSecond > RaffleLimits.MAX_TIME){
+        if(toSecond < GiveawayLimits.MIN_TIME || toSecond > GiveawayLimits.MAX_TIME){
             return {
                 ok: false,
                 message: 'validator.time.limit'
@@ -130,11 +130,11 @@ export const Flags: FlagMap = {
             }
         }
 
-        if(invites.length > RaffleLimits.MAX_SERVER_COUNT){
+        if(invites.length > GiveawayLimits.MAX_SERVER_COUNT){
             return {
                 ok: false,
                 message: 'validator.servers.limit',
-                args: [RaffleLimits.MAX_SERVER_COUNT]
+                args: [GiveawayLimits.MAX_SERVER_COUNT]
             }
         }
 
@@ -188,11 +188,11 @@ export const Flags: FlagMap = {
             }
         }
 
-        if(allowedRoles.length > RaffleLimits.MAX_ALLOWED_ROLE_COUNT){
+        if(allowedRoles.length > GiveawayLimits.MAX_ALLOWED_ROLE_COUNT){
             return {
                 ok: false,
                 message: 'validator.roles.allowed.limit',
-                args: [RaffleLimits.MAX_ALLOWED_ROLE_COUNT]
+                args: [GiveawayLimits.MAX_ALLOWED_ROLE_COUNT]
             }
         }
 
@@ -256,11 +256,11 @@ export const Flags: FlagMap = {
             }
         }
 
-        if(rewardRoles.length > RaffleLimits.MAX_REWARD_ROLE_COUNT){
+        if(rewardRoles.length > GiveawayLimits.MAX_REWARD_ROLE_COUNT){
             return {
                 ok: false,
                 message: 'validator.roles.reward.limit',
-                args: [RaffleLimits.MAX_REWARD_ROLE_COUNT]
+                args: [GiveawayLimits.MAX_REWARD_ROLE_COUNT]
             }
         }
 

@@ -9,7 +9,7 @@ export default class Help extends Command{
     constructor(){
         super({
             name: 'help',
-            group: Group.BOT,
+            group: Group.Bot,
             description: 'commands.bot.help.description',
             permission: undefined,
             examples: [

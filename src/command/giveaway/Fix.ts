@@ -2,15 +2,15 @@ import Command, { Group, Result } from '../Command';
 import { ChatInputCommandInteraction, PermissionsBitField } from 'discord.js';
 import Server from '../../structures/Server';
 import SuperClient from '../../SuperClient';
-import { validateRaffleText } from '../../utils/Utils';
+import { validateGiveawayText } from '../../utils/Utils';
 
 export default class Fix extends Command{
 
     constructor(){
         super({
             name: 'fix',
-            group: Group.GIVEAWAY,
-            description: 'commands.raffle.fix.description',
+            group: Group.Giveaway,
+            description: 'commands.giveaway.fix.description',
             permission: PermissionsBitField.Flags.Administrator,
             examples: [
                 '',
@@ -25,27 +25,27 @@ export default class Fix extends Command{
             return this.error('global.invalid.id')
         }
 
-        const raffle = await (message_id ? server.raffles.get(message_id) : server.raffles.getLastCreated())
-        if(!raffle || !raffle.message_id){
-            return this.error('commands.raffle.fix.not.found')
+        const giveaway = await (message_id ? server.giveaways.get(message_id) : server.giveaways.getLastCreated())
+        if(!giveaway || !giveaway.message_id){
+            return this.error('commands.giveaway.fix.not.found')
         }
 
-        if(raffle.status !== 'FINISHED'){
-            return this.error('commands.raffle.fix.not.finished')
+        if(giveaway.status !== 'FINISHED'){
+            return this.error('commands.giveaway.fix.not.finished')
         }
 
-        const fetch = await client.fetchMessage(raffle.server_id, raffle.channel_id, raffle.message_id)
+        const fetch = await client.fetchMessage(giveaway.server_id, giveaway.channel_id, giveaway.message_id)
         if(!fetch){
-            return this.error('commands.raffle.fix.timeout')
+            return this.error('commands.giveaway.fix.timeout')
         }
 
-        if(!validateRaffleText(server, fetch.content)){
-            return this.error('commands.raffle.fix.no.error')
+        if(!validateGiveawayText(server, fetch.content)){
+            return this.error('commands.giveaway.fix.no.error')
         }
 
         await Promise.all([
-            raffle.finish(client),
-            action.reply(server.translate('commands.raffle.fix.success', raffle.prize, `<#${raffle.channel_id}>`))
+            giveaway.finish(client),
+            action.reply(server.translate('commands.giveaway.fix.success', giveaway.prize, `<#${giveaway.channel_id}>`))
         ])
 
         return null

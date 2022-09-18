@@ -44,8 +44,8 @@ process.on('message', async (packet: Packet) => {
 
         case ProcessPacketType.ModelTransfer:
             switch(packet.modelType){
-                case 'Raffle':
-                    client.getTaskManager().executeRaffleTask(packet.items).then(void 0)
+                case 'Giveaway':
+                    client.getTaskManager().executeGiveawayTask(packet.items).then(void 0)
                     break
 
                 case 'Survey':

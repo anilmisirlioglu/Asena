@@ -15,10 +15,10 @@ interface CommandOptions{
 }
 
 export enum Group{
-    GIVEAWAY = 'raffle',
-    POLL = 'survey',
-    SERVER = 'server',
-    BOT = 'bot'
+    Giveaway = 'giveaway',
+    Poll = 'survey',
+    Server = 'server',
+    Bot = 'bot'
 }
 
 /**

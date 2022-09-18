@@ -10,7 +10,7 @@ export default class Locale extends Command{
     constructor(){
         super({
             name: 'locale',
-            group: Group.SERVER,
+            group: Group.Server,
             description: 'commands.server.locale.description',
             permission: PermissionsBitField.Flags.Administrator,
             examples: []

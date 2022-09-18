@@ -16,8 +16,8 @@ export default class Soundaway extends Command{
     constructor(){
         super({
             name: 'soundaway',
-            group: Group.GIVEAWAY,
-            description: 'commands.raffle.soundaway.description',
+            group: Group.Giveaway,
+            description: 'commands.giveaway.soundaway.description',
             permission: PermissionsBitField.Flags.Administrator,
             examples: [
                 'winners: 1',
@@ -32,12 +32,12 @@ export default class Soundaway extends Command{
     async run(client: SuperClient, server: Server, action: ChatInputCommandInteraction): Promise<Result>{
         const numberOfWinners = action.options.getInteger('winners', true)
         if(numberOfWinners < 1 || numberOfWinners > 20){
-            return this.error('commands.raffle.soundaway.limits.winner.count')
+            return this.error('commands.giveaway.soundaway.limits.winner.count')
         }
 
         const title = action.options.getString('title', false)
         if(title && title.length > 255){
-            return this.error('commands.raffle.soundaway.limits.title.length')
+            return this.error('commands.giveaway.soundaway.limits.title.length')
         }
 
         let pool = [], ch
@@ -54,26 +54,26 @@ export default class Soundaway extends Command{
                 .reduce((prev, curr) => prev.concat(curr), [])
 
             if(pool.length === 0){
-                return this.error('commands.raffle.soundaway.voice.channel.in.not.found.users')
+                return this.error('commands.giveaway.soundaway.voice.channel.in.not.found.users')
             }
 
-            ch = server.translate('commands.raffle.soundaway.voice.channel.all')
+            ch = server.translate('commands.giveaway.soundaway.voice.channel.all')
         }else{
             const channel = voice ?? (member as GuildMember)?.voice.channel
             if(!channel){
-                return this.error(member ? 'commands.raffle.soundaway.voice.channel.not.in.user' : 'commands.raffle.soundaway.voice.channel.not.found')
+                return this.error(member ? 'commands.giveaway.soundaway.voice.channel.not.in.user' : 'commands.giveaway.soundaway.voice.channel.not.found')
             }
 
             if(channel.type !== ChannelType.GuildVoice || !(channel instanceof VoiceChannel)){
-                return this.error('commands.raffle.soundaway.voice.channel.invalid')
+                return this.error('commands.giveaway.soundaway.voice.channel.invalid')
             }
 
             if(!channel.viewable){
-                return this.error('commands.raffle.soundaway.voice.channel.unauthorized')
+                return this.error('commands.giveaway.soundaway.voice.channel.unauthorized')
             }
 
             if(channel.members.size == 0){
-                return this.error('commands.raffle.soundaway.voice.channel.in.not.found.user')
+                return this.error('commands.giveaway.soundaway.voice.channel.in.not.found.user')
             }
 
             pool = [...channel.members.keys()]
@@ -90,23 +90,23 @@ export default class Soundaway extends Command{
         }
 
         const description = winners.length === 0 ?
-            server.translate('structures.raffle.winners.none.description') :
+            server.translate('structures.giveaway.winners.none.description') :
             winners.length === 1 ?
-                `${server.translate('structures.raffle.winners.single.description')}: <@${winners[0]}>` :
-                `${server.translate('structures.raffle.winners.plural.description')}:\n${winners.map(winner => `:small_blue_diamond: <@${winner}>`).join('\n')}`
+                `${server.translate('structures.giveaway.winners.single.description')}: <@${winners[0]}>` :
+                `${server.translate('structures.giveaway.winners.plural.description')}:\n${winners.map(winner => `:small_blue_diamond: <@${winner}>`).join('\n')}`
 
         const embed = new EmbedBuilder()
             .setAuthor({ name: title ? title : `🔊 ${ch}` })
             .setDescription([
                 `:medal: ${description}`,
-                `:reminder_ribbon: ${server.translate('structures.raffle.embed.fields.creator')}: ${action.member}`
+                `:reminder_ribbon: ${server.translate('structures.giveaway.embed.fields.creator')}: ${action.member}`
             ].join('\n'))
-            .setFooter({ text: `${server.translate('structures.raffle.embed.footer.text', numberOfWinners)} | ${server.translate('structures.raffle.embed.footer.finish')}` })
+            .setFooter({ text: `${server.translate('structures.giveaway.embed.footer.text', numberOfWinners)} | ${server.translate('structures.giveaway.embed.footer.finish')}` })
             .setTimestamp()
             .setColor('#36393F')
 
         await action.reply({
-            content: `:tada: **${server.translate('structures.raffle.messages.quick')}** :tada:`,
+            content: `:tada: **${server.translate('structures.giveaway.messages.quick')}** :tada:`,
             embeds: [embed]
         })
 

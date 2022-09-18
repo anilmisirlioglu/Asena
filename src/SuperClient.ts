@@ -19,7 +19,7 @@ import Version from './utils/Version';
 import Logger from './utils/Logger';
 import CommandHandler from './command/CommandHandler';
 import ActivityUpdater from './updater/ActivityUpdater';
-import RaffleTimeUpdater from './updater/RaffleTimeUpdater';
+import GiveawayTimeUpdater from './updater/GiveawayTimeUpdater';
 import ServerManager from './managers/ServerManager';
 import SetupManager from './setup/SetupManager';
 import SyntaxWebhook from './SyntaxWebhook';
@@ -46,7 +46,7 @@ export default abstract class SuperClient extends Client{
     private readonly interactionHandler: InteractionHandler = new InteractionHandler(this)
 
     private readonly activityUpdater: ActivityUpdater = new ActivityUpdater(this)
-    private readonly raffleTimeUpdater: RaffleTimeUpdater = new RaffleTimeUpdater(this)
+    private readonly giveawayTimeUpdater: GiveawayTimeUpdater = new GiveawayTimeUpdater(this)
     private readonly premiumUpdater: PremiumUpdater = new PremiumUpdater(this)
 
     readonly servers: ServerManager = new ServerManager()
@@ -89,8 +89,8 @@ export default abstract class SuperClient extends Client{
         return this.activityUpdater
     }
 
-    public getRaffleTimeUpdater(): RaffleTimeUpdater{
-        return this.raffleTimeUpdater
+    public getGiveawayTimeUpdater(): GiveawayTimeUpdater{
+        return this.giveawayTimeUpdater
     }
 
     public getPremiumUpdater(): PremiumUpdater{

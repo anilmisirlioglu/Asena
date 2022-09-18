@@ -10,7 +10,7 @@ export default class Premium extends Command{
     constructor(){
         super({
             name: 'premium',
-            group: Group.SERVER,
+            group: Group.Server,
             description: 'commands.server.premium.description',
             permission: undefined,
             examples: []

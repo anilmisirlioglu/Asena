@@ -14,7 +14,7 @@ export default class Survey extends Command{
     constructor(){
         super({
             name: 'survey',
-            group: Group.POLL,
+            group: Group.Poll,
             description: 'commands.survey.vote.description',
             permission: PermissionsBitField.Flags.Administrator,
             examples: [

@@ -8,8 +8,8 @@ export default class Finish extends Command{
     constructor(){
         super({
             name: 'finish',
-            group: Group.GIVEAWAY,
-            description: 'commands.raffle.end.description',
+            group: Group.Giveaway,
+            description: 'commands.giveaway.end.description',
             permission: PermissionsBitField.Flags.Administrator,
             examples: [
                 '',
@@ -24,18 +24,18 @@ export default class Finish extends Command{
             return this.error('global.invalid.id')
         }
 
-        const raffle = await (message_id ? server.raffles.get(message_id) : server.raffles.getLastCreated())
-        if(!raffle || !raffle.message_id){
-            return this.error('commands.raffle.end.not.found')
+        const giveaway = await (message_id ? server.giveaways.get(message_id) : server.giveaways.getLastCreated())
+        if(!giveaway || !giveaway.message_id){
+            return this.error('commands.giveaway.end.not.found')
         }
 
-        if(!raffle.isContinues()){
-            return this.error('commands.raffle.end.not.continues')
+        if(!giveaway.isContinues()){
+            return this.error('commands.giveaway.end.not.continues')
         }
 
         await Promise.all([
-            raffle.finish(client),
-            action.reply(server.translate('commands.raffle.end.success', raffle.prize, `<#${raffle.channel_id}>`))
+            giveaway.finish(client),
+            action.reply(server.translate('commands.giveaway.end.success', giveaway.prize, `<#${giveaway.channel_id}>`))
         ])
 
         return null

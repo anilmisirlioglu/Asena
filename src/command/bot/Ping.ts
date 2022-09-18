@@ -8,7 +8,7 @@ export default class Ping extends Command{
     constructor(){
         super({
             name: 'ping',
-            group: Group.BOT,
+            group: Group.Bot,
             description: 'commands.bot.ping.description',
             permission: undefined,
             examples: []

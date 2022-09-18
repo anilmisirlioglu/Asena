@@ -1,10 +1,10 @@
 import { ChatInputCommandInteraction, Colors, EmbedBuilder, PermissionsBitField } from 'discord.js'
 import Command, { Group, Result } from '../Command'
-import { RaffleLimits } from '../../Constants'
+import { GiveawayLimits } from '../../Constants'
 import SuperClient from '../../SuperClient';
-import { RaffleStatus } from '../../models/Raffle';
+import { GiveawayStatus } from '../../models/Giveaway';
 import Server from '../../structures/Server';
-import Raffle from '../../structures/Raffle';
+import Giveaway from '../../structures/Giveaway';
 import FlagValidator from '../../utils/FlagValidator';
 
 export default class Create extends Command{
@@ -12,8 +12,8 @@ export default class Create extends Command{
     constructor(){
         super({
             name: 'create',
-            group: Group.GIVEAWAY,
-            description: 'commands.raffle.create.description',
+            group: Group.Giveaway,
+            description: 'commands.giveaway.create.description',
             permission: PermissionsBitField.Flags.Administrator,
             examples: [
                 'winners: 1 time: 1h5m prize: Premium',
@@ -76,10 +76,10 @@ export default class Create extends Command{
             }
         }
 
-        const max = RaffleLimits[`MAX_COUNT${server.isPremium() ? '_PREMIUM' : ''}`]
-        const raffles = await server.raffles.getContinues()
-        if(raffles.length >= max){
-            return this.error('commands.raffle.create.limits.max.created', max)
+        const max = GiveawayLimits[`MAX_COUNT${server.isPremium() ? '_PREMIUM' : ''}`]
+        const giveaways = await server.giveaways.getContinues()
+        if(giveaways.length >= max){
+            return this.error('commands.giveaway.create.limits.max.created', max)
         }
 
         const finishAt: number = Date.now() + (Number(flags.time) * 1000)
@@ -88,7 +88,7 @@ export default class Create extends Command{
             server_id: action.guild.id,
             constituent_id: action.user.id,
             channel_id: action.channel.id,
-            status: 'CONTINUES' as RaffleStatus,
+            status: 'CONTINUES' as GiveawayStatus,
             finishAt: new Date(finishAt),
             message_id: null,
             ...flags
@@ -96,17 +96,17 @@ export default class Create extends Command{
 
         await action.deferReply({ ephemeral: true })
 
-        const raffle = new Raffle(Object.assign({ createdAt: new Date() }, data) as any, server.locale)
-        action.channel.send(raffle.getMessageOptions()).then(async $message => {
+        const giveaway = new Giveaway(Object.assign({ createdAt: new Date() }, data) as any, server.locale)
+        action.channel.send(giveaway.getMessageOptions()).then(async $message => {
             data.message_id = $message.id
 
-            await server.raffles.create(data)
+            await server.giveaways.create(data)
 
             await action.editReply({
-                content: server.translate('commands.raffle.create.successfully')
+                content: server.translate('commands.giveaway.create.successfully')
             })
         }).catch(async () => {
-            await action.editReply(':boom: ' + server.translate('commands.raffle.create.unauthorized'))
+            await action.editReply(':boom: ' + server.translate('commands.giveaway.create.unauthorized'))
         })
 
         return null

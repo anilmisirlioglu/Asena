@@ -12,7 +12,7 @@ export default class BotInfo extends Command{
     constructor(){
         super({
             name: 'botinfo',
-            group: Group.BOT,
+            group: Group.Bot,
             description: 'commands.bot.info.description',
             permission: undefined,
             examples: []

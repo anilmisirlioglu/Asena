@@ -1,19 +1,15 @@
 import { Snowflake } from 'discord.js';
-import RaffleModel, { IRaffle } from '../models/Raffle';
-import Raffle from '../structures/Raffle'
-import Timestamps from '../models/legacy/Timestamps';
-import ID from '../models/legacy/ID';
+import GiveawayModel, { IGiveaway } from '../models/Giveaway';
+import Giveaway, { SuperGiveaway } from '../structures/Giveaway'
 import Server from '../structures/Server';
 import Manager from './Manager';
 
-type SuperRaffle = IRaffle & Timestamps & ID
-
-export default class RaffleManager extends Manager<Snowflake, Raffle, typeof RaffleModel, IRaffle>{
+export default class GiveawayManager extends Manager<Snowflake, Giveaway, typeof GiveawayModel, IGiveaway>{
 
     private readonly server: Server
 
     constructor(server: Server){
-        super(RaffleModel)
+        super(GiveawayModel)
 
         this.server = server
     }
@@ -22,12 +18,12 @@ export default class RaffleManager extends Manager<Snowflake, Raffle, typeof Raf
         return 'message_id'
     }
 
-    protected new(data: IRaffle): Raffle{
-        return new Raffle(data, this.server.locale)
+    protected new(data: IGiveaway): Giveaway{
+        return new Giveaway(data, this.server.locale)
     }
 
-    public async getLastCreated(): Promise<Raffle | undefined>{
-        const search = await RaffleModel
+    public async getLastCreated(): Promise<Giveaway | undefined>{
+        const search = await GiveawayModel
             .findOne({ server_id: this.server.identifier_id })
             .sort({ createdAt: -1 })
 
@@ -36,8 +32,8 @@ export default class RaffleManager extends Manager<Snowflake, Raffle, typeof Raf
         return this.setCacheFromRawDocument(search)
     }
 
-    public async getContinues(): Promise<SuperRaffle[]>{
-        return RaffleModel.find({
+    public async getContinues(): Promise<SuperGiveaway[]>{
+        return GiveawayModel.find({
             server_id: this.server.server_id,
             $or: [
                 { status: 'CONTINUES' },

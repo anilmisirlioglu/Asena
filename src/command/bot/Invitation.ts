@@ -9,7 +9,7 @@ export default class Invitation extends Command{
     constructor(){
         super({
             name: 'invite',
-            group: Group.BOT,
+            group: Group.Bot,
             description: 'commands.bot.invitation.description',
             permission: undefined,
             examples: []

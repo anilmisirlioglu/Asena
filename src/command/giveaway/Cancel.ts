@@ -9,8 +9,8 @@ export default class Cancel extends Command{
     constructor(){
         super({
             name: 'cancel',
-            group: Group.GIVEAWAY,
-            description: 'commands.raffle.cancel.description',
+            group: Group.Giveaway,
+            description: 'commands.giveaway.cancel.description',
             permission: PermissionsBitField.Flags.Administrator,
             examples: [
                 '',
@@ -25,22 +25,22 @@ export default class Cancel extends Command{
             return this.error('global.invalid.id')
         }
 
-        const raffle = await (message_id ? server.raffles.get(message_id) : server.raffles.getLastCreated())
-        if(!raffle || !raffle.message_id){
-            return this.error('commands.raffle.cancel.not.found')
+        const giveaway = await (message_id ? server.giveaways.get(message_id) : server.giveaways.getLastCreated())
+        if(!giveaway || !giveaway.message_id){
+            return this.error('commands.giveaway.cancel.not.found')
         }
 
-        if(!raffle.isCancelable()){
-            return this.error('commands.raffle.cancel.not.cancelable')
+        if(!giveaway.isCancelable()){
+            return this.error('commands.giveaway.cancel.not.cancelable')
         }
 
-        await raffle.setCanceled()
-        const $message = await client.fetchMessage(raffle.server_id, raffle.channel_id, raffle.message_id)
+        await giveaway.setCanceled()
+        const $message = await client.fetchMessage(giveaway.server_id, giveaway.channel_id, giveaway.message_id)
         if($message){
             await $message.delete()
         }
 
-        await action.reply(`${Emojis.CONFETTI_EMOJI} ${server.translate('commands.raffle.cancel.success')}`)
+        await action.reply(`${Emojis.CONFETTI_EMOJI} ${server.translate('commands.giveaway.cancel.success')}`)
 
         return null
     }

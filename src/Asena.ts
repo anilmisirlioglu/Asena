@@ -1,6 +1,6 @@
 import SuperClient from './SuperClient';
 import { Emojis } from './Constants';
-import { validateRaffleText } from './utils/Utils';
+import { validateGiveawayText } from './utils/Utils';
 
 export default class Asena extends SuperClient{
 
@@ -23,17 +23,17 @@ export default class Asena extends SuperClient{
         this.on('ready', () => {
             this.init()
 
-            this.getRaffleTimeUpdater().listenReactions()
+            this.getGiveawayTimeUpdater().listenReactions()
         })
 
-        // if it's a raffle message, delete the lottery
+        // if it's a giveaway message, delete the lottery
         this.on('messageDelete', async message => {
             if(message.author?.id === this.user.id){
                 const server = await this.servers.get(message.guild?.id)
-                if(server && message.content && validateRaffleText(server, message.content)){
-                    const raffle = await server.raffles.get(message.id)
-                    if(raffle && raffle.isContinues()){
-                        await raffle.delete()
+                if(server && message.content && validateGiveawayText(server, message.content)){
+                    const giveaway = await server.giveaways.get(message.id)
+                    if(giveaway && giveaway.isContinues()){
+                        await giveaway.delete()
                     }
                 }
             }

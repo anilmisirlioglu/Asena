@@ -1,6 +1,6 @@
 import ApplicationCommand from '../ApplicationCommand';
 
-export default class Raffles extends ApplicationCommand{
+export default class Giveaways extends ApplicationCommand{
 
     build(){
         this.setName('giveaways')

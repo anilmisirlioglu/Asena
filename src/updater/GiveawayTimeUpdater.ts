@@ -2,9 +2,9 @@ import Factory from '../Factory';
 import { Bot, Emojis } from '../Constants';
 import { MessageReaction, PartialUser, User } from 'discord.js';
 import CooldownService from '../services/CooldownService';
-import Raffle from '../structures/Raffle';
+import Giveaway from '../structures/Giveaway';
 
-export default class RaffleTimeUpdater extends Factory{
+export default class GiveawayTimeUpdater extends Factory{
 
     private cooldownService: CooldownService = new CooldownService(Bot.COOLDOWN_TIME)
 
@@ -20,10 +20,10 @@ export default class RaffleTimeUpdater extends Factory{
                 this.getCooldownService().checkCooldown(reaction.message.id)
             ){
                 const server = await this.client.servers.get(reaction.message.guild.id)
-                const raffle = await server.raffles.get(reaction.message.id)
-                if(raffle && (raffle.status === 'CONTINUES' || raffle.status === 'ALMOST_DONE')){
+                const giveaway = await server.giveaways.get(reaction.message.id)
+                if(giveaway && (giveaway.status === 'CONTINUES' || giveaway.status === 'ALMOST_DONE')){
                     let isOk = true
-                    const servers = raffle.servers
+                    const servers = giveaway.servers
                     if(servers.length > 0){
                         const fetchUserFromServers = servers.map(async partial => {
                             return this.client.fetchMember(partial.id, user.id)
@@ -35,7 +35,7 @@ export default class RaffleTimeUpdater extends Factory{
                         }
                     }
 
-                    const allowedRoles = raffle.allowedRoles
+                    const allowedRoles = giveaway.allowedRoles
                     if(allowedRoles.length > 0){
                         const member = await reaction.message.guild.members.fetch(user.id)
                         const allowedRolesResult = allowedRoles.map(role_id => !!member.roles.cache.get(role_id))
@@ -45,12 +45,12 @@ export default class RaffleTimeUpdater extends Factory{
                     }
 
                     if(isOk){
-                        const remaining = Math.ceil((raffle.finishAt.getTime() - Date.now()) / 1000)
+                        const remaining = Math.ceil((giveaway.finishAt.getTime() - Date.now()) / 1000)
                         if(remaining > 12){
                             this.getCooldownService().setCooldown(reaction.message.id)
                             await reaction.message.edit({
-                                content: Raffle.getStartMessage(),
-                                embeds: [raffle.buildEmbed()]
+                                content: Giveaway.getStartMessage(),
+                                embeds: [giveaway.buildEmbed()]
                             })
                         }
                     }else{

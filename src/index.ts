@@ -7,7 +7,7 @@ import ServerStatsPacket from './protocol/ServerStatsPacket';
 import { findFlagValue } from './utils/FlagParser';
 import { updateDiscordBotsGGStats, updateTopGGStats } from './updater/StatsUpdater';
 import TaskScheduler from './scheduler/TaskScheduler';
-import AsyncRaffleTask from './scheduler/tasks/AsyncRaffleTask';
+import AsyncGiveawayTask from './scheduler/tasks/AsyncGiveawayTask';
 import AsyncSurveyTask from './scheduler/tasks/AsyncSurveyTask';
 import MongoDB from './MongoDB';
 import { isDevBuild } from './utils/Version';
@@ -78,7 +78,7 @@ const mongodb = new MongoDB()
 
 const scheduleAsyncTasks = () => {
     const scheduler = new TaskScheduler(manager, [
-        new AsyncRaffleTask(),
+        new AsyncGiveawayTask(),
         new AsyncSurveyTask()
     ])
 

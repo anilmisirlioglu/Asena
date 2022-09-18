@@ -4,7 +4,7 @@ import SuperClient from '../../SuperClient';
 import Server from '../../structures/Server';
 import { ChatInputCommandInteraction, PermissionsBitField } from 'discord.js';
 import FlagValidator from '../../utils/FlagValidator';
-import { prefix, RaffleLimits } from '../../Constants';
+import { prefix, GiveawayLimits } from '../../Constants';
 import { secondsToString } from '../../utils/DateTimeHelper';
 
 const RED_TICK = '<:red_tick:737035767150411889>'
@@ -16,8 +16,8 @@ class Edit extends Command{
     constructor(){
         super({
             name: 'edit',
-            group: Group.GIVEAWAY,
-            description: 'commands.raffle.edit.description',
+            group: Group.Giveaway,
+            description: 'commands.giveaway.edit.description',
             permission: PermissionsBitField.Flags.Administrator,
             examples: [
                 'option: color value: FFFFFF',
@@ -38,21 +38,21 @@ class Edit extends Command{
 
         const message_id = action.options.getString('giveaway', false)
         if(message_id && !/^\d{17,19}$/g.test(message_id)){
-            return this.error('commands.raffle.edit.invalid.id')
+            return this.error('commands.giveaway.edit.invalid.id')
         }
 
-        const raffle = await (message_id ? server.raffles.get(message_id) : server.raffles.getLastCreated())
-        if(!raffle || !raffle.message_id){
-            return this.error('commands.raffle.edit.not.found')
+        const giveaway = await (message_id ? server.giveaways.get(message_id) : server.giveaways.getLastCreated())
+        if(!giveaway || !giveaway.message_id){
+            return this.error('commands.giveaway.edit.not.found')
         }
 
-        if(!raffle.isContinues()){
-            return this.error('commands.raffle.edit.not.continues')
+        if(!giveaway.isContinues()){
+            return this.error('commands.giveaway.edit.not.continues')
         }
 
-        const fetch = await client.fetchMessage(raffle.server_id, raffle.channel_id, raffle.message_id)
+        const fetch = await client.fetchMessage(giveaway.server_id, giveaway.channel_id, giveaway.message_id)
         if(!fetch){
-            return this.error('commands.raffle.edit.deleted')
+            return this.error('commands.giveaway.edit.deleted')
         }
 
         const validator = new FlagValidator(client, action)
@@ -89,7 +89,7 @@ class Edit extends Command{
             case 'rewardRoles':
                 const mode = action.options.getString('operator', false)
                 if(mode !== '+' && mode !== '-'){
-                    await action.reply(RED_TICK + ' ' + server.translate('commands.raffle.edit.invalid.mode', `${prefix}edit rewardRoles + rol`))
+                    await action.reply(RED_TICK + ' ' + server.translate('commands.giveaway.edit.invalid.mode', `${prefix}edit rewardRoles + rol`))
 
                     return null
                 }
@@ -103,10 +103,10 @@ class Edit extends Command{
 
                 const modeIsSum = mode === '+'
                 const validatedRoles: string[] = validateRoles.result
-                const rewardRoles = raffle.rewardRoles
+                const rewardRoles = giveaway.rewardRoles
                 const rewardRoleCount = modeIsSum ? rewardRoles.length + validatedRoles.length : rewardRoles.length - validatedRoles.length
-                if(rewardRoleCount > RaffleLimits.MAX_REWARD_ROLE_COUNT){
-                    await action.reply(RED_TICK + ' ' + server.translate('commands.raffle.edit.role.max', RaffleLimits.MAX_REWARD_ROLE_COUNT))
+                if(rewardRoleCount > GiveawayLimits.MAX_REWARD_ROLE_COUNT){
+                    await action.reply(RED_TICK + ' ' + server.translate('commands.giveaway.edit.role.max', GiveawayLimits.MAX_REWARD_ROLE_COUNT))
 
                     return null
                 }
@@ -114,7 +114,7 @@ class Edit extends Command{
                 for(const role of validatedRoles){
                     const include = rewardRoles.includes(role)
                     if(modeIsSum ? include : !include){
-                        await action.reply(RED_TICK + ' ' + server.translate('commands.raffle.edit.role.' + (modeIsSum ? 'already' : 'not.found'), `<@&${role}>`))
+                        await action.reply(RED_TICK + ' ' + server.translate('commands.giveaway.edit.role.' + (modeIsSum ? 'already' : 'not.found'), `<@&${role}>`))
 
                         return null
                     }
@@ -137,13 +137,13 @@ class Edit extends Command{
             case 'time':
                 const timeMode = action.options.getString('operator', false)
                 if(timeMode !== '+' && timeMode !== '-'){
-                    await action.reply(RED_TICK + ' ' + server.translate('commands.raffle.edit.invalid.mode', `${prefix}edit time + 1m`))
+                    await action.reply(RED_TICK + ' ' + server.translate('commands.giveaway.edit.invalid.mode', `${prefix}edit time + 1m`))
 
                     return null
                 }
 
-                if(Date.now() > +raffle.finishAt + (1000 * 60 * 2)){
-                    await action.reply(RED_TICK + ' ' + server.translate('commands.raffle.edit.time.little.left'))
+                if(Date.now() > +giveaway.finishAt + (1000 * 60 * 2)){
+                    await action.reply(RED_TICK + ' ' + server.translate('commands.giveaway.edit.time.little.left'))
 
                     return null
                 }
@@ -155,29 +155,29 @@ class Edit extends Command{
                     return null
                 }
 
-                let finishAt = +raffle.finishAt, successText
+                let finishAt = +giveaway.finishAt, successText
                 const result = validateTime.result * 1000 // second
                 switch(timeMode){
                     case '-':
                         if(1000 * 2 * 60 > (finishAt - result) - Date.now()){
-                            await action.reply(RED_TICK + ' ' + server.translate('commands.raffle.edit.time.down.error'))
+                            await action.reply(RED_TICK + ' ' + server.translate('commands.giveaway.edit.time.down.error'))
 
                             return null
                         }
 
                         finishAt = finishAt - result
-                        successText = server.translate('commands.raffle.edit.time.down.success', secondsToString(result / 1000, server.locale).toString())
+                        successText = server.translate('commands.giveaway.edit.time.down.success', secondsToString(result / 1000, server.locale).toString())
                         break
 
                     case '+':
-                        if(Date.now() - (finishAt + result) > RaffleLimits.MAX_TIME){
-                            await action.reply(RED_TICK + ' ' + server.translate('commands.raffle.edit.time.up.error'))
+                        if(Date.now() - (finishAt + result) > GiveawayLimits.MAX_TIME){
+                            await action.reply(RED_TICK + ' ' + server.translate('commands.giveaway.edit.time.up.error'))
 
                             return null
                         }
 
                         finishAt = finishAt + result
-                        successText = server.translate('commands.raffle.edit.time.up.success', secondsToString(result / 1000, server.locale).toString())
+                        successText = server.translate('commands.giveaway.edit.time.up.success', secondsToString(result / 1000, server.locale).toString())
                         break
                 }
 
@@ -213,12 +213,12 @@ class Edit extends Command{
         }
 
         await Promise.all([
-            raffle.update(query).then(async () => {
+            giveaway.update(query).then(async () => {
                 await fetch.edit({
-                    embeds: [raffle.buildEmbed()]
+                    embeds: [giveaway.buildEmbed()]
                 })
             }),
-            action.reply(GREEN_TICK + ' ' + server.translate('commands.raffle.edit.success.' + success, ...vars))
+            action.reply(GREEN_TICK + ' ' + server.translate('commands.giveaway.edit.success.' + success, ...vars))
         ])
 
         return null
