@@ -40,7 +40,7 @@ export default class Giveaways extends Command{
                     giveaway: `**[${server.translate('commands.giveaway.list.click')}](${this.toDiscordMessageURL(giveaway)})**`
                 }
 
-                embed.setFields([
+                embed.addFields([
                     {
                         name: `${i++}. ${giveaway.prize}`,
                         value: Object.entries(data).map(([key, value]) => {
