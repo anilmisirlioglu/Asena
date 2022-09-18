@@ -232,7 +232,10 @@
           "already": "Zaten bu çekilişe katılmışsınız.",
           "leave": "Çekilişten Ayrıl",
           "constituent": "Çekilişi oluşturan kişi çekilişe katılamaz.",
-          "conditions": "Bu çekilişe katılabilmeniz için katılım şartları sağlamalısınız."
+          "conditions": {
+            "roles": "Bu çekilişe katılabilmek için şu rollere de sahip olmalısınız: {0}",
+            "servers": "Bu çekilişe katılabilmek için şu sunucularda da bulunmalısınız: {0}"
+          }
         },
         "leave": {
           "already": "Bu çekilişten zaten ayrılmışsınız",

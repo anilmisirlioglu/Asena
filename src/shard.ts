@@ -7,6 +7,7 @@ import { findFlagValue } from './utils/FlagParser';
 import Logger from './utils/Logger';
 import { isDevBuild } from './utils/Version';
 import { Packet } from './protocol/packets';
+import './builtin'
 
 const isProduction: boolean = findFlagValue('--production') ?? false
 
@@ -62,11 +63,3 @@ const handler = async () => {
 }
 
 setTimeout(handler)
-
-String.prototype.removeWhiteSpaces = function(){
-    return this.replace(/\s|\x00|\x0B/g,'')
-}
-
-Array.prototype.checkIfDuplicateExists = function(){
-    return new Set(this).size !== this.length
-}

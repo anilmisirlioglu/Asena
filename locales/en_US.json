@@ -243,7 +243,10 @@
           "already": "You have already joined this giveaway.",
           "leave": "Leave Giveaway",
           "constituent": "The person who created the giveaway cannot participate in the giveaway.",
-          "conditions": "In order to participate in this giveaway, you must provide participation conditions."
+          "conditions": {
+            "roles": "In order to participate in this giveaway, you must have these roles: {0}",
+            "servers": "In order to participate in this giveaway, you should also be on these servers: {0}"
+          }
         },
         "leave": {
           "already": "You have already leaved this giveaway",

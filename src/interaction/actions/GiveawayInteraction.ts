@@ -1,4 +1,12 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, ChannelType } from 'discord.js';
+import {
+    ActionRowBuilder,
+    bold,
+    ButtonBuilder,
+    ButtonInteraction,
+    ButtonStyle,
+    ChannelType, hyperlink,
+    roleMention
+} from 'discord.js';
 import Interaction, { Action } from '../Interaction';
 import Server from '../../structures/Server';
 import Raffle from '../../structures/Raffle';
@@ -84,10 +92,11 @@ export default class GiveawayInteraction extends Interaction<ButtonInteraction>{
                 return this.client.fetchMember(partial.id, userId)
             })
 
-            const fetchServerResult = await Promise.all(fetchUserFromServers)
-            if(fetchServerResult.filter(Boolean).length !== servers.length){
+            const fetchServerResult = (await Promise.all(fetchUserFromServers)).filter(Boolean)
+            if(fetchServerResult.length !== servers.length){
+                const diff = servers.filter(server => !fetchServerResult.map(member => member.guild.id).includes(server.id));
                 return interaction.reply({
-                    content: server.translate('structures.raffle.join.conditions'),
+                    content: server.translate('structures.raffle.join.conditions.servers', diff.map(server => hyperlink(bold(server.name), server.invite)).join(', ')),
                     ephemeral: true
                 })
             }
@@ -96,10 +105,11 @@ export default class GiveawayInteraction extends Interaction<ButtonInteraction>{
         const allowedRoles = giveaway.allowedRoles
         if(allowedRoles.length > 0){
             const member = await interaction.guild.members.fetch(userId)
-            const allowedRolesResult = allowedRoles.map(role_id => !!member.roles.cache.get(role_id))
-            if(allowedRolesResult.filter(item => item).length !== allowedRoles.length){
+            const roles = allowedRoles.map(roleId => member.roles.cache.get(roleId)).filter(Boolean)
+            if(roles.length !== allowedRoles.length){
+                const diff = allowedRoles.difference(roles.map(role => role.id))
                 return interaction.reply({
-                    content: server.translate('structures.raffle.join.conditions'),
+                    content: server.translate('structures.raffle.join.conditions.roles', diff.map(id => roleMention(id)).join(', ')),
                     ephemeral: true
                 })
             }

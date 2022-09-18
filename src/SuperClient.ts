@@ -5,7 +5,7 @@ import {
     DiscordAPIError,
     EmbedBuilder,
     Guild,
-    GuildChannel,
+    GuildChannel, GuildMember,
     HTTPError,
     IntentsBitField,
     Message,
@@ -134,7 +134,7 @@ export default abstract class SuperClient extends Client{
      * @param guildID
      * @param memberID
      */
-    async fetchMember(guildID: Snowflake, memberID: Snowflake){
+    async fetchMember(guildID: Snowflake, memberID: Snowflake): Promise<GuildMember>{
         const fetch = await this.shard.broadcastEval((client, ctx) => {
             const guild = client.guilds.cache.get(ctx.guildID)
             if(guild){
