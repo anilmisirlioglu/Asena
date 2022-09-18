@@ -1,5 +1,11 @@
 String.prototype.removeWhiteSpaces = function(){
-    return this.replace(/\s|\x00|\x0B/g,'')
+    return this.replace(/\s|\x00|\x0B/g, '')
+}
+
+String.prototype.toTitleCase = function(){
+    return this.replace(/\w\S*/g, text => {
+        return text.charAt(0).toUpperCase() + text.substring(1).toLowerCase();
+    })
 }
 
 Array.prototype.checkIfDuplicateExists = function(){

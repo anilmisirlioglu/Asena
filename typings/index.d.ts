@@ -1,6 +1,7 @@
 declare global{
     interface String{
         removeWhiteSpaces(): string
+        toTitleCase(): string
     }
 
     interface Array<T>{

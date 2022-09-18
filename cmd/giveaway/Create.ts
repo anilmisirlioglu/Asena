@@ -30,8 +30,8 @@ export default class Create extends ApplicationCommand{
         this.addStringOption(option => option
             .setName('color')
             .setNameLocalizations({ tr: 'renk' })
-            .setDescription('Giveaways embed color (e.g: RED, #EB4034)')
-            .setDescriptionLocalizations({ tr: 'Çekiliş embed rengi (örnek: RED, #EB4034)' })
+            .setDescription('Giveaways embed color (e.g: Red, #EB4034)')
+            .setDescriptionLocalizations({ tr: 'Çekiliş embed rengi (örnek: Red, #EB4034)' })
         )
         this.addStringOption(option => option
             .setName('servers')

@@ -144,7 +144,23 @@ export const Flags: FlagMap = {
         }
     },
     color: async (client, action, value: string) => {
-        const matchColor = value.removeWhiteSpaces().match(/#?(?:[0-9a-fA-F]{3}){1,2}|(RED|WHITE|AQUA|GREEN|BLUE|YELLOW|PURPLE|LUMINOUS_VIVID_PINK|GOLD|ORANGE|GREY|NAVY|RANDOM|DARKER_GREY|DARK_AQUA|DARK_GREEN|DARK_BLUE|DARK_PURPLE|DARK_VIVID_PINK|DARK_GOLD|DARK_ORANGE|DARK_RED|DARK_GREY|LIGHT_GREY|DARK_NAVY)/g)
+        value = value.removeWhiteSpaces()
+        if(value in Colors){
+            return {
+                ok: true,
+                result: value
+            }
+        }
+
+        value = value.toTitleCase()
+        if(value in Colors){
+            return {
+                ok: true,
+                result: value
+            }
+        }
+
+        const matchColor = value.match(/#?(?:[0-9a-fA-F]{3}){1,2}/g)
         if(!matchColor || matchColor.length === 0){
             return {
                 ok: false,
