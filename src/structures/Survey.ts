@@ -19,6 +19,7 @@ import { Emojis } from '../Constants';
 import SuperClient from '../SuperClient';
 import Server from './Server';
 import { table } from '../utils/Table';
+import { Actions } from '../interaction/actions/enums';
 
 type SuperSurvey = ISurvey & Timestamps & ID
 
@@ -77,12 +78,12 @@ class Survey extends Structure<typeof SurveyModel, SuperSurvey>{
                     .setTitle(this.title)
                     .setFields([
                         {
-                            name: `<a:yes:${Emojis.AGREE_EMOJI_ID}> (${server.translate('global.yes')})`,
+                            name: `<a:yes:${Emojis.AGREE_EMOJI_ID}> ${server.translate('global.yes')}`,
                             value: agreeCount.toString(),
                             inline: true,
                         },
                         {
-                            name: `<a:no:${Emojis.DISAGREE_EMOJI_ID}> (${server.translate('global.no')})`,
+                            name: `<a:no:${Emojis.DISAGREE_EMOJI_ID}> ${server.translate('global.no')}`,
                             value: disagreeCount.toString(),
                             inline: true,
                         }
@@ -159,23 +160,23 @@ class Survey extends Structure<typeof SurveyModel, SuperSurvey>{
         })
     }
 
-    private reverseAnswer = (answer: SurveyAnswer): SurveyAnswer => answer == SurveyAnswer.TRUE ? SurveyAnswer.FALSE : SurveyAnswer.TRUE
+    private reverseAnswer = (answer: SurveyAnswer): SurveyAnswer => answer == SurveyAnswer.True ? SurveyAnswer.False : SurveyAnswer.True
 
     public static buildComponents(server: Server, countTrueAnswers: number = 0, countFalseAnswers: number = 0): ActionRowBuilder<ButtonBuilder>{
         return new ActionRowBuilder<ButtonBuilder>()
             .addComponents(
                 new ButtonBuilder()
-                    .setCustomId(`survey:${SurveyAnswer.TRUE}`)
+                    .setCustomId(`survey:${SurveyAnswer.True}`)
                     .setLabel(`(${countTrueAnswers}) ${server.translate('global.yes')}`)
                     .setStyle(ButtonStyle.Success)
                     .setEmoji('<a:yes:721180088686870549>'),
                 new ButtonBuilder()
-                    .setCustomId(`survey:${SurveyAnswer.FALSE}`)
+                    .setCustomId(`survey:${SurveyAnswer.False}`)
                     .setLabel(`(${countFalseAnswers}) ${server.translate('global.no')}`)
                     .setStyle(ButtonStyle.Danger)
                     .setEmoji('<a:no:721179958378233887>'),
                 new ButtonBuilder()
-                    .setCustomId(`survey:attendees`)
+                    .setCustomId(`survey:${Actions.Survey.Attendees}`)
                     .setLabel(server.translate('structures.survey.attendees'))
                     .setStyle(ButtonStyle.Primary)
                     .setEmoji('<a:nitro:736983658803626044>')
@@ -184,8 +185,8 @@ class Survey extends Structure<typeof SurveyModel, SuperSurvey>{
 
     public buildComponents = (server: Server): ActionRowBuilder<ButtonBuilder> => Survey.buildComponents(server, this.countTrueAnswers(), this.countFalseAnswers())
 
-    private countTrueAnswers = (): number => this.answers.get(SurveyAnswer.TRUE).length
-    private countFalseAnswers = (): number => this.answers.get(SurveyAnswer.FALSE).length
+    private countTrueAnswers = (): number => this.answers.get(SurveyAnswer.True).length
+    private countFalseAnswers = (): number => this.answers.get(SurveyAnswer.False).length
 
 }
 

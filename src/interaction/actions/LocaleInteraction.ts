@@ -2,13 +2,14 @@ import Interaction, { Action } from '../Interaction';
 import { SelectMenuInteraction } from 'discord.js';
 import LanguageManager from '../../language/LanguageManager';
 import Server from '../../structures/Server';
+import { Actions } from './enums';
 
 export default class LocaleInteraction extends Interaction<SelectMenuInteraction>{
 
     constructor(){
         super({
             identifier: 'locale',
-            actions: ['locale']
+            actions: [Actions.Locale.Locale]
         })
     }
 

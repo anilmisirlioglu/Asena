@@ -1,16 +1,20 @@
-import Interaction, { Action } from '../Interaction';
 import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, ChannelType } from 'discord.js';
+import Interaction, { Action } from '../Interaction';
 import Server from '../../structures/Server';
 import Raffle from '../../structures/Raffle';
 import ID from '../ID';
 import { isDevBuild } from '../../utils/Version';
+import { Actions } from './enums';
 
 export default class GiveawayInteraction extends Interaction<ButtonInteraction>{
 
     constructor(){
         super({
             identifier: 'giveaway',
-            actions: ['join', 'leave']
+            actions: [
+                Actions.Giveaway.Join,
+                Actions.Giveaway.Leave
+            ]
         })
     }
 
@@ -31,9 +35,9 @@ export default class GiveawayInteraction extends Interaction<ButtonInteraction>{
         }
 
         switch(action.key){
-            case 'join':
+            case Actions.Giveaway.Join:
                 return this.handleJoin(server, giveaway, interaction)
-            case 'leave':
+            case Actions.Giveaway.Leave:
                 return this.handleLeave(server, giveaway, interaction)
         }
     }
@@ -49,7 +53,7 @@ export default class GiveawayInteraction extends Interaction<ButtonInteraction>{
                         new ButtonBuilder()
                             .setCustomId(new ID()
                                 .setIdentifier('giveaway')
-                                .setAction('leave')
+                                .setAction(Actions.Giveaway.Leave)
                                 .addKVPair('giveaway', giveaway.message_id)
                                 .toString()
                             )
@@ -58,7 +62,7 @@ export default class GiveawayInteraction extends Interaction<ButtonInteraction>{
                         new ButtonBuilder()
                             .setCustomId(new ID()
                                 .setIdentifier('general')
-                                .setAction('cancel')
+                                .setAction(Actions.General.Cancel)
                                 .toString()
                             )
                             .setLabel(server.translate('global.cancel'))

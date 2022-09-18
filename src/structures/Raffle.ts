@@ -26,6 +26,7 @@ import SuperClient from '../SuperClient';
 import RandomArray from '../utils/RandomArray';
 import LanguageManager from '../language/LanguageManager';
 import { parseGiveawayTimerURL } from '../utils/Utils';
+import { Actions } from '../interaction/actions/enums';
 
 type SuperRaffle = IRaffle & Timestamps & ID
 
@@ -345,7 +346,7 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
         return new ActionRowBuilder<ButtonBuilder>()
             .addComponents(
                 new ButtonBuilder()
-                    .setCustomId(`giveaway:join`)
+                    .setCustomId(`giveaway:${Actions.Giveaway.Join}`)
                     .setLabel(`(${this.participants.length || 0}) ${this.translate('global.join')}`)
                     .setStyle(ButtonStyle.Success)
                     .setEmoji('🎉')
