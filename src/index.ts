@@ -1,6 +1,5 @@
 import dotenv from 'dotenv';
 import Logger from './utils/Logger';
-import { ShardingManager } from 'discord.js';
 import { parseAsenaASCIIArt } from './utils/ASCII';
 import TextFormat from './utils/TextFormat';
 import ServerStatsPacket from './protocol/ServerStatsPacket';
@@ -12,9 +11,8 @@ import AsyncSurveyTask from './scheduler/tasks/AsyncSurveyTask';
 import MongoDB from './MongoDB';
 import { isDevBuild } from './utils/Version';
 import './telemetry/TelemetryServer';
-import CommandMetric from './telemetry/metrics/CommandMetric';
-import { ProcessPacketType } from './protocol/ProcessPacket';
 import ProcessMetric from './telemetry/metrics/ProcessMetric';
+import ShardingManager from './ShardingManager';
 
 dotenv.config({
     path: `${process.cwd()}/.env${isDevBuild ? '.local' : ''}`
@@ -25,36 +23,13 @@ TextFormat.init()
 console.clear()
 console.log(TextFormat.toANSI(parseAsenaASCIIArt()))
 
-const shards: "auto" | number = findFlagValue('shard') ?? "auto"
 const manager = new ShardingManager('./build/src/shard.js', {
-    totalShards: shards,
+    totalShards: findFlagValue('shard') ?? "auto",
     token: process.env.TOKEN,
     shardArgs: [`--production=${!isDevBuild}`]
 })
 
 const logger = new Logger('main')
-
-const commandMetric = new CommandMetric()
-
-manager.on('shardCreate', async shard => {
-    logger.info(`Shard ${shard.id} launched.`)
-
-    shard.on('ready', () => {
-        logger.info(`Shard ${shard.id} ready.`)
-    })
-
-    shard.on('disconnect', () => {
-        logger.info(`Shard ${shard.id} disconnected.`)
-    })
-
-    shard.on('message', message => {
-        switch(message.type){
-            case ProcessPacketType.Command:
-                commandMetric.observe(message.command)
-                break
-        }
-    })
-})
 
 const pushUpdateActivityPacket = async () => {
     const fetch = await manager.fetchClientValues('guilds.cache.size') as number[]
@@ -90,16 +65,20 @@ const handler = async () => {
 
     await Promise.all([
         mongodb.connect(),
-        manager.spawn({ timeout: -1 })
+        manager.spawn()
     ])
 
-    logger.debug('All shards deployed.')
+    logger.debug('All shards launched.')
 
-    pushUpdateActivityPacket().then(() => {
-        setInterval(pushUpdateActivityPacket, 1000 * 60 * 5) // Sends a packet to update the server count every 5 minutes
+    manager.on('allShardsDeploy', () => {
+        logger.debug('All shards deployed.')
+
+        pushUpdateActivityPacket().then(() => {
+            setInterval(pushUpdateActivityPacket, 1000 * 60 * 5) // Sends a packet to update the server count every 5 minutes
+        })
+
+        scheduleAsyncTasks()
     })
-
-    scheduleAsyncTasks()
 }
 
 setTimeout(handler)
