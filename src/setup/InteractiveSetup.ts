@@ -97,16 +97,16 @@ export default class InteractiveSetup extends EventEmitter{
                             }
                         }else{
                             if(phase.skippable){
-                                this.emit('message', Emojis.RUBY_EMOJI + ' ' + this.server.translate('commands.raffle.setup.phases.skip.success', this.currentPhaseIndex + 1))
+                                this.emit('message', Emojis.RUBY_EMOJI + ' ' + this.server.translate('commands.giveaway.setup.phases.skip.success', this.currentPhaseIndex + 1))
                                 this.dataStore.set(this.currentPhaseIndex, null)
                                 this.next()
                             }else{
-                                this.emit('message', ':boom: ' + this.server.translate('commands.raffle.setup.phases.skip.error'))
+                                this.emit('message', ':boom: ' + this.server.translate('commands.giveaway.setup.phases.skip.error'))
                                 this.setPhaseListener(false)
                             }
                         }
                     }else{
-                        this.stop('commands.raffle.setup.canceled')
+                        this.stop('commands.giveaway.setup.canceled')
                     }
                 }
             }else{
@@ -123,7 +123,7 @@ export default class InteractiveSetup extends EventEmitter{
     private setTimeoutTiming(){
         this.timer = setTimeout(async () => {
             if(!this.isItOver){
-                this.stop('commands.raffle.setup.timeout')
+                this.stop('commands.giveaway.setup.timeout')
             }
         }, this.timeout * 1000)
     }

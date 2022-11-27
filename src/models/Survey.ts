@@ -13,8 +13,8 @@ export interface ISurvey extends Document{
 }
 
 export enum SurveyAnswer{
-    TRUE = 'true',
-    FALSE = 'false'
+    True = 'true',
+    False = 'false'
 }
 
 const SurveySchema = new Schema({
@@ -44,8 +44,8 @@ const SurveySchema = new Schema({
         of: Array,
         required: true,
         default: {
-            [SurveyAnswer.TRUE]: [],
-            [SurveyAnswer.FALSE]: []
+            [SurveyAnswer.True]: [],
+            [SurveyAnswer.False]: []
         }
     }
 }, {

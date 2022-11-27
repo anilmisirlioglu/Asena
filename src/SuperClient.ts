@@ -1,14 +1,17 @@
 import {
+    ChannelType,
     Client,
+    Colors,
     DiscordAPIError,
+    EmbedBuilder,
     Guild,
-    GuildChannel,
+    GuildChannel, GuildMember,
     HTTPError,
-    Intents,
-    LimitedCollection,
+    IntentsBitField,
     Message,
-    MessageEmbed,
     Options,
+    Partials,
+    PermissionsBitField,
     Snowflake,
     TextChannel
 } from 'discord.js';
@@ -16,7 +19,7 @@ import Version from './utils/Version';
 import Logger from './utils/Logger';
 import CommandHandler from './command/CommandHandler';
 import ActivityUpdater from './updater/ActivityUpdater';
-import RaffleTimeUpdater from './updater/RaffleTimeUpdater';
+import GiveawayTimeUpdater from './updater/GiveawayTimeUpdater';
 import ServerManager from './managers/ServerManager';
 import SetupManager from './setup/SetupManager';
 import SyntaxWebhook from './SyntaxWebhook';
@@ -43,7 +46,7 @@ export default abstract class SuperClient extends Client{
     private readonly interactionHandler: InteractionHandler = new InteractionHandler(this)
 
     private readonly activityUpdater: ActivityUpdater = new ActivityUpdater(this)
-    private readonly raffleTimeUpdater: RaffleTimeUpdater = new RaffleTimeUpdater(this)
+    private readonly giveawayTimeUpdater: GiveawayTimeUpdater = new GiveawayTimeUpdater(this)
     private readonly premiumUpdater: PremiumUpdater = new PremiumUpdater(this)
 
     readonly servers: ServerManager = new ServerManager()
@@ -58,20 +61,14 @@ export default abstract class SuperClient extends Client{
     protected constructor(private opts: SuperClientBuilderOptions){
         super({
             makeCache: Options.cacheWithLimits({
-                MessageManager: {
-                    maxSize: 25,
-                    sweepInterval: 240,
-                    sweepFilter: LimitedCollection.filterByLifetime({
-                        lifetime: 300,
-                        getComparisonTimestamp: e => e.editedTimestamp ?? e.createdTimestamp,
-                    })
-                }
+                MessageManager: 200,
+                PresenceManager: 0
             }),
-            partials: ['MESSAGE', 'REACTION'],
+            partials: [Partials.Message],
             intents: [
-                Intents.FLAGS.GUILDS,
-                Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
-                Intents.FLAGS.GUILD_VOICE_STATES
+                IntentsBitField.Flags.Guilds,
+                IntentsBitField.Flags.GuildMessageReactions,
+                IntentsBitField.Flags.GuildVoiceStates
             ]
         })
     }
@@ -92,8 +89,8 @@ export default abstract class SuperClient extends Client{
         return this.activityUpdater
     }
 
-    public getRaffleTimeUpdater(): RaffleTimeUpdater{
-        return this.raffleTimeUpdater
+    public getGiveawayTimeUpdater(): GiveawayTimeUpdater{
+        return this.giveawayTimeUpdater
     }
 
     public getPremiumUpdater(): PremiumUpdater{
@@ -137,7 +134,7 @@ export default abstract class SuperClient extends Client{
      * @param guildID
      * @param memberID
      */
-    async fetchMember(guildID: Snowflake, memberID: Snowflake){
+    async fetchMember(guildID: Snowflake, memberID: Snowflake): Promise<GuildMember>{
         const fetch = await this.shard.broadcastEval((client, ctx) => {
             const guild = client.guilds.cache.get(ctx.guildID)
             if(guild){
@@ -165,8 +162,8 @@ export default abstract class SuperClient extends Client{
     textChannelElection(guild: Guild): TextChannel | undefined{
         // @ts-ignore
         return guild.channels.cache
-            .filter(channel => channel.type === 'GUILD_TEXT' && channel.permissionsFor(guild.me).has('SEND_MESSAGES'))
-            .sort((a: GuildChannel, b: GuildChannel) => a.position > b.position ? 1 : -1)
+            .filter(channel => channel.type === ChannelType.GuildText && channel.permissionsFor(guild.members.me).has(PermissionsBitField.Flags.SendMessages))
+            .sort((a: TextChannel, b: TextChannel) => a.position > b.position ? 1 : -1)
             .first()
     }
 
@@ -180,7 +177,7 @@ export default abstract class SuperClient extends Client{
         const guild: Guild = this.guilds.cache.get(guildID)
         if(guild){
             const channel = guild.channels.cache.get(channelID)
-            if(channel && channel.type == 'GUILD_TEXT' && channel.viewable) return channel
+            if(channel && channel.type == ChannelType.GuildText && channel.viewable) return channel
         }
 
         return undefined
@@ -198,28 +195,34 @@ export default abstract class SuperClient extends Client{
         if(channel instanceof TextChannel){
             return new Promise(resolve => {
                 return channel.messages
-                    .fetch(messageID, { cache: false, force: true })
+                    .fetch({ message: messageID, cache: false, force: true })
                     .catch(() => resolve(undefined))
-                    .then((message: Message) => resolve(message))
+                    .then((message: Message<true>) => resolve(message))
             })
         }
 
         return undefined
     }
 
-    buildErrorReporterEmbed(lang: string, guild: Guild, err: DiscordAPIError | HTTPError): MessageEmbed{
-        return new MessageEmbed()
-            .setAuthor(`${this.user.username} | ${LanguageManager.translate(lang, 'errors.reporter.title')}`, this.user.avatarURL())
-            .setColor('DARK_RED')
-            .setFooter(guild.name, guild.iconURL())
+    buildErrorReporterEmbed(lang: string, guild: Guild, err: DiscordAPIError | HTTPError): EmbedBuilder{
+        return new EmbedBuilder()
+            .setAuthor({
+                iconURL: this.user.avatarURL(),
+                name: `${this.user.username} | ${LanguageManager.translate(lang, 'errors.reporter.title')}`,
+            })
+            .setColor(Colors.DarkRed)
+            .setFooter({
+                text: guild.name,
+                iconURL: guild.iconURL()
+            })
             .setTimestamp()
             .setDescription(LanguageManager.translate(lang, "errors.reporter.description", ...[
                 err.name,
                 err.message,
                 err.method,
-                err.path,
-                err.code,
-                err.path
+                err.url,
+                err.status,
+                err.stack
             ]))
     }
 

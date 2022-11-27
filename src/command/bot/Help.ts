@@ -1,4 +1,4 @@
-import { CommandInteraction, GuildMember, MessageEmbed } from 'discord.js'
+import { ChatInputCommandInteraction, Colors, EmbedBuilder, GuildMember, PermissionsBitField } from 'discord.js'
 import Command, { Group, Result } from '../Command'
 import SuperClient from '../../SuperClient';
 import Server from '../../structures/Server';
@@ -9,7 +9,7 @@ export default class Help extends Command{
     constructor(){
         super({
             name: 'help',
-            group: Group.BOT,
+            group: Group.Bot,
             description: 'commands.bot.help.description',
             permission: undefined,
             examples: [
@@ -19,14 +19,14 @@ export default class Help extends Command{
         })
     }
 
-    async run(client: SuperClient, server: Server, action: CommandInteraction): Promise<Result>{
+    async run(client: SuperClient, server: Server, action: ChatInputCommandInteraction): Promise<Result>{
         const command = action.options.getString('command', false)
         if(!command){
             const commands = client.getCommandHandler().getCommandsArray().filter(command => {
-                if(command.permission === 'ADMINISTRATOR'){
+                if(command.permission === PermissionsBitField.Flags.Administrator){
                     if(action.member instanceof GuildMember){
                         return (
-                            action.member.permissions.has('ADMINISTRATOR') ||
+                            action.member.permissions.has(PermissionsBitField.Flags.Administrator) ||
                             action.member.roles.cache.find(role => role.name.trim().toLowerCase() === Bot.PERMITTED_ROLE_NAME)
                         )
                     }
@@ -48,13 +48,27 @@ export default class Help extends Command{
                 fieldMap[command.group].value += `${label}\n`
             }
 
-            const embed = new MessageEmbed()
-                .setAuthor(`📍 ${server.translate('commands.bot.help.embed.title')}`, action.user.displayAvatarURL() || action.user.defaultAvatarURL)
+            const embed = new EmbedBuilder()
+                .setAuthor({
+                    name: `📍 ${server.translate('commands.bot.help.embed.title')}`,
+                    iconURL: action.user.displayAvatarURL() || action.user.defaultAvatarURL,
+                })
                 .addFields(Object.values(fieldMap))
-                .addField(`🌟 ${server.translate('commands.bot.help.embed.fields.more.detailed')}`, `${prefix}${this.name} [${server.translate('commands.bot.help.embed.fields.command')}]`)
-                .addField(`❓ ${server.translate('commands.bot.help.embed.fields.more.info')}`, `**[Wiki](https://wiki.asena.xyz)** - **[${server.translate('global.support')}](https://dc.asena.xyz)** - **[Website](https://asena.xyz)**`)
-                .addField(`⭐ ${server.translate('commands.bot.help.embed.fields.star')}`, '**[GitHub](https://github.com/anilmisirlioglu/Asena)**')
-                .setColor('RANDOM')
+                .addFields([
+                    {
+                        name: `🌟 ${server.translate('commands.bot.help.embed.fields.more.detailed')}`,
+                        value: `${prefix}${this.name} [${server.translate('commands.bot.help.embed.fields.command')}]`
+                    },
+                    {
+                        name: `❓ ${server.translate('commands.bot.help.embed.fields.more.info')}`,
+                        value: `**[Wiki](https://wiki.asena.xyz)** - **[${server.translate('global.support')}](https://dc.asena.xyz)** - **[Website](https://asena.xyz)**`
+                    },
+                    {
+                        name: `⭐ ${server.translate('commands.bot.help.embed.fields.star')}`,
+                        value: '**[GitHub](https://github.com/anilmisirlioglu/Asena)**'
+                    }
+                ])
+                .setColor('Random')
 
             action.user.createDM().then(channel => {
                 channel.send({ embeds: [embed] }).then(() => {
@@ -69,12 +83,26 @@ export default class Help extends Command{
             const cmd = client.getCommandHandler().getCommandsMap().filter($command => $command.name === command.trim()).first()
             if(cmd){
                 const fullCMD = prefix + cmd.name
-                embed = new MessageEmbed()
-                    .setAuthor(`📍 ${server.translate('commands.bot.help.embed.title')}`, action.user.displayAvatarURL() || action.user.defaultAvatarURL)
-                    .addField(server.translate('commands.bot.help.embed.fields.command'), fullCMD)
-                    .addField(server.translate('commands.bot.help.embed.fields.description'), server.translate(cmd.description))
-                    .addField(server.translate('commands.bot.help.embed.fields.permission'), cmd.permission === 'ADMINISTRATOR' ? server.translate('global.admin') : server.translate('global.member'))
-                    .setColor('GREEN')
+                embed = new EmbedBuilder()
+                    .setAuthor({
+                        name: `📍 ${server.translate('commands.bot.help.embed.title')}`,
+                        iconURL: action.user.displayAvatarURL() || action.user.defaultAvatarURL
+                    })
+                    .setFields([
+                        {
+                            name: server.translate('commands.bot.help.embed.fields.command'),
+                            value: fullCMD
+                        },
+                        {
+                            name: server.translate('commands.bot.help.embed.fields.description'),
+                            value: server.translate(cmd.description)
+                        },
+                        {
+                            name: server.translate('commands.bot.help.embed.fields.permission'),
+                            value: server.translate(cmd.permission === PermissionsBitField.Flags.Administrator ? 'global.admin' : 'global.member')
+                        }
+                    ])
+                    .setColor(Colors.Green)
 
                 if(cmd.examples.length > 0){
                     const items = cmd.examples.map(item => `${fullCMD} ${this.parseOption(item)}`)

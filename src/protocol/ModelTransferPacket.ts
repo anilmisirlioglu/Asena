@@ -5,32 +5,30 @@ import {
     continuingGiveawayMetric,
     continuingSurveyMetric
 } from '../telemetry/metrics/NumericMetric';
-import { RaffleVersion } from '../models/Raffle';
+import { GiveawayVersion } from '../models/Giveaway';
 
-export type TransferableModelTypes = 'Raffle' | 'Survey'
+export type TransferableModelTypes = 'Giveaway' | 'Survey'
 
-interface IModelTransferPacket<S extends Document>{
+interface ModelTransferPacketPayload<S extends Document>{
     items: S[]
     modelType: TransferableModelTypes
 }
 
-export default class ModelTransferPacket<S extends Document> extends ProcessPacket implements IModelTransferPacket<S>{
+export default class ModelTransferPacket<S extends Document> extends ProcessPacket implements ModelTransferPacketPayload<S>{
 
+    readonly type: ProcessPacketType.ModelTransfer = ProcessPacketType.ModelTransfer
     items: S[]
     modelType: TransferableModelTypes
 
-    constructor(payload: IModelTransferPacket<S>){
-        super({
-            type: ProcessPacketType.MODEL_TRANSFER,
-            payload
-        })
+    constructor(payload: ModelTransferPacketPayload<S>){
+        super(payload)
     }
 
     observeMetric(){
         switch(this.modelType){
-            case 'Raffle':
+            case 'Giveaway':
                 continuingGiveawayMetric.observe(this.items.length)
-                continuingExVersionGiveawayMetric.observe(this.items.filter(item => item.__v == RaffleVersion.Reaction).length)
+                continuingExVersionGiveawayMetric.observe(this.items.filter(item => item.__v == GiveawayVersion.Reaction).length)
                 break
 
             case 'Survey':

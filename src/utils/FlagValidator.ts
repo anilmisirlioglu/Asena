@@ -1,6 +1,6 @@
 import SuperClient from '../SuperClient';
-import { CommandInteraction, GuildMember, Invite, Role } from 'discord.js';
-import { RaffleLimits } from '../Constants';
+import { ChatInputCommandInteraction, Colors, GuildMember, Invite, PermissionsBitField, Role } from 'discord.js';
+import { GiveawayLimits } from '../Constants';
 import { strToSeconds } from './DateTimeHelper';
 import Image from './Image';
 
@@ -12,7 +12,7 @@ interface FlagValidatorResult{
 }
 
 type FlagMap = {
-    [key: string]: (client: SuperClient, action: CommandInteraction, value: string | number) => Promise<FlagValidatorResult>
+    [key: string]: (client: SuperClient, action: ChatInputCommandInteraction, value: string | number) => Promise<FlagValidatorResult>
 }
 
 export const Flags: FlagMap = {
@@ -24,7 +24,7 @@ export const Flags: FlagMap = {
             }
         }
 
-        if(value > RaffleLimits.MAX_WINNER_COUNT || value < 1){
+        if(value > GiveawayLimits.MAX_WINNER_COUNT || value < 1){
             return {
                 ok: false,
                 message: 'validator.winners.limit'
@@ -45,7 +45,7 @@ export const Flags: FlagMap = {
             }
         }
 
-        if(toSecond < RaffleLimits.MIN_TIME || toSecond > RaffleLimits.MAX_TIME){
+        if(toSecond < GiveawayLimits.MIN_TIME || toSecond > GiveawayLimits.MAX_TIME){
             return {
                 ok: false,
                 message: 'validator.time.limit'
@@ -130,11 +130,11 @@ export const Flags: FlagMap = {
             }
         }
 
-        if(invites.length > RaffleLimits.MAX_SERVER_COUNT){
+        if(invites.length > GiveawayLimits.MAX_SERVER_COUNT){
             return {
                 ok: false,
                 message: 'validator.servers.limit',
-                args: [RaffleLimits.MAX_SERVER_COUNT]
+                args: [GiveawayLimits.MAX_SERVER_COUNT]
             }
         }
 
@@ -144,7 +144,23 @@ export const Flags: FlagMap = {
         }
     },
     color: async (client, action, value: string) => {
-        const matchColor = value.removeWhiteSpaces().match(/#?(?:[0-9a-fA-F]{3}){1,2}|(RED|WHITE|AQUA|GREEN|BLUE|YELLOW|PURPLE|LUMINOUS_VIVID_PINK|GOLD|ORANGE|GREY|NAVY|RANDOM|DARKER_GREY|DARK_AQUA|DARK_GREEN|DARK_BLUE|DARK_PURPLE|DARK_VIVID_PINK|DARK_GOLD|DARK_ORANGE|DARK_RED|DARK_GREY|LIGHT_GREY|DARK_NAVY)/g)
+        value = value.removeWhiteSpaces()
+        if(value in Colors){
+            return {
+                ok: true,
+                result: value
+            }
+        }
+
+        value = value.toTitleCase()
+        if(value in Colors){
+            return {
+                ok: true,
+                result: value
+            }
+        }
+
+        const matchColor = value.match(/#?(?:[0-9a-fA-F]{3}){1,2}/g)
         if(!matchColor || matchColor.length === 0){
             return {
                 ok: false,
@@ -188,11 +204,11 @@ export const Flags: FlagMap = {
             }
         }
 
-        if(allowedRoles.length > RaffleLimits.MAX_ALLOWED_ROLE_COUNT){
+        if(allowedRoles.length > GiveawayLimits.MAX_ALLOWED_ROLE_COUNT){
             return {
                 ok: false,
                 message: 'validator.roles.allowed.limit',
-                args: [RaffleLimits.MAX_ALLOWED_ROLE_COUNT]
+                args: [GiveawayLimits.MAX_ALLOWED_ROLE_COUNT]
             }
         }
 
@@ -202,8 +218,8 @@ export const Flags: FlagMap = {
         }
     },
     rewardRoles: async (client, action, value: string) => {
-        const me = action.guild.me
-        if(!me.permissions.has('MANAGE_ROLES')){
+        const me = action.guild.members.me
+        if(!me.permissions.has(PermissionsBitField.Flags.ManageRoles)){
             return {
                 ok: false,
                 message: 'validator.roles.unauthorized'
@@ -256,11 +272,11 @@ export const Flags: FlagMap = {
             }
         }
 
-        if(rewardRoles.length > RaffleLimits.MAX_REWARD_ROLE_COUNT){
+        if(rewardRoles.length > GiveawayLimits.MAX_REWARD_ROLE_COUNT){
             return {
                 ok: false,
                 message: 'validator.roles.reward.limit',
-                args: [RaffleLimits.MAX_REWARD_ROLE_COUNT]
+                args: [GiveawayLimits.MAX_REWARD_ROLE_COUNT]
             }
         }
 
@@ -302,9 +318,9 @@ export const Flags: FlagMap = {
 export default class FlagValidator{
 
     private readonly client: SuperClient
-    private readonly action?: CommandInteraction
+    private readonly action?: ChatInputCommandInteraction
 
-    constructor(client: SuperClient, action?: CommandInteraction){
+    constructor(client: SuperClient, action?: ChatInputCommandInteraction){
         this.client = client
         this.action = action
     }
@@ -312,7 +328,7 @@ export default class FlagValidator{
     async validate(
         key: keyof typeof Flags,
         value: string | number,
-        action?: CommandInteraction
+        action?: ChatInputCommandInteraction
     ): Promise<FlagValidatorResult>{
         const callback = Flags[key]
 

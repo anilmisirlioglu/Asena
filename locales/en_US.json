@@ -8,7 +8,7 @@
     },
     {
       "name": "Anıl Mısırlıoğlu",
-      "website": "https://anil.tools",
+      "website": "https://anxl.dev",
       "mail": "misirlioglianil@gmail.com"
     },
     {
@@ -184,7 +184,7 @@
         "attendees": "Attendees",
         "already": "You have already answered for this option."
       },
-      "raffle": {
+      "giveaway": {
         "winners": {
           "none": {
             "description": "Insufficient participation. There is no winner.",
@@ -201,7 +201,7 @@
         },
         "embed": {
           "fields": {
-            "join": "Click on the {0} emoji to enter the giveaway!",
+            "join": "Click on the {0} button to enter the giveaway!",
             "giveaway": "Giveaway",
             "creator": "Hosted by",
             "to.end": "Time remaining",
@@ -243,7 +243,10 @@
           "already": "You have already joined this giveaway.",
           "leave": "Leave Giveaway",
           "constituent": "The person who created the giveaway cannot participate in the giveaway.",
-          "conditions": "In order to participate in this giveaway, you must provide participation conditions."
+          "conditions": {
+            "roles": "In order to participate in this giveaway, you must have these roles: {0}",
+            "servers": "In order to participate in this giveaway, you should also be on these servers: {0}"
+          }
         },
         "leave": {
           "already": "You have already leaved this giveaway",
@@ -433,7 +436,7 @@
           ]
         }
       },
-      "raffle": {
+      "giveaway": {
         "name": "Giveaway Commands",
         "soundaway": {
           "description": "Starts a new quick giveaway in the voice channel",
@@ -466,9 +469,9 @@
               "invalid": "Please specify a valid time. (Eg; **1s** - **1m** - **5m** - **1h** etc.)",
               "exceeded": "The giveaway time must be minimum 1 minute, maximum 60 day."
             },
-            "max.created": "You have reached the maximum raffle create limit. (Max: {0})"
+            "max.created": "You have reached the maximum giveaway create limit. (Max: {0})"
           },
-          "unauthorized": "The raffle could not be started because the bot has insufficient permissions in this channel.",
+          "unauthorized": "The giveaway could not be started because the bot has insufficient permissions in this channel.",
           "successfully": "Giveaway was successfully created."
         },
         "advanced": {
@@ -483,7 +486,7 @@
         "setup": {
           "description": "Starts the setup wizard",
           "already": "You have started setup wizard already. Please finish or cancel the setup you started first.",
-          "unauthorized": "The giveaway could not be started because the bot's permissions were insufficient to create a raffle on this channel.",
+          "unauthorized": "The giveaway could not be started because the bot's permissions were insufficient to create a giveaway on this channel.",
           "channel.gone": "The giveaway couldn't created. Couldn't find the specified channel. Suddenly disappeared...",
           "canceled": "The setup wizard has cancelled.",
           "timeout": "The setup wizard has timed out and closed.",
@@ -540,7 +543,7 @@
             },
             "servers": {
               "message": [
-                "**Step 5:** If people need to join a certain server to participate in your raffle, you can determine which servers are in this section. Let's get to work.\n",
+                "**Step 5:** If people need to join a certain server to participate in your giveaway, you can determine which servers are in this section. Let's get to work.\n",
                 ":loudspeaker: If you want to **skip** this step, please write `pas`, `skip` to the chat.\n",
                 "`necessarily To specify the servers to enter, type the invite links of the servers, separating them with a comma. Remember, you can write maximum {0} servers and {1} must be in all the servers you specify.`"
               ],
@@ -670,7 +673,7 @@
           "not": {
             "found": "Couldn't find a rerollable giveaway.",
             "finish": "This giveaway has not been ended yet. Please wait for the giveaway ending.",
-            "enough": "The raffle could not be rerolled again for insufficient participation."
+            "enough": "The giveaway could not be rerolled again for insufficient participation."
           },
           "unauthorized": "Please give to the bot **Manage Roles* permission to reroll the winners. Otherwise bot can't give the will be given roles as prize to the winners.",
           "canceled": "This giveaway has cancelled. Can not reroll a cancelled giveaway result.",

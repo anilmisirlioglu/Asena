@@ -1,4 +1,10 @@
-import { Collection, CommandInteraction, GuildMember, MessageEmbed, TextChannel } from 'discord.js';
+import {
+    ChatInputCommandInteraction,
+    Collection, Colors,
+    CommandInteraction, EmbedBuilder,
+    GuildMember, PermissionsBitField,
+    TextChannel
+} from 'discord.js';
 import Command from './Command';
 import { Bot} from '../Constants';
 import Factory from '../Factory';
@@ -35,13 +41,12 @@ export default class CommandHandler extends Factory implements CommandRunner{
         return this.permissionController
     }
 
-    async run(action: CommandInteraction){
+    async run(action: ChatInputCommandInteraction){
         if(!action.guild || action.user.bot){
             return
         }
 
-        const channel = action.channel
-        if(!(channel instanceof TextChannel)){
+        if(!(action.channel instanceof TextChannel)){
             return
         }
 
@@ -54,6 +59,7 @@ export default class CommandHandler extends Factory implements CommandRunner{
             return
         }
 
+        // TODO::deprecate
         const channel_id: string = this.client.getSetupManager().getSetupChannel(action.user.id)
         if(channel_id && channel_id === action.channel.id){ // check setup
             return
@@ -78,19 +84,27 @@ export default class CommandHandler extends Factory implements CommandRunner{
                             }
                         })
                     }else{
-                        const embed = new MessageEmbed()
-                            .setAuthor(this.client.user.username, this.client.user.avatarURL())
+                        const embed = new EmbedBuilder()
+                            .setAuthor({
+                                name: this.client.user.username,
+                                iconURL: this.client.user.avatarURL()
+                            })
                             .setDescription(server.translate('commands.handler.premium.only'))
-                            .addField(`:star2:  ${server.translate('commands.handler.premium.try')}`, '<:join_arrow:746358699706024047> [Asena Premium](https://asena.xyz)')
-                            .setColor('GREEN')
+                            .setFields([
+                                {
+                                    name: `:star2:  ${server.translate('commands.handler.premium.try')}`,
+                                    value: '<:join_arrow:746358699706024047> [Asena Premium](https://asena.xyz)'
+                                }
+                            ])
+                            .setColor(Colors.Green)
 
                         await action.reply({ embeds: [embed] })
                     }
                 }else{
-                    if(checkPermissions.missing.includes('SEND_MESSAGES') || checkPermissions.missing.includes('VIEW_CHANNEL')){
+                    if(checkPermissions.missing.includes(PermissionsBitField.Flags.SendMessages) || checkPermissions.missing.includes(PermissionsBitField.Flags.ViewChannel)){
                         try{
                             action.user.createDM().then(dm => {
-                                dm.send(server.translate('commands.handler.permission.missing.message', channel.name))
+                                dm.send(server.translate('commands.handler.permission.missing.message', action.channel.name))
                             })
                         }catch(e){}
                     }else{

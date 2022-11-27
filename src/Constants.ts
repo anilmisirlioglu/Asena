@@ -1,9 +1,9 @@
-import { EmojiResolvable, PermissionString } from 'discord.js';
+import { EmojiResolvable, PermissionResolvable, PermissionsBitField } from 'discord.js';
 
 interface IBot{
     readonly PERMITTED_ROLE_NAME: string
     readonly COOLDOWN_TIME: number
-    readonly REQUIRED_PERMISSIONS: PermissionString[]
+    readonly REQUIRED_PERMISSIONS: PermissionResolvable[]
     readonly CLIENT_ID: string
 }
 
@@ -11,12 +11,12 @@ export const Bot: IBot = {
     PERMITTED_ROLE_NAME: 'asena', // if there is no permission, this role is checked
     COOLDOWN_TIME: 5,
     REQUIRED_PERMISSIONS: [
-        'SEND_MESSAGES',
-        'ADD_REACTIONS',
-        'VIEW_CHANNEL',
-        'EMBED_LINKS',
-        'READ_MESSAGE_HISTORY',
-        'USE_EXTERNAL_EMOJIS'
+        PermissionsBitField.Flags.SendMessages,
+        PermissionsBitField.Flags.AddReactions,
+        PermissionsBitField.Flags.ViewChannel,
+        PermissionsBitField.Flags.EmbedLinks,
+        PermissionsBitField.Flags.ReadMessageHistory,
+        PermissionsBitField.Flags.UseExternalEmojis,
     ],
     CLIENT_ID: '716259870910840832'
 }
@@ -52,7 +52,7 @@ export const Emojis = {
     RUBY_EMOJI: '<a:ruby:721700215190454344>'
 }
 
-interface IRaffleLimits{
+interface IGiveawayLimits{
     readonly MIN_TIME: number
     readonly MAX_TIME: number
     readonly MAX_WINNER_COUNT: number
@@ -63,7 +63,7 @@ interface IRaffleLimits{
     readonly MAX_REWARD_ROLE_COUNT: number
 }
 
-export const RaffleLimits: IRaffleLimits = {
+export const GiveawayLimits: IGiveawayLimits = {
     MIN_TIME: 60,
     MAX_TIME: 60 * 60 * 24 * 60,
     MAX_WINNER_COUNT: 20,

@@ -9,7 +9,7 @@ export default class Distributor{
 
     private commands = []
 
-    private rest = new REST({ version: 9 })
+    private rest = new REST({ version: 10 })
 
     public constructor(){
         this.rest.setToken(process.env.TOKEN);

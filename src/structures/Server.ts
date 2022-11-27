@@ -3,7 +3,7 @@ import ServerModel, { IServer } from '../models/Server';
 import Timestamps from '../models/legacy/Timestamps';
 import ID from '../models/legacy/ID';
 import { Snowflake } from 'discord.js';
-import RaffleManager from '../managers/RaffleManager';
+import GiveawayManager from '../managers/GiveawayManager';
 import Premium from './Premium';
 import PremiumModel, { PremiumStatus } from './../models/Premium';
 import Language from '../language/Language';
@@ -18,7 +18,7 @@ class Server extends Structure<typeof ServerModel, SuperServer>{
     public premium?: Premium
     public locale: string
 
-    public raffles: RaffleManager = new RaffleManager(this)
+    public giveaways: GiveawayManager = new GiveawayManager(this)
     public surveys: SurveyManager = new SurveyManager()
 
     constructor(data: SuperServer){

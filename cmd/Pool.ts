@@ -8,21 +8,21 @@ import Premium from './server/Premium';
 import Locale from './server/Locale';
 import Question from './survey/Question';
 import Survey from './survey/Survey';
-import Raffles from './raffle/Raffles';
-import Cancel from './raffle/Cancel';
-import Finish from './raffle/Finish';
-import Fix from './raffle/Fix';
-import ReRoll from './raffle/ReRoll';
-import Soundaway from './raffle/Soundaway';
-import Create from './raffle/Create';
-import Edit from './raffle/Edit';
+import Giveaways from './giveaway/Giveaways';
+import Cancel from './giveaway/Cancel';
+import Finish from './giveaway/Finish';
+import Fix from './giveaway/Fix';
+import ReRoll from './giveaway/ReRoll';
+import Soundaway from './giveaway/Soundaway';
+import Create from './giveaway/Create';
+import Edit from './giveaway/Edit';
 
 export default class Pool extends IPool<ApplicationCommand>{
 
     protected toMultidimensionalArray(): ApplicationCommand[][]{
         return [
             this.BotCommands,
-            this.RaffleCommands,
+            this.GiveawayCommands,
             this.ServerCommands,
             this.SurveyCommands
         ]
@@ -35,8 +35,8 @@ export default class Pool extends IPool<ApplicationCommand>{
         new BotInfo()
     ]
 
-    private readonly RaffleCommands = [
-        new Raffles(),
+    private readonly GiveawayCommands = [
+        new Giveaways(),
         new Cancel(),
         new Finish(),
         new Fix(),

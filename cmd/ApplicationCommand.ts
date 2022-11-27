@@ -8,7 +8,6 @@ export default abstract class ApplicationCommand extends SlashCommandBuilder{
         this.build()
     }
 
-
     abstract build(): void
 
 }

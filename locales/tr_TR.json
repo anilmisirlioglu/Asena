@@ -3,7 +3,7 @@
   "contributors": [],
   "translator": {
     "name": "Anıl Mısırlıoğlu",
-    "website": "https://anil.tools",
+    "website": "https://anxl.dev",
     "mail": "misirlioglianil@gmail.com"
   },
   "aliases": ["tr", "tr-tr", "turkish", "türkçe", "tur"],
@@ -173,7 +173,7 @@
         "attendees": "Katılımcılar",
         "already": "Zaten bu seçeneğe oy vermişsiniz."
       },
-      "raffle": {
+      "giveaway": {
         "winners": {
           "none": {
             "description": "Yetersiz katılım. Kazanan olmadı.",
@@ -190,7 +190,7 @@
         },
         "embed": {
           "fields": {
-            "join": "Çekilişe katılmak için {0} emojisine tıklayın!",
+            "join": "Çekilişe katılmak için {0} butonuna tıklayın!",
             "giveaway": "Çekiliş",
             "creator": "Oluşturan",
             "to.end": "Bitmesine",
@@ -232,7 +232,10 @@
           "already": "Zaten bu çekilişe katılmışsınız.",
           "leave": "Çekilişten Ayrıl",
           "constituent": "Çekilişi oluşturan kişi çekilişe katılamaz.",
-          "conditions": "Bu çekilişe katılabilmeniz için katılım şartları sağlamalısınız."
+          "conditions": {
+            "roles": "Bu çekilişe katılabilmek için şu rollere de sahip olmalısınız: {0}",
+            "servers": "Bu çekilişe katılabilmek için şu sunucularda da bulunmalısınız: {0}"
+          }
         },
         "leave": {
           "already": "Bu çekilişten zaten ayrılmışsınız",
@@ -422,7 +425,7 @@
           ]
         }
       },
-      "raffle": {
+      "giveaway": {
         "name": "Çekiliş Komutları",
         "soundaway": {
           "description": "Ses kanalında yeni bir çekiliş oluşturur",

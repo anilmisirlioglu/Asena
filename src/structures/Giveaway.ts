@@ -1,19 +1,23 @@
 import {
+    ActionRowBuilder,
+    ButtonBuilder,
+    ButtonStyle,
     ColorResolvable,
+    Colors,
+    EmbedBuilder,
     Guild,
     GuildChannel,
     Message,
-    MessageActionRow,
-    MessageButton,
-    MessageEmbed,
+    MessageEditOptions,
     MessageOptions,
     MessageReaction,
+    PermissionsBitField,
     Role,
     Snowflake,
     TextChannel
 } from 'discord.js';
 import Structure from './Structure';
-import RaffleModel, { IPartialServer, IRaffle, RaffleVersion, RaffleStatus } from '../models/Raffle';
+import GiveawayModel, { IPartialServer, IGiveaway, GiveawayStatus, GiveawayVersion } from '../models/Giveaway';
 import Timestamps from '../models/legacy/Timestamps';
 import { secondsToString } from '../utils/DateTimeHelper';
 import { Emojis, URLMap } from '../Constants';
@@ -22,10 +26,11 @@ import SuperClient from '../SuperClient';
 import RandomArray from '../utils/RandomArray';
 import LanguageManager from '../language/LanguageManager';
 import { parseGiveawayTimerURL } from '../utils/Utils';
+import { Actions } from '../interaction/actions/enums';
 
-type SuperRaffle = IRaffle & Timestamps & ID
+export type SuperGiveaway = IGiveaway & Timestamps & ID
 
-class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
+class Giveaway extends Structure<typeof GiveawayModel, SuperGiveaway>{
 
     public prize: string
     public server_id: Snowflake
@@ -33,7 +38,7 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
     public channel_id: Snowflake
     public message_id?: Snowflake
     public numberOfWinners: number
-    public status: RaffleStatus
+    public status: GiveawayStatus
     public finishAt: Date
     public allowedRoles: Snowflake[]
     public servers: IPartialServer[]
@@ -46,13 +51,13 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
 
     private static locale: string
 
-    constructor(data: SuperRaffle, locale: string){
-        super(RaffleModel, data)
+    constructor(data: SuperGiveaway, locale: string){
+        super(GiveawayModel, data)
 
-        Raffle.locale = locale
+        Giveaway.locale = locale
     }
 
-    protected patch(data: SuperRaffle){
+    protected patch(data: SuperGiveaway){
         if(typeof data.toObject === 'function'){
             data = data.toObject() // getting virtual props
         }
@@ -88,7 +93,7 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
         return this.status === 'CONTINUES'
     }
 
-    public async setStatus(status: RaffleStatus){
+    public async setStatus(status: GiveawayStatus){
         await this.update({ status })
     }
 
@@ -101,7 +106,7 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
     }
 
     public isNewGenerationGiveaway(): boolean{
-        return this.__v == RaffleVersion.Interaction
+        return this.__v == GiveawayVersion.Interaction
     }
 
     public hasParticipant(user_id: Snowflake): boolean{
@@ -143,7 +148,7 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
     }
 
     private translate(key: string, ...args: Array<string | number>){
-        return LanguageManager.translate(Raffle.locale, key, ...args)
+        return LanguageManager.translate(Giveaway.locale, key, ...args)
     }
 
     public async finish(client: SuperClient){
@@ -159,34 +164,34 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
                 let description, content
                 switch(winners.length){
                     case 0:
-                        description = this.translate('structures.raffle.winners.none.description')
-                        content = this.translate('structures.raffle.winners.none.content')
+                        description = this.translate('structures.giveaway.winners.none.description')
+                        content = this.translate('structures.giveaway.winners.none.content')
                         break
 
                     case 1:
-                        description = `${this.translate('structures.raffle.winners.single.description')}: <@${winners[0]}>`
-                        content = this.translate('structures.raffle.winners.single.content', winnersOfMentions.join(', '), this.prize)
+                        description = `${this.translate('structures.giveaway.winners.single.description')}: <@${winners[0]}>`
+                        content = this.translate('structures.giveaway.winners.single.content', winnersOfMentions.join(', '), this.prize)
                         break
 
                     default:
-                        description = `${this.translate('structures.raffle.winners.plural.description')}:\n${winnersOfMentions.map(winner => `:small_blue_diamond: ${winner}`).join('\n')}`
-                        content = this.translate('structures.raffle.winners.plural.content', winnersOfMentions.join(', '), this.prize)
+                        description = `${this.translate('structures.giveaway.winners.plural.description')}:\n${winnersOfMentions.map(winner => `:small_blue_diamond: ${winner}`).join('\n')}`
+                        content = this.translate('structures.giveaway.winners.plural.content', winnersOfMentions.join(', '), this.prize)
                         break
                 }
 
-                const embed: MessageEmbed = new MessageEmbed()
-                    .setAuthor(this.prize)
+                const embed = new EmbedBuilder()
+                    .setAuthor({ name: this.prize })
                     .setDescription([
                         `:medal: ${description}`,
-                        `:reminder_ribbon: ${this.translate('structures.raffle.embed.fields.creator')}: <@${this.constituent_id}>`
+                        `:reminder_ribbon: ${this.translate('structures.giveaway.embed.fields.creator')}: <@${this.constituent_id}>`
                     ].join('\n'))
-                    .setFooter(`${this.translate('structures.raffle.embed.footer.text', this.numberOfWinners)} | ${this.translate('structures.raffle.embed.footer.finish')}`)
+                    .setFooter({ text: `${this.translate('structures.giveaway.embed.footer.text', this.numberOfWinners)} | ${this.translate('structures.giveaway.embed.footer.finish')}` })
                     .setTimestamp(new Date(this.finishAt))
                     .setColor('#36393F')
 
                 await Promise.all([
                     message.edit({
-                        content: `${Emojis.CONFETTI_REACTION_EMOJI} **${this.translate('structures.raffle.messages.finish')}** ${Emojis.CONFETTI_REACTION_EMOJI}`,
+                        content: `${Emojis.CONFETTI_REACTION_EMOJI} **${this.translate('structures.giveaway.messages.finish')}** ${Emojis.CONFETTI_REACTION_EMOJI}`,
                         embeds: [embed],
                         components: []
                     }),
@@ -236,24 +241,27 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
     }
 
     public async resolveWinners(client: SuperClient, guild: Guild, winners: string[]){
-        const embed = new MessageEmbed()
-            .setAuthor(`${this.translate('structures.raffle.winner.embed.title')} 🏅`)
+        const embed = new EmbedBuilder()
+            .setAuthor({ name: `${this.translate('structures.giveaway.winner.embed.title')} 🏅` })
             .setDescription([
-                `:gift: ${this.translate('structures.raffle.winner.embed.fields.prize')}: **${this.prize}**`,
-                `:star: ${this.translate('structures.raffle.winner.embed.fields.server')}: **${guild.name}**`,
-                `:link: **[${this.translate('structures.raffle.winner.embed.fields.link')}](${this.messageURL})**`,
-                `:rocket: **[${this.translate('global.vote')}](${URLMap.VOTE})** • **[${this.translate('structures.raffle.winner.embed.fields.invite')}](${URLMap.INVITE})**`
+                `:gift: ${this.translate('structures.giveaway.winner.embed.fields.prize')}: **${this.prize}**`,
+                `:star: ${this.translate('structures.giveaway.winner.embed.fields.server')}: **${guild.name}**`,
+                `:link: **[${this.translate('structures.giveaway.winner.embed.fields.link')}](${this.messageURL})**`,
+                `:rocket: **[${this.translate('global.vote')}](${URLMap.VOTE})** • **[${this.translate('structures.giveaway.winner.embed.fields.invite')}](${URLMap.INVITE})**`
             ].join('\n'))
-            .setFooter('Powered by Asena', guild.iconURL())
+            .setFooter({
+                text: 'Powered by Asena',
+                iconURL: guild.iconURL()
+            })
             .setTimestamp()
-            .setColor('GREEN')
+            .setColor(Colors.Green)
 
         let rewardRoles: Role[] = []
-        if(this.rewardRoles.length > 0 && guild.me.permissions.has('MANAGE_ROLES')){
+        if(this.rewardRoles.length > 0 && guild.members.me.permissions.has(PermissionsBitField.Flags.ManageRoles)){
             const fetchRoles = await guild.roles.fetch()
             rewardRoles = [...fetchRoles.values()].filter(role =>
                 this.rewardRoles.includes(role.id) &&
-                role.comparePositionTo(guild.me.roles.highest) < 0
+                role.comparePositionTo(guild.members.me.roles.highest) < 0
             )
         }
 
@@ -282,24 +290,24 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
     }
 
     public static getStartMessage(): string{
-        return `${Emojis.CONFETTI_EMOJI} **${LanguageManager.translate(this.locale, 'structures.raffle.messages.start')}** ${Emojis.CONFETTI_EMOJI}`
+        return `${Emojis.CONFETTI_EMOJI} **${LanguageManager.translate(this.locale, 'structures.giveaway.messages.start')}** ${Emojis.CONFETTI_EMOJI}`
     }
 
     public static getAlertMessage(): string{
-        return `${Emojis.CONFETTI_EMOJI} **${LanguageManager.translate(this.locale, 'structures.raffle.messages.alert')}** ${Emojis.CONFETTI_EMOJI}`
+        return `${Emojis.CONFETTI_EMOJI} **${LanguageManager.translate(this.locale, 'structures.giveaway.messages.alert')}** ${Emojis.CONFETTI_EMOJI}`
     }
 
-    public buildEmbed(alert: boolean = false, rm: number = undefined): MessageEmbed{
+    public buildEmbed(alert: boolean = false, rm: number = undefined): EmbedBuilder{
         const length = Math.ceil((+this.finishAt - +this.createdAt) / 1000)
-        const time = secondsToString(length, Raffle.locale)
-        const remaining = secondsToString(rm ?? Math.ceil((+this.finishAt - Date.now()) / 1000), Raffle.locale)
+        const time = secondsToString(length, Giveaway.locale)
+        const remaining = secondsToString(rm ?? Math.ceil((+this.finishAt - Date.now()) / 1000), Giveaway.locale)
 
         const description = [
-            `:star: ${this.translate('structures.raffle.embed.fields.join', Emojis.CONFETTI_REACTION_EMOJI)}`,
+            `:star: ${this.translate('structures.giveaway.embed.fields.join', Emojis.CONFETTI_REACTION_EMOJI)}`,
             `:alarm_clock: ${this.translate('global.date-time.time')}: **${time}**`,
-            `:calendar: ${this.translate('structures.raffle.embed.fields.to.end')}: **${remaining}**`,
-            `:reminder_ribbon: ${this.translate('structures.raffle.embed.fields.creator')}: <@${this.constituent_id}>`,
-            `:rocket: **[${this.translate('structures.raffle.embed.fields.timer')}](${parseGiveawayTimerURL(this.createdAt, length)})** • **[${this.translate('global.vote')}](${URLMap.VOTE})**`
+            `:calendar: ${this.translate('structures.giveaway.embed.fields.to.end')}: **${remaining}**`,
+            `:reminder_ribbon: ${this.translate('structures.giveaway.embed.fields.creator')}: <@${this.constituent_id}>`,
+            `:rocket: **[${this.translate('structures.giveaway.embed.fields.timer')}](${parseGiveawayTimerURL(this.createdAt, length)})** • **[${this.translate('global.vote')}](${URLMap.VOTE})**`
         ]
         if(this.isAdvancedEmbed){
             const roleToString = roles => roles.map(role => `<@&${role}>`).join(', ')
@@ -311,19 +319,21 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
 
             description.push(...[
                 ' ',
-                checkOfRewardRoles ? undefined : `:mega: ${this.translate('structures.raffle.embed.fields.prize.roles')}: ${roleToString(this.rewardRoles)}`,
-                checkOfServers ? undefined : `:mega: ${this.translate('structures.raffle.embed.fields.should.servers')}: **${this.servers.map(server => `[${server.name}](${server.invite})`).join(', ')}**`,
-                checkOfAllowedRoles ? undefined : `:mega: ${this.translate('structures.raffle.embed.fields.should.roles')}: ${roleToString(this.allowedRoles)}`,
+                checkOfRewardRoles ? undefined : `:mega: ${this.translate('structures.giveaway.embed.fields.prize.roles')}: ${roleToString(this.rewardRoles)}`,
+                checkOfServers ? undefined : `:mega: ${this.translate('structures.giveaway.embed.fields.should.servers')}: **${this.servers.map(server => `[${server.name}](${server.invite})`).join(', ')}**`,
+                checkOfAllowedRoles ? undefined : `:mega: ${this.translate('structures.giveaway.embed.fields.should.roles')}: ${roleToString(this.allowedRoles)}`,
             ].filter(Boolean))
         }
 
-        return new MessageEmbed()
-            .setAuthor(this.prize)
+        return new EmbedBuilder()
+            .setAuthor({ name: this.prize })
             .setDescription(description.join('\n'))
-            .setColor(alert ? 'RED' : this.color ?? '#bd087d')
+            .setColor(alert ? Colors.Red : this.color ?? '#bd087d')
             .setTimestamp(this.finishAt)
             .setImage(this.banner)
-            .setFooter(`${this.translate('structures.raffle.embed.footer.text', this.numberOfWinners)} | ${this.translate('structures.raffle.embed.footer.continues')}`)
+            .setFooter({
+                text: `${this.translate('structures.giveaway.embed.footer.text', this.numberOfWinners)} | ${this.translate('structures.giveaway.embed.footer.continues')}`
+            })
     }
 
     private get isAdvancedEmbed(): boolean{
@@ -332,20 +342,20 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
             this.allowedRoles.length !== 0
     }
 
-    public buildComponents(): MessageActionRow {
-        return new MessageActionRow()
+    public buildComponents(): ActionRowBuilder<ButtonBuilder>{
+        return new ActionRowBuilder<ButtonBuilder>()
             .addComponents(
-                new MessageButton()
-                    .setCustomId(`giveaway:join`)
+                new ButtonBuilder()
+                    .setCustomId(`giveaway:${Actions.Giveaway.Join}`)
                     .setLabel(`(${this.participants.length || 0}) ${this.translate('global.join')}`)
-                    .setStyle('SUCCESS')
+                    .setStyle(ButtonStyle.Success)
                     .setEmoji('🎉')
             )
     }
 
-    public getMessageOptions(): MessageOptions{
+    public getMessageOptions(): MessageOptions & MessageEditOptions{
         return {
-            content: Raffle.getStartMessage(),
+            content: Giveaway.getStartMessage(),
             embeds: [this.buildEmbed()],
             components: [this.buildComponents()]
         }
@@ -353,4 +363,4 @@ class Raffle extends Structure<typeof RaffleModel, SuperRaffle>{
 
 }
 
-export default Raffle
+export default Giveaway

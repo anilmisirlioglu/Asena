@@ -1,18 +1,18 @@
 import { DiscordAPIError, HTTPError } from 'discord.js';
-import { IRaffle } from '../../models/Raffle';
+import { IGiveaway } from '../../models/Giveaway';
 import Task from '../Task';
-import Raffle from '../../structures/Raffle';
+import Giveaway from '../../structures/Giveaway';
 import Server from '../../structures/Server';
 
-export default class RaffleTask extends Task<Raffle, IRaffle>{
+export default class GiveawayTask extends Task<Giveaway, IGiveaway>{
 
-    async onExecute(items: IRaffle[]): Promise<void>{
-        for(const raffle of items){
-            const server = await this.client.servers.get(raffle.server_id)
+    async onExecute(items: IGiveaway[]): Promise<void>{
+        for(const giveaway of items){
+            const server = await this.client.servers.get(giveaway.server_id)
             if(!server) continue
 
-            const structure = await server.raffles.get(raffle.message_id)
-            const finishAt: Date = new Date(raffle.finishAt)
+            const structure = await server.giveaways.get(giveaway.message_id)
+            const finishAt: Date = new Date(giveaway.finishAt)
             const remaining: number = +finishAt - Date.now()
             if(remaining <= 60 * 1000){
                 await structure.setStatus('ALMOST_DONE')
@@ -24,23 +24,23 @@ export default class RaffleTask extends Task<Raffle, IRaffle>{
         }
     }
 
-    protected setInterval(timeout: number, raffle: Raffle, server: Server){
+    protected setInterval(timeout: number, giveaway: Giveaway, server: Server){
         new Promise((resolve, reject) => {
             this.client
-                .fetchMessage(raffle.server_id, raffle.channel_id, raffle.message_id)
+                .fetchMessage(giveaway.server_id, giveaway.channel_id, giveaway.message_id)
                 .then(async result => {
                     if(!result) return reject()
 
                     let isRejected = false
                     const updateCallback = async (
                         customTime: number,
-                        message: string = Raffle.getAlertMessage(),
+                        message: string = Giveaway.getAlertMessage(),
                         alert: boolean = true
                     ) => {
                         if(!isRejected){
                             await result.edit({
                                 content: message,
-                                embeds: [raffle.buildEmbed(alert, customTime)]
+                                embeds: [giveaway.buildEmbed(alert, customTime)]
                             }).catch(async (err: DiscordAPIError | HTTPError) => {
                                 const guild = result.guild
                                 if(guild){
@@ -63,7 +63,7 @@ export default class RaffleTask extends Task<Raffle, IRaffle>{
                     }
 
                     setTimeout(async () => {
-                        await updateCallback(10, Raffle.getStartMessage(), false)
+                        await updateCallback(10, Giveaway.getStartMessage(), false)
                         await this.sleep(7 * 1000)
                         await updateCallback(3)
                         await this.sleep(1000)
@@ -77,15 +77,15 @@ export default class RaffleTask extends Task<Raffle, IRaffle>{
                     }, timeout - (10 * 1000))
                 })
         }).catch(async () => {
-            await raffle.setStatus('FINISHED')
+            await giveaway.setStatus('FINISHED')
         }).then(() => {
-            super.setInterval(500, raffle, server)
+            super.setInterval(500, giveaway, server)
         })
     }
 
-    protected intervalCallback(raffle: Raffle, server: Server): () => void{
+    protected intervalCallback(giveaway: Giveaway, server: Server): () => void{
         return async () => {
-            await raffle.finish(this.client)
+            await giveaway.finish(this.client)
         }
     }
 

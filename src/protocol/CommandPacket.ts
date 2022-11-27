@@ -2,11 +2,10 @@ import ProcessPacket, { ProcessPacketType } from './ProcessPacket';
 
 export default class CommandPacket extends ProcessPacket{
 
+    readonly type: ProcessPacketType.Command = ProcessPacketType.Command
+
     constructor(command: string){
-        super({
-            type: ProcessPacketType.COMMAND,
-            payload: { command }
-        })
+        super({ command })
     }
 
     observeMetric(){}

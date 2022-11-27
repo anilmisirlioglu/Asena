@@ -2,6 +2,7 @@ import { Emojis, prefix, URLMap } from '../Constants'
 import SuperClient from '../SuperClient';
 import Factory from '../Factory';
 import ServerStatsPacket from '../protocol/ServerStatsPacket';
+import { ActivityType } from 'discord-api-types/v10';
 
 export default class ActivityUpdater extends Factory{
 
@@ -15,7 +16,7 @@ export default class ActivityUpdater extends Factory{
 
             this.counter = client.guilds.cache.size
 
-            await client.user.setStatus('online')
+            client.user.setStatus('online')
 
             client.logger.info(`${client.user.username} is active, serving a total of ${this.counter} servers!`)
         })
@@ -23,9 +24,9 @@ export default class ActivityUpdater extends Factory{
         this.setGuildCounterListeners()
     }
 
-    async updateActivity(packet: ServerStatsPacket){
-        await this.client.user.setActivity(`${Emojis.CONFETTI_REACTION_EMOJI} ${packet.serverCount} servers | ${prefix}help - ${URLMap.WEBSITE.slice(8, URLMap.WEBSITE.length)}`, {
-            type: 'PLAYING'
+    public setActivity(packet: ServerStatsPacket){
+        this.client.user.setActivity(`${Emojis.CONFETTI_REACTION_EMOJI} ${packet.serverCount} servers | ${prefix}help - ${URLMap.WEBSITE.slice(8, URLMap.WEBSITE.length)}`, {
+            type: ActivityType.Playing
         })
     }
 

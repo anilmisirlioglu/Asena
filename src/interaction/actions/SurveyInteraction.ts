@@ -1,7 +1,8 @@
 import Interaction, { Action } from '../Interaction';
 import { ButtonInteraction } from 'discord.js';
-import { SurveyAnswer } from '../../models/Survey';
 import Server from '../../structures/Server';
+import { Actions } from './enums';
+import { SurveyAnswer } from '../../models/Survey';
 
 export default class SurveyInteraction extends Interaction<ButtonInteraction>{
 
@@ -9,9 +10,9 @@ export default class SurveyInteraction extends Interaction<ButtonInteraction>{
         super({
             identifier: 'survey',
             actions: [
-                SurveyAnswer.TRUE,
-                SurveyAnswer.FALSE,
-                'attendees'
+                SurveyAnswer.True,
+                SurveyAnswer.False,
+                Actions.Survey.Attendees
             ]
         })
     }
@@ -20,7 +21,7 @@ export default class SurveyInteraction extends Interaction<ButtonInteraction>{
         server.surveys.get(interaction.message.id).then(async survey => {
             if(!survey) return
 
-            if(action.key == 'attendees'){
+            if(action.key == Actions.Survey.Attendees){
                 return interaction.reply({
                     files: [survey.toAttachment()],
                     ephemeral: true
@@ -28,7 +29,7 @@ export default class SurveyInteraction extends Interaction<ButtonInteraction>{
             }
 
             const userId = interaction.user.id
-            const answer = action.key == SurveyAnswer.TRUE ? SurveyAnswer.TRUE : SurveyAnswer.FALSE
+            const answer = action.key == SurveyAnswer.True ? SurveyAnswer.True : SurveyAnswer.False
             const reply = await survey.isReplied(answer, userId)
             if(reply){
                 return interaction.reply({

@@ -1,22 +1,22 @@
-import RaffleTask from '../tasks/RaffleTask';
+import GiveawayTask from '../tasks/GiveawayTask';
 import SurveyTask from '../tasks/SurveyTask';
-import { IRaffle } from '../../models/Raffle';
+import { IGiveaway } from '../../models/Giveaway';
 import { Document } from 'mongoose';
 import { StructureTask } from '../Task';
 import { ISurvey } from '../../models/Survey';
 
 interface ClientTask{
-    readonly Raffle: RaffleTask
+    readonly Giveaway: GiveawayTask
     readonly Survey: SurveyTask
 }
 
 export default class ClientTaskManager{
 
-    private readonly raffleTask: RaffleTask = new RaffleTask()
+    private readonly giveawayTask: GiveawayTask = new GiveawayTask()
     private readonly surveyTask: SurveyTask = new SurveyTask()
 
-    async executeRaffleTask(items: IRaffle[]){
-        return this.executeTask('Raffle', items)
+    async executeGiveawayTask(items: IGiveaway[]){
+        return this.executeTask('Giveaway', items)
     }
 
     async executeSurveyTask(items: ISurvey[]){
@@ -26,8 +26,8 @@ export default class ClientTaskManager{
     private async executeTask<D extends Document>(task: keyof ClientTask, items: D[]): Promise<void>{
         let executable: StructureTask
         switch(task){
-            case 'Raffle':
-                executable = this.raffleTask
+            case 'Giveaway':
+                executable = this.giveawayTask
                 break
 
             case 'Survey':

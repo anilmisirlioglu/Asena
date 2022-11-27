@@ -1,12 +1,12 @@
-import mongoose, { Schema, Document, HookNextFunction, set } from 'mongoose';
+import mongoose, { Schema, Document } from 'mongoose';
 import { ColorResolvable, Snowflake } from 'discord.js';
 
-export enum RaffleVersion{
+export enum GiveawayVersion{
     Reaction,
     Interaction
 }
 
-export type RaffleStatus = 'FINISHED' | 'ALMOST_DONE' | 'CONTINUES' | 'CANCELED'
+export type GiveawayStatus = 'FINISHED' | 'ALMOST_DONE' | 'CONTINUES' | 'CANCELED'
 
 export interface IPartialServer{
     id: Snowflake
@@ -14,14 +14,14 @@ export interface IPartialServer{
     name: string
 }
 
-export interface IRaffle extends Document{
+export interface IGiveaway extends Document{
     prize: string
     server_id: Snowflake
     constituent_id: Snowflake
     channel_id: Snowflake
     message_id?: Snowflake
     numberOfWinners: number
-    status: RaffleStatus
+    status: GiveawayStatus
     finishAt: Date
     servers?: IPartialServer[]
     allowedRoles?: Snowflake[]
@@ -32,7 +32,7 @@ export interface IRaffle extends Document{
     participants: Snowflake[]
 }
 
-const RaffleSchema: Schema = new Schema<IRaffle>({
+const GiveawaySchema: Schema = new Schema<IGiveaway>({
     prize: {
         type: String,
         required: true
@@ -77,11 +77,11 @@ const RaffleSchema: Schema = new Schema<IRaffle>({
     strictQuery: true
 })
 
-RaffleSchema.pre('findOneAndUpdate', function(){
+GiveawaySchema.pre('findOneAndUpdate', function(){
     const setOnInsert = this.getUpdate()['$setOnInsert']
     if(setOnInsert != null && setOnInsert.__v !== undefined){
-        setOnInsert.__v = RaffleVersion.Interaction
+        setOnInsert.__v = GiveawayVersion.Interaction
     }
 })
 
-export default mongoose.model<IRaffle>('Raffle', RaffleSchema)
+export default mongoose.model<IGiveaway>('Giveaway', GiveawaySchema, 'raffles')

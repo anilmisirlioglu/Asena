@@ -9,7 +9,7 @@ export default class InteractionHandler extends Factory{
 
     execute(interaction: Interaction){
         /** COMMAND INTERACTIONS */
-        if(interaction.isCommand()){
+        if(interaction.isChatInputCommand()){
             this.getClient().getCommandHandler().run(interaction).then(void 0)
         }
 
