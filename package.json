@@ -39,7 +39,7 @@
     "discord-api-types": "^0.37.10",
     "discord.js": "^14.3.0",
     "dotenv": "^8.2.0",
-    "mongoose": "^5.10.11",
+    "mongoose": "^5.13.15",
     "node-cron": "^2.0.3",
     "prom-client": "^14.0.1",
     "saslprep": "^1.0.3",
